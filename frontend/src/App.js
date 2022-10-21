@@ -1,8 +1,7 @@
-import './App.css';
-import CountrySelector from './components/CountrySelector';
+import "./App.css";
+
+import CountryManager from "./components/CountryManager";
 function App() {
-  return (
- <CountrySelector></CountrySelector>
-  );
+  return <CountryManager></CountryManager>;
 }
 export default App;

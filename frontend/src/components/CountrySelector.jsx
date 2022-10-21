@@ -3,13 +3,23 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-const CountrySelector = () => {
+const CountrySelector = (props) => {
   const countryLabels = countryList().getLabels();
   const countryCodes = countryList().getValues();
   var countries = [];
   for (var i = 0; i < countryLabels.length; i++) {
-    countries[i] = { label: countryLabels[i], code: countryCodes[i] };
+    countries[i] = {
+      label: countryLabels[i],
+      code: countryCodes[i],
+      value: countryLabels[i],
+    };
   }
+  const CountryHandler = (event) => {
+    const indexofCountry = event.target.outerText.split("(");
+    console.log(event.target.outerText);
+    console.log(indexofCountry[1])
+    props.pictureHandler(indexofCountry[1].substring(0,2));
+  };
   return (
     <Autocomplete
       id="country-select-demo"
@@ -17,6 +27,7 @@ const CountrySelector = () => {
       options={countries}
       autoHighlight
       getOptionLabel={(option) => option.label}
+      onChange={CountryHandler}
       renderOption={(props, option) => (
         <Box
           component="li"

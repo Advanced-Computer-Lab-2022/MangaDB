@@ -1,5 +1,9 @@
 import "./App.css";
 import CourseCard from "./components/Course/CourseCard";
+import NavBar from "./components/NavBar";
+
+ 
+
 
 import CountryManager from "./components/CountryManager";
 function App() {
@@ -14,10 +18,7 @@ function App() {
     price: "200$",
   };
   return(
-    <div>
-      <CourseCard {...test}></CourseCard>
-   <CountryManager></CountryManager>
-   </div>
+    <NavBar/>
   )
   ;
 }

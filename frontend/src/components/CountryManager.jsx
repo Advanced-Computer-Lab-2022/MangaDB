@@ -2,8 +2,8 @@ import countryList from "react-select-country-list";
 import { useState } from "react";
 import CountrySelector from "./CountrySelector";
 const CountryManager = () => {
-  const defaultValue = countryList().getValue("United States");
-  const [selectedCountry, setSelectedCountry] = useState(defaultValue);
+  const defaultCountryValue = countryList().getValue("United States");
+  const [selectedCountry, setSelectedCountry] = useState(defaultCountryValue);
   const [isClicked, setIsClicked] = useState(false);
   const countryLabels = countryList().getLabels();
   const countryCodes = countryList().getValues();
@@ -12,9 +12,12 @@ const CountryManager = () => {
     countries[i] = { label: countryLabels[i], code: countryCodes[i] };
   }
 
-  const clickHandler = () => {
+  const showSelectorHandler = () => {
     setIsClicked(true);
   };
+  const hideSelectorHandler = () => {
+    setIsClicked(false);
+  }
   const pictureHandler = (code) => {
     setSelectedCountry(code);
     setIsClicked(false);
@@ -26,12 +29,13 @@ const CountryManager = () => {
         width="20"
         src={`https://flagcdn.com/w20/${selectedCountry.toLowerCase()}.png`}
         alt=""
-        onClick={clickHandler}
+        onClick={showSelectorHandler}
       />
       {isClicked && (
         <CountrySelector
           options={countries}
           pictureHandler={pictureHandler}
+          onClick={hideSelectorHandler}
         ></CountrySelector>
       )}
     </div>

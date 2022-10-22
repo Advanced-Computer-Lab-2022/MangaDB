@@ -3,6 +3,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import Modal from "./UI/Modal";
 const CountrySelector = (props) => {
   const countryLabels = countryList().getLabels();
   const countryCodes = countryList().getValues();
@@ -11,16 +12,15 @@ const CountrySelector = (props) => {
     countries[i] = {
       label: countryLabels[i],
       code: countryCodes[i],
-      value: countryLabels[i],
     };
   }
   const CountryHandler = (event) => {
     const indexofCountry = event.target.outerText.split("(");
-    console.log(event.target.outerText);
-    console.log(indexofCountry[1])
     props.pictureHandler(indexofCountry[1].substring(0,2));
   };
   return (
+    <Modal onClick = {props.onClick}>
+    <label>please select your country</label>
     <Autocomplete
       id="country-select-demo"
       sx={{ width: 300 }}
@@ -55,6 +55,7 @@ const CountrySelector = (props) => {
         />
       )}
     />
+  </Modal>
   );
 };
 export default CountrySelector;

@@ -1,11 +1,11 @@
 import "./App.css";
 import CourseCard from "./components/Course/CourseCard";
 import NavBar from "./components/NavBar";
-
- 
-
-
+import SearchFilter from "./components/SearchFilter";
 import CountryManager from "./components/CountryManager";
+
+
+
 function App() {
   const test = {
     image: `https://i0.wp.com/blog.frontiersin.org/wp-content/uploads/2018/06/frontiers-in-ecology-evolution-ape-human-bonobo-muscles.jpg?resize=940%2C529&ssl=1`,
@@ -18,7 +18,10 @@ function App() {
     price: "200$",
   };
   return(
+    <div>
     <NavBar/>
+    <SearchFilter/>
+    </div>
   )
   ;
 }

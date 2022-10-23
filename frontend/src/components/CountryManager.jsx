@@ -23,11 +23,11 @@ const CountryManager = () => {
     setIsClicked(false);
   };
   return (
-    <div>
+    <div className="mt-[14px]">
       <img
         loading="lazy"
-        width="20"
-        src={`https://flagcdn.com/w20/${selectedCountry.toLowerCase()}.png`}
+        width="35"
+        src={`https://flagcdn.com/w40/${selectedCountry.toLowerCase()}.png`}
         alt=""
         onClick={showSelectorHandler}
       />

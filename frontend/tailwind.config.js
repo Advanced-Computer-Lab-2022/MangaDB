@@ -12,6 +12,11 @@ module.exports = {
         'darkBlue': "#163172",
       }
     },
+    fontFamily: {
+
+      'display': ['Oswald'],
+      'body': ['"Open Sans"'],
   },
   plugins: [],
+}
 }

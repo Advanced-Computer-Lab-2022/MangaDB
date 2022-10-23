@@ -18,10 +18,16 @@ function App() {
     price: "200$",
   };
   return(
+<<<<<<< HEAD
     <div>
     <NavBar/>
     <SearchFilter/>
     </div>
+=======
+    <CourseCard {...test}>
+      
+    </CourseCard>
+>>>>>>> dev
   )
   ;
 }

@@ -9,6 +9,15 @@ const CorporateSchema = new Schema({
         ref: 'User',
         required: true,
         unique: true,
+    },firstName: {
+        type: String,
+    } ,
+    lastName: {
+        type: String,
+    },
+    gender: {
+        type: String,
+        enum: ['Male','Female','Other'],
     },
 });
 

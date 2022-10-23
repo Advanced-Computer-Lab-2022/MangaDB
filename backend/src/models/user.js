@@ -11,21 +11,13 @@ const userSchema=new mongoose.Schema({
         required: true},
     email: {
         type: String,
-        required: true,
-        unique: true},
-    firstName: {
-        type: String,
-    } ,
-    lastName: {
-        type: String,
-    },
-    gender: {
-        type: String,
+        // required: true,
     },
     role: {
         type: String,
-        required: true,
-    },
+        enum: ['TRAINEE', 'ADMIN', 'INSTRUCTOR', 'CORPORATE'],
+        default: 'TRAINEE'
+      },
     });
 const User=connection.model('User', userSchema);
 

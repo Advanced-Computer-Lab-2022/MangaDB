@@ -18,7 +18,9 @@ function App() {
     price: "200$",
   };
   return(
-    <NavBar/>
+    <CourseCard {...test}>
+      
+    </CourseCard>
   )
   ;
 }

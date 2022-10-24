@@ -16,7 +16,7 @@ const HomePage = () => {
           <img className="w-96" src={homeImage} />
         </div>
       </div>
-      <div className="justify-center max-w-6xl">
+      <div className="justify-center max-w-6xl pl-[16%]">
         <Search />
       </div>
     </div>

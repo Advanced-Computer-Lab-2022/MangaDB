@@ -2,7 +2,7 @@ import React from "react";
 
 const Search = () => {
   return (
-    <div>
+    <div className="">
       <form>
         <label
           for="default-search"
@@ -31,13 +31,13 @@ const Search = () => {
           <input
             type="search"
             id="default-search"
-            class="block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
-            placeholder="Search Mockups, Logos..."
+            class="outline-none block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-300 focus:border-blue-300  "
+            placeholder="Search by course name, category, or instructor"
             required
           ></input>
           <button
             type="submit"
-            class="text-white absolute right-2.5 bottom-2.5 bg-primaryBlue hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
+            class="text-white absolute right-2.5 bottom-2.5 bg-primaryBlue hover:bg-blue-800 hover:ease-in-out  ease-in-out focus:ring-4 focus:ease-in-out duration-300 focus:outline-none focus:ring-blue-300  font-medium rounded-lg text-sm px-4 py-2"
           >
             Search
           </button>

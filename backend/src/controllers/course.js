@@ -5,7 +5,10 @@ const instructor=require('../models/instructor');
 exports.getAllCourses = async (req, res, next) => { 
     const currentPage = req.query.page || 1;
     const perPage =req.query.pageSize || 10;
-    await course.find()
+    const search= req.query.search || "";
+    await course.find({$or:[{courseTitle: {$regex : search, $options: "i"}}, 
+    {subject: {$regex : search, $options: "i"}}, 
+    {instructorName: {$regex : search, $options: "i"}}]})
     .skip((currentPage - 1) * perPage)
     .limit(perPage)
     .select({_id:1, courseTitle:1, totalHours:1, price:1,  courseImage:1, rating:1, instructor:1, instructorName:1, subject:1})
@@ -43,8 +46,6 @@ exports.createCourse = async(req, res, next) => {
     const instructorId=req.params.id;
     const foundInstructor =await instructor.findById(instructorId);
     const instructorName=foundInstructor.firstName+" "+foundInstructor.lastName;
-    console.log(instructorName);
-    console.log(instructorId);
     const newCourse = new course({
         courseTitle: req.body.courseTitle,
         courseDescription: req.body.courseDescription,
@@ -82,6 +83,7 @@ exports.createCourse = async(req, res, next) => {
     foundInstructor.courses.push(newCourse.id);
     await foundInstructor.save()
 }
+
 
 
 

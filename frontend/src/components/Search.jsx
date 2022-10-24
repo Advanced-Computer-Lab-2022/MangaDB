@@ -2,7 +2,7 @@ import React from "react";
 
 const Search = () => {
   return (
-    <div className="">
+    <div className="absolute left-3 right-3 ml-auto mr-auto max-w-4xl ">
       <form>
         <label
           for="default-search"

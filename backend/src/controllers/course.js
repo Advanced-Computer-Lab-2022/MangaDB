@@ -1,14 +1,14 @@
 const course=require('../models/course');
 const subtitles=require('../models/subtitle');
+const instructor=require('../models/instructor');
 
-exports.getAllCourses = (req, res, next) => { 
+exports.getAllCourses = async (req, res, next) => { 
     const currentPage = req.query.page || 1;
     const perPage =req.query.pageSize || 10;
-    course.find()
+    await course.find()
     .skip((currentPage - 1) * perPage)
     .limit(perPage)
-    .populate('instructor', 'firstName lastName')
-    .select({_id:1, courseTitle:1, totalHours:1, price:1,  courseImage:1, rating:1, instructor:1, subject:1})
+    .select({_id:1, courseTitle:1, totalHours:1, price:1,  courseImage:1, rating:1, instructor:1, instructorName:1, subject:1})
     .then(courses => {
         res.status(200).json({
             message: 'Courses fetched successfully!',
@@ -22,9 +22,8 @@ exports.getAllCourses = (req, res, next) => {
     });
 }
 
-exports.getCourse = (req, res, next) => {
-    course.findById(req.params.id)
-    .populate('instructor', 'firstName lastName')
+exports.getCourse =async (req, res, next) => {
+    await course.findById(req.params.id)
     .then(course => {
         if (course) {
             res.status(200).json(course);
@@ -40,19 +39,21 @@ exports.getCourse = (req, res, next) => {
 }
 
 //not final remove values that shouldnt be entered by user
-exports.createCourse = (req, res, next) => {
-    const url = req.protocol + '://' + req.get('host');
-    // const subtitles=new subtitles({
-    //     subtitle: req.body.subtitle,
-    // });
-    const course = new course({
+exports.createCourse = async(req, res, next) => {
+    const instructorId=req.params.id;
+    const foundInstructor =await instructor.findById(instructorId);
+    const instructorName=foundInstructor.firstName+" "+foundInstructor.lastName;
+    console.log(instructorName);
+    console.log(instructorId);
+    const newCourse = new course({
         courseTitle: req.body.courseTitle,
         courseDescription: req.body.courseDescription,
         totalHours: req.body.totalHours,
-        coursePrice: req.body.price,
-        courseImage: url + '/images/' + req.file.filename,
+        coursePrice: req.body.coursePrice,
+        courseImage: req.body.courseImage,
+        instructor: instructorId,
+        instructorName: instructorName,
         rating: req.body.rating,
-        instructor: req.body.instructor,
         subject: req.body.subject,
         reviews: req.body.reviews,
         requirements: req.body.requirements,
@@ -62,21 +63,26 @@ exports.createCourse = (req, res, next) => {
         subtitles: req.body.subtitles,
 
     });
-    course.save().then(createdCourse => {
+   
+    await newCourse.save().then(createdCourse => {
         res.status(201).json({
             message: 'Course added successfully',
             course: {
-                ...createdCourse,
                 id: createdCourse._id,
             }
         });
     })
     .catch(error => {
         res.status(500).json({
-            message: 'Creating a course failed!'
+            message: 'Creating a course failed!',
+            error: error
         });
     });
+
+    foundInstructor.courses.push(newCourse.id);
+    await foundInstructor.save()
 }
+
 
 
         

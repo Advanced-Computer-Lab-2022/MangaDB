@@ -5,14 +5,17 @@ import Search from "../components/Search";
 const HomePage = () => {
   return (
     <div className="">
-      <div className="flex justify-center items-center p-24">
-        <div className="text-5xl leading-[70px] uppercase tracking-widest font-semibold max-w-2xl">
+      <div className="md:flex justify-center items-center md:p-24 p-10">
+      <div className="block md:hidden p-10">
+          <img className="w-96" src={homeImage} />
+        </div>
+        <div className="md:text-5xl text-4xl md:leading-[70px] leading-[50px] md:text-left text-center uppercase tracking-widest font-semibold max-w-2xl">
           <p>
             Learn at the comfort of your own{" "}
             <span className="text-primaryBlue">home</span>
           </p>
         </div>
-        <div className="">
+        <div className="md:block hidden">
           <img className="w-96" src={homeImage} />
         </div>
       </div>

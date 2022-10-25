@@ -7,11 +7,16 @@ module.exports = {
     extend: {
       colors: {
         'lightGrey': "#F6F6F6",
-        'lightBlue': "#D6E4F0",
+        'lightBlue': "#C6D8EC",
         'primaryBlue': "#74a0d1",
-        'darkBlue': "#163172",
+        'darkBlue': "#3970AC",
       }
     },
+    fontFamily: {
+
+      'display': ['Oswald'],
+      'body': ['"Open Sans"'],
   },
   plugins: [],
+}
 }

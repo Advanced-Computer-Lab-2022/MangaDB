@@ -1,6 +1,6 @@
 const course=require('../models/course');
 const subtitles=require('../models/subtitle');
-const instructor=require('../models/instructor');
+const instructor=require('../models/instructor')
 
 exports.getAllCourses = async (req, res, next) => { 
     const currentPage = req.query.page || 1;
@@ -9,10 +9,15 @@ exports.getAllCourses = async (req, res, next) => {
     const minPrice= req.query.minPrice || 0;
     const maxPrice= req.query.maxPrice || 100000;
     const rating= req.query.rating || 0;
-    await course.find({$and:[{$and:[
+    const subjects= req.query.subject;
+    let query={};
+    if (subjects){
+        query={subject: {$in: subjects}}
+    }
+    await course.find({$and:[ query,
         {coursePrice: {$gte: minPrice}},
         {coursePrice: {$lte: maxPrice}},
-        {rating: {$gte: rating}}]},
+        {rating: {$gte: rating}},
         {$or:[{courseTitle: {$regex : search, $options: "i"}}, 
     {subject: {$regex : search, $options: "i"}}, 
     {instructorName: {$regex : search, $options: "i"}}]}]})

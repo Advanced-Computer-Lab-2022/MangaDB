@@ -6,6 +6,10 @@ const subtitleSchema=new mongoose.Schema({
         type: String,
         required: true,
     },
+    subtitleTime: {
+        type: String,
+
+    },
     introductionVideo: {
         type: String,
     },

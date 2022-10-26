@@ -25,7 +25,12 @@ exports.searchCourses = async (req, res, next) => {
     const search= req.query.search || "";
     const minPrice= req.query.minPrice || 0;
     const maxPrice= req.query.maxPrice || 100000;
-    await course.find({$and: [{instructor: req.params.id},  {coursePrice: {$gte: minPrice}},
+    const subjects= req.query.subject;
+    let query={};
+    if (subjects){
+        query={subject: {$in: subjects}}
+    }
+    await course.find({$and: [query,{instructor: req.params.id},  {coursePrice: {$gte: minPrice}},
         {coursePrice: {$lte: maxPrice}} ,{$or:[{courseTitle: {$regex : search, $options: "i"}}, 
     {subject: {$regex : search, $options: "i"}}, 
     {instructorName: {$regex : search, $options: "i"}}]}]})

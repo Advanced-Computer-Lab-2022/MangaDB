@@ -14,6 +14,11 @@ const subtitleSchema=new mongoose.Schema({
     },
     sources: {
         type: [ {
+            sourceType: {
+                type: String,
+                enum: ['Video', 'Audio', 'Text'],
+            }
+            ,
             link:{
             type: String,
           },

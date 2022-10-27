@@ -29,6 +29,10 @@ const courseSchema=new mongoose.Schema({
         ref: 'Instructor',
         required: true,
     },
+    instructorName: {
+        type: String,
+        required: true,
+    },
     subject: {  
         type: String,
 

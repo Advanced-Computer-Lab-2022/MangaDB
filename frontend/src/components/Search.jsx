@@ -1,8 +1,8 @@
 import React from "react";
 
-const Search = () => {
+const Search = (props) => {
   return (
-    <div className="absolute left-3 right-3 ml-auto mr-auto max-w-4xl ">
+    <div className={` left-3 right-3 ml-auto mr-auto min-w-[800px] max-w-4xl ${props.className} `}>
       <form>
         <label
           for="default-search"

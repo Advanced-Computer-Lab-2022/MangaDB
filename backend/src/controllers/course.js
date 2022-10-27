@@ -1,6 +1,7 @@
 const course=require('../models/course');
-const subtitles=require('../models/subtitle');
 const instructor=require('../models/instructor')
+const currencyConverter=require('../helper/currencyconverter');
+const { json } = require('body-parser');
 
 exports.getAllCourses = async (req, res, next) => { 
     const currentPage = req.query.page || 1;
@@ -14,6 +15,10 @@ exports.getAllCourses = async (req, res, next) => {
     if (subjects){
         query={subject: {$in: subjects}}
     }
+    // add when solved problem of giving price after discount and returning converted price
+    // const countryCode= req.query.CC || "US";
+    // const rate= await currencyConverter.convertCurrency(countryCode);
+
     await course.find({$and:[ query,
         {coursePrice: {$gte: minPrice}},
         {coursePrice: {$lte: maxPrice}},
@@ -66,6 +71,7 @@ exports.createCourse = async(req, res, next) => {
         courseImage: req.body.courseImage,
         instructor: instructorId,
         instructorName: instructorName,
+        discount: req.body.discount,
         rating: req.body.rating,
         subject: req.body.subject,
         reviews: req.body.reviews,
@@ -94,6 +100,37 @@ exports.createCourse = async(req, res, next) => {
 
     foundInstructor.courses.push(newCourse.id);
     await foundInstructor.save()
+}
+
+exports.searchCoursesByInstructor = async (req, res, next) => {
+    const currentPage = req.query.page || 1;
+    const perPage =req.query.pageSize || 10;
+    const search= req.query.search || "";
+    const minPrice= req.query.minPrice || 0;
+    const maxPrice= req.query.maxPrice || 100000;
+    const subjects= req.query.subject;
+    let query={};
+    if (subjects){
+        query={subject: {$in: subjects}}
+    }
+    await course.find({$and: [query,{instructor: req.params.id},  {coursePrice: {$gte: minPrice}},
+        {coursePrice: {$lte: maxPrice}} ,{$or:[{courseTitle: {$regex : search, $options: "i"}}, 
+    {subject: {$regex : search, $options: "i"}}, 
+    {instructorName: {$regex : search, $options: "i"}}]}]})
+    .skip((currentPage - 1) * perPage)
+    .limit(perPage)
+    .select({_id:1, courseTitle:1, totalHours:1, price:1,coursePrice:1,  courseImage:1, rating:1, instructor:1, instructorName:1, subject:1})
+    .then(courses => {
+        res.status(200).json({
+            message: 'Courses fetched successfully!',
+            courses: courses
+        });
+    })
+    .catch(error => {
+        res.status(500).json({
+            message: 'Fetching courses failed!'
+        });
+    });
 }
 
 

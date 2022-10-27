@@ -6,6 +6,6 @@ router.get("/getcourses/:id",instructorController.getInstructorCourseTitles);
 
 router.post("/addcourse/:id",courseController.createCourse);
 
-router.get("/searchcourses/:id",instructorController.searchCourses);
+router.get("/searchcourses/:id",courseController.searchCoursesByInstructor);
 
 module.exports=router;

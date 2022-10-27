@@ -9,6 +9,16 @@ const instructorSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    firstName: {
+        type: String,
+    } ,
+    lastName: {
+        type: String,
+    },
+    gender: {
+        type: String,
+        enum: ['Male','Female','Other'],
+    },
     courses: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Course',

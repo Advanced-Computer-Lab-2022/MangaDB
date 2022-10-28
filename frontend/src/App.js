@@ -12,6 +12,7 @@ import Search from "./components/Search";
 import SecondaryButton from "./components/SecondaryButton";
 import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
 import CreateCourseForm from "./components/CreateCourse/CreateCourseForm";
+import LeftAlignedCard from "./components/Table/LeftAlignedCard";
 function App() {
   const test = {
     image: `https://i0.wp.com/blog.frontiersin.org/wp-content/uploads/2018/06/frontiers-in-ecology-evolution-ape-human-bonobo-muscles.jpg?resize=940%2C529&ssl=1`,
@@ -88,7 +89,7 @@ function App() {
         </div>
       </div>
       <Table rows={courses}></Table> */}
-      <CreateCourseForm></CreateCourseForm>
+      <LeftAlignedCard></LeftAlignedCard>
     </div>
   );
 }

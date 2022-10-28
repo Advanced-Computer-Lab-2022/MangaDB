@@ -49,9 +49,7 @@ const courseSchema = new mongoose.Schema(
     certificate: {
       type: String,
     },
-    summary: {
-      type: String,
-    },
+    
     discount: {
       type: Number,
     },

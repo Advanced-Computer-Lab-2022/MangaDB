@@ -18,6 +18,6 @@ module.exports = {
       'display': ['Oswald'],
       'body': ['"Open Sans"'],
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/forms'),],
 }
 }

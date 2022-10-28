@@ -1,70 +1,113 @@
-const mongoose=require('mongoose');
-//const ExamSchema = require('./exam');
-const subtitleSchema = require('./subtitle');
-const connection = require('../config/database');
+const mongoose = require("mongoose");
+const connection = require("../config/database");
 
-
-
-const courseSchema=new mongoose.Schema({
+const courseSchema = new mongoose.Schema(
+  {
     courseTitle: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     courseDescription: {
-        type: String,
+      type: String,
     },
     totalHours: {
-        type: Number,
-        required: true,
+      type: Number,
+      required: true,
     },
     courseImage: {
-        type: String,
+      type: String,
     },
     coursePrice: {
-        type: Number,
-        required: true,
+      type: Number,
+      required: true,
     },
     instructor: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Instructor',
-        required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Instructor",
+      required: true,
     },
     instructorName: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
-    subject: {  
-        type: String,
-
+    subject: {
+      type: String,
     },
-    rating : {
-        type: [Number],
+    rating: {
+      type: Number,
     },
     reviews: {
-        type: [String],
+      type: [String],
     },
     requirements: {
-        type: [String]
+      type: [String],
     },
     views: {
-        type: Number,
-        default: 0,
+      type: Number,
+      default: 0,
     },
     certificate: {
-        type: String,
+      type: String,
     },
-    summary: {
-        type: String,
+    
+    discount: {
+      type: Number,
+    },
+    discountedPrice: {
+      type: Number,
     },
     // exams: {
     //     type: [ExamSchema.schema],
     // },
     subtitles: {
-        type: [subtitleSchema.schema],
+      type: [
+        {
+          subtitle: {
+            type: String,
+            required: true,
+          },
+          subtitleTime: {
+            type: String,
+          },
+          introductionVideo: {
+            type: String,
+          },
+          description: {
+            type: String,
+          },
+          exercises: {
+            type: [
+              {
+                question: { type: String },
+                answer: { type: String },
+                options: { type: [String] },
+              },
+            ],
+          },
+          sources: {
+            type: [
+              {
+                sourceType: {
+                  type: String,
+                  enum: ["Video", "Audio", "Text"],
+                },
+                link: {
+                  type: String,
+                },
+                description: {
+                  type: String,
+                },
+              },
+            ],
+            // insert type if needed
+          },
+        },
+      ],
     },
-    });
+  }
+);
 
 
-const Course=connection.model('Course', courseSchema);
+const Course = connection.model("Course", courseSchema);
 
-module.exports=Course;
+module.exports = Course;

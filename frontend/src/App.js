@@ -5,14 +5,19 @@ import PrimaryButton from "./components/PrimaryButton";
 import Subtitle from "./components/CourseSubtitles/Subtitle";
 import CountryManager from "./components/CountryManager";
 import HomePage from "./containers/HomePage";
-import Filter from "./components/Filters/Filters";
+import AddUserForm from "./components/AddUserForm";
+import Filters from "./components/Filters/Filters";
+import SubjectFilter from "./components/Filters/SubjectFilter";
 import Modal from "./components/UI/Modal";
+import CourseDetailsPage from "./containers/CourseDetailsPage";
+import CourseCardListView from "./components/Course/CourseCardListView";
+
+import Filter from "./components/Filters/Filters";
 import Table from "./components/Table/Table";
 import Search from "./components/Search";
 import SecondaryButton from "./components/SecondaryButton";
-import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
-import CreateCourseForm from "./components/CreateCourse/CreateCourseForm";
-import LeftAlignedCard from "./components/Table/LeftAlignedCard";
+import TertiaryButton from "./components/TertiaryButton";
+import InstructorControls from "./components/Table/InstructorControls";
 function App() {
   const test = {
     image: `https://i0.wp.com/blog.frontiersin.org/wp-content/uploads/2018/06/frontiers-in-ecology-evolution-ape-human-bonobo-muscles.jpg?resize=940%2C529&ssl=1`,
@@ -26,51 +31,21 @@ function App() {
     //text: "Home",
   };
   const options = [
-    { id: 1, name: "Web" },
-    { id: 2, name: "AI" },
-    { id: 3, name: "Front" },
-    { id: 4, name: "END" },
+    { id: 1, name: "Web Development" },
+    { id: 2, name: "Machine Learning" },
+    { id: 3, name: "Computer Science" },
+    { id: 4, name: "Database Administration" },
+    { id: 5, name: "Data Analytics" },
+    { id: 6, name: "Business Adminstration" },
+    { id: 7, name: "Artificial Intelligence" },
   ];
-  const courses = [
-    {
-      courseID: "1",
-      instructorName: "Jane Cooper",
-      courseTitle: "Regional Paradigm Technician",
-      price: "40$",
-      subject: "Machine Learning",
-    },
-    {
-      courseID: "2",
-      instructorName: "Cody Fisher",
-      courseTitle: "Product Directives Officer",
-      price: "20$",
-      subject: "Business Analytics",
-    },
-    {
-      courseID: "3",
-      instructorName: "Omar Moataz",
-      courseTitle: "Testing and Maintaining",
-      price: "50$",
-      subject: "Database Administratation",
-    },
-    {
-      courseID: "4",
-      instructorName: "Michel Roauf",
-      courseTitle: "Ape Daily Life",
-      price: "Free",
-      subject: "Rise of the apes",
-    },
-  ];
-
-  const icon = <TuneOutlinedIcon className="ml-2" />;
-
   return (
     // <CourseCard {...test}>
 
     // </CourseCard>
     <div>
       {/* <NavBar />
-      <HomePage /> */}
+      <HomePage></HomePage> */}
       {/* <NavBar /> */}
       {/* <Subtitle subtitleHeader={subtitleHeader} sources={sources}></Subtitle>
       <Subtitle subtitleHeader={subtitleHeader2} sources={sources}></Subtitle>
@@ -80,16 +55,9 @@ function App() {
         <Filter options={options} exchange={1}></Filter>
         </Modal> */}
       {/* <NavBar />
-      <div className="my-6 flex justify-center space-x-6 items-center">
-        <div>
-          <Search />
-        </div>
-        <div>
-          <SecondaryButton text="Filter" icon={icon}></SecondaryButton>
-        </div>
-      </div>
+      <InstructorControls />
       <Table rows={courses}></Table> */}
-      <LeftAlignedCard></LeftAlignedCard>
+      <CourseCard {...test}/>
     </div>
   );
 }

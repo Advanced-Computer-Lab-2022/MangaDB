@@ -64,20 +64,28 @@ exports.getAllCourses = async (req, res, next) => {
 };
   
 exports.getCourse = async (req, res, next) => {
-  await course
+  let foundCourse= await course
     .findById(req.params.id)
-    .then((course) => {
-      if (course) {
-        res.status(200).json(course);
-      } else {
-        res.status(404).json({ message: "Course not found!" });
-      }
-    })
     .catch((error) => {
       res.status(500).json({
         message: "Fetching course failed!",
       });
     });
+  const countryCode = req.query.CC || "US";
+  rate = await currencyConverter.convertCurrency("US",countryCode);
+  if(foundCourse){
+    foundCourse.coursePrice = foundCourse.coursePrice * rate;
+    foundCourse.discountedPrice = foundCourse.discountedPrice * rate;
+    res.status(200).json({
+      message: "Course fetched successfully!",
+      course: foundCourse,
+    });
+  }else{
+    res.status(404).json({
+      message: "Course not found!",
+    });
+  }
+
 };
 
 exports.updateCourse = async (req, res, next) => {

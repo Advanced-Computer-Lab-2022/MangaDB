@@ -52,24 +52,32 @@ const PriceFilter = (props) => {
 
   return (
     <Fragment>
-      <label>Price Filter</label>
-      <div className="min-Value">
-        <label htmlFor="min-price">min Price</label>
-        <input
-          id="min-price"
-          type="number"
-          value={rangeState.minValue.toString()}
-          onChange={minChangeHandler}
-        />
+      <div>
+        <label className="text-lg font-semibold">Price </label>
       </div>
-      <div className="max-Value">
-        <label htmlFor="max-price">max Price</label>
-        <input
-          id="max-price"
-          type="number"
-          value={rangeState.maxValue.toString()}
-          onChange={maxChangeHandler}
-        />
+      <div className="flex justify-around mb-4">
+        <div className="min-Value space-x-4">
+          <label htmlFor="min-price">Min</label>
+          <input
+            className="w-20 mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
+            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
+            id="min-price"
+            type="number"
+            value={rangeState.minValue.toString()}
+            onChange={minChangeHandler}
+          />
+        </div>
+        <div className="max-Value space-x-4">
+          <label htmlFor="max-price">Max</label>
+          <input
+            className="w-20 mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
+            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
+            id="max-price"
+            type="number"
+            value={rangeState.maxValue.toString()}
+            onChange={maxChangeHandler}
+          />
+        </div>
       </div>
     </Fragment>
   );

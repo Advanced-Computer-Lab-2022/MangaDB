@@ -20,7 +20,6 @@ const courseSchema = new mongoose.Schema(
     coursePrice: {
       type: Number,
       required: true,
-      //    get : applyDiscount
     },
     instructor: {
       type: mongoose.Schema.Types.ObjectId,
@@ -54,6 +53,9 @@ const courseSchema = new mongoose.Schema(
       type: String,
     },
     discount: {
+      type: Number,
+    },
+    discountedPrice: {
       type: Number,
     },
     // exams: {
@@ -105,12 +107,8 @@ const courseSchema = new mongoose.Schema(
       ],
     },
   }
-  //{ toObject: { getters: true }, toJSON: { getters: true } }
 );
 
-// function applyDiscount(value){
-//     return value - (value * this.discount);
-// }
 
 const Course = connection.model("Course", courseSchema);
 

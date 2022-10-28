@@ -3,6 +3,8 @@ import PriceFilter from "./PriceFilter";
 import RatingFilter from "./RatingFilter";
 import SubjectFilter from "./SubjectFilter";
 import Divider from "@mui/material/Divider";
+import SecondaryButton from "../SecondaryButton";
+import PrimaryButton from "../PrimaryButton";
 const ReducerFunction = (state, action) => {
   if (action.type === "SUBJECT") {
     return {
@@ -54,21 +56,39 @@ const Filters = (props) => {
   const clearHandler = () => {
     dispatchFilter({ type: "CLEAR" });
   };
-  return(
-  <form onSubmit={onSubmitHandler}>
-    <SubjectFilter onChange={subjectChangeHandler} options={props.options} />
-    <Divider variant="middle" />
-    <PriceFilter onChange={priceChangeHandler} exchange={props.exchange} />
-    <Divider variant="middle" />
-    <RatingFilter onChange={ratingChangeHandler} />
-    <Divider variant="middle" />
-    <div className="controls">
-      <button type="button" onClick={clearHandler}>
-        Clear Filters
-      </button>
-      <button type="submit">Confirm</button>
-    </div>
-  </form>
-  )
+  return (
+    <form className="p-4" onSubmit={onSubmitHandler}>
+      <div className="grid grid-cols-3 pb-3 font-bold">
+        <div></div>
+        <div className="flex justify-center text-2xl">
+          Filters
+        </div>
+        <div className="flex justify-end">
+          <button className="hover:text-red-600 text-xl">x</button>
+        </div>
+      </div>
+      <Divider variant="middle" />
+      <div className="py-4">
+      <SubjectFilter onChange={subjectChangeHandler} options={props.options} />
+      </div>
+      <Divider variant="middle" />
+      <div className="py-4">
+      <PriceFilter onChange={priceChangeHandler} exchange={props.exchange} />
+      </div>
+      <Divider variant="middle" />
+      <div className="py-4">
+      <RatingFilter onChange={ratingChangeHandler} />
+      </div>
+      <Divider variant="middle" />
+      <div className="controls flex justify-end space-x-2 mt-2">
+        <PrimaryButton
+          className=" rounded-md  "
+          text="Clear Filters"
+          onclick={clearHandler}
+        ></PrimaryButton>
+        <SecondaryButton text="Confirm"></SecondaryButton>
+      </div>
+    </form>
+  );
 };
 export default Filters;

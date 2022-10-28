@@ -1,9 +1,11 @@
 import React from "react";
 import homeImage from "../Assets/Images/HomePage.svg";
 import Search from "../components/Search";
+import Animate from "react-smooth/lib/Animate"
 
 const HomePage = () => {
   return (
+    <Animate to="1" from="0" attributeName="opacity">
     <div className="">
       <div className="md:flex justify-center items-center md:p-24 p-10">
       <div className="block md:hidden p-10">
@@ -23,6 +25,7 @@ const HomePage = () => {
         <Search />
       </div>
     </div>
+    </Animate>
   );
 };
 export default HomePage;

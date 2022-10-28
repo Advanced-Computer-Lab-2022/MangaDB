@@ -11,6 +11,7 @@ import Table from "./components/Table/Table";
 import Search from "./components/Search";
 import SecondaryButton from "./components/SecondaryButton";
 import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
+import CreateCourseForm from "./components/CreateCourse/CreateCourseForm";
 function App() {
   const test = {
     image: `https://i0.wp.com/blog.frontiersin.org/wp-content/uploads/2018/06/frontiers-in-ecology-evolution-ape-human-bonobo-muscles.jpg?resize=940%2C529&ssl=1`,
@@ -77,7 +78,7 @@ function App() {
       {/* <Modal>
         <Filter options={options} exchange={1}></Filter>
         </Modal> */}
-      <NavBar />
+      {/* <NavBar />
       <div className="my-6 flex justify-center space-x-6 items-center">
         <div>
           <Search />
@@ -86,8 +87,10 @@ function App() {
           <SecondaryButton text="Filter" icon={icon}></SecondaryButton>
         </div>
       </div>
-      <Table rows={courses}></Table>
+      <Table rows={courses}></Table> */}
+      <CreateCourseForm></CreateCourseForm>
     </div>
   );
 }
+
 export default App;

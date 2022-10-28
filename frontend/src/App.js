@@ -13,7 +13,6 @@ import CourseDetailsPage from "./containers/CourseDetailsPage";
 import CourseCardListView from "./components/Course/CourseCardListView";
 
 import Filter from "./components/Filters/Filters";
-import Modal from "./components/UI/Modal";
 import Table from "./components/Table/Table";
 import Search from "./components/Search";
 import SecondaryButton from "./components/SecondaryButton";
@@ -55,10 +54,10 @@ function App() {
       {/* <Modal>
         <Filter options={options} exchange={1}></Filter>
         </Modal> */}
-      <NavBar />
+      {/* <NavBar />
       <InstructorControls />
-      <Table rows={courses}></Table>
-      {/* <CourseCard {...test}/> */}
+      <Table rows={courses}></Table> */}
+      <CourseCard {...test}/>
     </div>
   );
 }

@@ -2,9 +2,13 @@ import "./App.css";
 import CourseCard from "./components/Course/CourseCard";
 import NavBar from "./components/NavBar";
 import PrimaryButton from "./components/PrimaryButton";
-
+import AddNewCourse from "./components/AddNewCourse";
 import CountryManager from "./components/CountryManager";
 import HomePage from "./containers/HomePage";
+import AddSubtitles from "./components/AddSubtitles/AddSubtitles";
+import {
+  Accordion,}
+  from "@material-tailwind/react";
 function App() {
   const test = {
     image: `https://i0.wp.com/blog.frontiersin.org/wp-content/uploads/2018/06/frontiers-in-ecology-evolution-ape-human-bonobo-muscles.jpg?resize=940%2C529&ssl=1`,
@@ -19,13 +23,13 @@ function App() {
   };
   return (
     // <CourseCard {...test}>
-
     // </CourseCard>
     <div>
       {/* <NavBar />
       <HomePage /> */}
       {/* <NavBar /> */}
-      <CourseCard {...test}/>
+      {/* <AddNewCourse></AddNewCourse> */}
+      <AddSubtitles></AddSubtitles>
     </div>
   );
 }

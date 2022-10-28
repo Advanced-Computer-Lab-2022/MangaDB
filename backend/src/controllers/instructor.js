@@ -19,27 +19,6 @@ exports.getInstructorCourseTitles = async (req, res, next) => {
     });
 }
 
-exports.searchCourses = async (req, res, next) => {
-    const currentPage = req.query.page || 1;
-    const perPage =req.query.pageSize || 10;
-    const search= req.query.search || "";
-    await course.find({$and: [{instructor: req.params.id} ,{$or:[{courseTitle: {$regex : search, $options: "i"}}, 
-    {subject: {$regex : search, $options: "i"}}, 
-    {instructorName: {$regex : search, $options: "i"}}]}]})
-    .skip((currentPage - 1) * perPage)
-    .limit(perPage)
-    .select({_id:1, courseTitle:1, totalHours:1, price:1,  courseImage:1, rating:1, instructor:1, instructorName:1, subject:1})
-    .then(courses => {
-        res.status(200).json({
-            message: 'Courses fetched successfully!',
-            courses: courses
-        });
-    })
-    .catch(error => {
-        res.status(500).json({
-            message: 'Fetching courses failed!'
-        });
-    });
-}
+
 
 

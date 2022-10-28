@@ -1,24 +1,19 @@
 import * as React from "react";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import CourseCard from "./Course/CourseCard";
 import According from "./According";
-import AddUserToggle from "./AddUserToggle";
-import Card from "./UI/Card";
 import { TextField } from "@mui/material";
-import SecondaryButton from "./SecondaryButton";
 import OnlineLearning from "../Assets/Images/Online-learning.svg";
+import { useState } from "react";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
+import SecondaryButton from "./SecondaryButton";
 export default function AddNewCourse() {
-  const test = {
-    image: `https://i0.wp.com/blog.frontiersin.org/wp-content/uploads/2018/06/frontiers-in-ecology-evolution-ape-human-bonobo-muscles.jpg?resize=940%2C529&ssl=1`,
-    title: "React Full stack Course (MERN)",
-    level: "Advanced",
-    //duration: "44 hrs",
-    reviews: "5.0",
-    subject: "Web Development",
-    instructorName: "Omar Moataz",
-    price: "599$",
-    //text: "Home",
+  const [requirements, setRequirements] = useState([]);
+
+  const setRequirementsHandler = () => {
+    setRequirements([
+      ...requirements,
+      "requirement ".concat(requirements.length),
+    ]);
   };
 
   return (
@@ -28,11 +23,7 @@ export default function AddNewCourse() {
     <div className="flex justify-center space-x-10">
       <div className="flex flex-col space-y-4 items-center   w-[50%]  p-5 rounded-lg mt-[8%]">
         <According title={"Course Title"} summary={""}>
-          <TextField
-            id="outlined-basic"
-            label="Course Title"
-            className=""
-          />
+          <TextField id="outlined-basic" label="Course Title" className="" />
         </According>
         <According title={"Course Description"} summary={""}>
           <TextField
@@ -51,23 +42,28 @@ export default function AddNewCourse() {
         </According>
         <According title={"Course Price"} summary={""}>
           <div className="flex items-center">
-        <TextField
-            id="outlined-basic"
-            label="Course Price"
-            className=""
-          />
-          <span className="opacity-70 ml-3 text-lg">$</span>
+            <TextField id="outlined-basic" label="Course Price" className="" />
+            <span className="opacity-70 ml-3 text-lg">$</span>
           </div>
         </According>
-        <According title={"Course Subject"} summary={""}>
-          
-        </According>
+        <According title={"Course Subject"} summary={""}></According>
         <According title={"Course Requirements"} summary={""}>
-          
+          <div className="flex flex-col space-y-3">
+            {requirements.map((req) => (
+              <TextField name={req} id="outlined-basic" label={req} />
+            ))}
+          </div>
+          <div className="flex justify-end">
+            <button
+              className="rounded-full h-12 fle"
+              onClick={setRequirementsHandler}
+            >
+              <AddIcon />
+            </button>
+          </div>
         </According>
-        <According title={"Course Summary"} summary={""}>
-          
-        </According>
+        <According title={"Course Summary"} summary={""}></According>
+        <According title={"Course Sections"} summary={""}></According>
       </div>
       <img
         src={OnlineLearning}

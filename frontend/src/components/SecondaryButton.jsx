@@ -1,10 +1,12 @@
 import React from 'react'
+import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
+
 
 const SecondaryButton = (props) => {
   return (
     <button className={`block text-md py-2 pr-4 pl-3 text-white bg-primaryBlue rounded-lg md:px-3 md:text-white hover:bg-darkBlue hover:text-white hover:ease-in-out duration-300 focus:ease-in-out active:text-gray-500 ${props.className}`}>
         {props.text}
-        
+        {props.icon}
     </button>
   )
 }

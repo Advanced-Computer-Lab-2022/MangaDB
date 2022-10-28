@@ -22,7 +22,7 @@ const HomePage = () => {
         </div>
       </div>
       <div className="justify-center max-w-6xl pl-[16%]">
-        <Search />
+        <Search className="absolute" />
       </div>
     </div>
     </Animate>

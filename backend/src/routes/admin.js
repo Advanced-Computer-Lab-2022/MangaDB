@@ -3,4 +3,6 @@ const userController=require('../controllers/user');
 
 router.post('/adduser', userController.createUser);
 
+router.delete*('/deleteuser/:id', userController.deleteUser);
+
 module.exports=router;

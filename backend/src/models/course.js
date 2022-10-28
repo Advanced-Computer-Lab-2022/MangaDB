@@ -104,12 +104,11 @@ const courseSchema = new mongoose.Schema(
         },
       ],
     },
-  },
-  { toObject: { getters: true }, toJSON: { getters: true } }
+  }
+  //{ toObject: { getters: true }, toJSON: { getters: true } }
 );
 
 // function applyDiscount(value){
-//     console.log(value);
 //     return value - (value * this.discount);
 // }
 

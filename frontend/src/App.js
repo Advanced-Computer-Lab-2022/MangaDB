@@ -41,12 +41,14 @@ function App() {
   ];
   return (
     // <CourseCard {...test}>
-
     // </CourseCard>
     <div>
       {/* <NavBar />
       <HomePage></HomePage> */}
       {/* <NavBar /> */}
+      {/* <AddNewCourse></AddNewCourse> */}
+      <AddSubtitles></AddSubtitles>
+      
       {/* <Subtitle subtitleHeader={subtitleHeader} sources={sources}></Subtitle>
       <Subtitle subtitleHeader={subtitleHeader2} sources={sources}></Subtitle>
       <Subtitle subtitleHeader={subtitleHeader3} sources={sources}></Subtitle>

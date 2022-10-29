@@ -29,6 +29,7 @@ function App() {
     subject: "Web Development",
     instructorName: "Omar Moataz",
     price: "599$",
+    description: "This course is fully up-to-date with React 18 (the latest version of React)! It was completely updated and re-recorded from the ground up - it teaches the very latest version of React with all the core, modern features you need to know!",
     //text: "Home",
   };
   const options = [

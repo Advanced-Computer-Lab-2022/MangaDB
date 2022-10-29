@@ -1,44 +1,78 @@
 import { Fragment, useState } from "react";
-import Accordion from "./Accordion";
+
 import SecondaryButton from "../SecondaryButton";
 import Modal from "../UI/Modal";
 import SubtitleForm from "./SubtitleForm";
+import SingleSubtitle from "./SingleSubtitle";
 const AddSubtitles = (props) => {
   const [subtitles, setSubtitles] = useState([]);
-  const [modalShown, setModalShown] = useState(false);
-  const showModal = () => {
-    setModalShown(true);
+  const [subtitleModalShown, setSubtitleModalShown] = useState(false);
+
+  const onAddSourceHandler = (subtitleId, data) => {
+    var newSubtitles = [];
+    for (var i = 0; i < subtitles.length; i++) {
+      if (subtitles[i].id === subtitleId) {
+        subtitles[i].sources.push(data)
+        newSubtitles.push(subtitles[i])
+        continue;
+      }
+      newSubtitles.push(subtitles[i]);
+    }
+    setSubtitles(newSubtitles);
   };
-  const hideModal = () => {
-    setModalShown(false);
+  const displayedSubtitles = subtitles.map((subtitle) => {
+    //still didnt handle the description and the video
+    const subtitleTitle = subtitle.title;
+    const sources = subtitle.sources; 
+    return (
+      <SingleSubtitle
+        onAdd={onAddSourceHandler.bind(null, subtitle.id)}
+        title={subtitleTitle}
+        sources={sources}
+      >
+      </SingleSubtitle>
+    );
+  });
+  const showSubtitleModal = () => {
+    setSubtitleModalShown(true);
   };
+  const hideSubtitleModal = () => {
+    setSubtitleModalShown(false);
+  };
+
   const addSubtitleHandler = (subtitleData) => {
     //logic for the URL and the short Description not handled yet
-    const newAccordion = (
-      <div className="mb-2">
-        <Accordion title={subtitleData.title}></Accordion>
-      </div>
-    );
+
+    const newSubtitle = {
+      id: subtitles.length,
+      title: subtitleData.title,
+      videoURL: subtitleData.videoURL,
+      description: subtitleData.description,
+      sources: []
+    };
+
     setSubtitles((prevSubtitles) => {
-      return [...prevSubtitles, newAccordion];
+      return [...prevSubtitles, newSubtitle];
     });
-    setModalShown(false);
+    setSubtitleModalShown(false);
   };
+
   return (
     <Fragment>
-      {modalShown && (
-        <Modal onClick={hideModal}>
+      {subtitleModalShown && (
+        <Modal onClick={hideSubtitleModal}>
           <SubtitleForm
-            onCancel={hideModal}
+            onCancel={hideSubtitleModal}
             onConfirm={addSubtitleHandler}
           ></SubtitleForm>
         </Modal>
       )}
+
       <div className="flex space-x-2 ">
-        <div className="flex-col min-w-[80%]">{subtitles}</div>
+        <div className="flex-col min-w-[80%]">{displayedSubtitles}</div>
         <div>
           <SecondaryButton
-            onClick={showModal}
+            onClick={showSubtitleModal}
             text="Add Subtitle"
           ></SecondaryButton>
         </div>

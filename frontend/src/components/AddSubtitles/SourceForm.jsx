@@ -1,17 +1,17 @@
-import { Fragment, useRef } from "react";
+import { Fragment, useRef, useState } from "react";
 import Divider from "@mui/material/Divider";
 import PrimaryButton from "../PrimaryButton";
-import { Radio } from "@material-tailwind/react";
+import RadioTypes from "./RadioTypes";
 const SourceForm = (props) => {
   const titleRef = useRef();
-  const typeRef = useRef();
+  const [sourceType, setSourceType] = useState("video");
   const linkRef = useRef();
   const submitHandler = (event) => {
     event.preventDefault();
     const title = titleRef.current.value;
     const link = linkRef.current.value;
     var type;
-    if (typeRef.current.checked) type = "file";
+    if (sourceType === "file") type = "file";
     else type = "video";
     const sourceData = {
       title,
@@ -20,6 +20,9 @@ const SourceForm = (props) => {
     };
     props.onConfirm(sourceData);
   };
+  const typeChangeHandler = (type) => {
+    setSourceType(type.name)
+  }
   return (
     <Fragment>
       <div className="grid grid-cols-3 pb-3 font-bold">
@@ -49,14 +52,7 @@ const SourceForm = (props) => {
             ></input>
           </div>
           <div className="flex gap-10">
-            <Radio
-              ref={typeRef}
-              id="video"
-              name="type"
-              label="Video"
-              defaultChecked
-            />
-            <Radio id="file" name="type" label="File" />
+            <RadioTypes onChange={typeChangeHandler}></RadioTypes>
           </div>
           <div className="third-control">
             <label className="block" htmlFor="link">

@@ -6,6 +6,7 @@ import AddNewCourse from "./components/AddNewCourse";
 import CountryManager from "./components/CountryManager";
 import HomePage from "./containers/HomePage";
 import AddSubtitles from "./components/AddSubtitles/AddSubtitles";
+import RadioTypes from "./components/AddSubtitles/RadioTypes";
 import {
   Accordion,}
   from "@material-tailwind/react";
@@ -30,7 +31,7 @@ function App() {
       {/* <NavBar /> */}
       {/* <AddNewCourse></AddNewCourse> */}
       <AddSubtitles></AddSubtitles>
-    </div>
+      </div>
   );
 }
 export default App;

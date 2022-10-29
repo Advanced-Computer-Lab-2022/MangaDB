@@ -3,7 +3,7 @@ import React from "react";
 const Search = (props) => {
   return (
     <div className={` right-3 min-w-[60vw] md:min-w-[40vw] lg:min-w-[40vw] xl:min-w-[47vw] max-w-4xl ${props.className} `}>
-      <form>
+      <form onSubmit={props.onSubmit}>
         <label
           htmlFor="default-search"
           className="mb-2 text-sm font-medium text-gray-900 sr-only "

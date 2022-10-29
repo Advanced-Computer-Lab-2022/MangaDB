@@ -1,8 +1,8 @@
 import React from "react";
 
-const Search = () => {
+const Search = (props) => {
   return (
-    <div className="absolute left-3 right-3 ml-auto mr-auto max-w-4xl ">
+    <div className={` right-3 mr-auto min-w-[60vw] md:min-w-[40vw] lg:min-w-[40vw] xl:min-w-[47vw] max-w-4xl ${props.className} `}>
       <form>
         <label
           for="default-search"
@@ -31,8 +31,15 @@ const Search = () => {
           <input
             type="search"
             id="default-search"
-            class="outline-none block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-300 focus:border-blue-300  "
+            class="outline-none hidden md:block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-300 focus:border-blue-300  "
             placeholder="Search by course name, category, or instructor"
+            required
+          ></input>
+          <input
+            type="search"
+            id="default-search"
+            class=" outline-none md:hidden block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-300 focus:border-blue-300  "
+            placeholder="Search by..."
             required
           ></input>
           <button

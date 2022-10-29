@@ -18,21 +18,18 @@ const SubjectFilter = (props) => {
   var options = props.options.map((option) => {
     return (
       <li key={option.id}>
-        <div className="flex items-center">
-          <input
+        <div className="items-center">
+          <button
             id={option.id}
-            type="checkbox" 
             value=""
             checked={checked.includes(option.id)? true:false }
-            className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-            onChange={changeHandler}
-          ></input>
-          <label
-            htmlFor={option.id}
-            className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            className={`w-fit px-3 rounded-full transition ease-in-out duration-150 ${checked.includes(option.id)? " bg-darkBlue text-white" : " bg-lightBlue "}  border-gray-300 focus:ring-primaryBlue accent-darkBlue`}
+            onClick={changeHandler}
           >
             {option.name}
-          </label>
+          </button>
+
+            
         </div>
       </li>
     );
@@ -40,13 +37,14 @@ const SubjectFilter = (props) => {
   return (
         <div
           id="dropdownDefaultCheckbox"
-          className=" z-10 w-48 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
+          className="text-lg font-semibold"
           data-popper-reference-hidden=""
           data-popper-escaped=""
           data-popper-placement="bottom"
         >
+          Subjects
           <ul
-            className="p-3 space-y-3 text-sm text-gray-700 dark:text-gray-200"
+            className="flex flex-wrap justify-center gap-x-4 gap-y-5 place-items-center my-4"
             aria-labelledby="dropdownCheckboxButton"
           >
             {options}

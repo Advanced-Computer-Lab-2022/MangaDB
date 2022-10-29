@@ -7,6 +7,7 @@ module.exports = {
     extend: {
       colors: {
         'lightGrey': "#F6F6F6",
+        'veryLightBlue' : "#D0DFF0",
         'lightBlue': "#C6D8EC",
         'primaryBlue': "#74a0d1",
         'darkBlue': "#3970AC",
@@ -17,6 +18,6 @@ module.exports = {
       'display': ['Oswald'],
       'body': ['"Open Sans"'],
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/forms'),],
 }
 }

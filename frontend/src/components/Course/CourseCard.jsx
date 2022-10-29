@@ -13,7 +13,7 @@ const CourseCard = (props) => {
       <img class="" src={reactImg} alt=""></img>
       <div className="bg-white px-2 py-1 text-xs font-semibold rounded-full absolute top-3 left-3">
         <AccessTimeIcon className="-mt-[3px]" fontSize="inherit" />{" "}
-        {props.duration}
+        {props.duration} {"hrs"}
       </div>
 
       <div class="p-5">
@@ -44,7 +44,7 @@ const CourseCard = (props) => {
             </div>
           )}
           <h5 class="text-xl font-bold tracking-tight text-gray-900">
-            {props.price}
+            {props.price===0?"FREE":props.price}
           </h5>
         </div>
       </div>

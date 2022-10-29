@@ -46,7 +46,7 @@ const CourseCardListView = (props) => {
         </p>
         <div className="bg-white  py-1 text-sm font-semibold rounded-full">
           <AccessTimeIcon className="-mt-[3px]" fontSize="inherit" />{" "}
-          {props.duration}
+          {props.duration} {"hrs"}
           <div className="flex justify-end items-center">
             <h5 class="absolute bottom-2 right-7 text-3xl font-bold tracking-tight text-gray-900">
               {props.price}

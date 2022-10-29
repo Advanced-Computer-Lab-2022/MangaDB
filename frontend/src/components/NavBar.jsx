@@ -5,7 +5,7 @@ import SecondaryButton from "./SecondaryButton";
 
 const NavBar = () => {
   return (
-    <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded shadow-md items-center justify-center">
+    <nav className="bg-white mb-6 border-gray-200 px-2 sm:px-4 py-2.5 rounded shadow-md items-center justify-center">
       <div className="container flex flex-wrap justify-between items-center mx-auto">
         <a href="https://flowbite.com/" className="flex items-center">
           <img src={logo} className=" md:mb-3 md:h-12 h-10 mb-1" alt="Flowbite Logo" />

@@ -22,21 +22,21 @@ const Subtitle = (props) => {
     return <Source title = {source.title} type ="Video"> </Source>;
   });
 
+  const icon = isOpened ? (
+    <KeyboardArrowUpRoundedIcon />
+  ) : (
+    <KeyboardArrowDownRoundedIcon />
+  )
+
   return (
-    <Accordion className="mb-3 " open={isOpened} animate={customAnimation}>
-      <div className="flex space-x-0 items-center mb-3 ">
+    <Accordion icon={icon} open={isOpened} animate={customAnimation}>
+      <div className="space-x-0 items-center mr-4">
         <div>
-        <AccordionHeader onClick={handleOpen}>
+        <AccordionHeader className="text-lg font-medium" onClick={handleOpen}>
           {props.subtitleHeader}
         </AccordionHeader>
         </div>
-        {isOpened ? (
-          <KeyboardArrowUpRoundedIcon className="mt-1" />
-        ) : (
-          <KeyboardArrowDownRoundedIcon className="mt-1"/>
-        )}
       </div>
-      <Divider variant="middle" />
       {Body}
     </Accordion>
   );

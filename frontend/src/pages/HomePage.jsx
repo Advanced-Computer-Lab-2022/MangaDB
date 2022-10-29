@@ -5,6 +5,7 @@ import Animate from "react-smooth/lib/Animate";
 import NavBar from "../components/NavBar";
 import { useState ,useEffect} from "react";
 import axios from "axios";
+import CourseCard from "./components/Course/CourseCard";
 const HomePage = () => {
   const [displayedCourses,setDisplayedCourses] = useState([]);
    useEffect(()=> {
@@ -14,7 +15,12 @@ const HomePage = () => {
         }
       )
    },[])
-console.log(displayedCourses)
+  displayedCourses.map(course => {
+    <CourseCard 
+    
+    ></CourseCard>
+  })
+
   return (
     <Animate to="1" from="0" attributeName="opacity">
       <NavBar></NavBar>

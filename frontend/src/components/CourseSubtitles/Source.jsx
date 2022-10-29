@@ -13,7 +13,7 @@ const Source = (props) => {
     <AccordionBody className="opacity-0 transition ease-out duration-150">
       <div className="flex space-x-3 items-center">
         {icon}
-        <p >{props.title}</p>
+        <p className="ml-8 text-base font-medium">{props.title}</p>
       </div>
     </AccordionBody>
   );

@@ -6,7 +6,12 @@ import CourseImage from "../../Assets/Images/ReactJS.jpg";
 
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import SecondaryButton from "../SecondaryButton";
-import ScheduleRoundedIcon from '@mui/icons-material/ScheduleRounded';
+import ScheduleRoundedIcon from "@mui/icons-material/ScheduleRounded";
+import Stars from "../UI/Stars";
+
+const size = {
+  starSize: 5,
+};
 
 const CourseCard = (props) => {
   var level;
@@ -43,11 +48,11 @@ const CourseCard = (props) => {
     //     <div className="">
     //       {level} {props.level}
     //     </div>
-        // <div className="">
-        //   <AccessTimeIcon className="-mt-1" fontSize="small" /> {props.duration}
-        // </div>
+    // <div className="">
+    //   <AccessTimeIcon className="-mt-1" fontSize="small" /> {props.duration}
+    // </div>
     //     <div className="">
-          
+
     //     </div>
     //   </div>
     //   <div className="font-semibold">{props.subject}</div>
@@ -177,85 +182,49 @@ const CourseCard = (props) => {
     //   </div>
     // </div>
 
-  <div class=" flex max-w-[680px] rounded-lg bg-white shadow-md overflow-hidden">
-    <div class="p-4 bg-darkBlue  w-56">
-      <div class="text-lightBlue uppercase tracking-wider text-sm">course</div>
-      <div class="text-white text-2xl">{props.title}</div>
-      <div class="text-lightBlue mt-12 text-sm"><div class="flex items-center text-yellow-500">
-            <svg
-              aria-hidden="true"
-              class="w-5 h-5 "
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <title>First star</title>
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-            </svg>
-            <svg
-              aria-hidden="true"
-              class="w-5 h-5 "
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <title>Second star</title>
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-            </svg>
-            <svg
-              aria-hidden="true"
-              class="w-5 h-5 "
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <title>Third star</title>
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-            </svg>
-            <svg
-              aria-hidden="true"
-              class="w-5 h-5 "
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <title>Fourth star</title>
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-            </svg>
-            <svg
-              aria-hidden="true"
-              class="w-5 h-5 text-lightBlue"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <title>Fifth star</title>
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-            </svg>
-          </div></div>
-    </div>
-    <div class="p-4 ">
-      <div class="flex justify-between">
-        <div class="text-primaryBlue uppercase whitespace-nowrap tracking-wider text-sm">{props.instructorName}</div>
-        <div class="pt-1 pl-32">
-          <div class="bg-lightBlue rounded-full h-2 w-48 overflow-hidden">
-            <div class={`h-2 bg-darkBlue ${props.level === "Advanced" ? "w-64":props.level==="Intermediate"? "w-24": "w-16" }`}></div>
-          </div>
-          <div class="text-xs text-primaryBlue text-right uppercase">{props.level}</div>
+    <div class=" flex w-[820px] max-w-[1000px] rounded-lg bg-white shadow-md overflow-hidden">
+      <div class="p-4 bg-darkBlue  w-56">
+        <div class="text-lightBlue uppercase tracking-wider text-sm">
+          course
+        </div>
+        <div class="text-white text-2xl">{props.title}</div>
+        <div class="text-lightBlue mt-12 text-sm">
+          <Stars {...size}/>
         </div>
       </div>
-      <div class="text-3xl text-darkBlue">{props.subject}</div>
-      <div class="flex justify-end pt-12 gap-5 items-center ">
-        <div className="text-3xl font-semibold text-darkBlue " >
-          {props.price}
+      <div class="p-4 ">
+        <div class="flex justify-between">
+          <div class="text-primaryBlue uppercase whitespace-nowrap tracking-wider text-sm">
+            {props.instructorName}
+          </div>
+          <div className="flex">
+            
+          </div>
+          <div class="pt-1 pl-60">
+            <div class="bg-lightBlue rounded-full h-2 w-48 overflow-hidden">
+              <div
+                class={`h-2 bg-darkBlue ${
+                  props.level === "Advanced"
+                    ? "w-64"
+                    : props.level === "Intermediate"
+                    ? "w-24"
+                    : "w-16"
+                }`}
+              ></div>
+            </div>
+            <div class="text-xs text-primaryBlue text-right uppercase">
+              {props.level}
+            </div>
+          </div>
         </div>
-      <button class="px-12 py-2 bg-darkBlue rounded-full text-purple-100 text-lg shadow-md hover:bg-lightBlue hover:text-darkBlue">
-        Subscribe
-      </button></div>
+        <div class="text-3xl text-darkBlue">{props.subject}</div>
+        <div class="flex justify-end pt-12 gap-5 items-center ">
+          <div className="text-3xl font-semibold text-darkBlue mr-4">
+            {props.price}
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-
-
   );
 };
 export default CourseCard;

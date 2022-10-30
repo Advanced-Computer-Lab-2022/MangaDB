@@ -8,42 +8,39 @@ import axios from "axios";
 const addUserReqBody = {
   userName: "",
   password: "",
-  role: "Admin",
+  role: "ADMIN",
 };
 
 export default function AddUserForm(props) {
-  const [type, setType] = useState("Admin");
+  const [type, setType] = useState("ADMIN");
   const [UserName, setUserName] = useState("");
   const [Password, setPassword] = useState("");
 
   const setTypeHandler = (e) => {
-    addUserReqBody.userType = e.target.value;
-    console.log(addUserReqBody);
+    addUserReqBody.role = e.target.value.toUpperCase().split(" ")[0];
     setType(e.target.value);
   };
 
   const setUserNameHandler = (e) => {
-    addUserReqBody.UserName = e.target.value;
-    console.log(addUserReqBody);
+    addUserReqBody.userName = e.target.value;
     setUserName(e.target.value);
   };
 
   const setPasswordHandler = (e) => {
     addUserReqBody.password = e.target.value;
-    console.log(addUserReqBody);
     setPassword(e.target.value);
   };
 
-  const onSubmitHandler = () => {
-    axios.post("http://localhost:3000/admin/adduser", JSON.stringify(addUserReqBody))
-    .then((res) => {
-      console.log(res);
-    })
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    axios
+      .post("http://localhost:3000/admin/adduser", addUserReqBody)
+      .then((res) => {});
   };
 
   return (
     <div className="flex justify-center items-center ">
-      <form>
+      <form onSubmit={onSubmitHandler}>
         <Card className="flex flex-col space-y-12 justify-center items-center  outline-primaryBlue  p-16  rounded-3xl">
           <AddUserToggle onChange={setTypeHandler} />
           <div className="flex flex-col items-center justify-center space-y-9">
@@ -66,10 +63,10 @@ export default function AddUserForm(props) {
             />
           </div>
           <button
+            type="submit"
             className={
               "block text-md py-2 pr-4 pl-3 text-white bg-primaryBlue rounded-lg md:px-3 md:text-white hover:bg-darkBlue hover:text-white hover:ease-in-out duration-300 focus:ease-in-out focus:bg-darkBlue focus:text-gray-700 active:text-gray-700"
             }
-            onClick={onSubmitHandler}
           >
             Add User
           </button>

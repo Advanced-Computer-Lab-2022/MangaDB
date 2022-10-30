@@ -2,11 +2,13 @@ import * as React from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
-export default function AddUserToggle() {
+export default function AddUserToggle(props) {
   const [alignment, setAlignment] = React.useState('Admin');
 
   const handleChange = (event, newAlignment) => {
+    
     setAlignment(newAlignment);
+    {props.onChange(event)}
   };
 
   return (

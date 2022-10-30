@@ -8,14 +8,26 @@ import axios from "axios";
 import CourseCard from "../components/Course/CourseCard";
 const HomePage = () => {
   const [displayedCourses, setDisplayedCourses] = useState([]);
+  const [currencySymbol, setCurrencySymbol] = useState("");
+  const [countryCode, setCountryCode] = useState("US");
+
+  
   useEffect(() => {
-    axios.get("http://localhost:3000/course/").then((res) => {
+    axios.get("http://localhost:3000/course/?CC=".concat(countryCode)).then((res) => {
       setDisplayedCourses(res.data.courses);
+      setCurrencySymbol(res.data.symbol);
     });
-  }, []);
+  }, [countryCode]);
   //should handle the catch with error state
+
+  const onChangeHandler = (e) => {
+    console.log(e);
+  setCountryCode(e)
+  }
+
   const courses = displayedCourses.map((course) => {
     return (
+      
       <CourseCard
         duration={course.totalHours}
         title={course.courseTitle}
@@ -23,13 +35,15 @@ const HomePage = () => {
         subject={course.subject}
         level="Advanced"
         price={course.discountedPrice}
+        rating={course.rating}
+        currencySymbol={currencySymbol}
       ></CourseCard>
     );
   });
-
+  
   return (
     <Animate to="1" from="0" attributeName="opacity">
-      <NavBar></NavBar>
+      <NavBar onChange={onChangeHandler}></NavBar>
       <div className="">
         <div className="md:flex justify-center items-center md:p-24 p-10">
           <div className="block md:hidden p-10">

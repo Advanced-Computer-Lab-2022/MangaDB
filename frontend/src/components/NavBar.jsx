@@ -3,7 +3,7 @@ import CountryManager from "./CountryManager";
 import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
 
-const NavBar = () => {
+const NavBar = (props) => {
   return (
     <nav className="bg-white mb-6 border-gray-200 px-2 sm:px-4 py-2.5 rounded shadow-md items-center justify-center">
       <div className="container flex flex-wrap justify-between items-center mx-auto">
@@ -105,7 +105,7 @@ const NavBar = () => {
           </ul>
           <div className="flex gap-12 absolute right-6">
           <SecondaryButton text="Sign in" />
-          <CountryManager />
+          <CountryManager onChange={props.onChange}/>
           </div>
           
         </div>

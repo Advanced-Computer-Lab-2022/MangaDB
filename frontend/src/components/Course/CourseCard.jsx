@@ -28,7 +28,7 @@ const CourseCard = (props) => {
         <div class="text-lightBlue text-sm mt-2 flex">
           <Stars {...size} />
           <div className="bg-veryLightBlue text-gray-900 ml-2 text-sm py-[2px] px-2 rounded-lg">
-            4.5
+            {props.rating}
           </div>
         </div>
         <div className="flex justify-between py-3 items-center">
@@ -48,7 +48,7 @@ const CourseCard = (props) => {
             </div>
           )}
           <h5 class="text-xl font-bold tracking-tight text-gray-900 absolute right-6">
-            {props.price===0?"FREE":props.price} $
+            {props.price===0?"FREE":props.price} {props.currencySymbol.toString()}
           </h5>
         </div>
       </div>

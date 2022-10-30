@@ -25,6 +25,18 @@ const TableHeader = (props) => {
       >
         Price
       </th>
+      <th
+        scope="col"
+        className="px-6 py-3 text-left text-md font-semibold text-gray-600 uppercase tracking-wider"
+      >
+        Rating
+      </th>
+      <th
+        scope="col"
+        className="px-6 py-3 text-left text-md font-semibold text-gray-600 uppercase tracking-wider"
+      >
+        Total Hours
+      </th>
       <th scope="col" className="relative px-6 py-3">
         <span className="sr-only">Edit</span>
       </th>

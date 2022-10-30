@@ -18,6 +18,12 @@ const TableRows =(props) => {
           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
             {row.price}
           </td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {row.rating}
+          </td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {row.totalHours}
+          </td>
           <td className=" whitespace-nowrap text-right text-sm font-medium">
             <PrimaryButton text="Edit"></PrimaryButton>
           </td>

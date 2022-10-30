@@ -62,53 +62,61 @@ const SearchResultsPage = (props) => {
     var param = "";
     if (searchState.search !== "")
       param = param + "?search=" + searchState.search;
-   
+
     for (var i = 0; i < searchState.filters.subjects.length; i++) {
       for (var j = 0; j < options.length; j++) {
         if (options[j].id === searchState.filters.subjects[i]) {
-          param = param +(param?"&":"?") +"subject=" + options[j].name;
+          param = param + (param ? "&" : "?") + "subject=" + options[j].name;
         }
       }
     }
     if (searchState.filters.rating !== null)
-      param = param + (param?"&":"?")+"rating=" + searchState.filters.rating;
-    if(searchState.filters.price!==null){
-        param =param +(param?"&":"?") +"minPrice="+searchState.filters.price.minValue;
-        param =param +(param?"&":"?") +"maxPrice="+searchState.filters.price.maxValue;
+      param =
+        param + (param ? "&" : "?") + "rating=" + searchState.filters.rating;
+    if (searchState.filters.price !== null) {
+      param =
+        param +
+        (param ? "&" : "?") +
+        "minPrice=" +
+        searchState.filters.price.minValue;
+      param =
+        param +
+        (param ? "&" : "?") +
+        "maxPrice=" +
+        searchState.filters.price.maxValue;
     }
     axios.get("http://localhost:3000/course/" + param).then((res) => {
       dispatchSearch({ type: "COURSES", value: res.data.courses });
     });
   };
-  var courses 
-  if(searchState.displayedCourses.length===0){
-    courses =<div>No Courses Found.</div>
-  }
-  else{
-    courses = searchState.displayedCourses.map(course=> {
-        return (
-            <CourseCardListView
-            title = {course.courseTitle}
-            level="Advanced"
-            instructorName={course.instructorName}
-            subject={course.subject}
-            duration={course.totalHours}
-            price={course.discountedPrice}
-            ></CourseCardListView>
-        )
-    })
+  var courses;
+  if (searchState.displayedCourses.length === 0) {
+    courses = <div className="text-xl font-semibold mt-16">No Courses Found.</div>;
+  } else {
+    courses = searchState.displayedCourses.map((course) => {
+      return (
+        <CourseCardListView
+          title={course.courseTitle}
+          level="Advanced"
+          instructorName={course.instructorName}
+          subject={course.subject}
+          duration={course.totalHours}
+          price={course.discountedPrice}
+        ></CourseCardListView>
+      );
+    });
   }
   return (
     <Fragment>
       <NavBar />
-      <div className="flex justify-center space-x-4 mb-3">
+      <div className="flex justify-center space-x-4 mb-3 items-center">
         <Search
           onSubmit={onSubmitHandler}
           onChange={searchBarChangeHandler}
           className="ml-4"
         />
         <SecondaryButton
-          className="mr-4 w-25"
+          className="mr-4 w-25 h-11"
           text="Filter"
           icon={icon}
           onClick={showFiltersHandler}
@@ -122,8 +130,10 @@ const SearchResultsPage = (props) => {
           onClick={hideFiltersHandler}
         />
       )}
-      <div>
-        {courses}
+
+      <div className="flex flex-col gap-y-4 mb-4">
+        <div className="font-bold text-2xl ml-24">Results:</div>
+        <div className="flex flex-col items-center gap-y-4">{courses}</div>
       </div>
     </Fragment>
   );

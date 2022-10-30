@@ -33,7 +33,7 @@ function App() {
     //text: "Home",
   };
   
-  return  <SearchResultsPage></SearchResultsPage>
+  return  <HomePage />
 }
 
 export default App;

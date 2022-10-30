@@ -1,7 +1,7 @@
 import countryList from "react-select-country-list";
 import { useState } from "react";
 import CountrySelector from "./CountrySelector";
-const CountryManager = () => {
+const CountryManager = (props) => {
   const defaultCountryValue = countryList().getValue("United States");
   const [selectedCountry, setSelectedCountry] = useState(defaultCountryValue);
   const [isClicked, setIsClicked] = useState(false);
@@ -36,6 +36,7 @@ const CountryManager = () => {
           options={countries}
           pictureHandler={pictureHandler}
           onClick={hideSelectorHandler}
+          onChange={props.onChange}
         ></CountrySelector>
       )}
     </div>

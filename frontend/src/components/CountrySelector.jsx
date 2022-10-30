@@ -17,6 +17,7 @@ const CountrySelector = (props) => {
   const CountryHandler = (event) => {
     const indexofCountry = event.target.outerText.split("(");
     props.pictureHandler(indexofCountry[1].substring(0,2));
+    {props.onChange(indexofCountry[1].substring(0,2))};
   };
   return (
     <Modal onClick = {props.onClick}>

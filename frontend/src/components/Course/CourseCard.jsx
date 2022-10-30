@@ -9,14 +9,15 @@ const size = {
 
 const CourseCard = (props) => {
   return (
-    <div class=" relative max-w-xs bg-white border border-gray-200 shadow-md">
+    <button className="hover:scale-105 transition flex content-start relative">
+      <div class=" relative max-w-xs bg-white border border-gray-200 shadow-md">
       <img class="" src={reactImg} alt=""></img>
       <div className="bg-white px-2 py-1 text-xs font-semibold rounded-full absolute top-3 left-3">
         <AccessTimeIcon className="-mt-[3px]" fontSize="inherit" />{" "}
         {props.duration} {"hrs"}
       </div>
 
-      <div class="p-5">
+      <div class="p-5 flex flex-col items-start">
         <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900">
           {props.title}
         </h5>
@@ -24,8 +25,11 @@ const CourseCard = (props) => {
         <p class=" text-xs font-medium text-gray-500">
           {props.instructorName} . {props.subject}
         </p>
-        <div class="text-lightBlue text-sm">
+        <div class="text-lightBlue text-sm mt-2 flex">
           <Stars {...size} />
+          <div className="bg-veryLightBlue text-gray-900 ml-2 text-sm py-[2px] px-2 rounded-lg">
+            4.5
+          </div>
         </div>
         <div className="flex justify-between py-3 items-center">
           {props.level === "Beginner" && (
@@ -43,12 +47,14 @@ const CourseCard = (props) => {
               {props.level}
             </div>
           )}
-          <h5 class="text-xl font-bold tracking-tight text-gray-900">
-            {props.price===0?"FREE":props.price}
+          <h5 class="text-xl font-bold tracking-tight text-gray-900 absolute right-6">
+            {props.price===0?"FREE":props.price} $
           </h5>
         </div>
       </div>
     </div>
+    </button>
+    
   );
 };
 export default CourseCard;

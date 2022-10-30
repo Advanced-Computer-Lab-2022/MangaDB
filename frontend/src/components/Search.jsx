@@ -4,12 +4,17 @@ import SecondaryButton from "./SecondaryButton";
 
 const Search = (props) => {
   const inputRef = useRef();
-  const onSubmitHandler =(event) => {
-      event.preventDefault();
-      props.onChange(inputRef.current.value)
+  if (!props.prevSearchState && props.prevmyCoursesState) {
+    inputRef.current.value = "";
   }
+  const onSubmitHandler = (event) => {
+    event.preventDefault();
+    props.onChange(inputRef.current.value);
+  };
   return (
-    <div className={` right-3 min-w-[60vw] md:min-w-[40vw] lg:min-w-[40vw] xl:min-w-[47vw] max-w-4xl ${props.className} `}>
+    <div
+      className={` right-3 min-w-[60vw] md:min-w-[40vw] lg:min-w-[40vw] xl:min-w-[47vw] max-w-4xl ${props.className} `}
+    >
       <form onSubmit={onSubmitHandler}>
         <label
           htmlFor="default-search"
@@ -55,7 +60,11 @@ const Search = (props) => {
           >
             Search
           </button>  */}
-          <SecondaryButton className="absolute right-2.5 bottom-2" text="Search" type="submit" />
+          <SecondaryButton
+            className="absolute right-2.5 bottom-2"
+            text="Search"
+            type="submit"
+          />
         </div>
       </form>
     </div>

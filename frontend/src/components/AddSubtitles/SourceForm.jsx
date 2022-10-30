@@ -14,7 +14,7 @@ const SourceForm = (props) => {
     if (sourceType === "file") type = "file";
     else type = "video";
     const sourceData = {
-      title,
+      description:title,
       type,
       link,
     };

@@ -20,7 +20,8 @@ import TertiaryButton from "./components/TertiaryButton";
 import InstructorControls from "./components/Table/InstructorControls";
 import AddSubtitles from "./components/AddSubtitles/AddSubtitles"
 import IntructorCoursePage from "./pages/InstructorCoursesPage";
-
+import AddCoursePage from "./pages/AddCoursePage";
+import AdminAddNewUser from "./pages/AdminAddNewUser";
 function App() {
   const test = {
     image: `https://i0.wp.com/blog.frontiersin.org/wp-content/uploads/2018/06/frontiers-in-ecology-evolution-ape-human-bonobo-muscles.jpg?resize=940%2C529&ssl=1`,
@@ -35,7 +36,7 @@ function App() {
     //text: "Home",
   };
   
-  return  <HomePage></HomePage>
+  return  <AddCoursePage></AddCoursePage>
 }
 
 export default App;

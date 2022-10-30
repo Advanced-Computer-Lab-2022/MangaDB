@@ -19,7 +19,7 @@ const Subtitle = (props) => {
   };
 
   var Body = props.sources.map((source) => {
-    return <Source title = {source.title} type ="Video"> </Source>;
+    return <Source title = {source.description} type ="Video"> </Source>;
   });
 
   const icon = isOpened ? (

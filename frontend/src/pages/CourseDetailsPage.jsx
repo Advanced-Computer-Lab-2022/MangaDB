@@ -1,5 +1,7 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import { Fragment } from "react";
+import axios from "axios";
 import { Menu, Popover, Transition } from "@headlessui/react";
 import {
   ArrowNarrowLeftIcon,
@@ -18,8 +20,10 @@ import Subtitle from "../components/CourseSubtitles/Subtitle";
 import SecondaryButton from "../components/SecondaryButton";
 import courseImage from "../Assets/Images/react.png";
 
+const courseId = "635bf4ca56673b3f80ac2e02";
+
 const size = {
-  starSize: 4,
+  starSize: 3,
 };
 
 const sources = [
@@ -102,6 +106,7 @@ const timeline = [
     datetime: "2020-10-04",
   },
 ];
+
 const comments = [
   {
     id: 1,
@@ -125,66 +130,76 @@ const comments = [
     body: "Expedita consequatur sit ea voluptas quo ipsam recusandae. Ab sint et voluptatem repudiandae voluptatem et eveniet. Nihil quas consequatur autem. Perferendis rerum et.",
   },
 ];
-const test = {
-  image: `https://i0.wp.com/blog.frontiersin.org/wp-content/uploads/2018/06/frontiers-in-ecology-evolution-ape-human-bonobo-muscles.jpg?resize=940%2C529&ssl=1`,
-  title: "React Full stack Course (MERN)",
-  level: "Advanced",
-  duration: "44 hrs",
-  reviews: "5.0",
-  subject: "Web Development",
-  instructorName: "Omar Moataz",
-  price: "599$",
-  //text: "Home",
-};
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 const CourseDetailsPage = (props) => {
+  const [courseDetails, setCourseDetails] = useState({});
+
+  useEffect(() => {
+    axios.get("http://localhost:3000/course/".concat(courseId)).then((res) => {
+      setCourseDetails(res.data.course);
+    });
+  }, []);
+
+  /*
+  const mapSubtitleToLessons = (subtitle) => {
+    var lessons = [];
+    lessons = subtitle.sources.map((lesson) => 
+    {title:lesson.description}
+    );
+    return lessons;
+  };
+*/
+  var lessons;
+  var courseSubtitles;
+  if (courseDetails.subtitles) {
+    courseSubtitles = courseDetails.subtitles.map((courseSubtitle) => (
+      <Subtitle
+        sources={courseSubtitle.sources}
+        subtitleHeader={courseSubtitle.subtitle}
+      />
+    ));
+  }
+
   return (
     <div className="min-h-full">
       <main className="">
         {/* Page header */}
         <div className="bg-lightBlue py-14 h-full w-full mx-auto px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 ">
-          <CourseDetailsCard {...test} />
+          <CourseDetailsCard {...courseDetails} level="Advanced" />
         </div>
 
         <div className="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
           <div className="space-y-6 lg:col-start-1 lg:col-span-2">
-
             <section aria-labelledby="description-title">
               <h1 className="text-xl font-bold text-gray-900">Description</h1>
               <div className="mt-4 text-md font-medium text-gray-900">
-                {props.description}
+                {courseDetails.courseDescription}
               </div>
             </section>
 
             <section aria-labelledby="notes-title">
               <div className="bg-white shadow sm:rounded-lg sm:overflow-hidden">
                 <div className="divide-y divide-gray-300">
-                  <div className="bg-gray-100 px-4 py-5 sm:px-6">
+                  <div className="bg-gray-100 px-4 py-5 sm:px-6 flex items-center ">
                     <h2
                       id="notes-title"
-                      className="text-lg font-bold text-gray-900"
+                      className="text-lg font-bold text-gray-900 flex-1"
                     >
-                      Content
+                      Course Content
                     </h2>
+                    <div className="flex justify-items-end ">
+                      <h2 className="shadow-lg  rounded-full p-2 ">
+                        {courseDetails.totalHours} hours
+                      </h2>
+                    </div>
                   </div>
                   <div className="ml-4 px-4 py-6 sm:px-6">
                     <ul role="list" className="space-y-8">
-                      <Subtitle
-                        sources={sources}
-                        subtitleHeader="subtitleHeader"
-                      />
-                      <Subtitle
-                        sources={sources}
-                        subtitleHeader="subtitleHeader"
-                      />
-                      <Subtitle
-                        sources={sources}
-                        subtitleHeader="subtitleHeader"
-                      />
+                      {courseSubtitles}
                       <Subtitle
                         sources={sources}
                         subtitleHeader="subtitleHeader"
@@ -292,7 +307,7 @@ const CourseDetailsPage = (props) => {
             aria-labelledby="timeline-title"
             className="fixed top-16 right-4 lg:col-start-3 lg:col-span-1"
           >
-            <div className="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
+            <div className="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6 ">
               {/* Activity Feed */}
               <div className="flow-root w-[450px]">
                 <img src={courseImage} />

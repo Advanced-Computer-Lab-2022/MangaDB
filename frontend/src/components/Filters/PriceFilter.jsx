@@ -37,10 +37,18 @@ const PriceFilter = (props) => {
       }
     }
   };
-  const defaultState = {
-    minValue: 0,
-    maxValue: endValueExchange,
-  };
+  var defaultState;
+  if (props.defaultState) {
+    defaultState = {
+      minValue: props.defaultState.minValue,
+      maxValue: props.defaultState.maxValue,
+    };
+  } else {
+    defaultState = {
+      minValue: 0,
+      maxValue: endValueExchange,
+    };
+  }
   const [rangeState, dispatchRange] = useReducer(rangeReducer, defaultState);
 
   const minChangeHandler = (event) => {

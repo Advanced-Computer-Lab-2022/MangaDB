@@ -6,30 +6,29 @@ import Divider from "@mui/material/Divider";
 import SecondaryButton from "../SecondaryButton";
 import PrimaryButton from "../PrimaryButton";
 import Modal from "../UI/Modal";
-
 const Filters = (props) => {
+  const defaultFilterState = {
+    ...props.prevState
+  };
   const ReducerFunction = (state, action) => {
     if (action.type === "SUBJECT") {
       const newSubject = {
         ...state,
         subjects: action.value,
       };
-      props.onChange(newSubject)
-      return newSubject
+      return newSubject;
     } else if (action.type === "PRICE") {
-      const newPrice=  {
+      const newPrice = {
         ...state,
         price: action.value,
       };
-      props.onChange(newPrice)
-      return newPrice
+      return newPrice;
     } else if (action.type === "RATING") {
-      const newRating= {
+      const newRating = {
         ...state,
         rating: action.value,
       };
-      props.onChange(newRating)
-      return newRating
+      return newRating;
     } else if (action.type === "CLEAR") {
       return {
         subjects: [],
@@ -38,17 +37,15 @@ const Filters = (props) => {
       };
     }
   };
-  const defaultFilterState = {
-    subjects: [],
-    price: null,
-    rating: null,
-  };
+  
+
   const [filterState, dispatchFilter] = useReducer(
     ReducerFunction,
     defaultFilterState
   );
-  const onSubmitHandler = (event) => {
-    event.preventDefault();
+  console.log(filterState)
+  const onSubmitHandler = () => {
+    props.onConfirm(filterState);
   };
   const subjectChangeHandler = (Array) => {
     dispatchFilter({ type: "SUBJECT", value: Array });
@@ -65,17 +62,22 @@ const Filters = (props) => {
   };
   return (
     <Modal onClick={props.onClick}>
-      <form className="p-4" onSubmit={onSubmitHandler}>
         <div className="grid grid-cols-3 pb-3 font-bold">
           <div></div>
           <div className="flex justify-center text-2xl">Filters</div>
           <div className="flex justify-end">
-            <button className="hover:text-red-600 text-xl" onClick={props.onClick}>x</button>
+            <button
+              className="hover:text-red-600 text-xl"
+              onClick={props.onClick}
+            >
+              x
+            </button>
           </div>
         </div>
         <Divider variant="middle" />
         <div className="py-4">
           <SubjectFilter
+            defaultState={filterState.subjects}
             onChange={subjectChangeHandler}
             options={props.options}
           />
@@ -83,24 +85,26 @@ const Filters = (props) => {
         <Divider variant="middle" />
         <div className="py-4">
           <PriceFilter
+            defaultState={filterState.price}
             onChange={priceChangeHandler}
             exchange={props.exchange}
           />
         </div>
         <Divider variant="middle" />
         <div className="py-4">
-          <RatingFilter onChange={ratingChangeHandler} />
+          <RatingFilter 
+          defaultState={filterState.rating}
+          onChange={ratingChangeHandler} />
         </div>
         <Divider variant="middle" />
         <div className="controls flex justify-end space-x-2 mt-2">
           <PrimaryButton
             className=" rounded-md  "
             text="Clear Filters"
-            onclick={clearHandler}
+            onClick={clearHandler}
           ></PrimaryButton>
-          <SecondaryButton type="submit" text="Confirm"></SecondaryButton>
+          <SecondaryButton onClick={onSubmitHandler} text="Confirm"></SecondaryButton>
         </div>
-      </form>
     </Modal>
   );
 };

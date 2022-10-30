@@ -51,59 +51,67 @@ const SearchResultsPage = (props) => {
   const hideFiltersHandler = () => {
     setShowFilters(false);
   };
-  const searchBarChangeHandler = (event) => {
-    dispatchSearch({ type: "SEARCH", value: event.target.value });
+  const searchBarChangeHandler = (searchValue) => {
+    dispatchSearch({ type: "SEARCH", value: searchValue });
   };
-  const filterChangeHandler = (newFilter) => {
+  const filtersChangeHandler = (newFilter) => {
     dispatchSearch({ type: "FILTER", value: newFilter });
+    setShowFilters(false);
   };
-  const onSubmitHandler = (event) => {
-    event.preventDefault();
+
+  useEffect(() =>{
     var param = "";
     if (searchState.search !== "")
       param = param + "?search=" + searchState.search;
-   
+
     for (var i = 0; i < searchState.filters.subjects.length; i++) {
       for (var j = 0; j < options.length; j++) {
         if (options[j].id === searchState.filters.subjects[i]) {
-          param = param +(param?"&":"?") +"subject=" + options[j].name;
+          param = param + (param ? "&" : "?") + "subject=" + options[j].name;
         }
       }
     }
     if (searchState.filters.rating !== null)
-      param = param + (param?"&":"?")+"rating=" + searchState.filters.rating;
-    if(searchState.filters.price!==null){
-        param =param +(param?"&":"?") +"minPrice="+searchState.filters.price.minValue;
-        param =param +(param?"&":"?") +"maxPrice="+searchState.filters.price.maxValue;
+      param =
+        param + (param ? "&" : "?") + "rating=" + searchState.filters.rating;
+    if (searchState.filters.price !== null) {
+      param =
+        param +
+        (param ? "&" : "?") +
+        "minPrice=" +
+        searchState.filters.price.minValue;
+      param =
+        param +
+        (param ? "&" : "?") +
+        "maxPrice=" +
+        searchState.filters.price.maxValue;
     }
     axios.get("http://localhost:3000/course/" + param).then((res) => {
       dispatchSearch({ type: "COURSES", value: res.data.courses });
     });
-  };
-  var courses 
-  if(searchState.displayedCourses.length===0){
-    courses =<div>No Courses Found.</div>
-  }
-  else{
-    courses = searchState.displayedCourses.map(course=> {
-        return (
-            <CourseCardListView
-            title = {course.courseTitle}
-            level="Advanced"
-            instructorName={course.instructorName}
-            subject={course.subject}
-            duration={course.totalHours}
-            price={course.discountedPrice}
-            ></CourseCardListView>
-        )
-    })
+  },[searchState.search,searchState.filters])
+  var courses;
+  if (searchState.displayedCourses.length === 0) {
+    courses = <div>No Courses Found.</div>;
+  } else {
+    courses = searchState.displayedCourses.map((course) => {
+      return (
+        <CourseCardListView
+          title={course.courseTitle}
+          level="Advanced"
+          instructorName={course.instructorName}
+          subject={course.subject}
+          duration={course.totalHours}
+          price={course.discountedPrice}
+        ></CourseCardListView>
+      );
+    });
   }
   return (
     <Fragment>
       <NavBar />
       <div className="flex justify-center space-x-4 mb-3">
         <Search
-          onSubmit={onSubmitHandler}
           onChange={searchBarChangeHandler}
           className="ml-4"
         />
@@ -116,15 +124,14 @@ const SearchResultsPage = (props) => {
       </div>
       {showFilters && (
         <Filters
-          onChange={filterChangeHandler}
+          prevState={searchState.filters}
+          onConfirm={filtersChangeHandler}
           exchange={1}
           options={options}
           onClick={hideFiltersHandler}
         />
       )}
-      <div>
-        {courses}
-      </div>
+      <div>{courses}</div>
     </Fragment>
   );
 };

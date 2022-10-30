@@ -8,7 +8,7 @@ import PrimaryButton from "../PrimaryButton";
 import Modal from "../UI/Modal";
 const Filters = (props) => {
   const defaultFilterState = {
-    ...props.prevState
+    ...props.prevState,
   };
   const ReducerFunction = (state, action) => {
     if (action.type === "SUBJECT") {
@@ -37,15 +37,29 @@ const Filters = (props) => {
       };
     }
   };
-  
 
   const [filterState, dispatchFilter] = useReducer(
     ReducerFunction,
     defaultFilterState
   );
-  console.log(filterState)
   const onSubmitHandler = () => {
-    props.onConfirm(filterState);
+    var newFilterState;
+    if (filterState.price) {
+      if (filterState.price.minValue > filterState.price.maxValue) {
+        newFilterState = {
+          ...filterState,
+          price: {
+            minValue: filterState.price.maxValue,
+            maxValue: filterState.price.minValue,
+          },
+        };
+        props.onConfirm(newFilterState);
+      }
+      else{
+        props.onConfirm(filterState);
+      }
+      
+    } else props.onConfirm(filterState);
   };
   const subjectChangeHandler = (Array) => {
     dispatchFilter({ type: "SUBJECT", value: Array });
@@ -62,49 +76,53 @@ const Filters = (props) => {
   };
   return (
     <Modal onClick={props.onClick}>
-        <div className="grid grid-cols-3 pb-3 font-bold">
-          <div></div>
-          <div className="flex justify-center text-2xl">Filters</div>
-          <div className="flex justify-end">
-            <button
-              className="hover:text-red-600 text-xl"
-              onClick={props.onClick}
-            >
-              x
-            </button>
-          </div>
+      <div className="grid grid-cols-3 pb-3 font-bold">
+        <div></div>
+        <div className="flex justify-center text-2xl">Filters</div>
+        <div className="flex justify-end">
+          <button
+            className="hover:text-red-600 text-xl"
+            onClick={props.onClick}
+          >
+            x
+          </button>
         </div>
-        <Divider variant="middle" />
-        <div className="py-4">
-          <SubjectFilter
-            defaultState={filterState.subjects}
-            onChange={subjectChangeHandler}
-            options={props.options}
-          />
-        </div>
-        <Divider variant="middle" />
-        <div className="py-4">
-          <PriceFilter
-            defaultState={filterState.price}
-            onChange={priceChangeHandler}
-            exchange={props.exchange}
-          />
-        </div>
-        <Divider variant="middle" />
-        <div className="py-4">
-          <RatingFilter 
+      </div>
+      <Divider variant="middle" />
+      <div className="py-4">
+        <SubjectFilter
+          defaultState={filterState.subjects}
+          onChange={subjectChangeHandler}
+          options={props.options}
+        />
+      </div>
+      <Divider variant="middle" />
+      <div className="py-4">
+        <PriceFilter
+          defaultState={filterState.price}
+          onChange={priceChangeHandler}
+          exchange={props.exchange}
+        />
+      </div>
+      <Divider variant="middle" />
+      <div className="py-4">
+        <RatingFilter
           defaultState={filterState.rating}
-          onChange={ratingChangeHandler} />
-        </div>
-        <Divider variant="middle" />
-        <div className="controls flex justify-end space-x-2 mt-2">
-          <PrimaryButton
-            className=" rounded-md  "
-            text="Clear Filters"
-            onClick={clearHandler}
-          ></PrimaryButton>
-          <SecondaryButton onClick={onSubmitHandler} text="Confirm"></SecondaryButton>
-        </div>
+          onChange={ratingChangeHandler}
+        />
+      </div>
+      <Divider variant="middle" />
+      <div className="controls flex justify-end space-x-2 mt-2">
+        <PrimaryButton
+          className=" rounded-md  "
+          text="Clear Filters"
+          onClick={clearHandler}
+        ></PrimaryButton>
+        <SecondaryButton
+          onClick={onSubmitHandler}
+          text="Confirm"
+        ></SecondaryButton>
+      </div>
     </Modal>
   );
 };

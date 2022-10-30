@@ -2,10 +2,10 @@ import React from "react";
 
 const Stars = (props) => {
   return (
-    <div class="flex items-center text-yellow-500">
+    <div className="flex items-center text-yellow-500">
       <svg
         aria-hidden="true"
-        class={`w-${props.starSize} h-${props.starSize}`}
+        className={`w-${props.starSize} h-${props.starSize}`}
         fill="currentColor"
         viewBox="0 0 20 20"
         xmlns="http://www.w3.org/2000/svg"
@@ -15,7 +15,7 @@ const Stars = (props) => {
       </svg>
       <svg
         aria-hidden="true"
-        class={`w-${props.starSize} h-${props.starSize}`}
+        className={`w-${props.starSize} h-${props.starSize}`}
         fill="currentColor"
         viewBox="0 0 20 20"
         xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +25,7 @@ const Stars = (props) => {
       </svg>
       <svg
         aria-hidden="true"
-        class={`w-${props.starSize} h-${props.starSize}`}
+        className={`w-${props.starSize} h-${props.starSize}`}
         fill="currentColor"
         viewBox="0 0 20 20"
         xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +35,7 @@ const Stars = (props) => {
       </svg>
       <svg
         aria-hidden="true"
-        class={`w-${props.starSize} h-${props.starSize}`}
+        className={`w-${props.starSize} h-${props.starSize}`}
         fill="currentColor"
         viewBox="0 0 20 20"
         xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +45,7 @@ const Stars = (props) => {
       </svg>
       <svg
         aria-hidden="true"
-        class={`w-${props.starSize} h-${props.starSize}`}
+        className={`w-${props.starSize} h-${props.starSize}`}
         fill="currentColor"
         viewBox="0 0 20 20"
         xmlns="http://www.w3.org/2000/svg"

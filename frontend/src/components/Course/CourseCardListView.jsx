@@ -4,9 +4,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Stars from "../UI/Stars";
 import SecondaryButton from "../SecondaryButton";
 
-const size = {
-  starSize: 5,
-};
+const size = 5;
 
 const CourseCardListView = (props) => {
   return (
@@ -40,7 +38,7 @@ const CourseCardListView = (props) => {
         </p>
 
         <div class="text-lightBlue flex justify-items-center text-[9px]">
-          <Stars {...size}/>
+          <Stars size={size} rating={props.rating} />
           <div className="bg-veryLightBlue text-gray-900 ml-2 text-sm py-[2px] px-2 rounded-lg">
             4.5
           </div>
@@ -55,7 +53,10 @@ const CourseCardListView = (props) => {
             <h5 class="absolute bottom-3 right-32 text-3xl font-bold tracking-tight text-gray-900">
               {props.price} $
             </h5>
-            <SecondaryButton text="View" className="absolute right-7 bottom-2 text-lg font-bold" />
+            <SecondaryButton
+              text="View"
+              className="absolute right-7 bottom-2 text-lg font-bold"
+            />
           </div>
         </div>
       </div>

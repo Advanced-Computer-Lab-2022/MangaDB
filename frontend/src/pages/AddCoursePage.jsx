@@ -38,10 +38,19 @@ const AddCoursePage = (props) => {
     setSteps(newSteps);
   };
   const onSubmitHandler = (secondStepData) => {
-    var sentData = {...data , sources: secondStepData};
+    var sentData = { ...data, sources: secondStepData };
     console.log(sentData);
-    axios.post("http://localhost:3000/instructor/addcourse/635bf48c56673b3f80ac2dff",sentData).then((res) => {
-      });
+    axios
+      .post(
+        "http://localhost:3000/instructor/addcourse/635bf48c56673b3f80ac2dff",
+        sentData,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      )
+      .then((res) => {});
   };
   return (
     <Fragment>

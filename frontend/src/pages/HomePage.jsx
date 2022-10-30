@@ -48,6 +48,9 @@ const HomePage = () => {
         <div className="flex justify-center ">
           <Search className="justify-items-center" />
         </div>
+        <div className="font-bold text-2xl ml-12 -mb-6 mt-8">
+          Most Popular:
+        </div>
         <div className="flex space-x-10 m-12">{courses}</div>
       </div>
     </Animate>

@@ -2,6 +2,7 @@ import React from "react";
 import reactImg from "../../Assets/Images/react.png";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Stars from "../UI/Stars";
+import SecondaryButton from "../SecondaryButton";
 
 const size = {
   starSize: 5,
@@ -9,8 +10,8 @@ const size = {
 
 const CourseCardListView = (props) => {
   return (
-    <div className="relative flex items-center w-full bg-white border border-gray-200 shadow-md">
-      <img className="max-w-xs h-full" src={reactImg} alt=""></img>
+    <div class="relative w-4/5 flex items-center bg-white border border-gray-200 shadow-md rounded-md">
+      <img class="max-w-xs h-full" src={reactImg} alt=""></img>
 
       <div className="px-5 py-3 space-y-2">
         <h5 className="flex text-lg items-center font-bold tracking-tight text-gray-900">
@@ -38,8 +39,11 @@ const CourseCardListView = (props) => {
           aliquip ex ea commodo consequat.
         </p>
 
-        <div className="text-lightBlue text-[9px]">
+        <div class="text-lightBlue flex justify-items-center text-[9px]">
           <Stars {...size}/>
+          <div className="bg-veryLightBlue text-gray-900 ml-2 text-sm py-[2px] px-2 rounded-lg">
+            4.5
+          </div>
         </div>
         <p className=" text-xs font-medium text-gray-500">
           {props.instructorName} . {props.subject}
@@ -48,9 +52,10 @@ const CourseCardListView = (props) => {
           <AccessTimeIcon className="-mt-[3px]" fontSize="inherit" />{" "}
           {props.duration} {"hrs"}
           <div className="flex justify-end items-center">
-            <h5 className="absolute bottom-2 right-7 text-3xl font-bold tracking-tight text-gray-900">
-              {props.price}
+            <h5 class="absolute bottom-3 right-32 text-3xl font-bold tracking-tight text-gray-900">
+              {props.price} $
             </h5>
+            <SecondaryButton text="View" className="absolute right-7 bottom-2 text-lg font-bold" />
           </div>
         </div>
       </div>

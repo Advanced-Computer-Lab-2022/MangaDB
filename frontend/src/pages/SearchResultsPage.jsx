@@ -92,7 +92,7 @@ const SearchResultsPage = (props) => {
   },[searchState.search,searchState.filters])
   var courses;
   if (searchState.displayedCourses.length === 0) {
-    courses = <div>No Courses Found.</div>;
+    courses = <div className="text-xl font-semibold mt-16">No Courses Found.</div>;
   } else {
     courses = searchState.displayedCourses.map((course) => {
       return (
@@ -110,13 +110,13 @@ const SearchResultsPage = (props) => {
   return (
     <Fragment>
       <NavBar />
-      <div className="flex justify-center space-x-4 mb-3">
+      <div className="flex justify-center space-x-4 mb-3 items-center">
         <Search
           onChange={searchBarChangeHandler}
           className="ml-4"
         />
         <SecondaryButton
-          className="mr-4 w-25"
+          className="mr-4 w-25 h-11"
           text="Filter"
           icon={icon}
           onClick={showFiltersHandler}
@@ -131,7 +131,11 @@ const SearchResultsPage = (props) => {
           onClick={hideFiltersHandler}
         />
       )}
-      <div>{courses}</div>
+
+      <div className="flex flex-col gap-y-4 mb-4">
+        <div className="font-bold text-2xl ml-24">Results:</div>
+        <div className="flex flex-col items-center gap-y-4">{courses}</div>
+      </div>
     </Fragment>
   );
 };

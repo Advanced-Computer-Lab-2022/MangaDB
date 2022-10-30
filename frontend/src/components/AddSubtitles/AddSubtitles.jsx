@@ -12,8 +12,8 @@ const AddSubtitles = (props) => {
     var newSubtitles = [];
     for (var i = 0; i < subtitles.length; i++) {
       if (subtitles[i].id === subtitleId) {
-        subtitles[i].sources.push(data)
-        newSubtitles.push(subtitles[i])
+        subtitles[i].sources.push(data);
+        newSubtitles.push(subtitles[i]);
         continue;
       }
       newSubtitles.push(subtitles[i]);
@@ -23,14 +23,13 @@ const AddSubtitles = (props) => {
   const displayedSubtitles = subtitles.map((subtitle) => {
     //still didnt handle the description and the video
     const subtitleTitle = subtitle.title;
-    const sources = subtitle.sources; 
+    const sources = subtitle.sources;
     return (
       <SingleSubtitle
         onAdd={onAddSourceHandler.bind(null, subtitle.id)}
         title={subtitleTitle}
         sources={sources}
-      >
-      </SingleSubtitle>
+      ></SingleSubtitle>
     );
   });
   const showSubtitleModal = () => {
@@ -48,7 +47,7 @@ const AddSubtitles = (props) => {
       title: subtitleData.title,
       videoURL: subtitleData.videoURL,
       description: subtitleData.description,
-      sources: []
+      sources: [],
     };
 
     setSubtitles((prevSubtitles) => {
@@ -56,7 +55,9 @@ const AddSubtitles = (props) => {
     });
     setSubtitleModalShown(false);
   };
-
+  const submitHandler = () => {
+    props.onConfirm(subtitles)
+  }
   return (
     <Fragment>
       {subtitleModalShown && (
@@ -67,16 +68,33 @@ const AddSubtitles = (props) => {
           ></SubtitleForm>
         </Modal>
       )}
-
-      <div className="flex space-x-2 ">
-        <div className="flex-col min-w-[80%]">{displayedSubtitles}</div>
-        <div>
-          <SecondaryButton
-            onClick={showSubtitleModal}
-            text="Add Subtitle"
-          ></SecondaryButton>
+     
+      <section aria-labelledby="notes-title">
+        <div className="bg-white shadow sm:rounded-lg sm:overflow-hidden">
+          <div className="divide-y divide-gray-300">
+            <div className="bg-gray-100 px-4 py-5 sm:px-6 flex items-center ">
+              <h2
+                id="notes-title"
+                className="text-lg font-bold text-gray-900 flex-1"
+              >
+                Course Content
+              </h2>
+              <div>
+                  <SecondaryButton
+                    onClick={showSubtitleModal}
+                    text="Add Subtitle"
+                  ></SecondaryButton>
+                </div>
+            </div>
+            <div className="ml-4 px-4 py-6 sm:px-6">
+              <div className="flex space-x-2 ">
+                <div className="flex-col min-w-[80%]">{displayedSubtitles}</div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+      <SecondaryButton onClick={submitHandler} text="Submit"></SecondaryButton>
     </Fragment>
   );
 };

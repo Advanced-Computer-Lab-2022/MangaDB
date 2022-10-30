@@ -38,7 +38,7 @@ const AddCoursePage = (props) => {
     setSteps(newSteps);
   };
   const onSubmitHandler = (secondStepData) => {
-    var sentData = { ...data, sources: secondStepData };
+    var sentData = { ...data, subtitles: secondStepData };
     console.log(sentData);
     axios
       .post(

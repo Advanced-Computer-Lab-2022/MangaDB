@@ -15,7 +15,8 @@ const Subtitle = (props) => {
   const customAnimation = {
     mount: { scale: 1 ,  opacity: 1},
     unmount: { scale: 0.9 },
-  };
+  }; 
+  //added the if
   if(props.sources){
     var Body = props.sources.map((source) => {
       return <Source title = {source.description} type ="Video"> </Source>;

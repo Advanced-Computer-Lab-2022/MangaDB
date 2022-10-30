@@ -182,12 +182,12 @@ const CourseCard = (props) => {
     //   </div>
     // </div>
 
-    <div class=" flex w-[820px] max-w-[1000px] rounded-lg bg-white shadow-md overflow-hidden">
+    <div class=" flex  w-[820px] max-w-[1000px] rounded-lg bg-white shadow-md overflow-hidden">
       <div class="p-4 bg-darkBlue  w-56">
         <div class="text-lightBlue uppercase tracking-wider text-sm">
           course
         </div>
-        <div class="text-white text-2xl">{props.title}</div>
+        <div class="text-white text-2xl">{props.courseTitle}</div>
         <div class="text-lightBlue mt-12 text-sm">
           <Stars {...size}/>
         </div>
@@ -220,7 +220,7 @@ const CourseCard = (props) => {
         <div class="text-3xl text-darkBlue">{props.subject}</div>
         <div class="flex justify-end pt-12 gap-5 items-center ">
           <div className="text-3xl font-semibold text-darkBlue mr-4">
-            {props.price}
+            {props.discountedPrice}$
           </div>
         </div>
       </div>

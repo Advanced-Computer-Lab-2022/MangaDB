@@ -36,7 +36,7 @@ function App() {
     //text: "Home",
   };
   
-  return  <AddCoursePage></AddCoursePage>
+  return  <CourseDetailsPage></CourseDetailsPage>
 }
 
 export default App;

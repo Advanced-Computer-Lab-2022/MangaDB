@@ -16,7 +16,7 @@ const CreateCourseForm = (props) => {
       courseDescription: descriptionRef.current.value,
       //courseSubject : subjectRef.current.value,
       courseImage: imgRef.current.value,
-      coursePrice: priceRef.current.value,
+      coursePrice: +priceRef.current.value,
     };
     props.onSave(data);
   };

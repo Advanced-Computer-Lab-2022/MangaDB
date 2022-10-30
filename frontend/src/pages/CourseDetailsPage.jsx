@@ -144,6 +144,7 @@ const CourseDetailsPage = (props) => {
     });
   }, []);
 
+  console.log(courseDetails)
   /*
   const mapSubtitleToLessons = (subtitle) => {
     var lessons = [];
@@ -200,10 +201,7 @@ const CourseDetailsPage = (props) => {
                   <div className="ml-4 px-4 py-6 sm:px-6">
                     <ul role="list" className="space-y-8">
                       {courseSubtitles}
-                      <Subtitle
-                        sources={sources}
-                        subtitleHeader="subtitleHeader"
-                      />
+                   
                     </ul>
                   </div>
                 </div>

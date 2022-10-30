@@ -22,7 +22,7 @@ const AddSubtitles = (props) => {
   };
   const displayedSubtitles = subtitles.map((subtitle) => {
     //still didnt handle the description and the video
-    const subtitleTitle = subtitle.title;
+    const subtitleTitle = subtitle.subtitle;
     const sources = subtitle.sources;
     return (
       <SingleSubtitle
@@ -44,8 +44,8 @@ const AddSubtitles = (props) => {
 
     const newSubtitle = {
       id: subtitles.length,
-      title: subtitleData.title,
-      videoURL: subtitleData.videoURL,
+      subtitle: subtitleData.title,
+      introductionVideo: subtitleData.videoURL,
       description: subtitleData.description,
       sources: [],
     };

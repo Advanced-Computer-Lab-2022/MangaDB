@@ -1,53 +1,23 @@
-import { useReducer, Fragment } from "react";
+import { Fragment } from "react";
 const PriceFilter = (props) => {
   const endValueExchange = +props.exchange * 500;
-  const rangeReducer = (state, action) => {
-    var newRange;
-    if (action.type === "MIN") {
-      if (action.value <= state.maxValue) {
-        newRange = {
-          minValue: action.value,
-          maxValue: state.maxValue,
-        };
-        props.onChange(newRange);
-        return newRange;
-      } else {
-        newRange = {
-          minValue: state.maxValue,
-          maxValue: action.value,
-        };
-        props.onChange(newRange);
-        return newRange;
-      }
-    } else if (action.type === "MAX") {
-      if (action.value >= state.minValue) {
-        newRange = {
-          minValue: state.minValue,
-          maxValue: action.value,
-        };
-        props.onChange(newRange);
-        return newRange;
-      } else {
-        newRange = {
-          minValue: action.value,
-          maxValue: state.minValue,
-        };
-        props.onChange(newRange);
-        return newRange;
-      }
-    }
-  };
-  const defaultState = {
-    minValue: 0,
-    maxValue: endValueExchange,
-  };
-  const [rangeState, dispatchRange] = useReducer(rangeReducer, defaultState);
-
+  var minValue = props.defaultState ? props.defaultState.minValue : 0;
+  var maxValue = props.defaultState
+    ? props.defaultState.maxValue
+    : endValueExchange;
   const minChangeHandler = (event) => {
-    dispatchRange({ type: "MIN", value: +event.target.value });
+    const range = {
+      minValue: +event.target.value,
+      maxValue: maxValue,
+    };
+    props.onChange(range);
   };
   const maxChangeHandler = (event) => {
-    dispatchRange({ type: "MAX", value: +event.target.value });
+    const range = {
+      minValue: minValue,
+      maxValue: +event.target.value,
+    };
+    props.onChange(range);
   };
 
   return (
@@ -63,7 +33,7 @@ const PriceFilter = (props) => {
             focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
             id="min-price"
             type="number"
-            value={rangeState.minValue.toString()}
+            value={minValue.toString()}
             onChange={minChangeHandler}
           />
         </div>
@@ -74,7 +44,7 @@ const PriceFilter = (props) => {
             focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
             id="max-price"
             type="number"
-            value={rangeState.maxValue.toString()}
+            value={maxValue.toString()}
             onChange={maxChangeHandler}
           />
         </div>

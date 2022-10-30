@@ -51,14 +51,15 @@ const SearchResultsPage = (props) => {
   const hideFiltersHandler = () => {
     setShowFilters(false);
   };
-  const searchBarChangeHandler = (event) => {
-    dispatchSearch({ type: "SEARCH", value: event.target.value });
+  const searchBarChangeHandler = (searchValue) => {
+    dispatchSearch({ type: "SEARCH", value: searchValue });
   };
-  const filterChangeHandler = (newFilter) => {
+  const filtersChangeHandler = (newFilter) => {
     dispatchSearch({ type: "FILTER", value: newFilter });
+    setShowFilters(false);
   };
-  const onSubmitHandler = (event) => {
-    event.preventDefault();
+
+  useEffect(() =>{
     var param = "";
     if (searchState.search !== "")
       param = param + "?search=" + searchState.search;
@@ -88,7 +89,7 @@ const SearchResultsPage = (props) => {
     axios.get("http://localhost:3000/course/" + param).then((res) => {
       dispatchSearch({ type: "COURSES", value: res.data.courses });
     });
-  };
+  },[searchState.search,searchState.filters])
   var courses;
   if (searchState.displayedCourses.length === 0) {
     courses = <div className="text-xl font-semibold mt-16">No Courses Found.</div>;
@@ -111,7 +112,6 @@ const SearchResultsPage = (props) => {
       <NavBar />
       <div className="flex justify-center space-x-4 mb-3 items-center">
         <Search
-          onSubmit={onSubmitHandler}
           onChange={searchBarChangeHandler}
           className="ml-4"
         />
@@ -124,7 +124,8 @@ const SearchResultsPage = (props) => {
       </div>
       {showFilters && (
         <Filters
-          onChange={filterChangeHandler}
+          prevState={searchState.filters}
+          onConfirm={filtersChangeHandler}
           exchange={1}
           options={options}
           onClick={hideFiltersHandler}

@@ -1,10 +1,16 @@
+import { useRef } from "react";
 import React from "react";
 import SecondaryButton from "./SecondaryButton";
 
 const Search = (props) => {
+  const inputRef = useRef();
+  const onSubmitHandler =(event) => {
+      event.preventDefault();
+      props.onChange(inputRef.current.value)
+  }
   return (
     <div className={` right-3 min-w-[60vw] md:min-w-[40vw] lg:min-w-[40vw] xl:min-w-[47vw] max-w-4xl ${props.className} `}>
-      <form onSubmit={props.onSubmit}>
+      <form onSubmit={onSubmitHandler}>
         <label
           htmlFor="default-search"
           className="mb-2 text-sm font-medium text-gray-900 sr-only "
@@ -34,7 +40,7 @@ const Search = (props) => {
             id="default-search"
             className="outline-none hidden md:block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-300 focus:border-blue-300  "
             placeholder="Search by course name, category, or instructor"
-            onChange={props.onChange}
+            ref={inputRef}
           ></input>
           {/* <input
             type="search"

@@ -115,4 +115,21 @@ exports.deleteUser = async (req, res) => {
         message: "Could not delete user with id=" + id,
         });
     }
+  
+    }; 
+
+
+exports.getAllUsers= async (req, res) => {
+    try {
+        await user.find().then((data) => {
+        res.send(data);
+        });
+    } catch (err) {
+        res.status(500).send({
+        message:
+            err.message || "Some error occurred while retrieving users.",
+        });
+    }
+  
     };
+    

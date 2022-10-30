@@ -24,7 +24,7 @@ const HomePage = () => {
     console.log(e);
   setCountryCode(e)
   }
-
+  console.log(displayedCourses)
   const courses = displayedCourses.map((course) => {
     return (
       

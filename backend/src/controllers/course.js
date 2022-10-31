@@ -143,6 +143,7 @@ exports.createCourse = async (req, res, next) => {
   const foundInstructor = await instructor.findById(instructorId);
   const instructorName =
     foundInstructor.firstName + " " + foundInstructor.lastName;
+    const discount= req.body.discount||0;
   const newCourse = new course({
     courseTitle: req.body.courseTitle,
     courseDescription: req.body.courseDescription,
@@ -153,7 +154,7 @@ exports.createCourse = async (req, res, next) => {
     instructorName: instructorName,
     discount: req.body.discount,
     discountedPrice:
-      req.body.coursePrice - req.body.coursePrice * req.body.discount,
+      req.body.coursePrice - req.body.coursePrice *discount,
     rating: req.body.rating,
     reviews: req.body.reviews,
     requirements: req.body.requirements,

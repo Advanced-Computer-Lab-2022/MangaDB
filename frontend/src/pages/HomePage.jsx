@@ -62,10 +62,10 @@ const HomePage = () => {
         <div className="flex justify-center ">
           <Search className="justify-items-center" />
         </div>
-        <div className="font-bold text-2xl ml-12 -mb-6 mt-8">
+        <div className="font-bold text-2xl mt-8 flex justify-start mx-12 w-max">
           Most Popular:
         </div>
-        <div className="flex space-x-10 m-12">{courses}</div>
+        <div className="grid grid-cols-4 justify-start items-center my-8 mx-12 ">{courses}</div>
       </div>
     </Animate>
   );

@@ -9,9 +9,7 @@ import SecondaryButton from "../SecondaryButton";
 import ScheduleRoundedIcon from "@mui/icons-material/ScheduleRounded";
 import Stars from "../UI/Stars";
 
-const size = {
-  starSize: 5,
-};
+const size = 6;
 
 const CourseCard = (props) => {
   var level;
@@ -188,8 +186,11 @@ const CourseCard = (props) => {
           course
         </div>
         <div class="text-white text-2xl">{props.courseTitle}</div>
-        <div class="text-lightBlue mt-12 text-sm">
-          <Stars {...size}/>
+        <div class="text-lightBlue mt-12 text-sm flex space-x-6 items-center">
+          <div>
+            <Stars size={size} rating={props.rating} />
+          </div>
+          <div className="bg-veryLightBlue text-gray-900 px-2 rounded-md">{props.rating}</div>
         </div>
       </div>
       <div class="p-4 ">
@@ -197,9 +198,7 @@ const CourseCard = (props) => {
           <div class="text-primaryBlue uppercase whitespace-nowrap tracking-wider text-sm">
             {props.instructorName}
           </div>
-          <div className="flex">
-            
-          </div>
+          <div className="flex"></div>
           <div class="pt-1 pl-60">
             <div class="bg-lightBlue rounded-full h-2 w-48 overflow-hidden">
               <div

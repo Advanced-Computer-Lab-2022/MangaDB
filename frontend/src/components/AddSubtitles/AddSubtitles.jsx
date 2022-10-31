@@ -56,8 +56,8 @@ const AddSubtitles = (props) => {
     setSubtitleModalShown(false);
   };
   const submitHandler = () => {
-    props.onConfirm(subtitles)
-  }
+    props.onConfirm(subtitles);
+  };
   return (
     <Fragment>
       {subtitleModalShown && (
@@ -68,7 +68,7 @@ const AddSubtitles = (props) => {
           ></SubtitleForm>
         </Modal>
       )}
-     
+
       <section aria-labelledby="notes-title">
         <div className="bg-white shadow sm:rounded-lg sm:overflow-hidden">
           <div className="divide-y divide-gray-300">
@@ -80,11 +80,11 @@ const AddSubtitles = (props) => {
                 Course Content
               </h2>
               <div>
-                  <SecondaryButton
-                    onClick={showSubtitleModal}
-                    text="Add Subtitle"
-                  ></SecondaryButton>
-                </div>
+                <SecondaryButton
+                  onClick={showSubtitleModal}
+                  text="Add Subtitle"
+                ></SecondaryButton>
+              </div>
             </div>
             <div className="ml-4 px-4 py-6 sm:px-6">
               <div className="flex space-x-2 ">
@@ -94,7 +94,12 @@ const AddSubtitles = (props) => {
           </div>
         </div>
       </section>
-      <SecondaryButton onClick={submitHandler} text="Submit"></SecondaryButton>
+      <div className="flex justify-center mt-4">
+        <SecondaryButton
+          onClick={submitHandler}
+          text="Submit"
+        ></SecondaryButton>
+      </div>
     </Fragment>
   );
 };

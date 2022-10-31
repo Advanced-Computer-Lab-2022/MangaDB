@@ -22,6 +22,8 @@ import AddSubtitles from "./components/AddSubtitles/AddSubtitles"
 import IntructorCoursePage from "./pages/InstructorCoursesPage";
 import AddCoursePage from "./pages/AddCoursePage";
 import AdminAddNewUser from "./pages/AdminAddNewUser";
+import InstructorCoursesPage from "./pages/InstructorCoursesPage";
+
 function App() {
   const test = {
     image: `https://i0.wp.com/blog.frontiersin.org/wp-content/uploads/2018/06/frontiers-in-ecology-evolution-ape-human-bonobo-muscles.jpg?resize=940%2C529&ssl=1`,
@@ -36,7 +38,7 @@ function App() {
     //text: "Home",
   };
   
-  return  <CourseDetailsPage></CourseDetailsPage>
+  return  <AdminAddNewUser />
 }
 
 export default App;

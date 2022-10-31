@@ -87,14 +87,14 @@ const AddSubtitles = (props) => {
               </div>
             </div>
             <div className="ml-4 px-4 py-6 sm:px-6">
-              <div className="flex space-x-2 ">
+              <div className="flex space-x-2 justify-center">
                 <div className="flex-col min-w-[80%]">{displayedSubtitles}</div>
               </div>
             </div>
           </div>
         </div>
       </section>
-      <div className="flex justify-center mt-4">
+      <div className="flex justify-end mt-4 mr-9">
         <SecondaryButton
           onClick={submitHandler}
           text="Submit"

@@ -193,13 +193,13 @@ const CourseCard = (props) => {
           <div className="bg-veryLightBlue text-gray-900 px-2 rounded-md">{props.rating}</div>
         </div>
       </div>
-      <div class="p-4 ">
+      <div class="p-4">
         <div class="flex justify-between">
           <div class="text-primaryBlue uppercase whitespace-nowrap tracking-wider text-sm">
             {props.instructorName}
           </div>
           <div className="flex"></div>
-          <div class="pt-1 pl-60">
+          <div class="pt-1 pl-48">
             <div class="bg-lightBlue rounded-full h-2 w-48 overflow-hidden">
               <div
                 class={`h-2 bg-darkBlue ${
@@ -217,7 +217,7 @@ const CourseCard = (props) => {
           </div>
         </div>
         <div class="text-3xl text-darkBlue">{props.subject}</div>
-        <div class="flex justify-end pt-12 gap-5 items-center ">
+        <div class="flex justify-end pt-12 gap-5 items-center mr-4">
           <div className="text-3xl font-semibold text-darkBlue mr-4">
             {props.discountedPrice}$
           </div>

@@ -33,7 +33,7 @@ const TableRows = (props) => {
       </td>
       <td className=" whitespace-nowrap text-right text-sm font-medium flex space-x-4">
         <PrimaryButton text="View" />
-        <SecondaryButton text="Edit" />
+        {/* <SecondaryButton text="Edit" /> */}
       </td>
     </tr>
   ));

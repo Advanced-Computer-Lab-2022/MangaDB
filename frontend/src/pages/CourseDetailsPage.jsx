@@ -21,7 +21,7 @@ import SecondaryButton from "../components/SecondaryButton";
 import courseImage from "../Assets/Images/react.png";
 import NavBar from "../components/NavBar";
 
-const courseId = "635bf4ca56673b3f80ac2e02";
+const courseId = "63601b56a655f59f507df854";
 
 const size = 3;
 

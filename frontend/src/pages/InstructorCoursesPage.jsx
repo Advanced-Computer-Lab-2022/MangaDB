@@ -5,11 +5,11 @@ import NavBar from "../components/NavBar";
 import InstructorControls from "../components/Table/InstructorControls";
 import Filters from "../components/Filters/Filters";
 const options = [
-  { id: 1, name: "the loving memory of mougy" },
+  { id: 1, name: "Web Development" },
   { id: 2, name: "Machine Learning" },
   { id: 3, name: "Computer Science" },
   { id: 4, name: "Database Administration" },
-  { id: 5, name: "Data analysis" },
+  { id: 5, name: "Data Analysis" },
 ];
 
 const IntructorCoursePage = (props) => {
@@ -95,7 +95,7 @@ const IntructorCoursePage = (props) => {
         dispatchSearch({ type: "COURSES", value: res.data.courses });
       });
     } else {
-      axios.get("http://localhost:3000/instructor/searchcourses/635bf48c56673b3f80ac2dff"+ param ).then((res) => {
+      axios.get("http://localhost:3000/instructor/searchcourses/636011143c6ccb49e4e446b4"+ param ).then((res) => {
         dispatchSearch({ type: "COURSES", value: res.data.courses });
       });
     }

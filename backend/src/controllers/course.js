@@ -150,6 +150,7 @@ exports.createCourse = async (req, res, next) => {
     totalHours: req.body.totalHours,
     coursePrice: req.body.coursePrice,
     courseImage: req.body.courseImage,
+    subject: req.body.subject,
     instructor: instructorId,
     instructorName: instructorName,
     discount: req.body.discount,

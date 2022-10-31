@@ -62,14 +62,11 @@ export default function AddUserForm(props) {
               type="password"
             />
           </div>
-          <button
+          <SecondaryButton
             type="submit"
-            className={
-              "block text-md py-2 pr-4 pl-3 text-white bg-primaryBlue rounded-lg md:px-3 md:text-white hover:bg-darkBlue hover:text-white hover:ease-in-out duration-300 focus:ease-in-out focus:bg-darkBlue focus:text-gray-700 active:text-gray-700"
-            }
           >
             Add User
-          </button>
+          </SecondaryButton>
         </Card>
       </form>
       <img src={AddUser} alt="Add User" className="w-[650px] h-[650px] ml-20" />

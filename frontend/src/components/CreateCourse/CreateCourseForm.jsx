@@ -23,17 +23,23 @@ const CreateCourseForm = (props) => {
   return (
     <div className="flex space-x-[16%] h-full justify-center items-center pt-[5%]">
       <form onSubmit={submitHandler} className=" align-middle  rounded-lg ">
-        <div className="flex flex-col space-y-5 h-fit py-5   outline-primaryBlue w-[500px]   rounded-5xl">
-          <div className="flex flex-col justify-center items-center space-y-5 pr-5">
+        <div className="flex flex-col h-fit outline-primaryBlue w-[500px] rounded-5xl">
+          <div className="flex flex-col space-y-6 justify-center items-center bg-gray-100 rounded-lg py-2">
             <div>
-                <input
+              <div className="text-lg font-semibold mb-2">Course Title:</div>
+              <input
+                className="w-96 mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
+            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
                 ref={titleRef}
                 id="course-title"
                 label="Course Title"
               />
             </div>
             <div>
-                <input
+              <div className="text-lg font-semibold mb-2">Course Subject:</div>
+              <input
+                className="w-96 mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
+              focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
                 ref={subjectRef}
                 id="course-subject"
                 label="Course Subject"
@@ -41,7 +47,12 @@ const CreateCourseForm = (props) => {
               />
             </div>
             <div>
+              <div className="text-lg font-semibold mb-2">
+                Course Description:
+              </div>
               <input
+                className="w-96 mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
+              focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
                 ref={descriptionRef}
                 id="course-description"
                 label="Course Description"
@@ -49,24 +60,32 @@ const CreateCourseForm = (props) => {
               />
             </div>
             <div>
+              <div className="text-lg font-semibold mb-2">Image URL:</div>
               <input
+                className="w-96 mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
+            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
                 ref={imgRef}
                 id="course-image"
                 label="Course Image URL"
               />
             </div>
             <div>
+              <div className="text-lg font-semibold mb-2">Course Price:</div>
               <input
+                className="w-96 mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
+              focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
                 ref={priceRef}
                 id="course-price"
                 label="Course Price"
+                placeholder="$"
                 required
               />
             </div>
+            <div className="form-controls flex justify-center">
+              <SecondaryButton className="w-96" type="submit" text="Save"></SecondaryButton>
+            </div>
           </div>
-          <div className="form-controls flex justify-end pr-10">
-            <SecondaryButton type="submit" text="Save"></SecondaryButton>
-          </div>
+
           {/* requirements */}
         </div>
       </form>

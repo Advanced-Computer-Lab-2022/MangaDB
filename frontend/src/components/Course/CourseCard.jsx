@@ -7,9 +7,9 @@ const size = 5;
 
 const CourseCard = (props) => {
   return (
-    <button className="hover:scale-105 transition flex content-start relative">
-      <div class=" relative max-w-xs bg-white border border-gray-200 shadow-md">
-        <img class="" src={reactImg} alt=""></img>
+    <button className="hover:scale-105 transition flex content-start relative mb-8 mx-4">
+      <div class=" relative bg-white border border-gray-200 shadow-md">
+        <img src={reactImg} alt=""></img>
         <div className="bg-white px-2 py-1 text-xs font-semibold rounded-full absolute top-3 left-3">
           <AccessTimeIcon className="-mt-[3px]" fontSize="inherit" />{" "}
           {props.duration} {"hrs"}

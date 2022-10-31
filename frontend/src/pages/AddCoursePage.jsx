@@ -22,7 +22,7 @@ const AddCoursePage = (props) => {
   ]);
   const [data, setData] = useState({});
   const onSaveHandler = (data) => {
-    setData(data);
+    setData({...data,totalHours:10,coursePrice:10});
     var newSteps = [];
     var flag = false;
     for (var i = 0; i < steps.length; i++) {

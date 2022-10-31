@@ -8,7 +8,7 @@ exports.getAllCourses = async (req, res, next) => {
   const perPage = req.query.pageSize || 10;
   const search = req.query.search || "";
   let minPrice = req.query.minPrice || 0;
-  let maxPrice = req.query.maxPrice || 100000;
+  let maxPrice = req.query.maxPrice || Number.MAX_VALUE;
   const rating = req.query.rating || 0;
   const subjects = req.query.subject;
   let query = {};
@@ -189,7 +189,7 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
   const perPage = req.query.pageSize || 10;
   const search = req.query.search || "";
   let minPrice = req.query.minPrice || 0;
-  let maxPrice = req.query.maxPrice || 100000;
+  let maxPrice = req.query.maxPrice || Number.MAX_VALUE;
   const subjects = req.query.subject;
   let query = {};
   if (subjects) {

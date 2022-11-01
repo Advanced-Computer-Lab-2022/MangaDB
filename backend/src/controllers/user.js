@@ -4,6 +4,7 @@ const instructor = require("../models/instructor");
 const corporate = require("../models/corporate");
 const admin = require("../models/admin");
 const trainee = require("../models/trainee");
+const jwt = require("jsonwebtoken");
 
 exports.createUser = async (req, res) => {
   if (!req.body.userName || !req.body.password || !req.body.role) {
@@ -182,8 +183,13 @@ exports.login = async (req, res) => {
             if (!validPassword) {
             res.status(401).send({ message: "Invalid Password!" });
             } else {
-            res.send({ message: "Login Successfully!", data });
             //create jwt token
+            const token = jwt.sign(
+                { _id: data._id, userName: data.userName, role: data.role },
+                process.env.TOKEN_SECRET, { expiresIn: "1h" }
+            );
+            res.send(token);
+
           }
         }
         });

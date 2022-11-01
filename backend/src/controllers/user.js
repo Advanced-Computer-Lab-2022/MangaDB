@@ -133,3 +133,77 @@ exports.getAllUsers= async (req, res) => {
   
     };
     
+    exports.getUserById = async (req, res) => {
+    const id = req.params.id;
+    try {
+        await user.findById(id).then((data) => {
+        if (!data)
+            res.status(404).send({ message: "Not found user with id " + id });
+        else res.send(data);
+        });
+    } catch (err) {
+        res.status(500).send({ message: "Error retrieving user with id=" + id });
+    }
+  
+    }
+
+exports.updateUser = async (req, res) => {
+    if (!req.body) {
+        return res.status(400).send({
+        message: "Data to update can not be empty!",
+        });
+    }
+    const id = req.params.id;
+    try {
+        await user.findByIdAndUpdate(id, req.body, { useFindAndModify: false ,new: true})
+        .then((data) => {
+        if (!data) {
+            res.status(404).send({
+            message: `Cannot update user with id=${id}. Maybe user was not found!`,
+            });
+        } else res.send({ message: "user was updated successfully.", data }); 
+        });
+    } catch (err) {
+        res.status(500).send({
+        message: "Error updating user with id=" + id,
+        });
+    }
+  
+    }
+
+exports.login = async (req, res) => {
+    const { userName, password } = req.body;
+    try {
+        await user.findOne({ userName }).then(async (data) => {
+        if (!data) {
+            res.status(404).send({ message: "Not found user with userName " + userName });
+        } else {
+            const validPassword = await bcrypt.compare(password, data.password);
+            if (!validPassword) {
+            res.status(401).send({ message: "Invalid Password!" });
+            } else {
+            res.send({ message: "Login Successfully!", data });
+            //create jwt token
+          }
+        }
+        });
+    } catch (err) {
+        res.status(500).send({ message: "Error retrieving user with userName=" + userName });
+    }
+  
+    }
+
+exports.getUserByRole = async (req, res) => {
+    const role = req.params.role;
+    try {
+        await user.find({ role }).then((data) => {
+        if (!data)
+            res.status(404).send({ message: "Not found user with role " + role });
+        else res.send(data);
+        });
+    } catch (err) {
+        res.status(500).send({ message: "Error retrieving user with role=" + role });
+    }
+  
+    }
+

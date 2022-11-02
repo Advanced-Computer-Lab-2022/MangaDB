@@ -173,6 +173,7 @@ exports.updateUser = async (req, res) => {
     }
 
 exports.login = async (req, res) => {
+  //use passport to authenticate
     const { userName, password } = req.body;
     try {
         await user.findOne({ userName }).then(async (data) => {
@@ -186,7 +187,7 @@ exports.login = async (req, res) => {
             //create jwt token
             const token = jwt.sign(
                 { _id: data._id, userName: data.userName, role: data.role },
-                process.env.TOKEN_SECRET, { expiresIn: "1h" }
+                process.env.TOKEN_SECRET
             );
             res.send(token);
 

@@ -161,10 +161,9 @@ exports.createCourse = async (req, res, next) => {
     requirements: req.body.requirements,
     views: req.body.views,
     certificate: req.body.certificate,
-    summary: req.body.summary,
     subtitles: req.body.subtitles,
   });
-
+console.log(newCourse);
   await newCourse
     .save()
     .then((createdCourse) => {

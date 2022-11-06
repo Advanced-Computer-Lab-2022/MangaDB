@@ -8,7 +8,11 @@ const NavBar = (props) => {
     <nav className="bg-white mb-6 border-gray-200 px-2 sm:px-4 py-2.5 rounded shadow-md items-center justify-center">
       <div className="container flex flex-wrap justify-between items-center mx-auto">
         <a href="https://flowbite.com/" className="flex items-center">
-          <img src={logo} className=" md:mb-3 md:h-12 h-10 mb-1" alt="Flowbite Logo" />
+          <img
+            src={logo}
+            className=" md:mb-3 md:h-12 h-10 mb-1"
+            alt="Flowbite Logo"
+          />
           <span className="self-center text-2xl font-semibold whitespace-nowrap mt-4">
             evamp
           </span>
@@ -104,10 +108,9 @@ const NavBar = (props) => {
             </li>
           </ul>
           <div className="flex gap-12 absolute right-6">
-          <SecondaryButton text="Sign in" />
-          <CountryManager onChange={props.onChange}/>
+            <SecondaryButton text="Sign in" />
+            <CountryManager onChange={props.onChange} />
           </div>
-          
         </div>
       </div>
     </nav>

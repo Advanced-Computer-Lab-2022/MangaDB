@@ -6,9 +6,6 @@ exports.convertCurrency = async (fromCountry, toCountry) => {
   let fromCountryCurrency = "USD";
   let symbol = "$";
   let rate = 1;
-  // if (fromCountry === toCountry)
-  //  {
-  //   return {rate , symbol};}
   if (fromCountry === "US") {
     let countryDetails = await this.getCountryCode(toCountry);
     toCountryCurrency = countryDetails.currency;

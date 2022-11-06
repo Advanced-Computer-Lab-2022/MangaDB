@@ -20,21 +20,12 @@ import TertiaryButton from "./components/TertiaryButton";
 import InstructorControls from "./components/Table/InstructorControls";
 import AddSubtitles from "./components/AddSubtitles/AddSubtitles"
 import IntructorCoursePage from "./pages/InstructorCoursesPage";
+import AddCoursePage from "./pages/AddCoursePage";
+import AdminAddNewUser from "./pages/AdminAddNewUser";
+import InstructorCoursesPage from "./pages/InstructorCoursesPage";
+
 function App() {
-  const test = {
-    image: `https://i0.wp.com/blog.frontiersin.org/wp-content/uploads/2018/06/frontiers-in-ecology-evolution-ape-human-bonobo-muscles.jpg?resize=940%2C529&ssl=1`,
-    title: "React Full stack Course (MERN)",
-    level: "Advanced",
-    duration: "44 hrs",
-    reviews: "5.0",
-    subject: "Web Development",
-    instructorName: "Omar Moataz",
-    price: "599$",
-    description: "This course is fully up-to-date with React 18 (the latest version of React)! It was completely updated and re-recorded from the ground up - it teaches the very latest version of React with all the core, modern features you need to know!",
-    //text: "Home",
-  };
-  
-  return  <SearchResultsPage></SearchResultsPage>
+  return  <AdminAddNewUser />
 }
 
 export default App;

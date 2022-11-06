@@ -8,7 +8,7 @@ exports.getAllCourses = async (req, res, next) => {
   const perPage = req.query.pageSize || 10;
   const search = req.query.search || "";
   let minPrice = req.query.minPrice || 0;
-  let maxPrice = req.query.maxPrice || 100000;
+  let maxPrice = req.query.maxPrice || Number.MAX_VALUE;
   const rating = req.query.rating || 0;
   const subjects = req.query.subject;
   let query = {};
@@ -143,17 +143,19 @@ exports.createCourse = async (req, res, next) => {
   const foundInstructor = await instructor.findById(instructorId);
   const instructorName =
     foundInstructor.firstName + " " + foundInstructor.lastName;
+    const discount= req.body.discount||0;
   const newCourse = new course({
     courseTitle: req.body.courseTitle,
     courseDescription: req.body.courseDescription,
     totalHours: req.body.totalHours,
     coursePrice: req.body.coursePrice,
     courseImage: req.body.courseImage,
+    subject: req.body.subject,
     instructor: instructorId,
     instructorName: instructorName,
     discount: req.body.discount,
     discountedPrice:
-      req.body.coursePrice - req.body.coursePrice * req.body.discount,
+      req.body.coursePrice - req.body.coursePrice *discount,
     rating: req.body.rating,
     reviews: req.body.reviews,
     requirements: req.body.requirements,
@@ -189,7 +191,7 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
   const perPage = req.query.pageSize || 10;
   const search = req.query.search || "";
   let minPrice = req.query.minPrice || 0;
-  let maxPrice = req.query.maxPrice || 100000;
+  let maxPrice = req.query.maxPrice || Number.MAX_VALUE;
   const subjects = req.query.subject;
   let query = {};
   if (subjects) {

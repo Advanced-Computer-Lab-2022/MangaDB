@@ -3,6 +3,7 @@ import Accordion from "./Accordion";
 import SourceForm from "./SourceForm";
 import Modal from "../UI/Modal";
 import AddIcon from "@mui/icons-material/Add";
+import Subtitle from "../CourseSubtitles/Subtitle";
 
 const SingleSubtitle = (props) => {
   const [sourceModalShown, setSourceModalShown] = useState(false);
@@ -24,14 +25,6 @@ const SingleSubtitle = (props) => {
       </button>
     </div>
   );
-  const displayedSources = props.sources.map((source) => {
-    return (
-      <div>
-        <div>{source.title} </div>
-        <div>{source.type}</div>
-      </div>
-    );
-  });
   return (
     <Fragment>
       {sourceModalShown && (
@@ -42,9 +35,11 @@ const SingleSubtitle = (props) => {
           ></SourceForm>
         </Modal>
       )}
-      <Accordion title={props.title}>
-        {addSourceIcon} {displayedSources}
-      </Accordion>
+      <Subtitle
+        subtitleHeader={props.title}
+        sources={props.sources}
+        icon={addSourceIcon}
+      ></Subtitle>
     </Fragment>
   );
 };

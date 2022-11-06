@@ -9,9 +9,7 @@ import SecondaryButton from "../SecondaryButton";
 import ScheduleRoundedIcon from "@mui/icons-material/ScheduleRounded";
 import Stars from "../UI/Stars";
 
-const size = {
-  starSize: 5,
-};
+const size = 6;
 
 const CourseCard = (props) => {
   var level;
@@ -182,25 +180,26 @@ const CourseCard = (props) => {
     //   </div>
     // </div>
 
-    <div class=" flex w-[820px] max-w-[1000px] rounded-lg bg-white shadow-md overflow-hidden">
+    <div class=" flex  w-[820px] max-w-[1000px] rounded-lg bg-white shadow-md overflow-hidden">
       <div class="p-4 bg-darkBlue  w-56">
         <div class="text-lightBlue uppercase tracking-wider text-sm">
           course
         </div>
-        <div class="text-white text-2xl">{props.title}</div>
-        <div class="text-lightBlue mt-12 text-sm">
-          <Stars {...size}/>
+        <div class="text-white text-2xl">{props.courseTitle}</div>
+        <div class="text-lightBlue mt-12 text-sm flex space-x-6 items-center">
+          <div>
+            <Stars size={size} rating={props.rating} />
+          </div>
+          <div className="bg-veryLightBlue text-gray-900 px-2 rounded-md">{props.rating}</div>
         </div>
       </div>
-      <div class="p-4 ">
+      <div class="p-4">
         <div class="flex justify-between">
           <div class="text-primaryBlue uppercase whitespace-nowrap tracking-wider text-sm">
             {props.instructorName}
           </div>
-          <div className="flex">
-            
-          </div>
-          <div class="pt-1 pl-60">
+          <div className="flex"></div>
+          <div class="pt-1 pl-48">
             <div class="bg-lightBlue rounded-full h-2 w-48 overflow-hidden">
               <div
                 class={`h-2 bg-darkBlue ${
@@ -218,9 +217,9 @@ const CourseCard = (props) => {
           </div>
         </div>
         <div class="text-3xl text-darkBlue">{props.subject}</div>
-        <div class="flex justify-end pt-12 gap-5 items-center ">
+        <div class="flex justify-end pt-12 gap-5 items-center mr-4">
           <div className="text-3xl font-semibold text-darkBlue mr-4">
-            {props.price}
+            {props.discountedPrice}$
           </div>
         </div>
       </div>

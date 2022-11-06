@@ -7,11 +7,11 @@ import SecondaryButton from "../components/SecondaryButton";
 import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
 import CourseCardListView from "../components/Course/CourseCardListView";
 const options = [
-  { id: 1, name: "the loving memory of mougy" },
+  { id: 1, name: "Web Development" },
   { id: 2, name: "Machine Learning" },
   { id: 3, name: "Computer Science" },
   { id: 4, name: "Database Administration" },
-  { id: 5, name: "Data analysis" },
+  { id: 5, name: "Data Analysis" },
 ];
 
 const icon = <TuneOutlinedIcon className="ml-2" />;
@@ -100,6 +100,8 @@ const SearchResultsPage = (props) => {
           title={course.courseTitle}
           level="Advanced"
           instructorName={course.instructorName}
+          description={course.courseDescription}
+          rating={course.rating}
           subject={course.subject}
           duration={course.totalHours}
           price={course.discountedPrice}

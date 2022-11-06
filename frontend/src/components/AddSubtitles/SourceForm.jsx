@@ -11,11 +11,11 @@ const SourceForm = (props) => {
     const title = titleRef.current.value;
     const link = linkRef.current.value;
     var type;
-    if (sourceType === "file") type = "file";
-    else type = "video";
+    if (sourceType === "file") type = "File";
+    else type = "Video";
     const sourceData = {
-      title,
-      type,
+      description:title,
+      sourceType:type,
       link,
     };
     props.onConfirm(sourceData);

@@ -34,6 +34,7 @@ const courseSchema = new mongoose.Schema({
   },
   rating: {
     type: Number,
+    default: 5,
   },
   reviews: {
     type: [String],
@@ -51,6 +52,7 @@ const courseSchema = new mongoose.Schema({
 
   discount: {
     type: Number,
+    default: 0,
   },
   discountedPrice: {
     type: Number,
@@ -63,7 +65,7 @@ const courseSchema = new mongoose.Schema({
       {
         subtitle: {
           type: String,
-          required: true,
+    
         },
         subtitleTime: {
           type: String,

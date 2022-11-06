@@ -25,6 +25,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "iso-country-currency": "^0.6.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.6.6",
     "nodemon": "^2.0.20",
     "react": "^18.2.0"

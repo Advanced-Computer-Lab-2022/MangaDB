@@ -1,5 +1,5 @@
 const course = require("../models/course");
-const instructor = require("../models/instructor");
+const user = require("../models/user");
 const currencyConverter = require("../helper/currencyconverter");
 const { json } = require("body-parser");
 
@@ -140,7 +140,7 @@ exports.deleteCourse = async (req, res, next) => {
 
 exports.createCourse = async (req, res, next) => {
   const instructorId = req.params.id;
-  const foundInstructor = await instructor.findById(instructorId);
+  const foundInstructor = await user.findById(instructorId);
   const instructorName =
     foundInstructor.firstName + " " + foundInstructor.lastName;
     const discount= req.body.discount||0;

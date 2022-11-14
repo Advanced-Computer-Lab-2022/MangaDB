@@ -155,7 +155,7 @@ exports.createCourse = async (req, res, next) => {
     instructorName: instructorName,
     discount: req.body.discount,
     discountedPrice:
-      req.body.coursePrice - req.body.coursePrice *discount,
+    req.body.coursePrice - req.body.coursePrice *discount,
     rating: req.body.rating,
     reviews: req.body.reviews,
     requirements: req.body.requirements,

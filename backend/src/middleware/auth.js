@@ -18,12 +18,14 @@ exports.validateToken = async (req, res, next) => {
     }
     }
 
-exports.authenticateRole=(role)=>{
+exports.authenticateRole=(roles)=>{
     return (req,res,next)=>{
+        roles.forEach(role=>{
         if(req.user.role===role){
             next();
-        }else{
+        }})
+        
             res.status(403).send("You are not authorized to access this resource.");
-        }
+        
     }
 }

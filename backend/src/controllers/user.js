@@ -18,13 +18,12 @@ exports.createUser = async (req, res) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     gender: req.body.gender,
-    examResults: req.body.examResults,
     wallet: req.body.wallet,
     biography: req.body.biography
   });
 
   const salt = await bcrypt.genSalt(10);
-  newUser.password =  bcrypt.hash(newUser.password, salt);
+  newUser.password =  await bcrypt.hash(newUser.password, salt);
   try {
     await newUser.save();
     res.send(newUser);
@@ -113,7 +112,6 @@ exports.updateUser = async (req, res) => {
     }
 
 exports.login = async (req, res) => {
-  //use passport to authenticate
     const { userName, password } = req.body;
     try {
         await user.findOne({ userName }).then(async (data) => {
@@ -124,9 +122,8 @@ exports.login = async (req, res) => {
             if (!validPassword) {
             res.status(401).send({ message: "Invalid Password!" });
             } else {
-            //create jwt token
             const token = jwt.sign(
-                { _id: data._id, userName: data.userName, role: data.role },
+                { _id: data._id, userName: data.userName, role: data.role},
                 process.env.TOKEN_SECRET
             );
             res.send(token);

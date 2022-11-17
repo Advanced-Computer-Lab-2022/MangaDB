@@ -69,15 +69,25 @@ const userSchema = new mongoose.Schema({
   },
   biography: {
     type: String,
-  },
-  overAllRating: {
+  }, rating: {
     type: Number,
-  },
-  rating: {
-    type: [Number],
+    default: 5,
   },
   reviews: {
-    type: [String],
+    type: [
+      {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        review: {
+          type: String,
+        },
+        rating: {
+          type: Number,
+        },
+      },
+    ],
   },
   agreedToTerms: {
     type: Boolean,

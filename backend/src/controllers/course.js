@@ -161,7 +161,6 @@ exports.createCourse = async (req, res, next) => {
     requirements: req.body.requirements,
     views: req.body.views,
     certificate: req.body.certificate,
-    summary: req.body.summary,
     subtitles: req.body.subtitles,
   });
 
@@ -181,8 +180,8 @@ exports.createCourse = async (req, res, next) => {
         error: error,
       });
     });
-
-  foundInstructor.courses.push(newCourse.id);
+  
+  foundInstructor.courseDetails.push({course:newCourse.id});
   await foundInstructor.save();
 };
 
@@ -257,4 +256,29 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
       courses: allCourses,
       symbol: symbol,
     });
+  };
+
+  exports.rateCourse = async (req, res, next) => {
+
+    const courseId = req.params.id;
+    const userId = req.body.userId;
+    const rating = req.body.rating;
+    const review = req.body.review;
+    const foundUser = await user
+      .findById
+      (userId);
+    if(foundUser.courseDetails.find((courses)=>courses.course==courseId)){
+      const foundCourse = await course.findById(courseId);
+      const reviewCount=foundCourse.reviews.length;
+      foundCourse.rating = (reviewCount/reviewCount+1 )* foundCourse.rating + (1/reviewCount+1 )*rating;
+      foundCourse.reviews.push({ user: userId, review: review ,rating:rating});
+      foundCourse.save();
+      res.status(200).json({
+        message: "Course rated successfully!",
+      });
+    }else{
+      res.status(404).json({
+        message: "User not enrolled in this course!",
+      });
+    }
   };

@@ -81,7 +81,6 @@ const courseSchema = new mongoose.Schema({
       {
         title: {
           type: String,
-    
         },
         subtitleDuration: {
           type: String,
@@ -92,21 +91,27 @@ const courseSchema = new mongoose.Schema({
         description: {
           type: String,
         },
-       
+
         sources: {
           type: [
             {
               sourceType: {
                 type: String,
                 enum: ["Video", "Exam", "Text"],
-              }, exam: {
-                type: [
-                  {
-                    question: { type: String },
-                    answer: { type: String },
-                    options: { type: [String] },
+              },
+              exam: {
+                type: {
+                  exercises: {
+                    type: [
+                      {
+                        question: { type: String },
+                        answer: { type: String },
+                        options: { type: [String] },
+                      },
+                    ],
                   },
-                ],
+                  totalGrade: { type: Number },
+                },
               },
               link: {
                 type: String,

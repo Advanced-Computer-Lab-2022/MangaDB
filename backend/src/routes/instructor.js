@@ -6,4 +6,8 @@ router.post("/addcourse/:id", courseController.createCourse);
 
 router.get("/searchcourses/:id", courseController.searchCoursesByInstructor);
 
+router.put("/updatecourse/:id", courseController.updateCourse);
+
+router.patch("/updateuser/:id", instructorController.updateUser);
+
 module.exports = router;

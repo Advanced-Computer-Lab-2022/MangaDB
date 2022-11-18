@@ -270,7 +270,7 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
     if(foundUser.courseDetails.find((courses)=>courses.course==courseId)){
       const foundCourse = await course.findById(courseId);
       const reviewCount=foundCourse.reviews.length;
-      foundCourse.rating = (reviewCount/reviewCount+1 )* foundCourse.rating + (1/reviewCount+1 )*rating;
+      foundCourse.rating = (reviewCount/(reviewCount+1) )* foundCourse.rating + (1/(reviewCount+1) )*rating;
       foundCourse.reviews.push({ user: userId, review: review ,rating:rating});
       foundCourse.save();
       res.status(200).json({

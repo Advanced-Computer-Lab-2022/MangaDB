@@ -29,21 +29,24 @@ exports.rateInstructor = async (req, res) => {
     try {
         const foundInstructor=await user
         .findById(instructorId)
-        .then((data) => {
-            if (!data) {
-                res.status(404).send({
-                    message: `Cannot find instructor with id=${instructorId}. Maybe instructor was not found!`,
+        
+        if(!foundInstructor||foundInstructor.role!=="INSTRUCTOR"){
+            res.status(404).send({
+                message: `Cannot rate instructor with id=${instructorId}. Maybe instructor was not found!`,
                 });
-            } 
-        });
-        const reviewCount=foundInstructor.reviews.length;
-        foundInstructor.rating = (reviewCount/reviewCount+1 )* foundCourse.rating + (1/reviewCount+1 )*rating;
+        }else{
+      
+        
+        const reviewCount=foundInstructor.reviews.length ;
+        let newRating = ((reviewCount/(reviewCount+1) )* foundInstructor.rating)+ ((1/(reviewCount+1) )*rating);
+        newRating=newRating.toFixed(2);
+        foundInstructor.rating=newRating;
         foundInstructor.reviews.push({user:userId,rating:rating,review:review});
         foundInstructor.save();
         res.status(200).send({
             message: "Instructor was rated successfully.",
         });
-    }
+    }}
     catch (err) {   
         res.status(500).send({
             message: err.message || "Some error occurred while rating instructor.",

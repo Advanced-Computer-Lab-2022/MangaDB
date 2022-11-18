@@ -10,4 +10,6 @@ router.put("/updatecourse/:id", courseController.updateCourse);
 
 router.patch("/updateuser/:id", instructorController.updateUser);
 
+router.patch("/rate/:id", instructorController.rateInstructor);
+
 module.exports = router;

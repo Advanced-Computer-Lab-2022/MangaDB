@@ -20,7 +20,6 @@ exports.updateUser = (req, res) => {
 
 };
 
-//can rate any instructor, fix later
 exports.rateInstructor = async (req, res) => {
     const instructorId = req.params.id;
     const userId = req.body.userId;
@@ -35,14 +34,17 @@ exports.rateInstructor = async (req, res) => {
                 message: `Cannot rate instructor with id=${instructorId}. Maybe instructor was not found!`,
                 });
         }else{
-      
+        //check if user is enrolled in a course that this instructor teaches
+        //check if user already rated this instructor
+        //if not, add rating to instructor
+        
         
         const reviewCount=foundInstructor.reviews.length ;
         let newRating = ((reviewCount/(reviewCount+1) )* foundInstructor.rating)+ ((1/(reviewCount+1) )*rating);
         newRating=newRating.toFixed(2);
         foundInstructor.rating=newRating;
         foundInstructor.reviews.push({user:userId,rating:rating,review:review});
-        foundInstructor.save();
+        foundInstructor.save();1
         res.status(200).send({
             message: "Instructor was rated successfully.",
         });

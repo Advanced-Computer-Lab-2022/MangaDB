@@ -2,6 +2,7 @@ const user = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mailer=require('../helper/mailer');
+const course=require('../models/course');
 
 exports.createUser = async (req, res) => {
   if (!req.body.userName || !req.body.password || !req.body.role) {
@@ -245,5 +246,6 @@ exports.changePassword = async (req, res) => {
             });
         }
     };        
+
 
 

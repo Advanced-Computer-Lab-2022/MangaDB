@@ -11,5 +11,6 @@ router.post("/forgetpassword", userController.forgetPassword);
 
 router.patch("/resetpassword/:id", userController.resetPassword);
 
+router.post('/register', userController.createUser);
 
 module.exports=router;

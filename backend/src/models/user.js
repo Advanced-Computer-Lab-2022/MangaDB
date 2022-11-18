@@ -38,13 +38,14 @@ const userSchema = new mongoose.Schema({
           ref: "Course",
         },
         viewedSources: {
-          sourceId: {
+          
+        type:[{ sourceId: {
             type: String,
           },
           notes: {
             type: String,
-          },
-        },
+          }}
+    ]},
         totalSources: {
           type: Number,
         },

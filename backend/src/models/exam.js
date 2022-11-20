@@ -1,24 +1,24 @@
-// const mongoose=require('mongoose');
+// const mongoose = require("mongoose");
+// const connection = require("../config/database");
 
-// const ExamSchema=new mongoose.Schema({
-//     questions: {
-//         type: [{
-//             question: {
-//                 type: String,
-//                 required: true},
-//             choices: {
-//                 type: [String],   
-//                 required: true,
-//                 size: 4,     
-//             },
-//             answer: {
-//                 type: String,
-//                 required: true},
-//             }],
-//         required: true,
+// const examSchema = new mongoose.Schema({
+    
+//     examTitle: {
+//         type: String,
+        
 //     },
-//     });
+//     exercises: {
+//         type: [
+//           {
+//             question: { type: String },
+//             answer: { type: String },
+//             options: { type: [String] },
+//           },
+//         ],
+//       },
+//       totalGrade: { type: Number }},
+// );
 
-// const Exam=mongoose.model('Exam', ExamSchema);
+// const Exam = connection.model("Exam", examSchema);
 
 // module.exports = Exam;

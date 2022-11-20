@@ -9,4 +9,6 @@ router.patch("/:id", courseController.updateCourse);
 
 router.delete("/:id", courseController.deleteCourse);
 
+router.patch("/rate/:id", courseController.rateCourse);
+
 module.exports = router;

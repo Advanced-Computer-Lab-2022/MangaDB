@@ -1,5 +1,5 @@
 const course = require("../models/course");
-const instructor = require("../models/instructor");
+const user = require("../models/user");
 const currencyConverter = require("../helper/currencyconverter");
 const { json } = require("body-parser");
 
@@ -140,7 +140,7 @@ exports.deleteCourse = async (req, res, next) => {
 
 exports.createCourse = async (req, res, next) => {
   const instructorId = req.params.id;
-  const foundInstructor = await instructor.findById(instructorId);
+  const foundInstructor = await user.findById(instructorId);
   const instructorName =
     foundInstructor.firstName + " " + foundInstructor.lastName;
     const discount= req.body.discount||0;
@@ -155,13 +155,12 @@ exports.createCourse = async (req, res, next) => {
     instructorName: instructorName,
     discount: req.body.discount,
     discountedPrice:
-      req.body.coursePrice - req.body.coursePrice *discount,
+    req.body.coursePrice - req.body.coursePrice *discount,
     rating: req.body.rating,
     reviews: req.body.reviews,
     requirements: req.body.requirements,
     views: req.body.views,
     certificate: req.body.certificate,
-    summary: req.body.summary,
     subtitles: req.body.subtitles,
   });
 
@@ -181,8 +180,8 @@ exports.createCourse = async (req, res, next) => {
         error: error,
       });
     });
-
-  foundInstructor.courses.push(newCourse.id);
+  
+  foundInstructor.courseDetails.push({course:newCourse.id});
   await foundInstructor.save();
 };
 
@@ -258,3 +257,175 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
       symbol: symbol,
     });
   };
+
+  exports.rateCourse = async (req, res, next) => {
+
+    const courseId = req.params.id;
+    const userId = req.body.userId;
+    const rating = req.body.rating;
+    const review = req.body.review;
+    const foundUser = await user
+      .findById
+      (userId);
+    if(foundUser.courseDetails.find((courses)=>courses.course==courseId)){
+      const foundCourse = await course.findById(courseId);
+      const reviewCount=foundCourse.reviews.length;
+      foundCourse.rating = (reviewCount/(reviewCount+1) )* foundCourse.rating + (1/(reviewCount+1) )*rating;
+      foundCourse.reviews.push({ user: userId, review: review ,rating:rating});
+      foundCourse.save();
+      res.status(200).json({
+        message: "Course rated successfully!",
+      });
+    }else{
+      res.status(404).json({
+        message: "User not enrolled in this course!",
+      });
+    }
+  };
+
+  exports.getMostViewedCourses = async (req, res, next) => {
+    const currentPage = req.query.page || 1;
+    const perPage = req.query.pageSize || 10;
+    const search = req.query.search || "";
+    let minPrice = req.query.minPrice || 0;
+    let maxPrice = req.query.maxPrice || Number.MAX_VALUE;
+    const subjects = req.query.subject;
+    let query = {};
+    if (subjects) {
+      query = { subject: { $in: subjects } };
+    }
+    const countryCode = req.query.CC || "US";
+    let countryDetails = await currencyConverter.convertCurrency(
+      countryCode,
+      "US"
+    );
+    let exchangeRate = countryDetails.rate;
+    let symbol = countryDetails.symbol;
+  
+    minPrice = minPrice * exchangeRate;
+    maxPrice = maxPrice * exchangeRate;
+  
+    let allCourses = await course
+      .find({
+        $and: [
+          query,
+          { discountedPrice: { $gte: minPrice } },
+          { discountedPrice: { $lte: maxPrice } },
+          {
+            $or: [
+              { courseTitle: { $regex: search, $options: "i" } },
+              { subject: { $regex: search, $options: "i" } },
+              { instructorName: { $regex: search, $options: "i" } },
+            ],
+          },
+        ],
+      })
+      .sort({ views: -1 })
+      .skip((currentPage - 1) * perPage)
+      .limit(perPage)
+      .select({
+        _id: 1,
+        courseTitle: 1,
+        courseImage:1,
+        totalHours: 1,
+        courseDescription:1,
+        coursePrice: 1,
+        discountedPrice: 1,
+        discount: 1,
+        courseImage: 1,
+        rating: 1,
+        instructor: 1,
+        instructorName: 1,
+        subject: 1,
+      })
+      .catch((error) => {
+        res.status(500).json({
+          message: "Fetching courses failed!",
+        });
+      });
+      countryDetails = await currencyConverter.convertCurrency("US", countryCode);
+      exchangeRate = countryDetails.rate;
+      allCourses.forEach((course) => {
+        course.coursePrice = (course.coursePrice * exchangeRate).toFixed( 2);
+        course.discountedPrice = (course.discountedPrice * exchangeRate).toFixed(2);
+      });
+      res.status(200).json({
+        message: "Courses fetched successfully!",
+        courses: allCourses,
+        symbol: symbol,
+      });
+    };
+
+    exports.getMostRatedCourses = async (req, res, next) => {
+      const currentPage = req.query.page || 1;
+      const perPage = req.query.pageSize || 10;
+      const search = req.query.search || "";
+      let minPrice = req.query.minPrice || 0;
+      let maxPrice = req.query.maxPrice || Number.MAX_VALUE;
+      const subjects = req.query.subject;
+      let query = {};
+      if (subjects) {
+        query = { subject: { $in: subjects } };
+      }
+      const countryCode = req.query.CC || "US";
+      let countryDetails = await currencyConverter.convertCurrency(
+        countryCode,
+        "US"
+      );
+      let exchangeRate = countryDetails.rate;
+      let symbol = countryDetails.symbol;
+    
+      minPrice = minPrice * exchangeRate;
+      maxPrice = maxPrice * exchangeRate;
+    
+      let allCourses = await course
+        .find({
+          $and: [
+            query,
+            { discountedPrice: { $gte: minPrice } },
+            { discountedPrice: { $lte: maxPrice } },
+            {
+              $or: [
+                { courseTitle: { $regex: search, $options: "i" } },
+                { subject: { $regex: search, $options: "i" } },
+                { instructorName: { $regex: search, $options: "i" } },
+              ],
+            },
+          ],
+        })
+        .sort({ rating: -1 })
+        .skip((currentPage - 1) * perPage)
+        .limit(perPage)
+        .select({
+          _id: 1,
+          courseTitle: 1,
+          courseImage:1,
+          totalHours: 1,
+          courseDescription:1,
+          coursePrice: 1,
+          discountedPrice: 1,
+          discount: 1,
+          courseImage: 1,
+          rating: 1,
+          instructor: 1,
+          instructorName: 1,
+          subject: 1,
+        })
+        .catch((error) => {
+          res.status(500).json({
+            message: "Fetching courses failed!",
+          });
+        });
+        countryDetails = await currencyConverter.convertCurrency("US", countryCode);
+        exchangeRate = countryDetails.rate;
+        allCourses.forEach((course) => {
+          course.coursePrice = (course.coursePrice * exchangeRate).toFixed( 2);
+          course.discountedPrice = (course.discountedPrice * exchangeRate).toFixed(2);
+        });
+        res.status(200).json({
+          message: "Courses fetched successfully!",
+          courses: allCourses,
+          symbol: symbol,
+        });
+      };
+      

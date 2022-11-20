@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mailer=require('../helper/mailer');
 const course=require('../models/course');
+const blackList=require('../models/token');
 
 exports.createUser = async (req, res) => {
   if (!req.body.userName || !req.body.password || !req.body.role) {
@@ -249,3 +250,16 @@ exports.changePassword = async (req, res) => {
 
 
 
+    exports.logout = async (req, res) => {
+      const authHeader = req.header('Authorization');
+      const token = authHeader && authHeader.split(" ")[1];
+      try { 
+        const invalidToken=new blackList({token});
+        await invalidToken.save();
+        res.send({message: "logout successfully"});
+      } catch (err) {
+        res.status(500).send({
+          message: "Error logout",
+        });
+      }
+    };

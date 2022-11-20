@@ -11,7 +11,6 @@ const nodemailer= require('nodemailer');
         pass: process.env.EMAIL_PASSWORD,
         },
     });
-    console.log(options);
     // 2) Define the email options
     const mailOptions = {
         from: process.env.EMAIL_CORPORATE, 

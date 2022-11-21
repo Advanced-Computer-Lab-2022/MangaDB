@@ -16,4 +16,8 @@ router.post('/register', userController.createUser);
 
 router.post('/logout',auth.validateToken,userController.logout);
 
+router.patch('/registercourse/:id',userController.registerCourse);
+
+router.patch('/opensource/:id',userController.openSource);
+
 module.exports=router;

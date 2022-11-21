@@ -76,6 +76,12 @@ const courseSchema = new mongoose.Schema({
   discountEndDate: {
     type: Date,
   },
+  level: {
+    type: String,
+    enum: ["Beginner", "Intermediate", "Advanced"],
+    default: "Beginner",
+  },
+
   subtitles: {
     type: [
       {
@@ -83,9 +89,12 @@ const courseSchema = new mongoose.Schema({
           type: String,
         },
         subtitleDuration: {
-          type: String,
+          type: Number,
         },
         introductionVideo: {
+          type: String,
+        },
+        introductionVideoDescription: {
           type: String,
         },
         description: {

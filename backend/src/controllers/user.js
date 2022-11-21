@@ -24,14 +24,14 @@ exports.createUser = async (req, res) => {
     wallet: req.body.wallet,
     biography: req.body.biography,
   });
-
+  
   const salt = await bcrypt.genSalt(10);
   newUser.password = await bcrypt.hash(newUser.password, salt);
   try {
     await newUser.save();
     res.send(newUser);
   } catch (err) {
-    return res.status(500).send({
+    return res.status(400).send({
       message: err.message || "Some error occurred while creating the user.",
     });
   }
@@ -263,3 +263,123 @@ exports.changePassword = async (req, res) => {
         });
       }
     };
+
+    //payment gateway
+
+    exports.registerCourse = async (req, res) => {
+      const id = req.params.id;
+      const { courseId } = req.body;
+      try {
+        const userData = await user.findById(id);
+        if (!userData) {
+          res.status(404).send({
+            message: `Cannot update user with id=${id}. Maybe user was not found!`,
+          });
+        } else {
+          const courseData = await course.findById(courseId);
+          if (!courseData) {
+            res.status(404).send({
+              message: `Course was not found!`,
+            });
+          }
+          else {
+            for(var i=0;i<userData.courseDetails.length;i++){
+              if(userData.courseDetails[i].courseId==courseId){
+                res.status(404).send({
+                  message: `You have already registered for this course!`,
+                });
+                return;
+              }
+            }
+            let sourceNumber=0;
+            for(let i=0;i<courseData.subtitles.length;i++){
+              sourceNumber+=courseData.subtitles[i].sources.length;
+            }
+            userData.courseDetails.push({course:courseData._id,totalSources:sourceNumber});
+            await userData.save();
+            courseData.views+=1;
+            await courseData.save();
+            res.send({ message: "user was updated successfully."});
+
+          }
+        }
+      } catch (err) {
+        res.status(500).send({
+          message: "Error in registering course",
+        });
+      }
+    };
+
+    //get courses this user is registered in
+    exports.getRegisteredCourses = async (req, res) => {
+      const id = req.params.id;
+      try {
+        const userData = await user.findById(id).populate('courseDetails.course');
+        if (!userData) {
+          res.status(404).send({
+            message: `Cannot update user with id=${id}. Maybe user was not found!`,
+          });
+        } else {
+          res.send(userData);
+        }
+      } catch (err) {
+        res.status(500).send({
+          message: "Error in getting registered courses",
+        });
+      }
+    };
+
+    exports.openSource = async (req, res) => {
+      const id = req.params.id;
+      const { courseId, sourceId } = req.body;
+      try {
+        const userData =await user.findById(id);
+        if (!userData) {
+          res.status(404).send({
+            message: `User was not found!`,
+          });
+        }
+        else {
+          let courseIndex=-1;
+          let courseFound=false;
+          for(let i=0;i<userData.courseDetails.length;i++){
+            if(userData.courseDetails[i].course==courseId){
+              courseIndex=i;
+              courseFound=true;
+              break;
+            }
+          }
+
+          if(!courseFound){
+            res.status(400).send({
+              message: `User not registered in course`,
+            });
+          }
+          else{
+            for(let j=0;j<userData.courseDetails[courseIndex].viewedSources.length;j++){
+              if(userData.courseDetails[courseIndex].viewedSources[j].sourceId==sourceId){
+                res.status(200).send({
+                  message: `Source already opened`,
+                });
+                return;
+              }
+            }
+            userData.courseDetails[courseIndex].viewedSources.push({sourceId:sourceId});
+            let percentage=(userData.courseDetails[courseIndex].viewedSources.length/userData.courseDetails[courseIndex].totalSources)
+            percentage=percentage.toFixed(2);
+            userData.courseDetails[courseIndex].percentageCompleted= percentage;
+            await userData.save();
+            res.status(200)
+            .send({message:"source opened successfully"});
+            console.log(`source ${sourceId} opened successfully`)
+            }
+        }
+      
+    } catch (err) {
+      res.status(500).send({
+        message: "Error in opening source",
+      });
+    }
+  };
+
+

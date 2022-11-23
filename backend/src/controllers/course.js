@@ -141,6 +141,8 @@ exports.deleteCourse = async (req, res, next) => {
 exports.createCourse = async (req, res, next) => {
   const instructorId = req.params.id;
   const foundInstructor = await user.findById(instructorId);
+  if (!foundInstructor.agreedToTerms)
+    return res.status(400).json({ message: "You have to agree to our terms and policy in order to create a course" });
   const instructorName =
     foundInstructor.firstName + " " + foundInstructor.lastName;
     const discount= req.body.discount||0;
@@ -269,8 +271,15 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
       (userId);
     if(foundUser.courseDetails.find((courses)=>courses.course==courseId)){
       const foundCourse = await course.findById(courseId);
+
+      const isRated = foundCourse.reviews.find((review) => review.user == userId);
+      if (isRated) {
+        return res.status(400).json({ message: "You have already rated this course" });
+      }
       const reviewCount=foundCourse.reviews.length;
-      foundCourse.rating = (reviewCount/(reviewCount+1) )* foundCourse.rating + (1/(reviewCount+1) )*rating;
+       let newRating= (reviewCount/(reviewCount+1) )* foundCourse.rating + (1/(reviewCount+1) )*rating;
+       newRating=newRating.toFixed(2);
+       foundCourse.rating=newRating;
       foundCourse.reviews.push({ user: userId, review: review ,rating:rating});
       foundCourse.save();
       res.status(200).json({
@@ -282,6 +291,58 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
       });
     }
   };
+  exports.editRating = async (req, res, next) => {
+    const courseId = req.params.id;
+    const userId = req.body.userId;
+    const rating = req.body.rating;
+    const review = req.body.review;
+   let foundCourse = await course.findById(courseId);
+   let oldRating=0;
+   foundCourse.reviews.forEach((element) => {
+        oldRating=element.rating;
+      if (element.user == userId) {
+        element.rating = rating||element.rating;
+        element.review = review||element.review;
+        
+      }
+    });
+    if(rating){
+      let newRating=0;
+      let reviewCount=foundCourse.reviews.length;
+      newRating= (reviewCount/(reviewCount) )* foundCourse.rating - (1/(reviewCount) )*oldRating + (1/(reviewCount) )*rating;
+      newRating=newRating.toFixed(2);
+      foundCourse.rating=newRating;
+
+
+     }
+    foundCourse.save();
+    res.status(200).json({
+      message: "Course rating edited successfully!",
+    });
+  };
+  exports.deleteRating = async (req, res, next) => {
+    const courseId = req.params.id;
+    const userId = req.body.userId;
+    let foundCourse = await course.findById(courseId);
+    let oldRating=0;
+    foundCourse.reviews.forEach((element) => {
+      if (element.user == userId) {
+        oldRating=element.rating;
+        element.remove();
+      }
+    });
+    let newRating=0;
+    let reviewCount=foundCourse.reviews.length;
+    newRating=  foundCourse.rating - (1/(reviewCount+1) )*oldRating;
+    newRating=newRating.toFixed(2);
+    foundCourse.rating=newRating;
+    foundCourse.save();
+    res.status(200).json({
+      message: "Course rating deleted successfully!",
+    });
+  };
+
+
 
   exports.getMostViewedCourses = async (req, res, next) => {
     const currentPage = req.query.page || 1;

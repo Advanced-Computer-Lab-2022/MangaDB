@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const mailer=require('../helper/mailer');
 const course=require('../models/course');
 const blackList=require('../models/token');
+const currencyConverter = require("../helper/currencyconverter"); 
+const payment=require('../helper/payment');
 
 exports.createUser = async (req, res) => {
   if (!req.body.userName || !req.body.password || !req.body.role) {
@@ -269,6 +271,13 @@ exports.changePassword = async (req, res) => {
     exports.registerCourse = async (req, res) => {
       const id = req.params.id;
       const { courseId } = req.body;
+      const countryCode = req.query.CC || "US";
+      let countryDetails = await currencyConverter.convertCurrency(
+        "US",
+        countryCode
+      );
+      let exchangeRate = countryDetails.rate;
+      let currency = countryDetails.toCountryCurrency;
       try {
         const userData = await user.findById(id);
         if (!userData) {
@@ -299,7 +308,21 @@ exports.changePassword = async (req, res) => {
             await userData.save();
             courseData.views+=1;
             await courseData.save();
-            res.send({ message: "user was updated successfully."});
+            
+            const info={
+              currency:currency,
+              name:courseData.courseTitle ,
+              price:courseData.discountedPrice * exchangeRate,
+            }
+            payment.createPaymentIntent(info).then((data)=>{
+              if(!data){
+                res.status(500).send({
+                  message: "Error in payment",
+                });
+                return;
+              }
+              res.send({message: "user registered for course successfully.",data});
+            })
 
           }
         }

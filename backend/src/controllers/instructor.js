@@ -98,6 +98,86 @@ exports.rateInstructor = async (req, res) => {
 
 };
 
+exports.editRating = async (req, res) => {
+    const instructorId = req.params.id;
+    const userId = req.body.userId;
+    const rating = req.body.rating;
+    const review = req.body.review;
+    try {
+        let foundInstructor=await user
+        .findById(instructorId)
+        
+        if(!foundInstructor||foundInstructor.role!=="INSTRUCTOR"){
+            res.status(404).send({
+                message: `Cannot edit rating of instructor with id=${instructorId}. Maybe instructor was not found!`,
+                });
+        }else{
+            let oldRating=0;
+            foundInstructor.reviews.forEach((element) => {
+                oldRating=element.rating;
+                if (element.user == userId) {
+                  element.rating = rating||element.rating;
+                  element.review = review||element.review;
+          
+                }
+              });
+                if(rating){
+                const reviewCount=foundInstructor.reviews.length ;
+                let newRating = ((reviewCount/(reviewCount) )* foundInstructor.rating)- ((1/(reviewCount) )*oldRating)+ ((1/(reviewCount) )*rating);
+                newRating=newRating.toFixed(2);
+                foundInstructor.rating=newRating;
+                foundInstructor.save();
+                res.status(200).send({
+                    message: "Instructor rating was edited successfully.",
+                });
+
+                }
+            }
+        }
+    catch (err) {
+        res.status(500).send({
+            message: err.message || "Some error occurred while editing instructor rating.",
+        });
+    }
+
+};
+
+exports.deleteRating = async (req, res) => {
+    const instructorId = req.params.id;
+    const userId = req.body.userId;
+    try {
+        let foundInstructor=await user
+        .findById(instructorId)
+        
+        if(!foundInstructor||foundInstructor.role!=="INSTRUCTOR"){
+            res.status(404).send({
+                message: `Cannot delete rating of instructor with id=${instructorId}. Maybe instructor was not found!`,
+                });
+        }else{
+            let oldRating=0;
+            foundInstructor.reviews.forEach((element) => {
+                if (element.user == userId) {
+                  oldRating=element.rating;
+                  element.remove();
+                }
+              });
+                const reviewCount=foundInstructor.reviews.length ;
+                let newRating = ((reviewCount/(reviewCount+1) )* foundInstructor.rating)- ((1/(reviewCount+1) )*oldRating);
+                newRating=newRating.toFixed(2);
+                foundInstructor.rating=newRating;
+                foundInstructor.save();
+                res.status(200).send({
+                    message: "Instructor rating was deleted successfully.",
+                });
+            }
+        }
+    catch (err) {
+        res.status(500).send({
+            message: err.message || "Some error occurred while deleting instructor rating.",
+        });
+    }
+
+}
 
 
 

@@ -291,6 +291,58 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
       });
     }
   };
+  exports.editRating = async (req, res, next) => {
+    const courseId = req.params.id;
+    const userId = req.body.userId;
+    const rating = req.body.rating;
+    const review = req.body.review;
+   let foundCourse = await course.findById(courseId);
+   let oldRating=0;
+   foundCourse.reviews.forEach((element) => {
+        oldRating=element.rating;
+      if (element.user == userId) {
+        element.rating = rating||element.rating;
+        element.review = review||element.review;
+        
+      }
+    });
+    if(rating){
+      let newRating=0;
+      let reviewCount=foundCourse.reviews.length;
+      newRating= (reviewCount/(reviewCount) )* foundCourse.rating - (1/(reviewCount) )*oldRating + (1/(reviewCount) )*rating;
+      newRating=newRating.toFixed(2);
+      foundCourse.rating=newRating;
+
+
+     }
+    foundCourse.save();
+    res.status(200).json({
+      message: "Course rating edited successfully!",
+    });
+  };
+  exports.deleteRating = async (req, res, next) => {
+    const courseId = req.params.id;
+    const userId = req.body.userId;
+    let foundCourse = await course.findById(courseId);
+    let oldRating=0;
+    foundCourse.reviews.forEach((element) => {
+      if (element.user == userId) {
+        oldRating=element.rating;
+        element.remove();
+      }
+    });
+    let newRating=0;
+    let reviewCount=foundCourse.reviews.length;
+    newRating=  foundCourse.rating - (1/(reviewCount+1) )*oldRating;
+    newRating=newRating.toFixed(2);
+    foundCourse.rating=newRating;
+    foundCourse.save();
+    res.status(200).json({
+      message: "Course rating deleted successfully!",
+    });
+  };
+
+
 
   exports.getMostViewedCourses = async (req, res, next) => {
     const currentPage = req.query.page || 1;

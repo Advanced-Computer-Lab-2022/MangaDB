@@ -19,7 +19,7 @@ const SingleSubtitle = (props) => {
 
   const addSourceIcon = (
     <div className="flex justify-end">
-      <button className="rounded-full h-12 fle" onClick={showSourceModal}>
+      <button className="rounded-full h-12 flex" onClick={showSourceModal}>
         <AddIcon />
       </button>
     </div>
@@ -35,6 +35,7 @@ const SingleSubtitle = (props) => {
         </Modal>
       )}
       <Subtitle
+        onSourceEdit={props.onSourceEdit}
         onSubtitleEdit={props.onSubtitleEdit}
         onSubtitleRemove={props.onSubtitleRemove}
         subtitleHeader={props.title}

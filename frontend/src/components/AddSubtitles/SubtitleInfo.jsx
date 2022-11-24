@@ -3,7 +3,7 @@ import { AccordionBody } from "@material-tailwind/react";
 
 const SubtitleInfo = (props) => {
   const title = useRef();
-  const url = useRef();
+  const url = useRef(); //get element by id
   const shortDescription = useRef();
   const titleChangeHandler = (event) => {
     const changedSubtitleData = {
@@ -50,7 +50,7 @@ const SubtitleInfo = (props) => {
            Intro Video URL
           </label>
           <input
-            ref={url}
+            ref={url} 
             onChange={urlChangeHandler}
             defaultValue={props.introVideoUrl}
             id="video_URL"

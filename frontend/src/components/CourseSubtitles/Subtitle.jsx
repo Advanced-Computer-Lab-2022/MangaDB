@@ -1,5 +1,6 @@
 import { useState } from "react";
 import SubtitleInfo from "../AddSubtitles/SubtitleInfo";
+import Divider from "@mui/material/Divider";
 import DeleteSubtitle from "../AddSubtitles/DeleteSubtitle";
 import {
   Accordion,
@@ -21,11 +22,15 @@ const Subtitle = (props) => {
   };
   //added the if
   if (props.sources) {
-    var Body = props.sources.map((source) => {
+    var Body = props.sources.map((source,index) => {
       return (
-        <Source title={source.description} type="Video">
-          {" "}
-        </Source>
+        <Source
+          onSourceEdit ={props.onSourceEdit.bind(null,index)}
+          isOpened={isOpened}
+          title={source.description}
+          type={source.sourceType}
+          link={source.link}
+        ></Source>
       );
     });
   }
@@ -34,11 +39,11 @@ const Subtitle = (props) => {
   };
   const hideAlertHandler = () => {
     setModalShown(false);
-  }
+  };
   const deleteSubtitleHandler = () => {
     setModalShown(false);
     props.onSubtitleRemove();
-  }
+  };
 
   const icon = isOpened ? (
     <KeyboardArrowUpRoundedIcon />
@@ -49,10 +54,13 @@ const Subtitle = (props) => {
   return (
     <Accordion icon={icon} open={isOpened} animate={customAnimation}>
       {ModalShown && (
-        <DeleteSubtitle onClick={deleteSubtitleHandler} onCancel={hideAlertHandler}></DeleteSubtitle>
+        <DeleteSubtitle
+          onClick={deleteSubtitleHandler}
+          onCancel={hideAlertHandler}
+        ></DeleteSubtitle>
       )}
       <div className="space-x-0 items-center mr-4">
-        <AccordionHeader className="text-lg font-medium" onClick={handleOpen}>
+        <AccordionHeader onClick={handleOpen}>
           {props.subtitleHeader}
         </AccordionHeader>
       </div>
@@ -63,7 +71,7 @@ const Subtitle = (props) => {
         introVideoUrl={props.introVideoUrl}
       ></SubtitleInfo>
       {Body}
-      <AccordionBody>{props.icon}</AccordionBody>
+      <AccordionBody className="mt-10">{props.icon}</AccordionBody>
       <AccordionBody>
         {" "}
         <button

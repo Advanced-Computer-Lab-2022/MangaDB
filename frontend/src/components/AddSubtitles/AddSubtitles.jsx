@@ -2,10 +2,10 @@ import { Fragment, useState } from "react";
 import SecondaryButton from "../SecondaryButton";
 import SubtitleForm from "./SubtitleForm";
 import SingleSubtitle from "./SingleSubtitle";
+import Modal from "../UI/Modal";
 const AddSubtitles = (props) => {
   const [subtitles, setSubtitles] = useState([]);
   const [subtitleModalShown, setSubtitleModalShown] = useState(false);
-
   const onAddSourceHandler = (subtitleId, data) => {
     var newSubtitles = [];
     for (var i = 0; i < subtitles.length; i++) {
@@ -18,14 +18,31 @@ const AddSubtitles = (props) => {
     }
     setSubtitles(newSubtitles);
   };
-
-  const onSubtitleDataEditHandler = (subtitleId,newData) => {
+  const onSourceDataEdithandler = (subtitleId, sourceId, newData) => {
     var newSubtitles = [];
     for (var i = 0; i < subtitles.length; i++) {
       if (subtitles[i].id === subtitleId) {
-        subtitles[i].subtitle=newData.title;
-        subtitles[i].shortDescription=newData.shortDescription;
-        subtitles[i].introVideoUrl=newData.introVideoUrl;
+        newSubtitles.push(subtitles[i]);
+          for(var j = 0; j < newSubtitles[i].sources.length; j++) {
+            if(j ===+sourceId){
+                newSubtitles[i].sources[j] = newData;
+            }
+  
+          }
+        continue;
+      }
+      newSubtitles.push(subtitles[i]);
+    }
+    setSubtitles(newSubtitles);
+  };
+
+  const onSubtitleDataEditHandler = (subtitleId, newData) => {
+    var newSubtitles = [];
+    for (var i = 0; i < subtitles.length; i++) {
+      if (subtitles[i].id === subtitleId) {
+        subtitles[i].subtitle = newData.title;
+        subtitles[i].shortDescription = newData.shortDescription;
+        subtitles[i].introVideoUrl = newData.introVideoUrl;
         newSubtitles.push(subtitles[i]);
         continue;
       }
@@ -43,16 +60,16 @@ const AddSubtitles = (props) => {
       newSubtitles.push(subtitles[i]);
     }
     setSubtitles(newSubtitles);
-  }
+  };
 
   const displayedSubtitles = subtitles.map((subtitle) => {
-    //still didnt handle the description and the video
     const SubtitleIntroUrl = subtitle.introVideoUrl;
     const shortDescription = subtitle.shortDescription;
     const subtitleTitle = subtitle.subtitle;
     const sources = subtitle.sources;
     return (
       <SingleSubtitle
+        onSourceEdit={onSourceDataEdithandler.bind(null,subtitle.id)}
         onAdd={onAddSourceHandler.bind(null, subtitle.id)}
         onSubtitleEdit={onSubtitleDataEditHandler.bind(null, subtitle.id)}
         onSubtitleRemove={onRemoveSubtitle.bind(null, subtitle.id)}
@@ -71,8 +88,6 @@ const AddSubtitles = (props) => {
   };
 
   const addSubtitleHandler = (subtitleData) => {
-    //logic for the URL and the short Description not handled yet
-
     const newSubtitle = {
       id: subtitles.length,
       subtitle: subtitleData.title,
@@ -87,7 +102,7 @@ const AddSubtitles = (props) => {
     setSubtitleModalShown(false);
   };
   const submitHandler = () => {
-    console.log(subtitles)
+    console.log(subtitles);
     //props.onConfirm(subtitles);
   };
   return (
@@ -114,10 +129,12 @@ const AddSubtitles = (props) => {
                 <div className="flex-col min-w-[80%]">
                   {displayedSubtitles}
                   {subtitleModalShown && (
-                    <SubtitleForm
-                      onCancel={hideSubtitleModal}
-                      onConfirm={addSubtitleHandler}
-                    ></SubtitleForm>
+                    <Modal onClick={hideSubtitleModal}>
+                      <SubtitleForm
+                        onCancel={hideSubtitleModal}
+                        onConfirm={addSubtitleHandler}
+                      ></SubtitleForm>
+                    </Modal>
                   )}
                 </div>
               </div>

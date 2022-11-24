@@ -4,25 +4,25 @@ import PrimaryButton from "../PrimaryButton";
 import RadioTypes from "./RadioTypes";
 const SourceForm = (props) => {
   const titleRef = useRef();
-  const [sourceType, setSourceType] = useState("video");
+  const [sourceType, setSourceType] = useState("Video");
   const linkRef = useRef();
   const submitHandler = (event) => {
     event.preventDefault();
     const title = titleRef.current.value;
     const link = linkRef.current.value;
     var type;
-    if (sourceType === "file") type = "File";
+    if (sourceType === "Quiz") type = "Quiz";
     else type = "Video";
     const sourceData = {
-      description:title,
-      sourceType:type,
+      description: title,
+      sourceType: type,
       link,
     };
     props.onConfirm(sourceData);
   };
   const typeChangeHandler = (type) => {
-    setSourceType(type.name)
-  }
+    setSourceType(type.name);
+  };
   return (
     <Fragment>
       <div className="grid grid-cols-3 pb-3 font-bold">
@@ -52,7 +52,7 @@ const SourceForm = (props) => {
             ></input>
           </div>
           <div className="flex gap-10">
-            <RadioTypes onChange={typeChangeHandler}></RadioTypes>
+            <RadioTypes type = {sourceType}onChange={typeChangeHandler}></RadioTypes>
           </div>
           <div className="third-control">
             <label className="block" htmlFor="link">

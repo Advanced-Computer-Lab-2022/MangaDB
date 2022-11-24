@@ -19,6 +19,12 @@ const AddCoursePage = (props) => {
       status: "",
       description: "fill the course content",
     },
+    {
+      name: "Course Exam",
+      id:3,
+      status: "",
+      description : "Create a course Exam"
+    }
   ]);
   const [data, setData] = useState({});
   const onSaveHandler = (data) => {

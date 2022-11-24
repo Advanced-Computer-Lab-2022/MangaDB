@@ -1,13 +1,18 @@
-import { useRef } from "react";
+import { useRef,useState } from "react";
 import SecondaryButton from "../SecondaryButton";
 import CustomInputField from "../UI/CustomInputField";
-
+import { Editor } from "react-draft-wysiwyg";
+import { EditorState } from "draft-js";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 const CreateCourseForm = (props) => {
   const titleRef = useRef();
   const subjectRef = useRef();
   const descriptionRef = useRef();
   const imgRef = useRef();
   const priceRef = useRef();
+  const [editorState, setEditorState] = useState(() =>
+  EditorState.createEmpty()
+);
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -85,9 +90,14 @@ const CreateCourseForm = (props) => {
               <SecondaryButton className="w-96" type="submit" text="Save"></SecondaryButton>
             </div>
           </div>
-
+          <Editor
+          editorState={editorState}
+          onEditorStateChange={setEditorState}
+        />
           {/* requirements */}
         </div>
+        
+
       </form>
       {/* <img src={fillForm} alt="fill form" className="w-1/3 h-1/3 align-middle sm:invisible md:visible" /> */}
     </div>

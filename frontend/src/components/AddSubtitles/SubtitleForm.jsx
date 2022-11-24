@@ -11,9 +11,9 @@ const SubtitleForm =(props) => {
         const videoURL = videoRef.current.value;
         const description = descriptionRef.current.value;
         const subtitleData = {
-            title,
-            videoURL,
-            description
+            title :title,
+            videoURL :videoURL,
+            description : description
         }
         props.onConfirm(subtitleData);
     }

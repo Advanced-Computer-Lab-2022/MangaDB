@@ -1,5 +1,4 @@
 import { useState, Fragment } from "react";
-import Accordion from "./Accordion";
 import SourceForm from "./SourceForm";
 import Modal from "../UI/Modal";
 import AddIcon from "@mui/icons-material/Add";
@@ -36,9 +35,13 @@ const SingleSubtitle = (props) => {
         </Modal>
       )}
       <Subtitle
+        onSubtitleEdit={props.onSubtitleEdit}
+        onSubtitleRemove={props.onSubtitleRemove}
         subtitleHeader={props.title}
         sources={props.sources}
         icon={addSourceIcon}
+        introVideoUrl={props.introVideoUrl}
+        shortDescription={props.shortDescription}
       ></Subtitle>
     </Fragment>
   );

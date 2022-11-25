@@ -48,7 +48,7 @@ function App() {
 //   const validatedLink =  validateYouTubeUrl("https://youtu.be/BgP30ML_Tc0");
 //   console.log(validatedLink)
   
-//  return  <Video isVisible={true} link="https://youtu.be/BgP30ML_Tc0"></Video>
+  //return  <Video isVisible={false} link="https://youtu.be/BgP30ML_Tc0"></Video>
  return <AddCoursePage></AddCoursePage>
 
 }

@@ -1,15 +1,19 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import Divider from "@mui/material/Divider";
+import Video from "../Video/Video";
 import PrimaryButton from "../PrimaryButton";
 import RadioTypes from "./RadioTypes";
 const SourceForm = (props) => {
   const titleRef = useRef();
+  const [validLink, setValidLink] = useState(false);
+  const [sourceLink,setSourceLink] = useState("");
   const [sourceType, setSourceType] = useState("Video");
-  const linkRef = useRef();
+  const [sourceDuration, setSourceDuration] = useState(0);
+  
   const submitHandler = (event) => {
     event.preventDefault();
     const title = titleRef.current.value;
-    const link = linkRef.current.value;
+    const link = sourceLink
     var type;
     if (sourceType === "Quiz") type = "Quiz";
     else type = "Video";
@@ -17,12 +21,40 @@ const SourceForm = (props) => {
       description: title,
       sourceType: type,
       link,
+      duration: sourceDuration,
     };
     props.onConfirm(sourceData);
   };
   const typeChangeHandler = (type) => {
     setSourceType(type.name);
   };
+  const getDuration = (duration) => {
+    if (sourceDuration !== duration) {
+      setSourceDuration(duration);
+    }
+  };
+  const linkChangeHandler= (event)=> {
+    setSourceLink(event.target.value)
+  }
+
+//validate the link the instructor entered 
+  function validateYouTubeUrl(url) {
+    if (url !== undefined || url !== "") {
+      var regExp =
+        /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+      var match = url.match(regExp);
+      if (match && match[2].length === 11) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  useEffect(() => {
+     setValidLink(validateYouTubeUrl(sourceLink));
+  }, [sourceLink]);
+
   return (
     <Fragment>
       <div className="grid grid-cols-3 pb-3 font-bold">
@@ -52,14 +84,18 @@ const SourceForm = (props) => {
             ></input>
           </div>
           <div className="flex gap-10">
-            <RadioTypes type = {sourceType}onChange={typeChangeHandler}></RadioTypes>
+            <RadioTypes
+              type={sourceType}
+              onChange={typeChangeHandler}
+            ></RadioTypes>
           </div>
           <div className="third-control">
             <label className="block" htmlFor="link">
               Link
             </label>
             <input
-              ref={linkRef}
+              value={sourceLink}
+              onChange={linkChangeHandler}
               id="link"
               className="w-full mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
             focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
@@ -73,6 +109,13 @@ const SourceForm = (props) => {
             ></PrimaryButton>
           </div>
         </form>
+        {validLink && (
+          <Video
+            isVisible={false}
+            getSourceDuration={getDuration}
+            link={sourceLink}
+          ></Video>
+        )}
       </div>
     </Fragment>
   );

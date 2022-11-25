@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SubtitleInfo from "../AddSubtitles/SubtitleInfo";
-import Divider from "@mui/material/Divider";
+import AddIcon from "@mui/icons-material/Add";
+import SourceForm from "../AddSubtitles/SourceForm"
 import DeleteSubtitle from "../AddSubtitles/DeleteSubtitle";
 import {
   Accordion,
@@ -13,6 +14,18 @@ import Source from "./Source";
 const Subtitle = (props) => {
   const [isOpened, setIsOpened] = useState(false);
   const [ModalShown, setModalShown] = useState(false);
+  const [sourceModalShown, setSourceModalShown] = useState(false);
+  const showSourceModal = () => {
+    setSourceModalShown(true);
+  };
+  const hideSourceModal = () => {
+    setSourceModalShown(false);
+  };
+  const addSourceHandler = (sourceData) => {
+    props.onAdd(sourceData);
+    setSourceModalShown(false);
+  };
+
   const handleOpen = () => {
     setIsOpened((prevOpen) => !prevOpen);
   };
@@ -20,16 +33,26 @@ const Subtitle = (props) => {
     mount: { scale: 1, opacity: 1 },
     unmount: { scale: 0.9 },
   };
+
+  const addSourceIcon = (
+    <div className="flex justify-end">
+      <button className="rounded-full h-12 flex" onClick={showSourceModal}>
+        <AddIcon />
+      </button>
+    </div>
+  );
+
   //added the if
   if (props.sources) {
-    var Body = props.sources.map((source,index) => {
+    var Body = props.sources.map((source, index) => {
       return (
         <Source
-          onSourceEdit ={props.onSourceEdit.bind(null,index)}
+          onSourceEdit={props.onSourceEdit.bind(null, index)}
           isOpened={isOpened}
           title={source.description}
           type={source.sourceType}
           link={source.link}
+          duration={source.duration}
         ></Source>
       );
     });
@@ -71,7 +94,15 @@ const Subtitle = (props) => {
         introVideoUrl={props.introVideoUrl}
       ></SubtitleInfo>
       {Body}
-      <AccordionBody className="mt-10">{props.icon}</AccordionBody>
+      <AccordionBody className="mt-10">{addSourceIcon}</AccordionBody>
+      {sourceModalShown && (
+        <AccordionBody>
+          <SourceForm
+            onCancel={hideSourceModal}
+            onConfirm={addSourceHandler}
+          ></SourceForm>
+        </AccordionBody>
+      )}
       <AccordionBody>
         {" "}
         <button

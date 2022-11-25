@@ -26,31 +26,15 @@ import AdminAddNewUser from "./pages/AdminAddNewUser";
 import ExamManager from "./components/Exam/ExamManager"
 import InstructorCoursesPage from "./pages/InstructorCoursesPage";
 import Video from "./components/Video/Video";
+import CreateExamChoices from "./components/AddSubtitles/CreateQuestion/CreateExamChoices";
 function App() {
-  function validateYouTubeUrl(url)
-{
-    var url = url
-        if (url != undefined || url != '') {
-            var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
-            var match = url.match(regExp);
-            if (match && match[2].length == 11) {
-                // Do anything for being valid
-                return true;
-                // if need to change the url to embed url then use below line
-               // ('#ytplayerSide').attr('src', 'https://www.youtube.com/embed/' + match[2] + '?autoplay=0');
-            }
-            else {
-                return false
-            }
-        }
-}
-
+  
 //   const validatedLink =  validateYouTubeUrl("https://youtu.be/BgP30ML_Tc0");
 //   console.log(validatedLink)
   
   //return  <Video isVisible={false} link="https://youtu.be/BgP30ML_Tc0"></Video>
- return <AddCoursePage></AddCoursePage>
-
+//  return <ExamManager></ExamManager>
+return <CreateExamChoices></CreateExamChoices>
 }
 
 export default App;

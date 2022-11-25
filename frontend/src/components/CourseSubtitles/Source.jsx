@@ -1,5 +1,4 @@
 import { useState, Fragment } from "react";
-import Video from "../Video/Video";
 import SourceInfo from "../AddSubtitles/SourceInfo";
 import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
@@ -8,9 +7,7 @@ import {
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
-
 const Source = (props) => {
-  const [sourceDuration, setSourceDuration] = useState(0);
   const [isOpened, setIsOpened] = useState(false);
   const handleOpen = () => {
     setIsOpened((prevOpen) => !prevOpen);
@@ -66,11 +63,7 @@ const Source = (props) => {
       </svg>
     );
   }
-  const getDuration = (duration) => {
-    if (sourceDuration !== duration) {
-      setSourceDuration(duration);
-    }
-  };
+ 
 
   return (
     <Fragment>
@@ -81,12 +74,7 @@ const Source = (props) => {
               <div className="flex">
                 {sourceIcon} {props.title}
               </div>
-              <Video
-                isVisible={false}
-                getSourceDuration={getDuration}
-                link={props.link}
-              ></Video>
-              {sourceDuration}
+              {props.duration}
             </AccordionHeader>
           </div>
           <AccordionBody>

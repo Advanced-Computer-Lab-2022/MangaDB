@@ -1,6 +1,4 @@
 import { Fragment, useRef, useState } from "react";
-import Divider from "@mui/material/Divider";
-import PrimaryButton from "../PrimaryButton";
 import RadioTypes from "./RadioTypes";
 
 const SourceInfo = (props) => {

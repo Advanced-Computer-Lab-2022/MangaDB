@@ -405,4 +405,98 @@ exports.changePassword = async (req, res) => {
     }
   };
 
+    exports.getProgress = async (req, res) => {
+      const id = req.params.id;
+      const { courseId } = req.body;
+      try {
+        const userData =await user.findById(id);
+        if (!userData) {
+          res.status(404).send({
+            message: `User was not found!`,
+          });
+        }
+        else {
+          let courseIndex=-1;
+          let courseFound=false;
+          for(let i=0;i<userData.courseDetails.length;i++){
+            if(userData.courseDetails[i].course==courseId){
+              courseIndex=i;
+              courseFound=true;
+              break;
+            }
+          }
 
+          if(!courseFound){
+            res.status(400).send({
+              message: `User not registered in course`,
+            });
+          }
+          else{
+            res.status(200)
+            .send({percentage:userData.courseDetails[courseIndex].percentageCompleted});
+            }
+        }
+      
+    } catch (err) {
+      res.status(500).send({
+        message: "Error in getting progress",
+      });
+    }
+  };
+
+  exports.addNotes = async (req, res) => {
+    const id = req.params.id;
+    const { courseId, sourceId, notes } = req.body;
+    try {
+      const userData =await user.findById(id);
+      if (!userData) {
+        res.status(404).send({
+          message: `User was not found!`,
+        });
+      }
+      else {
+        let courseIndex=-1;
+        let courseFound=false;
+        for(let i=0;i<userData.courseDetails.length;i++){
+          if(userData.courseDetails[i].course==courseId){
+            courseIndex=i;
+            courseFound=true;
+            break;
+          }
+        }
+
+        if(!courseFound){
+          res.status(400).send({
+            message: `User not registered in course`,
+          });
+        }
+        else{
+          let sourceIndex=-1;
+          let sourceFound=false;
+          for(let j=0;j<userData.courseDetails[courseIndex].viewedSources.length;j++){
+            if(userData.courseDetails[courseIndex].viewedSources[j].sourceId==sourceId){
+              sourceIndex=j;
+              sourceFound=true;
+              break;
+            }
+          }
+          if(!sourceFound){
+            res.status(400).send({
+              message: `User not opened source`,
+            });
+          }
+          else{
+            userData.courseDetails[courseIndex].viewedSources[sourceIndex].notes=notes;
+            await userData.save();
+            res.status(200)
+            .send({message:"notes added successfully"});
+            }
+        }
+
+      }
+    } catch (err) {
+      res.status(500).send({
+        message: "Error in adding notes",
+      });
+    }
+  };

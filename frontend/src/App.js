@@ -22,10 +22,11 @@ import AddSubtitles from "./components/AddSubtitles/AddSubtitles"
 import IntructorCoursePage from "./pages/InstructorCoursesPage";
 import AddCoursePage from "./pages/AddCoursePage";
 import AdminAddNewUser from "./pages/AdminAddNewUser";
+import ExamManager from "./components/Exam/ExamManager"
 import InstructorCoursesPage from "./pages/InstructorCoursesPage";
 
 function App() {
-  return  <AdminAddNewUser />
+  return  <ExamManager />
 }
 
 export default App;

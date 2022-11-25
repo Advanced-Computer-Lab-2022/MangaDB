@@ -56,59 +56,23 @@ const choiceD = (
   </svg>
 );
 
-const defaultChoicesState = [
-  {
-    choiceId: "1",
-    description: "",
-    img: choiceA,
-  },
-  {
-    choiceId: "2",
-    description: "",
-    img: choiceB,
-  },
-  {
-    choiceId: "3",
-    description: "",
-    img: choiceC,
-  },
-  {
-    choiceId: "4",
-    description: "",
-    img: choiceD,
-  },
-];
 const CreateExamChoices = (props) => {
-  const [choicesState, setChoicesState] = useState(defaultChoicesState);
-  const onChoiceChangeHandler = (choiceId, newData) => {
-    var newChoiceState = [];
-    for (var i = 0; i < choicesState.length; i++) {
-      if (choicesState[i].choiceId === choiceId) {
-        var temp = {
-          choiceId: choiceId,
-          description: newData,
-          img: choicesState[i].img,
-        };
-
-        newChoiceState.push(temp);
-      } else {
-        newChoiceState.push(choicesState[i]);
-      }
-    }
-    props.onChoiceChangeHandler(newChoiceState);
-    setChoicesState(newChoiceState);
-  };
-  var diplayedChoices = choicesState.map((choice, index) => {
+  var diplayedChoices = props.choices.map((choice, index) => {
     return (
       <CreateExamChoice
-        onChoiceChangeHandler={onChoiceChangeHandler.bind(
-          null,
-          choice.choiceId
-        )}
-        choiceId={choice.id}
+        onChoiceChangeHandler={props.onChange.bind(null, choice.choiceId)}
+        choiceId={choice.choiceId}
         name={"Choice Number" + (index + 1)}
         description={choice.description}
-        img={choice.img}
+        img={
+          index === 0
+            ? choiceA
+            : index === 1
+            ? choiceB
+            : index === 2
+            ? choiceC
+            : choiceD
+        }
       ></CreateExamChoice>
     );
   });

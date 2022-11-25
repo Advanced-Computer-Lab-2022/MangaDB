@@ -2,25 +2,65 @@ import { useState, Fragment } from "react";
 import SecondaryButton from "../../SecondaryButton";
 import CreateExamChoices from "./CreateExamChoices";
 import Divider from "@mui/material/Divider";
-
+import QuestionSolution from "./QuestionSolution";
+const defaultChoicesState = [
+  {
+    choiceId: "1",
+    description: "",
+  },
+  {
+    choiceId: "2",
+    description: "",
+  },
+  {
+    choiceId: "3",
+    description: "",
+  },
+  {
+    choiceId: "4",
+    description: "",
+  },
+];
 const CreateQuestionForm = (props) => {
-  const titleDefaultState = props.title? props.title :""
-  const [questionState,setQuestionState] = useState(titleDefaultState)
-  const [choicesState,setChoicesState] = useState([])
+  const titleDefaultState = props.title ? props.title : "";
+  const defaultChoice = props.choices ? props.choices : defaultChoicesState;
+  const [questionState, setQuestionState] = useState(titleDefaultState);
+  const [choicesState, setChoicesState] = useState(defaultChoice);
+  const [solutionState, setSolutionState] = useState();
   const submitHandler = (event) => {
     event.preventDefault();
-    
-    
+    //Can modify the Question format to match the backend here..
+    var QuestionData = {
+      QuestionDescription: questionState,
+      choices: choicesState,
+      solution: solutionState,
+    };
+    props.onSubmit(QuestionData);
   };
- 
-  const choiceChangeHandler=(newData) => {
-    setChoicesState(newData);
-  }
+  const solutionOnChangeHandler = (data) => {
+    setSolutionState(data);
+  };
+
+  const onChoiceChangeHandler = (choiceId, newData) => {
+    var newChoiceState = [];
+    for (var i = 0; i < choicesState.length; i++) {
+      if (choicesState[i].choiceId === choiceId) {
+        var temp = {
+          choiceId: choiceId,
+          description: newData,
+        };
+
+        newChoiceState.push(temp);
+      } else {
+        newChoiceState.push(choicesState[i]);
+      }
+    }
+    setChoicesState(newChoiceState);
+  };
 
   const titleChangeHandler = (event) => {
     setQuestionState(event.target.value);
-  }
-
+  };
 
   return (
     <Fragment>
@@ -51,7 +91,16 @@ const CreateQuestionForm = (props) => {
             ></input>
           </div>
           <div className="mt-2">
-            <CreateExamChoices></CreateExamChoices>
+            <CreateExamChoices
+              choices={choicesState}
+              onChange={onChoiceChangeHandler}
+            ></CreateExamChoices>
+          </div>
+          <div className="mt-4">
+            <QuestionSolution
+              onChange={solutionOnChangeHandler}
+              currentSolution={solutionState}
+            ></QuestionSolution>
           </div>
           <div className="controls flex justify-end space-x-2 mt-2">
             <SecondaryButton

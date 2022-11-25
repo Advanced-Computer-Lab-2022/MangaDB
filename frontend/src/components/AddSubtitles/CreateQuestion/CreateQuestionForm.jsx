@@ -1,19 +1,32 @@
 import { useState, Fragment } from "react";
 import SecondaryButton from "../../SecondaryButton";
-import PrimaryButton from "../../PrimaryButton";
+import CreateExamChoices from "./CreateExamChoices";
 import Divider from "@mui/material/Divider";
 
 const CreateQuestionForm = (props) => {
-
+  const titleDefaultState = props.title? props.title :""
+  const [questionState,setQuestionState] = useState(titleDefaultState)
+  const [choicesState,setChoicesState] = useState([])
   const submitHandler = (event) => {
     event.preventDefault();
+    
+    
   };
+ 
+  const choiceChangeHandler=(newData) => {
+    setChoicesState(newData);
+  }
+
+  const titleChangeHandler = (event) => {
+    setQuestionState(event.target.value);
+  }
+
 
   return (
     <Fragment>
       <div className="grid grid-cols-3 pb-3 font-bold">
         <div></div>
-        <div className="flex justify-center text-2xl">Section-Info</div>
+        <div className="flex justify-center text-2xl">Question-Info</div>
         <div className="flex justify-end">
           <button
             onClick={props.onCancel}
@@ -26,47 +39,29 @@ const CreateQuestionForm = (props) => {
       <Divider variant="middle" />
       <div>
         <form onSubmit={submitHandler}>
-          <div className="first control">
-            <label className="block" htmlFor="section-title">
-              Section Title
+          <div className="mt-2 mb-4">
+            <label className="block" htmlFor="question-title">
+              Question Title
             </label>
             <input
-              id="section-title"
+              onChange={titleChangeHandler}
+              id="question-title"
               className="w-full mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
         focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
             ></input>
           </div>
-          <div className="second control">
-            <label className="block" htmlFor="video-URL">
-              Video URL (optional)
-            </label>
-            <input
-              id="video_URL"
-              className="w-full mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
-        focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
-            ></input>
+          <div className="mt-2">
+            <CreateExamChoices></CreateExamChoices>
           </div>
-          <div className="third-control">
-            <label className="block" htmlFor="short-description">
-              Short Description (optional)
-            </label>
-            <input
-              id="short-description"
-              className="w-full h-28 mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
-        focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
-            ></input>
-          </div>
-       
           <div className="controls flex justify-end space-x-2 mt-2">
-            <PrimaryButton
+            <SecondaryButton
               className=" rounded-md  "
-              text="Confirm"
+              text="Save Question"
               type="submit"
-            ></PrimaryButton>
+            ></SecondaryButton>
           </div>
         </form>
       </div>
-      
     </Fragment>
   );
 };

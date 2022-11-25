@@ -27,6 +27,7 @@ import ExamManager from "./components/Exam/ExamManager"
 import InstructorCoursesPage from "./pages/InstructorCoursesPage";
 import Video from "./components/Video/Video";
 import CreateExamChoices from "./components/AddSubtitles/CreateQuestion/CreateExamChoices";
+import CreateQuestionForm from "./components/AddSubtitles/CreateQuestion/CreateQuestionForm";
 function App() {
   
 //   const validatedLink =  validateYouTubeUrl("https://youtu.be/BgP30ML_Tc0");
@@ -34,7 +35,7 @@ function App() {
   
   //return  <Video isVisible={false} link="https://youtu.be/BgP30ML_Tc0"></Video>
 //  return <ExamManager></ExamManager>
-return <CreateExamChoices></CreateExamChoices>
+return <CreateQuestionForm></CreateQuestionForm>
 }
 
 export default App;

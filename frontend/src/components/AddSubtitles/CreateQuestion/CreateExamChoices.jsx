@@ -56,32 +56,55 @@ const choiceD = (
   </svg>
 );
 
-const Choices = [
+const defaultChoicesState = [
   {
     choiceId: "1",
-    description: "Choice 1 ",
+    description: "",
     img: choiceA,
   },
   {
     choiceId: "2",
-    description: "Choice 2",
+    description: "",
     img: choiceB,
   },
   {
     choiceId: "3",
-    description: "Choice 3",
+    description: "",
     img: choiceC,
   },
   {
     choiceId: "4",
-    description: "Choice 4",
+    description: "",
     img: choiceD,
   },
 ];
 const CreateExamChoices = (props) => {
-  var diplayedChoices = Choices.map((choice, index) => {
+  const [choicesState, setChoicesState] = useState(defaultChoicesState);
+  const onChoiceChangeHandler = (choiceId, newData) => {
+    var newChoiceState = [];
+    for (var i = 0; i < choicesState.length; i++) {
+      if (choicesState[i].choiceId === choiceId) {
+        var temp = {
+          choiceId: choiceId,
+          description: newData,
+          img: choicesState[i].img,
+        };
+
+        newChoiceState.push(temp);
+      } else {
+        newChoiceState.push(choicesState[i]);
+      }
+    }
+    props.onChoiceChangeHandler(newChoiceState);
+    setChoicesState(newChoiceState);
+  };
+  var diplayedChoices = choicesState.map((choice, index) => {
     return (
       <CreateExamChoice
+        onChoiceChangeHandler={onChoiceChangeHandler.bind(
+          null,
+          choice.choiceId
+        )}
         choiceId={choice.id}
         name={"Choice Number" + (index + 1)}
         description={choice.description}

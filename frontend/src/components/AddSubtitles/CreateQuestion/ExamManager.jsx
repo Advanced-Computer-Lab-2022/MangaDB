@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 const theme = createTheme({
@@ -16,6 +17,7 @@ const theme = createTheme({
   },
 });
 const ExamManager = (props) => {
+  const [examState, setExamState] = useState([]);
   return (
     <ThemeProvider theme={theme}>
       <Pagination

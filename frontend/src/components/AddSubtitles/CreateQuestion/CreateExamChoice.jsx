@@ -5,20 +5,21 @@ const CreateExamChoice = (props) => {
   const [visited, setVisited] = useState(false);
   const [currentlyFocused, setCurrentlyFocused] = useState(false);
   const defaultChoiceState = props.description ? props.description : "";
-  const [choiceState, setChoiceState] = useState(defaultChoiceState);
+  //const [choiceState, setChoiceState] = useState(defaultChoiceState);
   const onFocusHandler = () => {
     setVisited(true);
     setCurrentlyFocused(true);
   };
   const onBlurHandler = () => {
-    if (choiceState === "") {
+    if (props.description === "") {
       setValid(false);
     }
     setValid(true);
     setCurrentlyFocused(false);
   };
   const choiceChangeHandler = (event) => {
-    setChoiceState(event.target.value);
+    props.onChoiceChangeHandler(event.target.value);
+    //setChoiceState(event.target.value);
   };
 
   var displayedDescription;
@@ -26,13 +27,13 @@ const CreateExamChoice = (props) => {
     displayedDescription = (
       <input
         id={props.choiceId}
-        value={choiceState}
+        value={props.description}
         onFocus={onFocusHandler}
         onChange={choiceChangeHandler}
         onBlur={onBlurHandler}
         className="w-full mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
         focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue text-gray-500"
-        defaultValue={choiceState}
+        //defaultValue={choiceState}
       ></input>
     );
   } else {
@@ -41,13 +42,13 @@ const CreateExamChoice = (props) => {
        
         className="text-sm text-gray-500 truncate"
       >
-        {   choiceState === "" ? "click to edit choice" : choiceState}
+        {   props.description === "" ? "click to edit choice" : props.description}
       </p>
     );
   }
 
   var errormessage;
-  
+
   //if both valid and visited are false dont print anything (don't show an error message)
   //   if (visited && !valid && !currentlyFocused ) {
   //     errormessage = (

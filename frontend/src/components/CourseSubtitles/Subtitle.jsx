@@ -3,6 +3,8 @@ import SubtitleInfo from "../AddSubtitles/SubtitleInfo";
 import AddIcon from "@mui/icons-material/Add";
 import SourceForm from "../AddSubtitles/SourceForm";
 import DeleteSubtitle from "../AddSubtitles/DeleteSubtitle";
+import { ThemeProvider } from "@material-tailwind/react";
+
 import {
   Accordion,
   AccordionHeader,
@@ -11,10 +13,9 @@ import {
 import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import Source from "./Source";
-import CreateExamManager from "../AddSubtitles/CreateQuestion/CreateExamManager";
+
 const Subtitle = (props) => {
   const [isOpened, setIsOpened] = useState(false);
-  const [examFormState, setExamFormState] = useState(false);
   const [ModalShown, setModalShown] = useState(false);
   const [sourceModalShown, setSourceModalShown] = useState(false);
   const showSourceModal = () => {
@@ -35,33 +36,6 @@ const Subtitle = (props) => {
     mount: { scale: 1, opacity: 1 },
     unmount: { scale: 0.9 },
   };
-  //pass that function to the source component to toggle
-  const typeChangeHandler = (type) => {
-    if (type === "Video") {
-      setExamFormState(false);
-    } else {
-      setExamFormState(true);
-    }
-  };
-
-  //check which form to display
-  var displayedForm;
-
-  if (examFormState) {
-    displayedForm = (
-      <CreateExamManager 
-      onCancel ={hideSourceModal}
-      onTypeChange={typeChangeHandler}></CreateExamManager>
-    );
-  } else {
-    displayedForm = (
-      <SourceForm
-        onTypeChange={typeChangeHandler}
-        onCancel={hideSourceModal}
-        onConfirm={addSourceHandler}
-      ></SourceForm>
-    );
-  }
 
   const addSourceIcon = (
     <div className="flex justify-end">
@@ -70,6 +44,14 @@ const Subtitle = (props) => {
       </button>
     </div>
   );
+
+  const theme = {
+    AccordionBody: {
+      styles: {
+        bgColor: "bg-red",
+      },
+    },
+  };
 
   //added the if
   if (props.sources) {
@@ -104,43 +86,49 @@ const Subtitle = (props) => {
   );
 
   return (
-    <Accordion
-      id="subtitle-accordion-body"
-      icon={icon}
-      open={isOpened}
-      animate={customAnimation}
-    >
-      {ModalShown && (
-        <DeleteSubtitle
-          onClick={deleteSubtitleHandler}
-          onCancel={hideAlertHandler}
-        ></DeleteSubtitle>
-      )}
-      <div className="space-x-0 items-center mr-4">
-        <AccordionHeader onClick={handleOpen}>
-          {props.subtitleHeader}
-        </AccordionHeader>
-      </div>
-      <SubtitleInfo
-        title={props.subtitleHeader}
-        onSubtitleEdit={props.onSubtitleEdit}
-        shortDescription={props.shortDescription}
-        introVideoUrl={props.introVideoUrl}
-      ></SubtitleInfo>
-      {Body}
-      <AccordionBody className="mt-10">{addSourceIcon}</AccordionBody>
-      {sourceModalShown && <AccordionBody>{displayedForm}</AccordionBody>}
-      <AccordionBody>
-        {" "}
-        <button
-          type="button"
-          onClick={showAlertHandler}
-          className="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm"
-        >
-          Delete Subtitle
-        </button>
-      </AccordionBody>
-    </Accordion>
+    <ThemeProvider value={theme}>
+      <Accordion icon={icon} open={isOpened} animate={customAnimation}>
+        {ModalShown && (
+          <DeleteSubtitle
+            onClick={deleteSubtitleHandler}
+            onCancel={hideAlertHandler}
+          ></DeleteSubtitle>
+        )}
+        <div className="space-x-0 items-center mr-4">
+          <AccordionHeader onClick={handleOpen}>
+            {props.subtitleHeader}
+          </AccordionHeader>
+        </div>
+        <SubtitleInfo
+          title={props.subtitleHeader}
+          onSubtitleEdit={props.onSubtitleEdit}
+          shortDescription={props.shortDescription}
+          introVideoUrl={props.introVideoUrl}
+        ></SubtitleInfo>
+        {Body}
+        <AccordionBody className="opacity-0 transition ease-out duration-150 mt-10">{addSourceIcon}</AccordionBody>
+        {sourceModalShown && (
+          <AccordionBody className ="opacity-0 transition ease-out duration-150">
+            {" "}
+            <SourceForm
+              isOpened={isOpened}
+              onCancel={hideSourceModal}
+              onConfirm={addSourceHandler}
+            ></SourceForm>
+          </AccordionBody>
+        )}
+        <AccordionBody>
+          {" "}
+          <button
+            type="button"
+            onClick={showAlertHandler}
+            className="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm"
+          >
+            Delete Subtitle
+          </button>
+        </AccordionBody>
+      </Accordion>
+    </ThemeProvider>
   );
 };
 export default Subtitle;

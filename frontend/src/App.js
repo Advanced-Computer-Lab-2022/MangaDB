@@ -30,6 +30,7 @@ import CreateExamChoices from "./components/AddSubtitles/CreateQuestion/CreateEx
 import CreateQuestionForm from "./components/AddSubtitles/CreateQuestion/CreateQuestionForm";
 import QuestionSolution from "./components/AddSubtitles/CreateQuestion/QuestionSolution";
 import CreateExamManager from "./components/AddSubtitles/CreateQuestion/CreateExamManager"
+import Accordion from "./components/AddSubtitles/Accordion"
 function App() {
   
 //   const validatedLink =  validateYouTubeUrl("https://youtu.be/BgP30ML_Tc0");

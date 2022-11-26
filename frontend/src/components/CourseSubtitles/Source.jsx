@@ -77,7 +77,7 @@ const Source = (props) => {
               {props.duration}
             </AccordionHeader>
           </div>
-          <AccordionBody>
+          <AccordionBody className="opacity-0 transition ease-out duration-150" >
             <SourceInfo
               onSourceEdit={props.onSourceEdit}
               link={props.link}

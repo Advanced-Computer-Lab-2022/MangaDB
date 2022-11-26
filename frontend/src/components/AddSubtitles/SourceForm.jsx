@@ -1,15 +1,32 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import {  useEffect, useRef, useState } from "react";
 import Divider from "@mui/material/Divider";
 import Video from "../Video/Video";
 import PrimaryButton from "../PrimaryButton";
 import RadioTypes from "./RadioTypes";
+import CreateExamManager from "./CreateQuestion/CreateExamManager";
 
 const SourceForm = (props) => {
   const titleRef = useRef();
   const [validLink, setValidLink] = useState(false);
+  const [showExamForm, setShowExamForm] = useState(false);
   const [sourceLink, setSourceLink] = useState("");
   const [sourceType, setSourceType] = useState("Video");
   const [sourceDuration, setSourceDuration] = useState(0);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    containerRef.current.parentElement.parentElement.classList.add("subtitleInfo")
+    containerRef.current.parentElement.parentElement.children[0].classList.remove("py-4")
+    containerRef.current.parentElement.parentElement.children[0].classList.add("my-1")
+    if(!props.isOpened){
+      containerRef.current.parentElement.parentElement.children[0].classList.add("h-0")
+    }
+    else{
+      containerRef.current.parentElement.parentElement.children[0].classList.remove("h-0")
+    }
+   
+  }, [props.isOpened]);
+
   const submitHandler = (event) => {
     event.preventDefault();
     const title = titleRef.current.value;
@@ -27,7 +44,11 @@ const SourceForm = (props) => {
   };
   const typeChangeHandler = (type) => {
     //send to a changehandler the new type to toggle between the 2 forms
-    props.onTypeChange(type.name);
+    if (type.name === "Video") {
+      setShowExamForm(false);
+    } else {
+      setShowExamForm(true);
+    }
     setSourceType(type.name);
   };
   const getDuration = (duration) => {
@@ -57,8 +78,29 @@ const SourceForm = (props) => {
     setValidLink(validateYouTubeUrl(sourceLink));
   }, [sourceLink]);
 
+  //toggle the form based on the type
+  var displayedForm;
+  if (showExamForm) {
+    displayedForm = <CreateExamManager></CreateExamManager>;
+  } else {
+    displayedForm = (
+      <div className="third-control">
+        <label className="block" htmlFor="link">
+          Link
+        </label>
+        <input
+          value={sourceLink}
+          onChange={linkChangeHandler}
+          id="link"
+          className="w-full mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
+focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
+        ></input>
+      </div>
+    );
+  }
+
   return (
-    <Fragment>
+    <div ref={containerRef}>
       <div className="grid grid-cols-3 pb-3 font-bold">
         <div></div>
         <div className="flex justify-center text-2xl">Source-Info</div>
@@ -91,19 +133,7 @@ const SourceForm = (props) => {
               onChange={typeChangeHandler}
             ></RadioTypes>
           </div>
-          <div className="third-control">
-            <label className="block" htmlFor="link">
-              Link
-            </label>
-            <input
-              value={sourceLink}
-              onChange={linkChangeHandler}
-              id="link"
-              className="w-full mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
-    focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
-            ></input>
-          </div>
-
+          {displayedForm}
           <div className="controls flex justify-end space-x-2 mt-2">
             <PrimaryButton
               className=" rounded-md  "
@@ -120,7 +150,7 @@ const SourceForm = (props) => {
           ></Video>
         )}
       </div>
-    </Fragment>
+    </div>
   );
 };
 export default SourceForm;

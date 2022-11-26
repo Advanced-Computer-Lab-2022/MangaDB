@@ -29,8 +29,7 @@ const CreateQuestionForm = (props) => {
   const [questionState, setQuestionState] = useState(titleDefaultState);
   const [choicesState, setChoicesState] = useState(defaultChoice);
   const [solutionState, setSolutionState] = useState();
-  const submitHandler = (event) => {
-    event.preventDefault();
+  const submitHandler = () => {
     //Can modify the Question format to match the backend here..
     var QuestionData = {
       QuestionDescription: questionState,
@@ -80,7 +79,7 @@ const CreateQuestionForm = (props) => {
       </div>
       <Divider variant="middle" />
       <div>
-        <form onSubmit={submitHandler}>
+      
           <div className="mt-2 mb-4">
             <label className="block" htmlFor="question-title">
               Question Title
@@ -108,10 +107,10 @@ const CreateQuestionForm = (props) => {
             <SecondaryButton
               className=" rounded-md  "
               text="Save Question"
-              type="submit"
+              type="button"
+              onClick={submitHandler}
             ></SecondaryButton>
           </div>
-        </form>
       </div>
     </Fragment>
   );

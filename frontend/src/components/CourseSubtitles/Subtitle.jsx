@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SubtitleInfo from "../AddSubtitles/SubtitleInfo";
 import AddIcon from "@mui/icons-material/Add";
-import SourceForm from "../AddSubtitles/SourceForm"
+import SourceForm from "../AddSubtitles/SourceForm";
 import DeleteSubtitle from "../AddSubtitles/DeleteSubtitle";
 import {
   Accordion,
@@ -11,8 +11,10 @@ import {
 import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import Source from "./Source";
+import CreateExamManager from "../AddSubtitles/CreateQuestion/CreateExamManager";
 const Subtitle = (props) => {
   const [isOpened, setIsOpened] = useState(false);
+  const [examFormState, setExamFormState] = useState(false);
   const [ModalShown, setModalShown] = useState(false);
   const [sourceModalShown, setSourceModalShown] = useState(false);
   const showSourceModal = () => {
@@ -33,6 +35,33 @@ const Subtitle = (props) => {
     mount: { scale: 1, opacity: 1 },
     unmount: { scale: 0.9 },
   };
+  //pass that function to the source component to toggle
+  const typeChangeHandler = (type) => {
+    if (type === "Video") {
+      setExamFormState(false);
+    } else {
+      setExamFormState(true);
+    }
+  };
+
+  //check which form to display
+  var displayedForm;
+
+  if (examFormState) {
+    displayedForm = (
+      <CreateExamManager 
+      onCancel ={hideSourceModal}
+      onTypeChange={typeChangeHandler}></CreateExamManager>
+    );
+  } else {
+    displayedForm = (
+      <SourceForm
+        onTypeChange={typeChangeHandler}
+        onCancel={hideSourceModal}
+        onConfirm={addSourceHandler}
+      ></SourceForm>
+    );
+  }
 
   const addSourceIcon = (
     <div className="flex justify-end">
@@ -75,7 +104,12 @@ const Subtitle = (props) => {
   );
 
   return (
-    <Accordion icon={icon} open={isOpened} animate={customAnimation}>
+    <Accordion
+      id="subtitle-accordion-body"
+      icon={icon}
+      open={isOpened}
+      animate={customAnimation}
+    >
       {ModalShown && (
         <DeleteSubtitle
           onClick={deleteSubtitleHandler}
@@ -95,14 +129,7 @@ const Subtitle = (props) => {
       ></SubtitleInfo>
       {Body}
       <AccordionBody className="mt-10">{addSourceIcon}</AccordionBody>
-      {sourceModalShown && (
-        <AccordionBody>
-          <SourceForm
-            onCancel={hideSourceModal}
-            onConfirm={addSourceHandler}
-          ></SourceForm>
-        </AccordionBody>
-      )}
+      {sourceModalShown && <AccordionBody>{displayedForm}</AccordionBody>}
       <AccordionBody>
         {" "}
         <button

@@ -20,7 +20,7 @@ const theme = createTheme({
   },
 });
 
-const ExamManager = (props) => {
+const CreateExamManager = (props) => {
   const [examState, setExamState] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(1);
 
@@ -47,4 +47,4 @@ const ExamManager = (props) => {
     </Fragment>
   );
 };
-export default ExamManager;
+export default CreateExamManager;

@@ -3,17 +3,17 @@ import Divider from "@mui/material/Divider";
 import Video from "../Video/Video";
 import PrimaryButton from "../PrimaryButton";
 import RadioTypes from "./RadioTypes";
+
 const SourceForm = (props) => {
   const titleRef = useRef();
   const [validLink, setValidLink] = useState(false);
-  const [sourceLink,setSourceLink] = useState("");
+  const [sourceLink, setSourceLink] = useState("");
   const [sourceType, setSourceType] = useState("Video");
   const [sourceDuration, setSourceDuration] = useState(0);
-  
   const submitHandler = (event) => {
     event.preventDefault();
     const title = titleRef.current.value;
-    const link = sourceLink
+    const link = sourceLink;
     var type;
     if (sourceType === "Quiz") type = "Quiz";
     else type = "Video";
@@ -26,6 +26,8 @@ const SourceForm = (props) => {
     props.onConfirm(sourceData);
   };
   const typeChangeHandler = (type) => {
+    //send to a changehandler the new type to toggle between the 2 forms
+    props.onTypeChange(type.name);
     setSourceType(type.name);
   };
   const getDuration = (duration) => {
@@ -33,11 +35,11 @@ const SourceForm = (props) => {
       setSourceDuration(duration);
     }
   };
-  const linkChangeHandler= (event)=> {
-    setSourceLink(event.target.value)
-  }
+  const linkChangeHandler = (event) => {
+    setSourceLink(event.target.value);
+  };
 
-//validate the link the instructor entered 
+  //validate the link the instructor entered
   function validateYouTubeUrl(url) {
     if (url !== undefined || url !== "") {
       var regExp =
@@ -52,7 +54,7 @@ const SourceForm = (props) => {
   }
 
   useEffect(() => {
-     setValidLink(validateYouTubeUrl(sourceLink));
+    setValidLink(validateYouTubeUrl(sourceLink));
   }, [sourceLink]);
 
   return (
@@ -98,9 +100,10 @@ const SourceForm = (props) => {
               onChange={linkChangeHandler}
               id="link"
               className="w-full mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
-            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
+    focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
             ></input>
           </div>
+
           <div className="controls flex justify-end space-x-2 mt-2">
             <PrimaryButton
               className=" rounded-md  "

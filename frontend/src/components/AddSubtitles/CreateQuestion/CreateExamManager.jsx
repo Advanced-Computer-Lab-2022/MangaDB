@@ -1,4 +1,4 @@
-import { Fragment,useState } from "react";
+import { Fragment, useState } from "react";
 import CreateQuestionForm from "./CreateQuestionForm";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
@@ -21,27 +21,47 @@ const theme = createTheme({
 });
 
 const CreateExamManager = (props) => {
-  const [examState, setExamState] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(1);
 
-  const onChangeQuestionHandler = (event, value) => {
+  const onChangeSelectedQuestionHandler = (event, value) => {
     setSelectedQuestion(value);
   };
-  const onSaveQuestionHandler = (Data) => {
-    var newExamState = [...examState];
-    newExamState.push(Data);
-    setExamState(newExamState);
+  const onSaveQuestionHandler = (data) => {
+    setSelectedQuestion((prev) => {
+      return (prev = prev + 1);
+    });
+    props.onSaveQuestionHandler(data);
   };
+  const onQuestionRemoveHandler = () => {
+    props.onQuestionRemoveHandler(selectedQuestion-1);
+    if(selectedQuestion !==1){
+      setSelectedQuestion((prev) => {
+        return (prev = prev - 1);
+      })
+    } 
+  }
+  var empty = false
+  props.examState.length===0?empty=true:empty=false
   return (
     <Fragment>
-      <CreateQuestionForm onSubmit={onSaveQuestionHandler}></CreateQuestionForm>
+      <CreateQuestionForm
+        examState = {props.examState[selectedQuestion-1]}
+        empty={empty}
+        onQuestionChangeHandler={props.onQuestionChangeHandler.bind(
+          null,
+          selectedQuestion - 1
+        )}
+        onSubmit={onSaveQuestionHandler}
+        length={props.examState.length}
+        onQuestionRemoveHandler={onQuestionRemoveHandler}
+      ></CreateQuestionForm>
       <ThemeProvider theme={theme}>
         <Pagination
           className="ml-2 mr-2"
-          count={examState.length}
+          count={props.examState.length}
           color="primary"
           page={selectedQuestion}
-          onChange={onChangeQuestionHandler}
+          onChange={onChangeSelectedQuestionHandler}
         />
       </ThemeProvider>
     </Fragment>

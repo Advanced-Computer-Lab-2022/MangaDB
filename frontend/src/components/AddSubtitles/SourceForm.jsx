@@ -1,4 +1,4 @@
-import {  useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Divider from "@mui/material/Divider";
 import Video from "../Video/Video";
 import PrimaryButton from "../PrimaryButton";
@@ -14,32 +14,73 @@ const SourceForm = (props) => {
   const [sourceDuration, setSourceDuration] = useState(0);
   const containerRef = useRef(null);
 
+  const [examState, setExamState] = useState([]);
+
+  const onSaveQuestionHandler = (Data) => {
+    var newExamState = [...examState];
+    newExamState.push(Data);
+    setExamState(newExamState);
+  };
+
+  const onQuestionChangeHandler = (selectedQuestion, Data) => {
+    //selectedQuestion will be corrected in the Manager component
+    var newExamState = [...examState];
+    newExamState[selectedQuestion] = Data;
+    setExamState(newExamState);
+  };
+  const onQuestionRemoveHandler = (selectedQuestion) => {
+    //selectedQuestion will be corrected in the Manager component
+    var newExamState = [...examState];
+    newExamState.splice(selectedQuestion, 1);
+    setExamState(newExamState);
+  };
+
+  //this useEffect is done to fix the styling of the accordion container
   useEffect(() => {
-    containerRef.current.parentElement.parentElement.classList.add("subtitleInfo")
-    containerRef.current.parentElement.parentElement.children[0].classList.remove("py-4")
-    containerRef.current.parentElement.parentElement.children[0].classList.add("my-1")
-    if(!props.isOpened){
-      containerRef.current.parentElement.parentElement.children[0].classList.add("h-0")
+    containerRef.current.parentElement.parentElement.classList.add(
+      "subtitleInfo"
+    );
+    containerRef.current.parentElement.parentElement.children[0].classList.remove(
+      "py-4"
+    );
+    containerRef.current.parentElement.parentElement.children[0].classList.add(
+      "my-1"
+    );
+    if (!props.isOpened) {
+      containerRef.current.parentElement.parentElement.children[0].classList.add(
+        "h-0"
+      );
+    } else {
+      containerRef.current.parentElement.parentElement.children[0].classList.remove(
+        "h-0"
+      );
     }
-    else{
-      containerRef.current.parentElement.parentElement.children[0].classList.remove("h-0")
-    }
-   
   }, [props.isOpened]);
 
   const submitHandler = (event) => {
     event.preventDefault();
     const title = titleRef.current.value;
     const link = sourceLink;
+    var sourceData;
     var type;
-    if (sourceType === "Quiz") type = "Quiz";
-    else type = "Video";
-    const sourceData = {
-      description: title,
-      sourceType: type,
-      link,
-      duration: sourceDuration,
-    };
+    if (sourceType === "Quiz") {
+      type = "Quiz";
+      sourceData = {
+        description: title,
+        sourceType: type,
+        duration: 10,
+        exam: examState,
+      };
+    } else {
+      type = "Video";
+      sourceData = {
+        description: title,
+        sourceType: type,
+        link,
+        duration: sourceDuration,
+      };
+    }
+
     props.onConfirm(sourceData);
   };
   const typeChangeHandler = (type) => {
@@ -81,7 +122,14 @@ const SourceForm = (props) => {
   //toggle the form based on the type
   var displayedForm;
   if (showExamForm) {
-    displayedForm = <CreateExamManager></CreateExamManager>;
+    displayedForm = (
+      <CreateExamManager
+        onQuestionChangeHandler={onQuestionChangeHandler}
+        examState={examState}
+        onSaveQuestionHandler={onSaveQuestionHandler}
+        onQuestionRemoveHandler={onQuestionRemoveHandler}
+      ></CreateExamManager>
+    );
   } else {
     displayedForm = (
       <div className="third-control">

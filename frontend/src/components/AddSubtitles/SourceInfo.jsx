@@ -2,9 +2,15 @@ import { Fragment, useRef, useState } from "react";
 import RadioTypes from "./RadioTypes";
 
 const SourceInfo = (props) => {
+
+  var source = props.source;
+
   const titleRef = useRef();
-  const [sourceType, setSourceType] = useState(props.type);
+  const [sourceType, setSourceType] = useState(source.type);
   const linkRef = useRef();
+  const [examState, setExamState] = useState([]);
+
+  var defaultlinkValue = source.link? source.link:""
   const typeChangeHandler = (type) => {
     const newSourceData = {
       description: titleRef.current.value,
@@ -34,6 +40,13 @@ const SourceInfo = (props) => {
     props.onSourceEdit(newSourceData);
   };
 
+  const onQuestionChangeHandler = (selectedQuestion, Data) => {
+    //selectedQuestion will be corrected in the Manager component
+    var newExamState = [...examState];
+    newExamState[selectedQuestion] = Data;
+    setExamState(newExamState);
+  };
+
   return (
     <Fragment>
       <div className="first control">
@@ -43,14 +56,14 @@ const SourceInfo = (props) => {
         <input
           onChange={titleChangeHandler}
           ref={titleRef}
-          defaultValue={props.title}
+          defaultValue={source.title}
           id="source-title"
           className="w-full mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
             focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
         ></input>
       </div>
       <div className="flex gap-10">
-        <RadioTypes type={props.type} onChange={typeChangeHandler}></RadioTypes>
+        <RadioTypes type={source.type} onChange={typeChangeHandler}></RadioTypes>
       </div>
       <div className="third-control">
         <label className="block" htmlFor="link">
@@ -58,7 +71,7 @@ const SourceInfo = (props) => {
         </label>
         <input
           onChange={linkChangeHandler}
-          defaultValue={props.link}
+          defaultValue={defaultlinkValue}
           ref={linkRef}
           id="link"
           className="w-full mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm

@@ -60,10 +60,7 @@ const Subtitle = (props) => {
         <Source
           onSourceEdit={props.onSourceEdit.bind(null, index)}
           isOpened={isOpened}
-          title={source.description}
-          type={source.sourceType}
-          link={source.link}
-          duration={source.duration}
+          source={props.sources[index]}
         ></Source>
       );
     });

@@ -80,9 +80,7 @@ const Source = (props) => {
           <AccordionBody className="opacity-0 transition ease-out duration-150" >
             <SourceInfo
               onSourceEdit={props.onSourceEdit}
-              link={props.link}
-              type={props.type}
-              title={props.title}
+              source={props.source}
             ></SourceInfo>{" "}
           </AccordionBody>
         </Accordion>

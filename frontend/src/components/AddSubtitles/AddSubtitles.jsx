@@ -23,12 +23,11 @@ const AddSubtitles = (props) => {
     for (var i = 0; i < subtitles.length; i++) {
       if (subtitles[i].id === subtitleId) {
         newSubtitles.push(subtitles[i]);
-          for(var j = 0; j < newSubtitles[i].sources.length; j++) {
-            if(j ===+sourceId){
-                newSubtitles[i].sources[j] = newData;
-            }
-  
+        for (var j = 0; j < newSubtitles[i].sources.length; j++) {
+          if (j === +sourceId) {
+            newSubtitles[i].sources[j] = newData;
           }
+        }
         continue;
       }
       newSubtitles.push(subtitles[i]);
@@ -69,7 +68,7 @@ const AddSubtitles = (props) => {
     const sources = subtitle.sources;
     return (
       <SingleSubtitle
-        onSourceEdit={onSourceDataEdithandler.bind(null,subtitle.id)}
+        onSourceEdit={onSourceDataEdithandler.bind(null, subtitle.id)}
         onAdd={onAddSourceHandler.bind(null, subtitle.id)}
         onSubtitleEdit={onSubtitleDataEditHandler.bind(null, subtitle.id)}
         onSubtitleRemove={onRemoveSubtitle.bind(null, subtitle.id)}

@@ -131,7 +131,7 @@ const CreateQuestionForm = (props) => {
             type="button"
             onClick={submitHandler}
           ></SecondaryButton>
-          {props.length !== 1 && (
+          {props.length !== 1 &&!props.empty && (
             <button
               type="button"
               onClick={props.onQuestionRemoveHandler}

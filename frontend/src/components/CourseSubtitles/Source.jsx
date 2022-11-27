@@ -23,7 +23,7 @@ const Source = (props) => {
   );
 
   var sourceIcon;
-  if (props.type === "Quiz") {
+  if (props.source.sourceType === "Quiz") {
     sourceIcon = (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -72,15 +72,16 @@ const Source = (props) => {
           <div className="space-x-0 items-center mr-4">
             <AccordionHeader onClick={handleOpen}>
               <div className="flex">
-                {sourceIcon} {props.title}
+                {sourceIcon} {props.source.description}
               </div>
-              {props.duration}
+              {props.source.duration}
             </AccordionHeader>
           </div>
           <AccordionBody className="opacity-0 transition ease-out duration-150" >
             <SourceInfo
               onSourceEdit={props.onSourceEdit}
               source={props.source}
+              isOpened={isOpened}
             ></SourceInfo>{" "}
           </AccordionBody>
         </Accordion>

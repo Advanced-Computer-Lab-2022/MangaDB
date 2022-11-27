@@ -33,19 +33,20 @@ const CreateExamManager = (props) => {
     props.onSaveQuestionHandler(data);
   };
   const onQuestionRemoveHandler = () => {
-    props.onQuestionRemoveHandler(selectedQuestion-1);
-    if(selectedQuestion !==1){
+    props.onQuestionRemoveHandler(selectedQuestion - 1);
+    if (selectedQuestion !== 1) {
       setSelectedQuestion((prev) => {
         return (prev = prev - 1);
-      })
-    } 
-  }
-  var empty = false
-  props.examState.length===0?empty=true:empty=false
+      });
+    }
+  };
+  var empty = false;
+
+  props.examState.length === 0 ? (empty = true) : (empty = false);
   return (
     <Fragment>
       <CreateQuestionForm
-        examState = {props.examState[selectedQuestion-1]}
+        examState={props.examState[selectedQuestion - 1]}
         empty={empty}
         onQuestionChangeHandler={props.onQuestionChangeHandler.bind(
           null,
@@ -56,13 +57,15 @@ const CreateExamManager = (props) => {
         onQuestionRemoveHandler={onQuestionRemoveHandler}
       ></CreateQuestionForm>
       <ThemeProvider theme={theme}>
-        <Pagination
-          className="ml-2 mr-2"
-          count={props.examState.length}
-          color="primary"
-          page={selectedQuestion}
-          onChange={onChangeSelectedQuestionHandler}
-        />
+        {!empty && (
+          <Pagination
+            className="ml-2 mr-2"
+            count={props.examState.length}
+            color="primary"
+            page={selectedQuestion}
+            onChange={onChangeSelectedQuestionHandler}
+          />
+        )}
       </ThemeProvider>
     </Fragment>
   );

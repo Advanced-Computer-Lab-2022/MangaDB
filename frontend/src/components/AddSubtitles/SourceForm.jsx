@@ -68,7 +68,7 @@ const SourceForm = (props) => {
       sourceData = {
         description: title,
         sourceType: type,
-        duration: 10,
+        duration: examState.length,
         exam: examState,
       };
     } else {

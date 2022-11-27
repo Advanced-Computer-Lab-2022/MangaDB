@@ -53,6 +53,9 @@ const userSchema = new mongoose.Schema({
         percentageCompleted: {
           type: Number,
         },
+        amountPaid: {
+          type: Number,
+        },
         exams: [
           {
             examId: {

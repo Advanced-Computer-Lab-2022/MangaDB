@@ -3,9 +3,9 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mailer=require('../helper/mailer');
 const course=require('../models/course');
-const blackList=require('../models/token');
 const currencyConverter = require("../helper/currencyconverter"); 
 const payment=require('../helper/payment');
+
 
 exports.createUser = async (req, res) => {
   if (!req.body.userName || !req.body.password || !req.body.role) {
@@ -126,6 +126,9 @@ exports.login = async (req, res) => {
             { _id: data._id, userName: data.userName, role: data.role },
             process.env.TOKEN_SECRET
           );
+          res.cookie("token", token, {
+            httpOnly: true,
+          });
           res.send(token);
         }
       }
@@ -204,7 +207,13 @@ exports.changePassword = async (req, res) => {
                         message: `Cannot find user with userName=${userName} and email=${email}. Maybe user was not found!`,
                     });
                 } else {
-                    
+                  const token = jwt.sign(
+                    { id: data._id, userName: data.userName, role: data.role },
+                    process.env.TOKEN_SECRET
+                  );
+                  res.cookie("token", token, {
+                    httpOnly: true,
+                  });
                     const mailOptions = {
                         email: email,
                         subject: 'Reset Password',
@@ -227,7 +236,8 @@ exports.changePassword = async (req, res) => {
         const { password } = req.body;
         const salt = await bcrypt.genSalt(10);
         const newPassword = await bcrypt.hash(password, salt);
-        const id = req.params.id;
+        const id = req.user.id;
+        res.clearCookie("token");
         try {
             await user
                 .findByIdAndUpdate(
@@ -253,11 +263,8 @@ exports.changePassword = async (req, res) => {
 
 
     exports.logout = async (req, res) => {
-      const authHeader = req.header('Authorization');
-      const token = authHeader && authHeader.split(" ")[1];
       try { 
-        const invalidToken=new blackList({token});
-        await invalidToken.save();
+        res.clearCookie("token");
         res.send({message: "logout successfully"});
       } catch (err) {
         res.status(500).send({
@@ -304,7 +311,7 @@ exports.changePassword = async (req, res) => {
             for(let i=0;i<courseData.subtitles.length;i++){
               sourceNumber+=courseData.subtitles[i].sources.length;
             }
-            userData.courseDetails.push({course:courseData._id,totalSources:sourceNumber});
+            userData.courseDetails.push({course:courseData._id,totalSources:sourceNumber,amountPaid:(courseData.discountedPrice * exchangeRate)});
             await userData.save();
             courseData.views+=1;
             await courseData.save();
@@ -500,3 +507,5 @@ exports.changePassword = async (req, res) => {
       });
     }
   };
+
+

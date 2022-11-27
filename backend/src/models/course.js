@@ -76,6 +76,10 @@ const courseSchema = new mongoose.Schema({
   discountEndDate: {
     type: Date,
   },
+  summary: {
+    type: String,
+  }
+  ,
   level: {
     type: String,
     enum: ["Beginner", "Intermediate", "Advanced"],
@@ -106,8 +110,12 @@ const courseSchema = new mongoose.Schema({
             {
               sourceType: {
                 type: String,
-                enum: ["Video", "Exam", "Text"],
+                enum: ["Video", "Quiz", "Text"],
               },
+              sourceDuration: {
+                type: Number,
+              },
+
               exam: {
                 type: {
                   exercises: {

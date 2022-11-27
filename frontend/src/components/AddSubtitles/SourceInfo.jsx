@@ -7,7 +7,6 @@ const SourceInfo = (props) => {
   var defaultShowFlag = source.sourceType === "Quiz" ? true : false;
   var defaultlinkValue = source.link ? source.link : "";
   var defaultExamState = source.exam ? source.exam : [];
-  console.log(source);
   const titleRef = useRef();
   const [sourceType, setSourceType] = useState(source.sourceType);
   const [showExamForm, setShowExamForm] = useState(defaultShowFlag);

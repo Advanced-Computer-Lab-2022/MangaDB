@@ -84,6 +84,15 @@ const Source = (props) => {
               isOpened={isOpened}
             ></SourceInfo>{" "}
           </AccordionBody>
+          <AccordionBody className="opacity-0 transition ease-out duration-150">
+          <button
+              type="button"
+              onClick={props.onRemoveSourceHandler}
+              className="mb-2 inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm"
+            >
+              Delete Source
+            </button>
+          </AccordionBody>
         </Accordion>
       )}
     </Fragment>

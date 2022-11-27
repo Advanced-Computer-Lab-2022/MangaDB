@@ -53,11 +53,18 @@ const Subtitle = (props) => {
     },
   };
 
+  var totalDuration = 0;
+  for (var i = 0; i < props.sources.length; i++) {
+    totalDuration += +props.sources[i].duration;
+  }
+  var min = true;
+  if (totalDuration > 60) min = false;
   //added the if
   if (props.sources) {
     var Body = props.sources.map((source, index) => {
       return (
         <Source
+          onRemoveSourceHandler={props.onRemoveSourceHandler.bind(null, index)}
           onSourceEdit={props.onSourceEdit.bind(null, index)}
           isOpened={isOpened}
           source={props.sources[index]}
@@ -93,7 +100,7 @@ const Subtitle = (props) => {
         )}
         <div className="space-x-0 items-center mr-4">
           <AccordionHeader onClick={handleOpen}>
-            {props.subtitleHeader}
+            {props.subtitleHeader} {+totalDuration} {min ? "mins" : "hrs"}
           </AccordionHeader>
         </div>
         <SubtitleInfo
@@ -103,9 +110,11 @@ const Subtitle = (props) => {
           introVideoUrl={props.introVideoUrl}
         ></SubtitleInfo>
         {Body}
-        <AccordionBody className="opacity-0 transition ease-out duration-150 mt-10">{addSourceIcon}</AccordionBody>
+        <AccordionBody className="opacity-0 transition ease-out duration-150 mt-10">
+          {addSourceIcon}
+        </AccordionBody>
         {sourceModalShown && (
-          <AccordionBody className ="opacity-0 transition ease-out duration-150">
+          <AccordionBody className="opacity-0 transition ease-out duration-150">
             {" "}
             <SourceForm
               isOpened={isOpened}

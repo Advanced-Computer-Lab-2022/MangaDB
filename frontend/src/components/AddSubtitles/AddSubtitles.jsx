@@ -34,6 +34,12 @@ const AddSubtitles = (props) => {
     }
     setSubtitles(newSubtitles);
   };
+  const onRemoveSourceHandler = (subtitleId, sourceId) => {
+    console.log(subtitleId, sourceId);
+    const newSubtitles = [...subtitles];
+    newSubtitles[subtitleId].sources.splice(sourceId, 1);
+    setSubtitles(newSubtitles);
+  };
 
   const onSubtitleDataEditHandler = (subtitleId, newData) => {
     var newSubtitles = [];
@@ -68,6 +74,7 @@ const AddSubtitles = (props) => {
     const sources = subtitle.sources;
     return (
       <SingleSubtitle
+        onRemoveSourceHandler={onRemoveSourceHandler.bind(null, subtitle.id)}
         onSourceEdit={onSourceDataEdithandler.bind(null, subtitle.id)}
         onAdd={onAddSourceHandler.bind(null, subtitle.id)}
         onSubtitleEdit={onSubtitleDataEditHandler.bind(null, subtitle.id)}
@@ -101,8 +108,7 @@ const AddSubtitles = (props) => {
     setSubtitleModalShown(false);
   };
   const submitHandler = () => {
-    console.log(subtitles);
-    //props.onConfirm(subtitles);
+    props.onConfirm(subtitles);
   };
   return (
     <Fragment>
@@ -128,12 +134,10 @@ const AddSubtitles = (props) => {
                 <div className="flex-col min-w-[80%]">
                   {displayedSubtitles}
                   {subtitleModalShown && (
-                    <Modal onClick={hideSubtitleModal}>
-                      <SubtitleForm
-                        onCancel={hideSubtitleModal}
-                        onConfirm={addSubtitleHandler}
-                      ></SubtitleForm>
-                    </Modal>
+                    <SubtitleForm
+                      onCancel={hideSubtitleModal}
+                      onConfirm={addSubtitleHandler}
+                    ></SubtitleForm>
                   )}
                 </div>
               </div>

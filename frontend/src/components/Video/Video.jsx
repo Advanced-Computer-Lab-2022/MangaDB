@@ -21,7 +21,7 @@ const Video = (props) => {
 
   //needed to get the video duration from the url in case of Addcourse
   const onReadyHandler = () => {
-    props.getSourceDuration((playerRef.current.getDuration() / 60).toFixed(1));
+    props.getSourceDuration((playerRef.current.getDuration() / 60).toFixed(0));
   };
 
   return (

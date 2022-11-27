@@ -9,6 +9,7 @@ const SingleSubtitle = (props) => {
   return (
     <Fragment>
       <Subtitle
+        onRemoveSourceHandler={props.onRemoveSourceHandler}
         onAdd={addSourceHandler}
         onSourceEdit={props.onSourceEdit}
         onSubtitleEdit={props.onSubtitleEdit}

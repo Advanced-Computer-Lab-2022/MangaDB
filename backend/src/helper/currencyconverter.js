@@ -21,7 +21,7 @@ exports.convertCurrency = async (fromCountry, toCountry) => {
     to: toCountryCurrency,
   });
   rate = await converter.rates();
-  return { rate, symbol };
+  return { rate, symbol, toCountryCurrency };
 };
 
 exports.getCountryCode = async (country) => {

@@ -4,7 +4,7 @@ const auth = require('../middleware/auth');
 
 router.post('/adduser', userController.createUser);
 
-router.get('/getusers', userController.getAllUsers);
+router.get('/getusers',userController.getAllUsers);
 
 
 router.delete('/deleteuser/:id', userController.deleteUser);

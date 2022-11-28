@@ -8,8 +8,10 @@ router.get("/searchcourses/:id", courseController.searchCoursesByInstructor);
 
 router.put("/updatecourse/:id", courseController.updateCourse);
 
-router.patch("/updateuser/:id", instructorController.updateUser);
+router.patch("/updateuser/:id", instructorController.updateUser);//not needed
 
-router.patch("/rate/:id", instructorController.rateInstructor);
+router.post("/rate/:id", instructorController.rateInstructor);
+
+router.patch("/rate/:id", instructorController.editRating);
 
 module.exports = router;

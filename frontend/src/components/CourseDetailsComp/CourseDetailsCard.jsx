@@ -5,7 +5,7 @@ const size = 5;
 
 const CourseDetailsCard = (props) => {
   return (
-    <div className="w-5/12 shadow-lg flex">
+    <div className="w-6/12 shadow-lg flex">
       <div className="w-6 bg-darkBlue"></div>
       <div className="px-4 py-2 space-y-2 bg-white w-full rounded-r-lg">
         <div className="flex justify-between items-center">
@@ -31,8 +31,7 @@ const CourseDetailsCard = (props) => {
         <div className="font-light text-base text-gray-500">
           {props.instructorName} . {props.subject}
         </div>
-        {/* line clamp 2 */}
-        <div className="text-xs font-light">{props.courseDescription}</div>
+        <div className="text-xs font-light line-clamp-2">{props.courseDescription}</div>
         <div className="flex justify-between items-center w-full">
           <div className="flex">
             <Stars size={size} rating={props.rating} />
@@ -47,13 +46,11 @@ const CourseDetailsCard = (props) => {
                 {props.currencySymbol.toString()}
               </div>
             )}
-            {/* {props.discountedPrice === 0 ? "FREE" : props.discountedPrice}
-              {props.currencySymbol.toString()} */}
             {props.discountedPrice === 0 && (
               <div className="text-green-600">FREE</div>
             )}
             {props.discountedPrice != 0 && (
-              <div className="">
+              <div>
                 {props.discountedPrice}
                 {props.currencySymbol.toString()}
               </div>

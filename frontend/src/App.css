@@ -46,3 +46,7 @@
     transform: rotate(360deg);
   }
 }
+
+/* .AccordionOpenParent > div {
+  height: 40px !important;
+} */

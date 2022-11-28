@@ -1,23 +1,23 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        'lightGrey': "#F6F6F6",
-        'veryLightBlue' : "#D0DFF0",
-        'lightBlue': "#C6D8EC",
-        'primaryBlue': "#74a0d1",
-        'darkBlue': "#3970AC",
-      }
+        lightGrey: "#F6F6F6",
+        veryLightBlue: "#D0DFF0",
+        lightBlue: "#C6D8EC",
+        primaryBlue: "#74a0d1",
+        darkBlue: "#3970AC",
+      },
+      screens: {
+        mob: { max: "660px" },
+      },
     },
     fontFamily: {
-
-      'display': ['Oswald'],
-      'body': ['"Open Sans"'],
+      display: ["Oswald"],
+      body: ['"Open Sans"'],
+    },
   },
-  plugins: [require('@tailwindcss/forms'),],
-}
-}
+  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/line-clamp")],
+};

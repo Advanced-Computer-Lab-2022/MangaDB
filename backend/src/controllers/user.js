@@ -360,10 +360,10 @@ exports.changePassword = async (req, res) => {
     };
 
     exports.openSource = async (req, res) => {
-      const id = req.params.id;
-      const { courseId, sourceId } = req.body;
+      const courseId = req.params.id;
+      const { userId, sourceId } = req.body;
       try {
-        const userData =await user.findById(id);
+        const userData =await user.findById(userId);
         if (!userData) {
           res.status(404).send({
             message: `User was not found!`,

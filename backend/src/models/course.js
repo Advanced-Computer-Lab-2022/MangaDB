@@ -11,7 +11,6 @@ const courseSchema = new mongoose.Schema({
   },
   totalMins: {
     type: Number,
-    required: true,
   },
   courseImage: {
     type: String,
@@ -36,6 +35,12 @@ const courseSchema = new mongoose.Schema({
     type: Number,
     default: 5,
   },
+  finalExam: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Exam",
+    required:true,
+  }
+  ,
   reviews: {
     type: [
       {
@@ -114,19 +119,9 @@ const courseSchema = new mongoose.Schema({
                 type: Number,
               },
 
-              exam: {
-                type: {
-                  exercises: {
-                    type: [
-                      {
-                        question: { type: String },
-                        answer: { type: String },
-                        options: { type: [String] },
-                      },
-                    ],
-                  },
-                  totalGrade: { type: Number },
-                },
+              quiz: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Exam",
               },
               link: {
                 type: String,

@@ -1,8 +1,7 @@
 const course = require("../models/course");
 const user = require("../models/user");
 const currencyConverter = require("../helper/currencyconverter");
-const { json } = require("body-parser");
-const request = require("../models/request");
+
 
 exports.getAllCourses = async (req, res, next) => {
   const currentPage = req.query.page || 1;
@@ -304,6 +303,7 @@ exports.rateCourse = async (req, res, next) => {
     });
   }
 };
+
 exports.editRating = async (req, res, next) => {
   const courseId = req.params.id;
   const userId = req.body.userId;

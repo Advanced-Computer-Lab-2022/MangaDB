@@ -58,7 +58,6 @@ const userSchema = new mongoose.Schema({
         },
         exams: {
           type: [ mongoose.Schema.Types.ObjectId],
-          ref: "Exam",
         },
       },
     ],

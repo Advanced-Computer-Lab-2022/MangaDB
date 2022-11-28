@@ -38,7 +38,7 @@ function App() {
   
   //return  <Video isVisible={false} link="https://youtu.be/BgP30ML_Tc0"></Video>
 //  return <ExamManager></ExamManager>
-//return <AddCoursePage></AddCoursePage>
+// return <AddCoursePage></AddCoursePage>
   return <CourseViewPage></CourseViewPage>
 }
 export default App;

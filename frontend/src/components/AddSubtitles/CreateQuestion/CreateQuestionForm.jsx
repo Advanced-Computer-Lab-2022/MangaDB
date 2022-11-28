@@ -27,8 +27,8 @@ const CreateQuestionForm = (props) => {
   var defaultChoice;
   var defaultsolution;
   if (!props.empty) {
-    titleDefaultState = props.examState.QuestionDescription
-      ? props.examState.QuestionDescription
+    titleDefaultState = props.examState.question
+      ? props.examState.question
       : "";
     defaultChoice = props.examState.choices
       ? props.examState.choices
@@ -45,7 +45,7 @@ const CreateQuestionForm = (props) => {
   const submitHandler = () => {
     //before creating a new button can call an alert to show if not all fields have been entered
     var QuestionData = {
-      QuestionDescription: "",
+      question: "",
       choices: defaultChoicesState,
       solution: { id: 1, name: "First Choice" },
     };
@@ -53,7 +53,7 @@ const CreateQuestionForm = (props) => {
   };
   const solutionOnChangeHandler = (data) => {
     var QuestionData = {
-      QuestionDescription: titleDefaultState,
+      question: titleDefaultState,
       choices: defaultChoice,
       solution: data,
     };
@@ -75,7 +75,7 @@ const CreateQuestionForm = (props) => {
       }
     }
     var QuestionData = {
-      QuestionDescription: titleDefaultState,
+      question: titleDefaultState,
       choices: newChoiceState,
       solution: defaultsolution,
     };
@@ -84,7 +84,7 @@ const CreateQuestionForm = (props) => {
 
   const titleChangeHandler = (event) => {
     var QuestionData = {
-      QuestionDescription: event.target.value,
+      question: event.target.value,
       choices: defaultChoice,
       solution: defaultsolution,
     };

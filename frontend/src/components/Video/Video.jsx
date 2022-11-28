@@ -32,6 +32,7 @@ const Video = (props) => {
         playing={playing}
         ref={playerRef}
         url={embeddedURL}
+        onPlay={props.onWatch}
         onReady={onReadyHandler}
       />
       {/* <SecondaryButton onClick={onClickhandler}> Notes</SecondaryButton> */}

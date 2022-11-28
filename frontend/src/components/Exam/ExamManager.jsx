@@ -14,134 +14,112 @@ const ExamManager = (props) => {
   //take the answers as props
   //take the exam questions w/o answers as props
   //take the student's answers if applicable as props
-  const examQuestionsWithoutAnswers = [
+
+  //this will be  props.exam
+  const examQuestionsWithAnswers = [
     {
-      description: "How do you write react components",
+      question: "How do you write react components",
+      solution: "1",
       choices: [
         {
-          choiceID: "A",
+          choiceId: "1",
           description: "This is the First choice for this question",
         },
         {
-          choiceID: "B",
+          choiceId: "2",
           description: "This is the Second choice for this question",
         },
         {
-          choiceID: "C",
+          choiceId: "3",
           description: "This is the Third choice for this question",
         },
         {
-          choiceID: "D",
+          choiceId: "4",
           description: "This is the Fourth choice for this question",
         },
       ],
     },
     {
-      description: "this is the second question ",
+      question: "this is the second question ",
+      solution: "2",
       choices: [
         {
-          choiceID: "A",
+          choiceId: "1",
           description: "This is the First choice for this question",
         },
         {
-          choiceID: "B",
+          choiceId: "2",
           description: "This is the Second choice for this question",
         },
         {
-          choiceID: "C",
+          choiceId: "3",
           description: "This is the Third choice for this question",
         },
         {
-          choiceID: "D",
+          choiceId: "4",
           description: "This is the Fourth choice for this question",
         },
       ],
     },
     {
-      description: "How do you write react components 2",
+      question: "How do you write react components 2",
+      solution: "3",
       choices: [
         {
-          choiceID: "A",
+          choiceId: "1",
           description: "This is the First choice for this question",
         },
         {
-          choiceID: "B",
+          choiceId: "2",
           description: "This is the Second choice for this question",
         },
         {
-          choiceID: "C",
+          choiceId: "3",
           description: "This is the Third choice for this question",
         },
         {
-          choiceID: "D",
+          choiceId: "4",
           description: "This is the Fourth choice for this question",
         },
       ],
     },
     {
-      description: "this is the second question 3 ",
+      question: "this is the second question 3 ",
+      solution: "4",
       choices: [
         {
-          choiceID: "A",
+          choiceId: "1",
           description: "This is the First choice for this question",
         },
         {
-          choiceID: "B",
+          choiceId: "2",
           description: "This is the Second choice for this question",
         },
         {
-          choiceID: "C",
+          choiceId: "3",
           description: "This is the Third choice for this question",
         },
         {
-          choiceID: "D",
+          choiceId: "4",
           description: "This is the Fourth choice for this question",
         },
       ],
-    },
-  ];
-  const ExamAnswers = [
-    {
-      questionID: 1,
-      answer: "A",
-    },
-    {
-      questionID: 2,
-      answer: "B",
-    },
-    {
-      questionID: 3,
-      answer: "C",
-    },
-    {
-      questionID: 4,
-      answer: "D",
-    },
-  ];
-  const studentAnswers = [
-    {
-      questionID: 1,
-      answer: "A",
-    },
-    {
-      questionID: 2,
-      answer: "C",
-    },
-    {
-      questionID: 3,
-      answer: "B",
-    },
-    {
-      questionID: 4,
-      answer: "A",
     },
   ];
 
+  //this will be props.studentAnswers
+  const studentAnswers = ["4", "3", "2", "1"];
+
+
+  var solvedBefore = true;
+  if (studentAnswers.length === 0) {
+    solvedBefore = false;
+  }
   return (
     <Exam
-      exam={examQuestionsWithoutAnswers}
-      answers={ExamAnswers}
+      exam={examQuestionsWithAnswers}
       studentAnswers={studentAnswers}
+      solvedBefore={solvedBefore}
     ></Exam>
   );
 };

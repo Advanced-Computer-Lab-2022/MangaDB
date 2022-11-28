@@ -38,10 +38,10 @@ const SubtitleAccordion = (props) => {
         duration="5"
         type={source.sourceType}
         link = {source.link}
+        id={source._id}
       />
     );
   });
-  console.log(props.sources);
   return (
     <Accordion icon={icon} open={isOpened} animate={customAnimation}>
       <AccordionHeader

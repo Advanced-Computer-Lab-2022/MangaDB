@@ -9,7 +9,13 @@ const SubtitleBody = (props) => {
   // onClick
 
   const clickHandler = () =>{
-    props.onClick(props.link);
+    var source = {
+      _id:props.id,
+      link:props.link,
+      sourceType:props.type,
+      description:props.description
+    }
+    props.onClick(source);
   }
   return (
     <div onClick={clickHandler} className="py-2 flex justify-between cursor-pointer">

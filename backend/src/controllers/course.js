@@ -170,12 +170,6 @@ exports.createCourse = async (req, res, next) => {
     reviews: req.body.reviews,
     requirements: req.body.requirements,
     views: req.body.views,
-<<<<<<< HEAD
-    certificate: req.body.certificate,
-    subtitles: req.body.subtitles,
-  });
-console.log(newCourse);
-=======
     summary: req.body.summary,
     certificate: req.body.certificate,
     subtitles: req.body.subtitles,
@@ -191,7 +185,6 @@ console.log(newCourse);
   }
   newCourse.totalMins=courseDuration;
 
->>>>>>> 99ada55042a881372a2461eaf2e4eeddbc03a0c7
   await newCourse
     .save()
     .then((createdCourse) => {

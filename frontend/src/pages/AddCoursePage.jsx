@@ -80,6 +80,7 @@ const AddCoursePage = (props) => {
     //     }
     //   )
     //   .then((res) => {});
+    
   };
   return (
     <Fragment>

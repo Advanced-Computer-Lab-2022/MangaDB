@@ -9,7 +9,7 @@ const courseSchema = new mongoose.Schema({
   courseDescription: {
     type: String,
   },
-  totalHours: {
+  totalMins: {
     type: Number,
     required: true,
   },
@@ -89,9 +89,7 @@ const courseSchema = new mongoose.Schema({
   subtitles: {
     type: [
       {
-        title: {
-          type: String,
-        },
+       
         subtitleDuration: {
           type: Number,
         },
@@ -110,7 +108,7 @@ const courseSchema = new mongoose.Schema({
             {
               sourceType: {
                 type: String,
-                enum: ["Video", "Quiz", "Text"],
+                enum: ["Video", "Quiz"],
               },
               sourceDuration: {
                 type: Number,

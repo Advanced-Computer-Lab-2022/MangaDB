@@ -123,7 +123,7 @@ exports.login = async (req, res) => {
           res.status(401).send({ message: "Invalid Password!" });
         } else {
           const token = jwt.sign(
-            { _id: data._id, userName: data.userName, role: data.role },
+            { id: data._id, userName: data.userName, role: data.role },
             process.env.TOKEN_SECRET
           );
           res.cookie("token", token, {

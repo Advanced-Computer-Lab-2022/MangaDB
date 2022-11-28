@@ -82,7 +82,7 @@ const Exam = (props) => {
     setExamState(newExamState);
   };
   const onSubmitHandler = () => {
-    console.log(examState);
+    props.onSolveExamHandler(examState);
   };
   var SolvedBefore;
   for (var j = 0; j < examState.length; j++) {

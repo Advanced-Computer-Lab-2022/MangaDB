@@ -34,5 +34,8 @@
     "react": "^18.2.0",
     "stripe": "^11.1.0",
     "youtube-embed": "^1.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/line-clamp": "^0.4.2"
   }
 }

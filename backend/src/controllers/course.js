@@ -159,7 +159,6 @@ exports.createCourse = async (req, res, next) => {
   const newCourse = new course({
     courseTitle: req.body.courseTitle,
     courseDescription: req.body.courseDescription,
-    totalMins: req.body.totalMins,
     coursePrice: req.body.coursePrice,
     courseImage: req.body.courseImage,
     subject: req.body.subject,
@@ -175,6 +174,16 @@ exports.createCourse = async (req, res, next) => {
     certificate: req.body.certificate,
     subtitles: req.body.subtitles,
   });
+  let subDuration=0;
+  let courseDuration=0;
+  for(let i=0;i<newCourse.subtitles.length;i++){
+    for(let j=0;j<newCourse.subtitles[i].sources.length;j++){
+     subDuration+=newCourse.subtitles[i].sources[j].sourceDuration;
+    }
+    courseDuration+=subDuration;
+    newCourse.subtitles[i].subtitleDuration=subDuration;
+  }
+  newCourse.totalMins=courseDuration;
 
   await newCourse
     .save()
@@ -523,3 +532,4 @@ exports.openCourse = async (req, res, next) => {
     message: "You do not have access to this course!",
   });
 };
+

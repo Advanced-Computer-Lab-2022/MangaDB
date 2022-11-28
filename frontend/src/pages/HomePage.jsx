@@ -24,7 +24,7 @@ const HomePage = () => {
     console.log(e);
   setCountryCode(e)
   }
-  console.log(displayedCourses)
+  console.log(displayedCourses);
   const courses = displayedCourses.map((course) => {
     return (
       
@@ -34,13 +34,15 @@ const HomePage = () => {
         instructorName={course.instructorName}
         subject={course.subject}
         level="Advanced"
-        price={course.discountedPrice}
+        coursePrice={course.coursePrice}
+        discountedPrice={course.discountedPrice}
+        discount={course.discount}
         rating={course.rating}
         currencySymbol={currencySymbol}
       ></CourseCard>
     );
   });
-  
+
   return (
     <Animate to="1" from="0" attributeName="opacity">
       <NavBar onChange={onChangeHandler}></NavBar>
@@ -59,13 +61,13 @@ const HomePage = () => {
             <img className="w-96" src={homeImage} alt="" />
           </div>
         </div>
-        <div className="flex justify-center ">
-          <Search className="justify-items-center" />
+        <div className="flex justify-center">
+          <Search />
         </div>
-        <div className="font-bold text-2xl mt-8 flex justify-start mx-12 w-max">
+        <div className="font-bold text-2xl mt-8 mb-4 flex justify-start mx-12 w-max">
           Most Popular:
         </div>
-        <div className="grid grid-cols-4 justify-start items-center my-8 mx-12 ">{courses}</div>
+        <div className="flex justify-around flex-wrap">{courses}</div>
       </div>
     </Animate>
   );

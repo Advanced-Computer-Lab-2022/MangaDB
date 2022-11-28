@@ -13,7 +13,7 @@ const Search = (props) => {
   };
   return (
     <div
-      className={` right-3 min-w-[60vw] md:min-w-[40vw] lg:min-w-[40vw] xl:min-w-[47vw] max-w-4xl ${props.className} `}
+      className={` right-3 w-[60vw] max-w-4xl ${props.className} `}
     >
       <form onSubmit={onSubmitHandler}>
         <label
@@ -22,8 +22,8 @@ const Search = (props) => {
         >
           Search
         </label>
-        <div className="relative">
-          <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+        <div className="flex w-full relative">
+          <div className="flex inset-y-0 left-0 items-center pl-3 pointer-events-none absolute">
             <svg
               aria-hidden="true"
               className="w-5 h-5 text-gray-500"
@@ -43,28 +43,20 @@ const Search = (props) => {
           <input
             type="search"
             id="default-search"
-            className="outline-none hidden md:block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-300 focus:border-blue-300  "
+            className="outline-none p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-veryLightBlue focus:border-veryLightBlue  "
             placeholder="Search by course name, category, or instructor"
             ref={inputRef}
-          ></input>
-          {/* <input
-            type="search"
-            id="default-search"
-            className=" outline-none md:hidden block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-300 focus:border-blue-300  "
-            placeholder="Search by..."
-            required
-          ></input> */}
-          {/* <button
-            type="submit"
-            className="text-white absolute right-2.5 bottom-2.5 bg-primaryBlue hover:bg-blue-800 hover:ease-in-out  ease-in-out focus:ring-4 focus:ease-in-out duration-300 focus:outline-none focus:ring-blue-300  font-medium rounded-lg text-sm px-4 py-2"
           >
-            Search
-          </button>  */}
+            
+          </input>
+          <div className="mt-2 absolute right-3">
           <SecondaryButton
-            className="absolute right-2.5 bottom-2"
+            className=""
             text="Search"
             type="submit"
           />
+          </div>
+          
         </div>
       </form>
     </div>

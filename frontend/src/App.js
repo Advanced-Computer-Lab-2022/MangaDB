@@ -23,9 +23,12 @@ import IntructorCoursePage from "./pages/InstructorCoursesPage";
 import AddCoursePage from "./pages/AddCoursePage";
 import AdminAddNewUser from "./pages/AdminAddNewUser";
 import InstructorCoursesPage from "./pages/InstructorCoursesPage";
+import CourseDetailsCardNew from "./components/Course/CourseDetailsCard";
+import CourseDetailsPageNew from "./components/CourseDetailsComp/CourseDetailsPageNew";
 
 function App() {
-  return  <AdminAddNewUser />
+  return <CourseDetailsPageNew />
+  //return <HomePage />;
 }
 
 export default App;

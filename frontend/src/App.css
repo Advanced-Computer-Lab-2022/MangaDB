@@ -28,6 +28,16 @@
   color: #61dafb;
 }
 
+/* .subtitle-accordion-body div {
+  height: 100% !important;
+} */
+/* .subtitle-accordion-body:has( div) {
+  height: 100%;
+} */
+ .subtitleInfo {
+  height: 100% !important;
+ }
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

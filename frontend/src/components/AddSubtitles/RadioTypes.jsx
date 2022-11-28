@@ -2,8 +2,8 @@ import { useState } from "react";
 import { RadioGroup} from "@headlessui/react";
 
 const options = [
-  { name: "video", available: true },
-  { name: "file", available: true },
+  { name: "Video", available: true },
+  { name: "Quiz", available: true },
 ];
 
 function classNames(...classes) {
@@ -11,7 +11,9 @@ function classNames(...classes) {
 }
 
 const RadioTypes = (props) => {
-  const [checked, setChecked] = useState(options[0]);
+
+  const check =props.type==='Video' ? options[0]:options[1];
+  const [checked, setChecked] = useState(check);
 
 const changeHandler  = (event) => {
     props.onChange(event)

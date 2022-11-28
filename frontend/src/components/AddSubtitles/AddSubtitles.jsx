@@ -1,13 +1,11 @@
 import { Fragment, useState } from "react";
-
 import SecondaryButton from "../SecondaryButton";
-import Modal from "../UI/Modal";
 import SubtitleForm from "./SubtitleForm";
 import SingleSubtitle from "./SingleSubtitle";
+import Modal from "../UI/Modal";
 const AddSubtitles = (props) => {
   const [subtitles, setSubtitles] = useState([]);
   const [subtitleModalShown, setSubtitleModalShown] = useState(false);
-
   const onAddSourceHandler = (subtitleId, data) => {
     var newSubtitles = [];
     for (var i = 0; i < subtitles.length; i++) {
@@ -20,15 +18,71 @@ const AddSubtitles = (props) => {
     }
     setSubtitles(newSubtitles);
   };
+  const onSourceDataEdithandler = (subtitleId, sourceId, newData) => {
+    var newSubtitles = [];
+    for (var i = 0; i < subtitles.length; i++) {
+      if (subtitles[i].id === subtitleId) {
+        newSubtitles.push(subtitles[i]);
+        for (var j = 0; j < newSubtitles[i].sources.length; j++) {
+          if (j === +sourceId) {
+            newSubtitles[i].sources[j] = newData;
+          }
+        }
+        continue;
+      }
+      newSubtitles.push(subtitles[i]);
+    }
+    setSubtitles(newSubtitles);
+  };
+  const onRemoveSourceHandler = (subtitleId, sourceId) => {
+    console.log(subtitleId, sourceId);
+    const newSubtitles = [...subtitles];
+    newSubtitles[subtitleId].sources.splice(sourceId, 1);
+    setSubtitles(newSubtitles);
+  };
+
+  const onSubtitleDataEditHandler = (subtitleId, newData) => {
+    var newSubtitles = [];
+    for (var i = 0; i < subtitles.length; i++) {
+      if (subtitles[i].id === subtitleId) {
+        subtitles[i].subtitle = newData.title;
+        subtitles[i].shortDescription = newData.shortDescription;
+        subtitles[i].introVideoUrl = newData.introVideoUrl;
+        newSubtitles.push(subtitles[i]);
+        continue;
+      }
+      newSubtitles.push(subtitles[i]);
+    }
+    setSubtitles(newSubtitles);
+  };
+
+  const onRemoveSubtitle = (subtitleId) => {
+    var newSubtitles = [];
+    for (var i = 0; i < subtitles.length; i++) {
+      if (subtitles[i].id === subtitleId) {
+        continue;
+      }
+      newSubtitles.push(subtitles[i]);
+    }
+    setSubtitles(newSubtitles);
+  };
+
   const displayedSubtitles = subtitles.map((subtitle) => {
-    //still didnt handle the description and the video
+    const SubtitleIntroUrl = subtitle.introVideoUrl;
+    const shortDescription = subtitle.shortDescription;
     const subtitleTitle = subtitle.subtitle;
     const sources = subtitle.sources;
     return (
       <SingleSubtitle
+        onRemoveSourceHandler={onRemoveSourceHandler.bind(null, subtitle.id)}
+        onSourceEdit={onSourceDataEdithandler.bind(null, subtitle.id)}
         onAdd={onAddSourceHandler.bind(null, subtitle.id)}
+        onSubtitleEdit={onSubtitleDataEditHandler.bind(null, subtitle.id)}
+        onSubtitleRemove={onRemoveSubtitle.bind(null, subtitle.id)}
         title={subtitleTitle}
         sources={sources}
+        shortDescription={shortDescription}
+        introVideoUrl={SubtitleIntroUrl}
       ></SingleSubtitle>
     );
   });
@@ -40,13 +94,11 @@ const AddSubtitles = (props) => {
   };
 
   const addSubtitleHandler = (subtitleData) => {
-    //logic for the URL and the short Description not handled yet
-
     const newSubtitle = {
       id: subtitles.length,
       subtitle: subtitleData.title,
-      introductionVideo: subtitleData.videoURL,
-      description: subtitleData.description,
+      introVideoUrl: subtitleData.videoURL,
+      shortDescription: subtitleData.description,
       sources: [],
     };
 
@@ -60,15 +112,6 @@ const AddSubtitles = (props) => {
   };
   return (
     <Fragment>
-      {subtitleModalShown && (
-        <Modal onClick={hideSubtitleModal}>
-          <SubtitleForm
-            onCancel={hideSubtitleModal}
-            onConfirm={addSubtitleHandler}
-          ></SubtitleForm>
-        </Modal>
-      )}
-
       <section aria-labelledby="notes-title">
         <div className="bg-white shadow sm:rounded-lg sm:overflow-hidden">
           <div className="divide-y divide-gray-300">
@@ -88,7 +131,15 @@ const AddSubtitles = (props) => {
             </div>
             <div className="ml-4 px-4 py-6 sm:px-6">
               <div className="flex space-x-2 justify-center">
-                <div className="flex-col min-w-[80%]">{displayedSubtitles}</div>
+                <div className="flex-col min-w-[80%]">
+                  {displayedSubtitles}
+                  {subtitleModalShown && (
+                    <SubtitleForm
+                      onCancel={hideSubtitleModal}
+                      onConfirm={addSubtitleHandler}
+                    ></SubtitleForm>
+                  )}
+                </div>
               </div>
             </div>
           </div>

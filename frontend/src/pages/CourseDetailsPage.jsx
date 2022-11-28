@@ -21,9 +21,11 @@ import SecondaryButton from "../components/SecondaryButton";
 import courseImage from "../Assets/Images/react.png";
 import NavBar from "../components/NavBar";
 
-const courseId = "63601b56a655f59f507df854";
 
 const size = 3;
+
+const courseId = "637602ccaf6170543959970d";
+
 
 const sources = [
   { title: "title1" },
@@ -171,8 +173,8 @@ const CourseDetailsPage = (props) => {
       <div className="min-h-full">
         <main className="">
           {/* Page header */}
-          <div className="bg-lightBlue py-14 h-full w-full mx-auto px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 ">
-            <CourseDetailsCard {...courseDetails} level="Advanced" />
+          <div className="bg-lightBlue py-4 px-4">
+            <CourseDetailsCard {...courseDetails} level="Advanced" currencySymbol="$" />
           </div>
 
           <div className="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">

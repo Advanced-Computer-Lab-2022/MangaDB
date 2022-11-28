@@ -5,42 +5,52 @@ import Animate from "react-smooth/lib/Animate";
 import NavBar from "../components/NavBar";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { motion } from "framer-motion";
 import CourseCard from "../components/Course/CourseCard";
 const HomePage = () => {
   const [displayedCourses, setDisplayedCourses] = useState([]);
   const [currencySymbol, setCurrencySymbol] = useState("");
   const [countryCode, setCountryCode] = useState("US");
 
-  
+  const appear = {
+    opacity: 0,
+    transition: {
+      duration: 1,
+      yoyo: Infinity,
+    },
+  };
   useEffect(() => {
-    axios.get("http://localhost:3000/course/?CC=".concat(countryCode)).then((res) => {
-      setDisplayedCourses(res.data.courses);
-      setCurrencySymbol(res.data.symbol);
-    });
+    axios
+      .get("http://localhost:3000/course/?CC=".concat(countryCode))
+      .then((res) => {
+        setDisplayedCourses(res.data.courses);
+        setCurrencySymbol(res.data.symbol);
+      });
   }, [countryCode]);
+  
   //should handle the catch with error state
-
   const onChangeHandler = (e) => {
     console.log(e);
   setCountryCode(e)
   }
-  console.log(displayedCourses)
+  console.log(displayedCourses);
   const courses = displayedCourses.map((course) => {
     return (
-      
       <CourseCard
         duration={course.totalHours}
         title={course.courseTitle}
         instructorName={course.instructorName}
         subject={course.subject}
         level="Advanced"
-        price={course.discountedPrice}
+        coursePrice={course.coursePrice}
+        discountedPrice={course.discountedPrice}
+        discount={course.discount}
         rating={course.rating}
         currencySymbol={currencySymbol}
       ></CourseCard>
     );
   });
-  
+
   return (
     <Animate to="1" from="0" attributeName="opacity">
       <NavBar onChange={onChangeHandler}></NavBar>
@@ -53,19 +63,26 @@ const HomePage = () => {
             <p>
               Learn at the comfort of your own{" "}
               <span className="text-primaryBlue">home</span>
+              <motion.span
+
+                initial={{ opacity: 1 }}
+                animate={appear}
+              >
+                ...
+              </motion.span>
             </p>
           </div>
           <div className="md:block hidden">
             <img className="w-96" src={homeImage} alt="" />
           </div>
         </div>
-        <div className="flex justify-center ">
-          <Search className="justify-items-center" />
+        <div className="flex justify-center">
+          <Search />
         </div>
-        <div className="font-bold text-2xl mt-8 flex justify-start mx-12 w-max">
+        <div className="font-bold text-2xl mt-8 mb-4 flex justify-start mx-12 w-max">
           Most Popular:
         </div>
-        <div className="grid grid-cols-4 justify-start items-center my-8 mx-12 ">{courses}</div>
+        <div className="flex justify-around flex-wrap">{courses}</div>
       </div>
     </Animate>
   );

@@ -22,10 +22,21 @@ import AddSubtitles from "./components/AddSubtitles/AddSubtitles"
 import IntructorCoursePage from "./pages/InstructorCoursesPage";
 import AddCoursePage from "./pages/AddCoursePage";
 import AdminAddNewUser from "./pages/AdminAddNewUser";
+import ExamManager from "./components/Exam/ExamManager"
 import InstructorCoursesPage from "./pages/InstructorCoursesPage";
+import CourseDetailsCardNew from "./components/Course/CourseDetailsCard";
+import CourseDetailsPageNew from "./components/CourseDetailsComp/CourseDetailsPageNew";
 
 function App() {
-  return  <AdminAddNewUser />
-}
+  return <CourseDetailsPageNew />
+  //return <HomePage />;
 
+  
+//   const validatedLink =  validateYouTubeUrl("https://youtu.be/BgP30ML_Tc0");
+//   console.log(validatedLink)
+  
+  //return  <Video isVisible={false} link="https://youtu.be/BgP30ML_Tc0"></Video>
+//  return <ExamManager></ExamManager>
+//return <AddCoursePage></AddCoursePage>
+}
 export default App;

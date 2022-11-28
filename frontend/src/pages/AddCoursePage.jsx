@@ -4,7 +4,7 @@ import NavBar from "../components/NavBar";
 import CreateCourseForm from "../components/CreateCourse/CreateCourseForm";
 import StepsBar from "../components/CreateCourse/StepsBar";
 import AddSubtitles from "../components/AddSubtitles/AddSubtitles";
-
+import CreateExam from "../components/Exam/CreateExam/CreateExam";
 const AddCoursePage = (props) => {
   const [steps, setSteps] = useState([
     {
@@ -19,10 +19,16 @@ const AddCoursePage = (props) => {
       status: "",
       description: "fill the course content",
     },
+    {
+      name: "Course Exam",
+      id: 3,
+      status: "",
+      description: "Create a course Exam",
+    },
   ]);
   const [data, setData] = useState({});
   const onSaveHandler = (data) => {
-    setData({...data,totalHours:10,coursePrice:10});
+    setData({ ...data, totalHours: 10, coursePrice: 10 }); //remove the totalHours and the price
     var newSteps = [];
     var flag = false;
     for (var i = 0; i < steps.length; i++) {
@@ -33,24 +39,48 @@ const AddCoursePage = (props) => {
         flag = true;
       } else if (flag) {
         newSteps.push({ ...steps[i], status: "current" });
+        flag = false;
       }
     }
     setSteps(newSteps);
   };
-  const onSubmitHandler = (secondStepData) => {
-    var sentData = { ...data, subtitles: secondStepData };
-    console.log(sentData);
-    axios
-      .post(
-        "http://localhost:3000/instructor/addcourse/635bf48c56673b3f80ac2dff",
-        sentData,
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-          },
-        }
-      )
-      .then((res) => {});
+  const secondDataHandler = (secondStepData) => {
+    var secondData = { ...data, subtitles: secondStepData };
+    setData(secondData);
+    var newSteps = [];
+    var flag = false;
+    for (var i = 0; i < steps.length; i++) {
+      if ((steps[i].status === "") & !flag) {
+        newSteps.push(steps[i]);
+      } else if (steps[i].status === "current") {
+        newSteps.push({ ...steps[i], status: "complete" });
+        flag = true;
+      } else if (flag) {
+        newSteps.push({ ...steps[i], status: "current" });
+        flag = false;
+      }
+      else if (steps[i].status === "complete") {
+        newSteps.push({ ...steps[i]});
+      }
+    }
+    setSteps(newSteps);
+  };
+
+  const submiHandler = (thirdData) => {
+    var submitData = {...data , courseFinalExam: thirdData}
+    console.log(submitData);
+    // axios
+    //   .post(
+    //     "http://localhost:3000/instructor/addcourse/635bf48c56673b3f80ac2dff",
+    //     submitData,
+    //     {
+    //       headers: {
+    //         "Access-Control-Allow-Origin": "*",
+    //       },
+    //     }
+    //   )
+    //   .then((res) => {});
+    
   };
   return (
     <Fragment>
@@ -60,7 +90,10 @@ const AddCoursePage = (props) => {
         <CreateCourseForm onSave={onSaveHandler}></CreateCourseForm>
       )}
       {steps[1].status === "current" && (
-        <AddSubtitles onConfirm={onSubmitHandler}></AddSubtitles>
+        <AddSubtitles onConfirm={secondDataHandler}></AddSubtitles>
+      )}
+      {steps[2].status === "current" && (
+        <CreateExam onSubmit={submiHandler}></CreateExam>
       )}
     </Fragment>
   );

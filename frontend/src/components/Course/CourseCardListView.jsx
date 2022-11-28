@@ -11,7 +11,7 @@ const CourseCardListView = (props) => {
     <div class="relative w-4/5 flex items-center bg-white border border-gray-200 shadow-md rounded-md">
       <img class="max-w-xs h-full" src={reactImg} alt=""></img>
 
-      <div className="px-5 py-3 space-y-2">
+      <div className="px-5 py-3 space-y-2 w-full">
         <h5 className="flex text-lg items-center font-bold tracking-tight text-gray-900">
           <p className="pr-3">{props.title} </p>
           {props.level === "Beginner" && (
@@ -30,9 +30,9 @@ const CourseCardListView = (props) => {
             </div>
           )}
         </h5>
-        <p className=" text-xs font-normal text-gray-500">
+        <div className=" text-xs font-normal text-gray-500 w-full">
           {props.description}
-        </p>
+        </div>
 
         <div class="text-lightBlue flex justify-items-center text-[9px]">
           <Stars size={size} rating={props.rating} />
@@ -47,13 +47,20 @@ const CourseCardListView = (props) => {
           <AccessTimeIcon className="-mt-[3px]" fontSize="inherit" />{" "}
           {props.duration} {"hrs"}
           <div className="flex justify-end items-center">
-            <h5 class="absolute bottom-3 right-32 text-3xl font-bold tracking-tight text-gray-900">
-              {props.price} $
+            {props.discount > 0 && (
+              <div className="line-through decoration-1 text-lg font-thin mr-4">
+                {props.coursePrice}$
+              </div>
+            )}
+            <h5 class="text-2xl font-bold tracking-tight text-gray-900">
+              {props.discountedPrice === 0 && (
+                <div className="text-green-600 mr-6">FREE</div>
+              )}
+              {props.discountedPrice != 0 && (
+                <div className="mr-6">{props.discountedPrice}$</div>
+              )}
             </h5>
-            <SecondaryButton
-              text="View"
-              className="absolute right-7 bottom-2 text-lg font-bold"
-            />
+            <SecondaryButton text="View" className="text-md font-bold" />
           </div>
         </div>
       </div>

@@ -6,6 +6,7 @@ const CourseContent = (props) => {
   const subtitles = props.content.map((subtitle) => {
     return (
       <SubtitleAccordion
+        onClick ={props.onClick}
         title={subtitle.description}
         duration={subtitle.subtitleDuration}
         sources={subtitle.sources}

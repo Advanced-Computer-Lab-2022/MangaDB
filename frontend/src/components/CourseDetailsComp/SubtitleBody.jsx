@@ -8,11 +8,14 @@ const SubtitleBody = (props) => {
   // type
   // onClick
 
+  const clickHandler = () =>{
+    props.onClick(props.link);
+  }
   return (
-    <div className="py-2 flex justify-between">
+    <div onClick={clickHandler} className="py-2 flex justify-between cursor-pointer">
       <div className="flex space-x-2">
-        {props.type === "Video" && <img className="w-5 h-5" src={vidImgPath} />}
-        {props.type === "Exam" && <img className="w-5 h-5" src={txtImgPath} />}
+        {props.type === "Video" && <img className="w-5 h-5" src={vidImgPath} alt=""/>}
+        {props.type === "Exam" && <img className="w-5 h-5" src={txtImgPath} alt=""/>}
         <div>{props.description}</div>
       </div>
       <div className="bg-gray-100 shadow-md px-3 rounded-3xl">

@@ -32,10 +32,12 @@ const SubtitleAccordion = (props) => {
   const sources = props.sources.map((source) => {
     return (
       <SubtitleBody
+        onClick ={props.onClick}
         description={source.description}
         //duration={source.duration}
         duration="5"
         type={source.sourceType}
+        link = {source.link}
       />
     );
   });

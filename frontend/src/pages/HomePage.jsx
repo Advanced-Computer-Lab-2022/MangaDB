@@ -5,21 +5,30 @@ import Animate from "react-smooth/lib/Animate";
 import NavBar from "../components/NavBar";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { motion } from "framer-motion";
 import CourseCard from "../components/Course/CourseCard";
 const HomePage = () => {
   const [displayedCourses, setDisplayedCourses] = useState([]);
   const [currencySymbol, setCurrencySymbol] = useState("");
   const [countryCode, setCountryCode] = useState("US");
 
-  
+  const appear = {
+    opacity: 0,
+    transition: {
+      duration: 1,
+      yoyo: Infinity,
+    },
+  };
   useEffect(() => {
-    axios.get("http://localhost:3000/course/?CC=".concat(countryCode)).then((res) => {
-      setDisplayedCourses(res.data.courses);
-      setCurrencySymbol(res.data.symbol);
-    });
+    axios
+      .get("http://localhost:3000/course/?CC=".concat(countryCode))
+      .then((res) => {
+        setDisplayedCourses(res.data.courses);
+        setCurrencySymbol(res.data.symbol);
+      });
   }, [countryCode]);
+  
   //should handle the catch with error state
-
   const onChangeHandler = (e) => {
     console.log(e);
   setCountryCode(e)
@@ -27,7 +36,6 @@ const HomePage = () => {
   console.log(displayedCourses);
   const courses = displayedCourses.map((course) => {
     return (
-      
       <CourseCard
         duration={course.totalHours}
         title={course.courseTitle}
@@ -55,6 +63,13 @@ const HomePage = () => {
             <p>
               Learn at the comfort of your own{" "}
               <span className="text-primaryBlue">home</span>
+              <motion.span
+
+                initial={{ opacity: 1 }}
+                animate={appear}
+              >
+                ...
+              </motion.span>
             </p>
           </div>
           <div className="md:block hidden">

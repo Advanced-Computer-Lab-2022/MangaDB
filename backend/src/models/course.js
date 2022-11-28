@@ -22,7 +22,7 @@ const courseSchema = new mongoose.Schema({
   },
   instructor: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Instructor",
+    ref: "User",
     required: true,
   },
   instructorName: {
@@ -37,7 +37,20 @@ const courseSchema = new mongoose.Schema({
     default: 5,
   },
   reviews: {
-    type: [String],
+    type: [
+      {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        review: {
+          type: String,
+        },
+        rating: {
+          type: Number,
+        },
+      },
+    ],
   },
   requirements: {
     type: [String],
@@ -57,40 +70,57 @@ const courseSchema = new mongoose.Schema({
   discountedPrice: {
     type: Number,
   },
-  // exams: {
-  //     type: [ExamSchema.schema],
-  // },
+  discountStartDate: {
+    type: Date,
+  },
+  discountEndDate: {
+    type: Date,
+  },
+  level: {
+    type: String,
+    enum: ["Beginner", "Intermediate", "Advanced"],
+    default: "Beginner",
+  },
+
   subtitles: {
     type: [
       {
-        subtitle: {
+        title: {
           type: String,
-    
         },
-        subtitleTime: {
-          type: String,
+        subtitleDuration: {
+          type: Number,
         },
         introductionVideo: {
+          type: String,
+        },
+        introductionVideoDescription: {
           type: String,
         },
         description: {
           type: String,
         },
-        exercises: {
-          type: [
-            {
-              question: { type: String },
-              answer: { type: String },
-              options: { type: [String] },
-            },
-          ],
-        },
+
         sources: {
           type: [
             {
               sourceType: {
                 type: String,
-                enum: ["Video", "Audio", "Text"],
+                enum: ["Video", "Exam", "Text"],
+              },
+              exam: {
+                type: {
+                  exercises: {
+                    type: [
+                      {
+                        question: { type: String },
+                        answer: { type: String },
+                        options: { type: [String] },
+                      },
+                    ],
+                  },
+                  totalGrade: { type: Number },
+                },
               },
               link: {
                 type: String,

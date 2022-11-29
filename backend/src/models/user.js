@@ -53,19 +53,24 @@ const userSchema = new mongoose.Schema({
         percentageCompleted: {
           type: Number,
         },
-        exams: [
+        amountPaid: {
+          type: Number,
+        },
+        exams: {type:[
           {
             examId: {
-              type: String,
+              type: mongoose.Schema.Types.ObjectId,
+              ref: "Exam",
             },
-            examScore: {
+            score: {
               type: Number,
             },
             answers: {
               type: [String],
             },
-          },
-        ],
+          }
+
+     ] },
       },
     ],
   },
@@ -81,6 +86,9 @@ const userSchema = new mongoose.Schema({
         user: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",
+        },
+        userName: {
+          type: String,
         },
         review: {
           type: String,

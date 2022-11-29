@@ -2,7 +2,6 @@ import React from "react";
 import SubtitleAccordion from "./SubtitleAccordion";
 
 const CourseContent = (props) => {
-  //const contentLength = props.content.length;
   const subtitles = props.content.map((subtitle) => {
     return (
       <SubtitleAccordion
@@ -17,7 +16,7 @@ const CourseContent = (props) => {
   const durationInHours = Math.round(+props.courseDuration/60);
 
   return (
-    <div className="w-7/12 shadow-lg mx-10 mb-2">
+    <div className="md:w-7/12 shadow-lg mx-10 mb-2">
       <div className="bg-gray-100 px-4 py-4 text-xl font-semibold rounded-t-md flex justify-between ">
         <div>Course Content</div>
         <div className="bg-gray-200 px-4 rounded-full shadow-md font-medium mr-2">{durationInHours} hrs</div>

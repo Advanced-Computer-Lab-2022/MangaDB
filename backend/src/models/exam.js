@@ -6,18 +6,15 @@ const examSchema = new mongoose.Schema({
         type: [
           {
             question: { type: String },
-            solution: { type: {
-                solutionId: { type: Number },
-                name: { type: String },
-            } },
+            solution: { type: String },
             choices:  { type: [{
-                choiceId: { type: Number },
-                name: { type: String },
+              choiceId: { type: String },
+              description: { type: String },
           }]},
           },
         ],
-      }
-    },
+      },totalGrade:{type:Number}
+    }
 );
 
 const Exam = connection.model("Exam", examSchema);

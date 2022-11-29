@@ -17,4 +17,6 @@ router.get("/mostviewed", courseController.getMostViewedCourses);
 
 router.get("/mostrated", courseController.getMostRatedCourses);
 
+
+
 module.exports = router;

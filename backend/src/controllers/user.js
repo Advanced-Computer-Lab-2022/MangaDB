@@ -3,9 +3,9 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mailer=require('../helper/mailer');
 const course=require('../models/course');
-const blackList=require('../models/token');
 const currencyConverter = require("../helper/currencyconverter"); 
 const payment=require('../helper/payment');
+
 
 exports.createUser = async (req, res) => {
   if (!req.body.userName || !req.body.password || !req.body.role) {
@@ -123,9 +123,12 @@ exports.login = async (req, res) => {
           res.status(401).send({ message: "Invalid Password!" });
         } else {
           const token = jwt.sign(
-            { _id: data._id, userName: data.userName, role: data.role },
+            { id: data._id, userName: data.userName, role: data.role },
             process.env.TOKEN_SECRET
           );
+          res.cookie("token", token, {
+            httpOnly: true,
+          });
           res.send(token);
         }
       }
@@ -204,7 +207,13 @@ exports.changePassword = async (req, res) => {
                         message: `Cannot find user with userName=${userName} and email=${email}. Maybe user was not found!`,
                     });
                 } else {
-                    
+                  const token = jwt.sign(
+                    { id: data._id, userName: data.userName, role: data.role },
+                    process.env.TOKEN_SECRET
+                  );
+                  res.cookie("token", token, {
+                    httpOnly: true,
+                  });
                     const mailOptions = {
                         email: email,
                         subject: 'Reset Password',
@@ -227,7 +236,8 @@ exports.changePassword = async (req, res) => {
         const { password } = req.body;
         const salt = await bcrypt.genSalt(10);
         const newPassword = await bcrypt.hash(password, salt);
-        const id = req.params.id;
+        const id = req.user.id;
+        res.clearCookie("token");
         try {
             await user
                 .findByIdAndUpdate(
@@ -253,11 +263,8 @@ exports.changePassword = async (req, res) => {
 
 
     exports.logout = async (req, res) => {
-      const authHeader = req.header('Authorization');
-      const token = authHeader && authHeader.split(" ")[1];
       try { 
-        const invalidToken=new blackList({token});
-        await invalidToken.save();
+        res.clearCookie("token");
         res.send({message: "logout successfully"});
       } catch (err) {
         res.status(500).send({
@@ -304,7 +311,7 @@ exports.changePassword = async (req, res) => {
             for(let i=0;i<courseData.subtitles.length;i++){
               sourceNumber+=courseData.subtitles[i].sources.length;
             }
-            userData.courseDetails.push({course:courseData._id,totalSources:sourceNumber});
+            userData.courseDetails.push({course:courseData._id,totalSources:sourceNumber,amountPaid:(courseData.discountedPrice * exchangeRate)});
             await userData.save();
             courseData.views+=1;
             await courseData.save();
@@ -353,10 +360,10 @@ exports.changePassword = async (req, res) => {
     };
 
     exports.openSource = async (req, res) => {
-      const id = req.params.id;
-      const { courseId, sourceId } = req.body;
+      const courseId = req.params.id;
+      const { userId, sourceId } = req.body;
       try {
-        const userData =await user.findById(id);
+        const userData =await user.findById(userId);
         if (!userData) {
           res.status(404).send({
             message: `User was not found!`,
@@ -401,6 +408,102 @@ exports.changePassword = async (req, res) => {
     } catch (err) {
       res.status(500).send({
         message: "Error in opening source",
+      });
+    }
+  };
+
+    exports.getProgress = async (req, res) => {
+      const id = req.params.id;
+      const { courseId } = req.body;
+      try {
+        const userData =await user.findById(id);
+        if (!userData) {
+          res.status(404).send({
+            message: `User was not found!`,
+          });
+        }
+        else {
+          let courseIndex=-1;
+          let courseFound=false;
+          for(let i=0;i<userData.courseDetails.length;i++){
+            if(userData.courseDetails[i].course==courseId){
+              courseIndex=i;
+              courseFound=true;
+              break;
+            }
+          }
+
+          if(!courseFound){
+            res.status(400).send({
+              message: `User not registered in course`,
+            });
+          }
+          else{
+            res.status(200)
+            .send({percentage:userData.courseDetails[courseIndex].percentageCompleted});
+            }
+        }
+      
+    } catch (err) {
+      res.status(500).send({
+        message: "Error in getting progress",
+      });
+    }
+  };
+
+  exports.addNotes = async (req, res) => {
+    const id = req.params.id;
+    const { courseId, sourceId, notes } = req.body;
+    try {
+      const userData =await user.findById(id);
+      if (!userData) {
+        res.status(404).send({
+          message: `User was not found!`,
+        });
+      }
+      else {
+        let courseIndex=-1;
+        let courseFound=false;
+        for(let i=0;i<userData.courseDetails.length;i++){
+          if(userData.courseDetails[i].course==courseId){
+            courseIndex=i;
+            courseFound=true;
+            break;
+          }
+        }
+
+        if(!courseFound){
+          res.status(400).send({
+            message: `User not registered in course`,
+          });
+        }
+        else{
+          let sourceIndex=-1;
+          let sourceFound=false;
+          for(let j=0;j<userData.courseDetails[courseIndex].viewedSources.length;j++){
+            if(userData.courseDetails[courseIndex].viewedSources[j].sourceId==sourceId){
+              sourceIndex=j;
+              sourceFound=true;
+              break;
+            }
+          }
+          if(!sourceFound){
+            res.status(400).send({
+              message: `User not opened source`,
+            });
+          }
+          else{
+            userData.courseDetails[courseIndex].viewedSources[sourceIndex].notes=notes;
+            await userData.save();
+            res.status(200)
+            .send({message:"notes added successfully"});
+            }
+        }
+
+      }
+    } catch (err) {
+      res.status(500).send({
+        message: "Error in adding notes",
       });
     }
   };

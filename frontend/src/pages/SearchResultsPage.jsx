@@ -6,6 +6,7 @@ import Filters from "../components/Filters/Filters";
 import SecondaryButton from "../components/SecondaryButton";
 import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
 import CourseCardListView from "../components/Course/CourseCardListView";
+import CourseCard from "../components/Course/CourseCard"
 const options = [
   { id: 1, name: "Web Development" },
   { id: 2, name: "Machine Learning" },
@@ -90,22 +91,43 @@ const SearchResultsPage = (props) => {
       dispatchSearch({ type: "COURSES", value: res.data.courses });
     });
   },[searchState.search,searchState.filters])
-  var courses;
+  var coursesListView;
+  var coursesCardsView;
   if (searchState.displayedCourses.length === 0) {
-    courses = <div className="text-xl font-semibold mt-16">No Courses Found.</div>;
+    coursesListView = <div className="text-xl font-semibold mt-16">No Courses Found.</div>;
+    coursesCardsView = <div className="text-xl font-semibold mt-16">No Courses Found.</div>;
   } else {
-    courses = searchState.displayedCourses.map((course) => {
+    coursesListView = searchState.displayedCourses.map((course) => {
       return (
         <CourseCardListView
-          title={course.courseTitle}
-          level="Advanced"
-          instructorName={course.instructorName}
-          description={course.courseDescription}
-          rating={course.rating}
-          subject={course.subject}
-          duration={course.totalHours}
-          price={course.discountedPrice}
+        duration={course.totalHours}
+        title={course.courseTitle}
+        instructorName={course.instructorName}
+        subject={course.subject}
+        level="Advanced"
+        description={course.courseDescription}
+        coursePrice={course.coursePrice}
+        discountedPrice={course.discountedPrice}
+        discount={course.discount}
+        rating={course.rating}
+        // currencySymbol={currencySymbol}
         ></CourseCardListView>
+      );
+    });
+    coursesCardsView = searchState.displayedCourses.map((course) => {
+      return (     
+        <CourseCard
+          duration={course.totalHours}
+          title={course.courseTitle}
+          instructorName={course.instructorName}
+          subject={course.subject}
+          level="Advanced"
+          coursePrice={course.coursePrice}
+          discountedPrice={course.discountedPrice}
+          discount={course.discount}
+          rating={course.rating}
+          currencySymbol="$"
+        ></CourseCard>
       );
     });
   }
@@ -136,7 +158,8 @@ const SearchResultsPage = (props) => {
 
       <div className="flex flex-col gap-y-4 mb-4">
         <div className="font-bold text-2xl ml-24">Results:</div>
-        <div className="flex flex-col items-center gap-y-4">{courses}</div>
+        <div className="flex-col items-center gap-y-4 hidden lg:flex">{coursesListView}</div>
+        <div className="flex justify-around flex-wrap lg:hidden">{coursesCardsView}</div>
       </div>
     </Fragment>
   );

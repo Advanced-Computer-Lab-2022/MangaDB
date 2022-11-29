@@ -102,7 +102,7 @@ const Exam = (props) => {
         {"Question " + selectedQuestion + ": "}
         {props.exam[selectedQuestion - 1].description}
       </p>
-      <ExamChoices
+      <SolvedExamChoices
         selected={SolvedBefore}
         correct={props.answers[selectedQuestion - 1]}
         studentAnswers={
@@ -113,7 +113,7 @@ const Exam = (props) => {
         }
         choices={props.exam[selectedQuestion - 1].choices}
         onSaveChoice={onSaveChoice.bind(null, selectedQuestion)}
-      ></ExamChoices>
+      ></SolvedExamChoices>
       <div className="mt-2 flex items-center justify-center">
         <SecondaryButton
           disabled={prevButtonState}

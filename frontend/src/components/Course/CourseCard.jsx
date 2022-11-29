@@ -8,28 +8,32 @@ const size = 5;
 const CourseCard = (props) => {
   return (
     <button className="hover:scale-105 transition flex content-start relative mb-8 mx-4">
-      <div class=" relative bg-white border border-gray-200 shadow-md">
-        <img src={reactImg} alt=""></img>
+      <div class=" relative bg-white border border-gray-200 shadow-md w-80">
+        <div className="h-48 w-80">
+          <img className="" src={reactImg} alt=""></img>
+        </div>
         <div className="bg-white px-2 py-1 text-xs font-semibold rounded-full absolute top-3 left-3">
           <AccessTimeIcon className="-mt-[3px]" fontSize="inherit" />{" "}
           {props.duration} {"hrs"}
         </div>
 
-        <div class="p-5 flex flex-col items-start">
-          <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900">
+        <div className="py-5 px-2 flex flex-col items-start">
+          <div className="w-full flex justify-start">
+          <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 truncate">
             {props.title}
           </h5>
-
-          <p class=" text-xs font-medium text-gray-500">
+          </div>
+          
+          <p className=" text-xs font-medium text-gray-500">
             {props.instructorName} . {props.subject}
           </p>
-          <div class="text-lightBlue text-sm mt-2 flex">
+          <div className="text-lightBlue text-sm mt-2 flex">
             <Stars size={size} rating={props.rating} />
             <div className="bg-veryLightBlue text-gray-900 ml-2 text-sm py-[2px] px-2 rounded-lg">
               {props.rating}
             </div>
           </div>
-          <div className="flex justify-between py-3 items-center">
+          <div className="flex justify-between py-3 items-center w-full">
             {props.level === "Beginner" && (
               <div class="inline-flex items-center py-1 px-2 text-xs font-medium text-center border-2 border-green-400 text-green-500 bg-green-100 rounded-full">
                 {props.level}
@@ -45,10 +49,21 @@ const CourseCard = (props) => {
                 {props.level}
               </div>
             )}
-            <h5 class="text-xl font-bold tracking-tight text-gray-900 absolute right-6">
-              {props.price === 0 ? "FREE" : props.price}{" "}
-              {props.currencySymbol.toString()}
-            </h5>
+            <div class="text-lg font-bold tracking-tight text-gray-900 flex">
+              {props.discount > 0 && (
+              <div className="line-through decoration-1 text-sm font-thin mr-2 mt-1">
+                {props.coursePrice}{props.currencySymbol.toString()}
+              </div>
+              )}
+              {/* {props.discountedPrice === 0 ? "FREE" : props.discountedPrice}
+              {props.currencySymbol.toString()} */}
+              {props.discountedPrice === 0 && (
+                <div className="text-green-600">FREE</div>
+              )}
+              {props.discountedPrice != 0 && (
+                <div className="">{props.discountedPrice}{props.currencySymbol.toString()}</div>
+              )}
+            </div>
           </div>
         </div>
       </div>

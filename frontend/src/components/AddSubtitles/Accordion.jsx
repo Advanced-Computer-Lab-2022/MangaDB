@@ -11,7 +11,7 @@ export default function According(props) {
     setExpanded(isExpanded ? panel : false);
   };
   return (
-    <div className="w-[50%] items-center justify-center justify-self-center">
+    <div className="w-[100%] items-center justify-center justify-self-center">
       <Accordion
         expanded={expanded === "panel1"}
         onChange={handleChange("panel1")}

@@ -29,7 +29,9 @@
     "mongoose": "^6.6.6",
     "nodemailer": "^6.8.0",
     "nodemon": "^2.0.20",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "readable-stream": "^4.2.0",
+    "stripe": "^11.1.0"
   },
   "devDependencies": {
     "@tailwindcss/line-clamp": "^0.4.2"

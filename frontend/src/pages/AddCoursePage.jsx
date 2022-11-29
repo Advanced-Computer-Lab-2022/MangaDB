@@ -99,3 +99,4 @@ const AddCoursePage = (props) => {
   );
 };
 export default AddCoursePage;
+

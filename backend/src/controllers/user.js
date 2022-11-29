@@ -300,8 +300,8 @@ exports.changePassword = async (req, res) => {
           }
           else {
             for(var i=0;i<userData.courseDetails.length;i++){
-              if(userData.courseDetails[i].courseId==courseId){
-                res.status(404).send({
+              if(userData.courseDetails[i].course==courseId){
+                res.status(400).send({
                   message: `You have already registered for this course!`,
                 });
                 return;
@@ -313,21 +313,21 @@ exports.changePassword = async (req, res) => {
             }
             userData.courseDetails.push({course:courseData._id,totalSources:sourceNumber,amountPaid:(courseData.discountedPrice * exchangeRate)});
             await userData.save();
-            courseData.views+=1;
-            await courseData.save();
-            
+            await course.findByIdAndUpdate(courseId,{$inc:{views:1}});
+
             const info={
               currency:currency,
               name:courseData.courseTitle ,
               price:courseData.discountedPrice * exchangeRate,
             }
-            payment.createPaymentIntent(info).then((data)=>{
+            await payment.createPaymentIntent(info).then((data)=>{
               if(!data){
                 res.status(500).send({
                   message: "Error in payment",
                 });
                 return;
               }
+       
               res.send({message: "user registered for course successfully.",data});
             })
 

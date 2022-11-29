@@ -48,6 +48,9 @@ const courseSchema = new mongoose.Schema({
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",
         },
+        userName: {
+          type: String,
+        },
         review: {
           type: String,
         },
@@ -58,7 +61,7 @@ const courseSchema = new mongoose.Schema({
     ],
   },
   requirements: {
-    type: [String],
+    type: String,
   },
   views: {
     type: Number,

@@ -27,7 +27,7 @@ import InstructorCoursesPage from "./pages/InstructorCoursesPage";
 import CourseDetailsCardNew from "./components/Course/CourseDetailsCard";
 import CourseDetailsPageNew from "./components/CourseDetailsComp/CourseDetailsPageNew";
 import CourseViewPage from "./pages/CourseViewPage";
-
+import InstructorPersonalInfo from "./components/EditProfile/InstructorPersonalInfo";
 function App() {
   //return <CourseDetailsPageNew />
   //return <HomePage />;
@@ -39,6 +39,7 @@ function App() {
   //return  <Video isVisible={false} link="https://youtu.be/BgP30ML_Tc0"></Video>
 //  return <ExamManager></ExamManager>
 // return <AddCoursePage></AddCoursePage>
-  return <CourseViewPage></CourseViewPage>
+  // return <CourseViewPage></CourseViewPage>
+  return <InstructorPersonalInfo/>
 }
 export default App;

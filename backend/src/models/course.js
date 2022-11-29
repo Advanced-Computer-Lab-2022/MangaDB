@@ -38,7 +38,7 @@ const courseSchema = new mongoose.Schema({
   finalExam: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Exam",
-    required:true,
+    required:false,
   }
   ,
   reviews: {

@@ -1,6 +1,7 @@
 const course = require("../models/course");
 const user = require("../models/user");
 const currencyConverter = require("../helper/currencyconverter");
+const examController=require('./exam');
 
 
 exports.getAllCourses = async (req, res, next) => {
@@ -156,6 +157,7 @@ exports.createCourse = async (req, res, next) => {
   const instructorName =
     foundInstructor.firstName + " " + foundInstructor.lastName;
   const discount = req.body.discount || 0;
+  const subtitles= req.body.subtitles;
   const newCourse = new course({
     courseTitle: req.body.courseTitle,
     courseDescription: req.body.courseDescription,
@@ -172,17 +174,24 @@ exports.createCourse = async (req, res, next) => {
     views: req.body.views,
     summary: req.body.summary,
     certificate: req.body.certificate,
-    subtitles: req.body.subtitles,
   });
   let subDuration=0;
   let courseDuration=0;
-  for(let i=0;i<newCourse.subtitles.length;i++){
-    for(let j=0;j<newCourse.subtitles[i].sources.length;j++){
-     subDuration+=newCourse.subtitles[i].sources[j].sourceDuration;
+  for(let i=0;i<subtitles.length;i++){
+    for(let j=0;j<subtitles[i].sources.length;j++){
+      if(subtitles[i].sources[j].sourceType==='Quiz'){
+        const myExam=subtitles[i].sources[j].exam;
+        const examId=await examController.createExam(myExam);
+        subtitles[i].sources[j].quiz=examId;
+
+      }
+     subDuration+=subtitles[i].sources[j].sourceDuration;
     }
+   
     courseDuration+=subDuration;
-    newCourse.subtitles[i].subtitleDuration=subDuration;
+    subtitles[i].subtitleDuration=subDuration;
   }
+  newCourse.subtitles=subtitles;
   newCourse.totalMins=courseDuration;
 
   await newCourse

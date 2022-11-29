@@ -162,6 +162,7 @@ exports.createCourse = async (req, res, next) => {
     courseTitle: req.body.courseTitle,
     courseDescription: req.body.courseDescription,
     coursePrice: req.body.coursePrice,
+    level: req.body.level,
     courseImage: req.body.courseImage,
     subject: req.body.subject,
     instructor: instructorId,
@@ -170,7 +171,7 @@ exports.createCourse = async (req, res, next) => {
     discountedPrice: req.body.coursePrice - req.body.coursePrice * discount,
     rating: req.body.rating,
     reviews: req.body.reviews,
-    requirements: req.body.requirements,
+    requirements: req.body.requirements,                                                                                   
     views: req.body.views,
     summary: req.body.summary,
     certificate: req.body.certificate,
@@ -310,7 +311,7 @@ exports.rateCourse = async (req, res, next) => {
       (1 / (reviewCount + 1)) * rating;
     newRating = newRating.toFixed(2);
     foundCourse.rating = newRating;
-    foundCourse.reviews.push({ user: userId, review: review, rating: rating });
+    foundCourse.reviews.push({ user: userId,userName: foundUser.firstName + " "+foundUser.lastName , review: review, rating: rating });
     foundCourse.save();
     res.status(200).json({
       message: "Course rated successfully!",

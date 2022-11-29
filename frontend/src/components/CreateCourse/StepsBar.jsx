@@ -17,7 +17,9 @@ const StepsBar = (props) => {
               <div
                 className={classNames(
                   stepIdx === 0 ? "border-b-0 rounded-t-md" : "",
-                  stepIdx === props.steps.length - 1 ? "border-t-0 rounded-b-md" : "",
+                  stepIdx === props.steps.length - 1
+                    ? "border-t-0 rounded-b-md"
+                    : "",
                   "border border-gray-200 overflow-hidden lg:border-0"
                 )}
               >

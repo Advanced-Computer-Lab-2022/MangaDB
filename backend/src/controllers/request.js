@@ -1,14 +1,21 @@
 const course = require("../models/course");
 const user = require("../models/user");
-const currencyConverter = require("../helper/currencyconverter");
-const { json } = require("body-parser");
 const request = require("../models/request");
+const { findOne } = require("../models/course");
 
 exports.requestRefund = async (req, res) => {
 
-    const courseId = req.params.id;
+    const courseId = req.body.courseId;
     const userId = req.body.userId;
     const reason = req.body.reason;
+
+    const foundRequest=await request.findOne({course:courseId,user:userId,type:"refund"})
+  
+        if(foundRequest){
+            return res.status(400).json({message:`You have already requested a refund for this course: ${foundRequest.status}`}); 
+        }
+      
+
     const foundCourse = await course.findById(courseId);
     const foundUser = await user.findById
     (userId);
@@ -38,7 +45,6 @@ exports.requestRefund = async (req, res) => {
         message: `User not registered in course`,
       });
     }
-    
     if(foundUser.courseDetails[courseIndex].percentageCompleted>0.5){
       return res.status(400).send({
         message: `Cannot request refund after 50% completion`,
@@ -59,9 +65,14 @@ exports.requestRefund = async (req, res) => {
 
   exports.requestCourseAccess = async (req, res) => {
       
-      const courseId = req.params.id;
+      const courseId = req.body.courseId;
       const userId = req.body.userId;
       const reason = req.body.reason;
+      const foundRequest=await request.findOne({course:courseId,user:userId,type:"access"})
+  
+        if(foundRequest){
+            return res.status(400).json({message:`You have already requested a access for this course: ${foundRequest.status}`}); 
+        }
       const foundCourse = await course.findById(courseId);
       const foundUser = await user.findById
       (userId);
@@ -145,7 +156,7 @@ exports.requestRefund = async (req, res) => {
         }
     };
 
-    exports.acceptRefund = async (req, res) => {
+    exports.approveRefund = async (req, res) => {
         try{
             const requestId = req.params.id;
             const foundRequest = await request.findById
@@ -160,7 +171,7 @@ exports.requestRefund = async (req, res) => {
             let courseIndex=-1;
             let courseFound=false;
             for(let i=0;i<foundUser.courseDetails.length;i++){
-                if(foundUser.courseDetails[i].course==foundRequest.course){
+                if(foundUser.courseDetails[i].course.toString()==foundRequest.course.toString()){
                     courseIndex=i;
                     courseFound=true;
                     break;
@@ -200,14 +211,18 @@ exports.requestRefund = async (req, res) => {
                 }
             
             const foundUser = await user.findById(foundRequest.user);
-            
+        
             const foundCourse = await course.findById(foundRequest.course);
             let sourceNumber=0;
+ 
             for(let i=0;i<foundCourse.subtitles.length;i++){
               sourceNumber+=foundCourse.subtitles[i].sources.length;
             }
-            foundUser.courseDetails.push({course:courseData._id,totalSources:sourceNumber});
+          
+            foundUser.courseDetails.push({course:foundCourse._id,totalSources:sourceNumber,percentageCompleted:0});
+        
             await foundUser.save();
+         
             foundRequest.status="accepted";
             await foundRequest.save();
             res.status(200).json({

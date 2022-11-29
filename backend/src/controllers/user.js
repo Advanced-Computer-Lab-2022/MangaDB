@@ -311,7 +311,7 @@ exports.changePassword = async (req, res) => {
             for(let i=0;i<courseData.subtitles.length;i++){
               sourceNumber+=courseData.subtitles[i].sources.length;
             }
-            userData.courseDetails.push({course:courseData._id,totalSources:sourceNumber,amountPaid:(courseData.discountedPrice * exchangeRate)});
+            userData.courseDetails.push({course:courseData._id,totalSources:sourceNumber,percentageCompleted:0,amountPaid:(courseData.discountedPrice * exchangeRate)});
             await userData.save();
             await course.findByIdAndUpdate(courseId,{$inc:{views:1}});
 

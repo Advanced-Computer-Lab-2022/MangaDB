@@ -1,4 +1,5 @@
 import { Fragment, useState } from "react";
+import TertiaryButton from "../TertiaryButton";
 import countryList from "react-select-country-list";
 import * as React from "react";
 import Box from "@mui/material/Box";
@@ -13,18 +14,11 @@ import {
   StarIcon,
 } from "@heroicons/react/outline";
 
-const user = {
-  name: "Debbie Lewis",
-  handle: "deblewis",
-  email: "debbielewis@example.com",
-  imageUrl:
-    "https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=320&h=320&q=80",
-};
 
 const subNavigation = [
   { name: "Profile", icon: UserCircleIcon, current: true },
-  { name: "Password", icon: KeyIcon, current: false },
   { name: "Billing", icon: CreditCardIcon, current: false },
+  { name: "Security & Privacy", icon: KeyIcon, current: false },
   { name: "Reviews & Ratings", icon: StarIcon, current: false },
 ];
 
@@ -43,8 +37,58 @@ for (var i = 0; i < countryLabels.length; i++) {
 }
 
 const PersonalInfoForm = (props) => {
+  const defaultGender = props.gender ? props.gender : "Male";
+  const defaultEmail = props.email ? props.email : "";
+  const defaultBiography = props.biography ? props.biography : "";
+  const defaultFirstName = props.firstName ? props.firstName : "";
+  const defaultLastName = props.lastName ? props.lastName : "";
+
+  //country not working now wait to fix css and add it to the backend
+  //const defaultCountry = props.country ? props.country : "US";
+  //const [country, setCountry] = useState("");
+
+  const [selectedGender, setSelectedGender] = useState(defaultGender);
+  const [email, setEmail] = useState(defaultEmail);
+  const [biography, setBiography] = useState(defaultBiography);
+  const [firstName, setFirstName] = useState(defaultFirstName);
+  const [lastName, setLastName] = useState(defaultLastName);
+
   const CountryHandler = (event) => {
     console.log(event.target.outerText.split("("));
+  };
+
+  const MaleClickHandler = (event) => {
+    setSelectedGender(event.target.innerHTML);
+  };
+
+  const FemaleClickHandler = (event) => {
+    setSelectedGender(event.target.innerHTML);
+  };
+
+  const emailChangeHandler = (event) => {
+    setEmail(event.target.value);
+  };
+  const biographyChangeHandler = (event) => {
+    setBiography(event.target.value);
+  };
+  const firstNameChangeHandler = (event) => {
+    setFirstName(event.target.value);
+  };
+  const lastNameChangeHandler = (event) => {
+    setLastName(event.target.value);
+  };
+
+  const onSaveHandler = (event) => {
+    event.preventDefault();
+    const saveData = {
+      email:email,
+      firstName:firstName,
+      lastName:lastName,
+      biography:biography,
+      gender:selectedGender
+
+    }
+    props.onSaveHandler(saveData);
   };
   return (
     <div>
@@ -113,14 +157,15 @@ const PersonalInfoForm = (props) => {
             <div className="divide-y divide-gray-200 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x">
               <aside className="py-6 lg:col-span-3">
                 <div className="space-y-1">
-                  {subNavigation.map((item) => (
+                  {subNavigation.map((item,index) => (
                     <div
                       key={item.name}
+                      onClick={props.changeStageHandler.bind(null,item.name)}
                       className={classNames(
                         item.current
                           ? "bg-teal-50 border-teal-500 text-teal-700 hover:bg-teal-50 hover:text-teal-700"
                           : "border-transparent text-gray-900 hover:bg-gray-50 hover:text-gray-900",
-                        "group border-l-4 px-3 py-2 flex items-center text-sm font-medium"
+                        "group border-l-4 px-3 py-2 flex items-center text-sm font-medium cursor-pointer"
                       )}
                     >
                       <item.icon
@@ -140,8 +185,7 @@ const PersonalInfoForm = (props) => {
 
               <form
                 className="divide-y divide-gray-200 lg:col-span-9"
-                action="#"
-                method="POST"
+                onSubmit={onSaveHandler}
               >
                 {/* Personal Information section */}
                 <div className="py-6 px-4 sm:p-6 lg:pb-8">
@@ -166,12 +210,13 @@ const PersonalInfoForm = (props) => {
                         </label>
                         <div className="mt-1 rounded-md shadow-sm flex">
                           <input
+                            value={email}
+                            onChange={emailChangeHandler}
                             type="text"
                             name="email"
                             id="email"
                             autoComplete="username"
                             className="focus:ring-sky-500 focus:border-sky-500 flex-grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300"
-                            defaultValue={user.handle}
                           />
                         </div>
                       </div>
@@ -184,11 +229,12 @@ const PersonalInfoForm = (props) => {
                         </label>
                         <div className="mt-1">
                           <textarea
+                            value={biography}
+                            onChange={biographyChangeHandler}
                             id="about"
                             name="about"
                             rows={3}
                             className="shadow-sm focus:ring-sky-500 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
-                            defaultValue={""}
                           />
                         </div>
                         <p className="mt-2 text-sm text-gray-500">
@@ -207,6 +253,8 @@ const PersonalInfoForm = (props) => {
                         First name
                       </label>
                       <input
+                        onChange={firstNameChangeHandler}
+                        value ={firstName}
                         type="text"
                         name="first-name"
                         id="first-name"
@@ -223,6 +271,8 @@ const PersonalInfoForm = (props) => {
                         Last name
                       </label>
                       <input
+                        value={lastName}
+                        onChange={lastNameChangeHandler}
                         type="text"
                         name="last-name"
                         id="last-name"
@@ -238,12 +288,22 @@ const PersonalInfoForm = (props) => {
                       >
                         Gender
                       </label>
-                      <input
-                        type="text"
-                        name="Gender"
-                        id="Gender"
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
-                      />
+                      <div className="w-[60vw] md:w-[27vw] flex space-x-2">
+                        <TertiaryButton
+                          type="button"
+                          state={selectedGender}
+                          onClick={MaleClickHandler}
+                          text="Male"
+                          className="md:w-[8.8vw] w-[19vw] text-xs px-1"
+                        />
+                        <TertiaryButton
+                          type="button"
+                          state={selectedGender}
+                          onClick={FemaleClickHandler}
+                          text="Female"
+                          className="md:w-[8.8vw] w-[19vw] text-xs px-1"
+                        />
+                      </div>
                     </div>
 
                     <div className="col-span-12 sm:col-span-6">

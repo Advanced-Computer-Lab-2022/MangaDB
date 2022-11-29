@@ -27,12 +27,13 @@ import "./App.css";
 // import CourseDetailsCardNew from "./components/Course/CourseDetailsCard";
 import CourseDetailsPageNew from "./components/CourseDetailsComp/CourseDetailsPageNew";
 import CourseViewPage from "./pages/CourseViewPage";
-import InstructorPersonalInfo from "./components/EditProfile/InstructorPersonalInfo";
+import InstructorProfilePage from "./pages/InstructorProfilePage";
+import PasswordAndPrivacy from "./components/Profile/PasswordAndPrivacy";
+import Billing from "./components/Profile/Billing";
 function App() {
   //return <CourseDetailsPageNew />
   //return <HomePage />;
-  return <AddCoursePage />;
-
+ return <InstructorProfilePage></InstructorProfilePage>
   
 //   const validatedLink =  validateYouTubeUrl("https://youtu.be/BgP30ML_Tc0");
 //   console.log(validatedLink)
@@ -41,6 +42,5 @@ function App() {
 //  return <ExamManager></ExamManager>
 // return <AddCoursePage></AddCoursePage>
   // return <CourseViewPage></CourseViewPage>
-  return <InstructorPersonalInfo/>
 }
 export default App;

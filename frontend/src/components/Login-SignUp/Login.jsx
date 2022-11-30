@@ -130,6 +130,14 @@ const GoogleLogin = (e) => {
                   warning={emptyPassword}
                 />
               </div>
+              <p class=" pl-3 ">
+                <a
+                  href="#"
+                  class="text-primaryBlue hover:opacity-70 ease-in-out duration-300 font-medium inline-flex space-x-1 items-center"
+                >
+                  <span>Forgot Password? </span>
+                </a>
+              </p>
               <SecondaryButton
                 type="submit"
                 className="flex space-x-2 items-center justify-center py-3 font-semibold hover: "

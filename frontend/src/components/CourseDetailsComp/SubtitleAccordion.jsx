@@ -32,14 +32,16 @@ const SubtitleAccordion = (props) => {
   const sources = props.sources.map((source) => {
     return (
       <SubtitleBody
+        onClick ={props.onClick}
         description={source.description}
         //duration={source.duration}
         duration="5"
         type={source.sourceType}
+        link = {source.link}
+        id={source._id}
       />
     );
   });
-  console.log(props.sources);
   return (
     <Accordion icon={icon} open={isOpened} animate={customAnimation}>
       <AccordionHeader

@@ -4,8 +4,9 @@ import Stars from "../UI/Stars";
 const size = 5;
 
 const CourseDetailsCard = (props) => {
+  const roundedRating = Math.round(+props.rating * 10) / 10;
   return (
-    <div className="w-6/12 shadow-lg flex">
+    <div className="md:w-6/12 shadow-lg flex">
       <div className="w-6 bg-darkBlue"></div>
       <div className="px-4 py-2 space-y-2 bg-white w-full rounded-r-lg">
         <div className="flex justify-between items-center">
@@ -36,7 +37,7 @@ const CourseDetailsCard = (props) => {
           <div className="flex">
             <Stars size={size} rating={props.rating} />
             <div className="bg-veryLightBlue text-gray-900 ml-2 text-sm py-[2px] px-2 rounded-lg">
-              {props.rating}
+              {roundedRating}
             </div>
           </div>
           <div class="text-lg font-bold tracking-tight text-gray-900 flex">
@@ -49,7 +50,7 @@ const CourseDetailsCard = (props) => {
             {props.discountedPrice === 0 && (
               <div className="text-green-600">FREE</div>
             )}
-            {props.discountedPrice != 0 && (
+            {props.discountedPrice !== 0 && (
               <div>
                 {props.discountedPrice}
                 {props.currencySymbol.toString()}

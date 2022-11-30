@@ -3,10 +3,10 @@ import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
 
 const Choices = [
-  { id: 1, name: "First Choice" },
-  { id: 2, name: "Second Choice" },
-  { id: 3, name: "Third Choice" },
-  { id: 4, name: "Fourth Choice" },
+  { id: 1, name: "Choice Number 1" },
+  { id: 2, name: "Choice Number 2" },
+  { id: 3, name: "Choice Number 3" },
+  { id: 4, name: "Choice Number 4" },
 ];
 
 function classNames(...classes) {
@@ -50,7 +50,7 @@ const QuestionSolution = (props) => {
                     key={choice.id}
                     className={({ active }) =>
                       classNames(
-                        active ? "text-white bg-indigo-600" : "text-gray-900",
+                        active ? "text-white bg-darkBlue" : "text-gray-900",
                         "cursor-default select-none relative py-2 pl-8 pr-4"
                       )
                     }

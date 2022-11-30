@@ -83,8 +83,8 @@ exports.rateInstructor = async (req, res) => {
         let newRating = ((reviewCount/(reviewCount+1) )* foundInstructor.rating)+ ((1/(reviewCount+1) )*rating);
         newRating=newRating.toFixed(2);
         foundInstructor.rating=newRating;
-        foundInstructor.reviews.push({user:userId,rating:rating,review:review});
-        foundInstructor.save();1
+        foundInstructor.reviews.push({user:userId,userName: foundUser.firstName + " "+foundUser.lastName,rating:rating,review:review});
+        foundInstructor.save();
         res.status(200).send({
             message: "Instructor was rated successfully.",
         });

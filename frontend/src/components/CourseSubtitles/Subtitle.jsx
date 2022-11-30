@@ -1,6 +1,5 @@
 import { useState } from "react";
 import SubtitleInfo from "../AddSubtitles/SubtitleInfo";
-import AddIcon from "@mui/icons-material/Add";
 import SourceForm from "../AddSubtitles/SourceForm";
 import DeleteSubtitle from "../AddSubtitles/DeleteSubtitle";
 import { ThemeProvider } from "@material-tailwind/react";
@@ -13,6 +12,7 @@ import {
 import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import Source from "./Source";
+import SecondaryButton from "../SecondaryButton";
 
 const Subtitle = (props) => {
   const [isOpened, setIsOpened] = useState(false);
@@ -38,11 +38,7 @@ const Subtitle = (props) => {
   };
 
   const addSourceIcon = (
-    <div className="flex justify-end">
-      <button className="rounded-full h-12 flex" onClick={showSourceModal}>
-        <AddIcon />
-      </button>
-    </div>
+      <SecondaryButton text="Add Source" onClick={showSourceModal} />
   );
 
   const theme = {
@@ -57,9 +53,6 @@ const Subtitle = (props) => {
   for (var i = 0; i < props.sources.length; i++) {
     totalDuration += +props.sources[i].duration;
   }
-  var min = true;
-  if (totalDuration > 60) min = false;
-  //added the if
   if (props.sources) {
     var Body = props.sources.map((source, index) => {
       return (
@@ -68,7 +61,7 @@ const Subtitle = (props) => {
           onSourceEdit={props.onSourceEdit.bind(null, index)}
           isOpened={isOpened}
           source={props.sources[index]}
-        ></Source>
+        />
       );
     });
   }
@@ -99,8 +92,11 @@ const Subtitle = (props) => {
           ></DeleteSubtitle>
         )}
         <div className="space-x-0 items-center mr-4">
-          <AccordionHeader onClick={handleOpen}>
-            {props.subtitleHeader} {+totalDuration} {min ? "mins" : "hrs"}
+          <AccordionHeader onClick={handleOpen} className="font-medium">
+            <div>{props.subtitleHeader}</div>
+            <div className="flex justify-end absolute right-10 mob:relative mob:right-0 min-w-[40px] bg-gray-100 px-4 shadow-md rounded-3xl">
+              {totalDuration} mins
+            </div>
           </AccordionHeader>
         </div>
         <SubtitleInfo
@@ -109,10 +105,11 @@ const Subtitle = (props) => {
           shortDescription={props.shortDescription}
           introVideoUrl={props.introVideoUrl}
         ></SubtitleInfo>
-        {Body}
-        <AccordionBody className="opacity-0 transition ease-out duration-150 mt-10">
-          {addSourceIcon}
+        <AccordionBody className="opacity-0 transition ease-out duration-150 flex justify-between items-center px-12 -mt-4">
+          <div className="text-lg font-medium">Subtitle sources</div>
+          <div>{addSourceIcon}</div>
         </AccordionBody>
+        {Body}
         {sourceModalShown && (
           <AccordionBody className="opacity-0 transition ease-out duration-150">
             {" "}

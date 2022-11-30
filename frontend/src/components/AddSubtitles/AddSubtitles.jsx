@@ -83,7 +83,7 @@ const AddSubtitles = (props) => {
         sources={sources}
         shortDescription={shortDescription}
         introVideoUrl={SubtitleIntroUrl}
-      ></SingleSubtitle>
+      />
     );
   });
   const showSubtitleModal = () => {
@@ -111,47 +111,44 @@ const AddSubtitles = (props) => {
     props.onConfirm(subtitles);
   };
   return (
-    <Fragment>
-      <section aria-labelledby="notes-title">
-        <div className="bg-white shadow sm:rounded-lg sm:overflow-hidden">
-          <div className="divide-y divide-gray-300">
-            <div className="bg-gray-100 px-4 py-5 sm:px-6 flex items-center ">
-              <h2
-                id="notes-title"
-                className="text-lg font-bold text-gray-900 flex-1"
-              >
-                Course Content
-              </h2>
-              <div>
-                <SecondaryButton
-                  onClick={showSubtitleModal}
-                  text="Add Subtitle"
-                ></SecondaryButton>
-              </div>
-            </div>
-            <div className="ml-4 px-4 py-6 sm:px-6">
-              <div className="flex space-x-2 justify-center">
-                <div className="flex-col min-w-[80%]">
-                  {displayedSubtitles}
-                  {subtitleModalShown && (
-                    <SubtitleForm
-                      onCancel={hideSubtitleModal}
-                      onConfirm={addSubtitleHandler}
-                    ></SubtitleForm>
-                  )}
-                </div>
-              </div>
+    <div className="mx-8 my-4 rounded-md p-6">
+      <div className="bg-white shadow sm:overflow-hidden">
+        <div className="bg-gray-100 px-4 py-5 sm:px-6 flex items-center ">
+          <h2
+            id="notes-title"
+            className="text-lg font-bold text-gray-900 flex-1"
+          >
+            Course Content
+          </h2>
+          <div>
+            <SecondaryButton
+              onClick={showSubtitleModal}
+              text="Add Subtitle"
+            ></SecondaryButton>
+          </div>
+        </div>
+        <div className="ml-4 px-4 py-6 sm:px-6">
+          <div className="flex space-x-2 justify-center">
+            <div className="flex-col min-w-[80%]">
+              {displayedSubtitles}
+              {subtitleModalShown && (
+                <SubtitleForm
+                  onCancel={hideSubtitleModal}
+                  onConfirm={addSubtitleHandler}
+                />
+              )}
             </div>
           </div>
         </div>
-      </section>
-      <div className="flex justify-end mt-4 mr-9">
-        <SecondaryButton
-          onClick={submitHandler}
-          text="Submit"
-        ></SecondaryButton>
       </div>
-    </Fragment>
+      <div className="flex justify-end mt-2">
+        <SecondaryButton
+          className="w-20"
+          onClick={submitHandler}
+          text="Next"
+        />
+      </div>
+    </div>
   );
 };
 export default AddSubtitles;

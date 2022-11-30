@@ -1,7 +1,7 @@
 const course = require("../models/course");
 const user = require("../models/user");
 const request = require("../models/request");
-const { findOne } = require("../models/course");
+
 
 exports.requestRefund = async (req, res) => {
 

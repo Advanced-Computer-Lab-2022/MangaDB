@@ -14,7 +14,14 @@ exports.createUser = async (req, res) => {
     });
   }
   //validate request
+  const foundUser=await user.findOne({ userName: req.body.userName });
 
+  if(foundUser){  
+    return res.status(400).send({
+      message: "Username already exists",
+    });
+  }
+  
   const newUser = new user({
     userName: req.body.userName,
     password: req.body.password,
@@ -34,7 +41,7 @@ exports.createUser = async (req, res) => {
     res.send(newUser);
   } catch (err) {
     return res.status(400).send({
-      message: err.message || "Some error occurred while creating the user.",
+      message: err.message,
     });
   }
 };

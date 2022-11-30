@@ -30,11 +30,12 @@ import CourseViewPage from "./pages/CourseViewPage";
 import InstructorProfilePage from "./pages/InstructorProfilePage";
 import PasswordAndPrivacy from "./components/Profile/PasswordAndPrivacy";
 import Billing from "./components/Profile/Billing";
+import Reviews from "./components/Profile/Reviews/Reviews";
 function App() {
   //return <CourseDetailsPageNew />
   //return <HomePage />;
- return <InstructorProfilePage></InstructorProfilePage>
-  
+//  return <InstructorProfilePage></InstructorProfilePage>
+  return <Reviews></Reviews>
 //   const validatedLink =  validateYouTubeUrl("https://youtu.be/BgP30ML_Tc0");
 //   console.log(validatedLink)
   

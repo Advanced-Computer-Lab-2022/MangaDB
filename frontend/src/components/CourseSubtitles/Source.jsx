@@ -66,15 +66,14 @@ const Source = (props) => {
  
 
   return (
-    <Fragment>
+    <div className="px-20">
       {props.isOpened && (
         <Accordion icon={icon} open={isOpened} animate={customAnimation}>
           <div className="space-x-0 items-center mr-4">
             <AccordionHeader onClick={handleOpen}>
-              <div className="flex">
+              <div className="flex font-light text-md">
                 {sourceIcon} {props.source.description}
               </div>
-              {props.source.duration}
             </AccordionHeader>
           </div>
           <AccordionBody className="opacity-0 transition ease-out duration-150" >
@@ -84,7 +83,7 @@ const Source = (props) => {
               isOpened={isOpened}
             ></SourceInfo>{" "}
           </AccordionBody>
-          <AccordionBody className="opacity-0 transition ease-out duration-150">
+          <AccordionBody className="opacity-0 transition ease-out duration-150 px-20">
           <button
               type="button"
               onClick={props.onRemoveSourceHandler}
@@ -95,7 +94,7 @@ const Source = (props) => {
           </AccordionBody>
         </Accordion>
       )}
-    </Fragment>
+    </div>
   );
 };
 

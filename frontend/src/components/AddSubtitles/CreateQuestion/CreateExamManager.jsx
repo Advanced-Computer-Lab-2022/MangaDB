@@ -58,13 +58,14 @@ const CreateExamManager = (props) => {
       ></CreateQuestionForm>
       <ThemeProvider theme={theme}>
         {!empty && (
-          <Pagination
-            className="ml-2 mr-2"
-            count={props.examState.length}
-            color="primary"
-            page={selectedQuestion}
-            onChange={onChangeSelectedQuestionHandler}
-          />
+          <div className="flex justify-center">
+            <Pagination
+              count={props.examState.length}
+              color="primary"
+              page={selectedQuestion}
+              onChange={onChangeSelectedQuestionHandler}
+            />
+          </div>
         )}
       </ThemeProvider>
     </Fragment>

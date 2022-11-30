@@ -61,7 +61,7 @@ const CreateExamChoices = (props) => {
       <CreateExamChoice
         onChoiceChangeHandler={props.onChange.bind(null, choice.choiceId)}
         choiceId={choice.choiceId}
-        name={"Choice Number" + (index + 1)}
+        name={"Choice Number " + (index + 1)}
         description={choice.description}
         img={
           index === 0

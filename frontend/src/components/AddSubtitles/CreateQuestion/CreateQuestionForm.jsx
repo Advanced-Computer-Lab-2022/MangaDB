@@ -92,13 +92,14 @@ const CreateQuestionForm = (props) => {
   };
 
   return (
-    <Fragment>
-      <div className="grid grid-cols-3 pb-3 font-bold">
+    <div className=" md:px-10">
+      <div className="grid grid-cols-3 pb-3">
         <div></div>
-        <div className="flex justify-center text-2xl">Question-Info</div>
+        <div className="flex justify-center text-md font-medium">
+          Question-Info
+        </div>
         <div className="flex justify-end"></div>
       </div>
-      <Divider variant="middle" />
       <div>
         <div className="mt-2 mb-4">
           <label className="block" htmlFor="question-title">
@@ -110,7 +111,7 @@ const CreateQuestionForm = (props) => {
             id="question-title"
             className="w-full mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
         focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
-          ></input>
+          />
         </div>
         <div className="mt-2">
           <CreateExamChoices
@@ -125,13 +126,7 @@ const CreateQuestionForm = (props) => {
           ></QuestionSolution>
         </div>
         <div className="controls flex justify-end space-x-2 mt-2">
-          <SecondaryButton
-            className=" rounded-md  "
-            text="Add New Question"
-            type="button"
-            onClick={submitHandler}
-          ></SecondaryButton>
-          {props.length !== 1 &&!props.empty && (
+          {props.length !== 1 && !props.empty && (
             <button
               type="button"
               onClick={props.onQuestionRemoveHandler}
@@ -140,9 +135,15 @@ const CreateQuestionForm = (props) => {
               Delete Question
             </button>
           )}
+          <SecondaryButton
+            className=" rounded-md  "
+            text="Add New Question"
+            type="button"
+            onClick={submitHandler}
+          />
         </div>
       </div>
-    </Fragment>
+    </div>
   );
 };
 export default CreateQuestionForm;

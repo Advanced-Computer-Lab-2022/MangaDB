@@ -2,6 +2,8 @@ import { useRef, useState, useEffect } from "react";
 import RadioTypes from "./RadioTypes";
 import CreateExamManager from "./CreateQuestion/CreateExamManager";
 import Video from "../Video/Video";
+import TertiaryButton from "../TertiaryButton";
+
 const SourceInfo = (props) => {
   var source = props.source;
   var defaultShowFlag = source.sourceType === "Quiz" ? true : false;
@@ -130,16 +132,16 @@ const SourceInfo = (props) => {
   };
 
   //fields onChange functions
-  const typeChangeHandler = (type) => {
-    if (type.name === "Video") {
+  const typeChangeHandler = (event) => {
+    if (event.target.innerHTML === "Video") {
       setShowExamForm(false);
     } else {
       setShowExamForm(true);
     }
-    if (type.name === "Video") {
+    if (event.target.innerHTML === "Video") {
       const newSourceData = {
         description: titleRef.current.value,
-        sourceType: type.name,
+        sourceType: event.target.innerHTML,
         link: defaultlinkValue,
         exam: examState,
         duration: sourceDuration,
@@ -148,7 +150,7 @@ const SourceInfo = (props) => {
     } else {
       const newSourceData = {
         description: titleRef.current.value,
-        sourceType: type.name,
+        sourceType: event.target.innerHTML,
         link: defaultlinkValue,
         exam: examState,
         duration: examState.length,
@@ -156,7 +158,7 @@ const SourceInfo = (props) => {
       props.onSourceEdit(newSourceData);
     }
 
-    setSourceType(type.name);
+    setSourceType(event.target.innerHTML);
   };
 
   const titleChangeHandler = (event) => {
@@ -285,7 +287,7 @@ const SourceInfo = (props) => {
   }
 
   return (
-    <div ref={containerRef}>
+    <div ref={containerRef} className="space-y-4 mt-4 px-10">
       <div className="first control">
         <label className="block" htmlFor="source-title">
           Source Title
@@ -299,11 +301,23 @@ const SourceInfo = (props) => {
             focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
         ></input>
       </div>
-      <div className="flex gap-10">
-        <RadioTypes
+      <div className="flex gap-2">
+        {/* <RadioTypes
           type={source.sourceType}
           onChange={typeChangeHandler}
-        ></RadioTypes>
+        ></RadioTypes> */}
+        <TertiaryButton
+          type="button"
+          state={sourceType}
+          onClick={typeChangeHandler}
+          text="Video"
+        />
+        <TertiaryButton
+          type="button"
+          state={sourceType}
+          onClick={typeChangeHandler}
+          text="Quiz"
+        />
       </div>
       {displayedForm}
       {valid && (

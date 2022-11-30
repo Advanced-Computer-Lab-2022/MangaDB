@@ -4,6 +4,7 @@ import Video from "../Video/Video";
 import PrimaryButton from "../PrimaryButton";
 import RadioTypes from "./RadioTypes";
 import CreateExamManager from "./CreateQuestion/CreateExamManager";
+import TertiaryButton from "../TertiaryButton";
 
 const SourceForm = (props) => {
   const titleRef = useRef();
@@ -83,14 +84,14 @@ const SourceForm = (props) => {
 
     props.onConfirm(sourceData);
   };
-  const typeChangeHandler = (type) => {
+  const typeChangeHandler = (event) => {
     //send to a changehandler the new type to toggle between the 2 forms
-    if (type.name === "Video") {
+    if (event.target.innerHTML === "Video") {
       setShowExamForm(false);
     } else {
       setShowExamForm(true);
     }
-    setSourceType(type.name);
+    setSourceType(event.target.innerHTML);
   };
   const getDuration = (duration) => {
     if (sourceDuration !== duration) {
@@ -148,10 +149,12 @@ focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
   }
 
   return (
-    <div ref={containerRef}>
+    <div className=" px-20" ref={containerRef}>
       <div className="grid grid-cols-3 pb-3 font-bold">
         <div></div>
-        <div className="flex justify-center text-2xl">Source-Info</div>
+        <div className="flex justify-center text-lg font-semibold">
+          Source-Info
+        </div>
         <div className="flex justify-end">
           <button
             onClick={props.onCancel}
@@ -161,9 +164,8 @@ focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
           </button>
         </div>
       </div>
-      <Divider variant="middle" />
-      <div>
-        <form onSubmit={submitHandler}>
+      <form onSubmit={submitHandler}>
+        <div className="space-y-4">
           <div className="first control">
             <label className="block" htmlFor="source-title">
               Source Title
@@ -173,31 +175,43 @@ focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
               id="source-title"
               className="w-full mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
             focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
-            ></input>
+            />
           </div>
-          <div className="flex gap-10">
-            <RadioTypes
+          <div className="flex gap-2">
+            {/* <RadioTypes
               type={sourceType}
               onChange={typeChangeHandler}
-            ></RadioTypes>
+            ></RadioTypes> */}
+            <TertiaryButton
+              type="button"
+              state={sourceType}
+              onClick={typeChangeHandler}
+              text="Video"
+            />
+            <TertiaryButton
+              type="button"
+              state={sourceType}
+              onClick={typeChangeHandler}
+              text="Quiz"
+            />
           </div>
           {displayedForm}
           <div className="controls flex justify-end space-x-2 mt-2">
             <PrimaryButton
-              className=" rounded-md  "
+              className=" rounded-md "
               text="Confirm"
               type="submit"
             ></PrimaryButton>
           </div>
-        </form>
-        {validLink && (
-          <Video
-            isVisible={false}
-            getSourceDuration={getDuration}
-            link={sourceLink}
-          ></Video>
-        )}
-      </div>
+        </div>
+      </form>
+      {validLink && (
+        <Video
+          isVisible={false}
+          getSourceDuration={getDuration}
+          link={sourceLink}
+        ></Video>
+      )}
     </div>
   );
 };

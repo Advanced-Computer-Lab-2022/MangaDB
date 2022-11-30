@@ -5,8 +5,20 @@ import CourseDetailsCard from "./CourseDetailsCard";
 import axios from "axios";
 import AddToCartCard from "./AddToCartCard";
 import CourseContent from "./CourseContent";
+import CourseReviews from "./CourseReviews";
 
 const courseId = "637602ccaf6170543959970d";
+
+const rev = [
+  {
+    rating: 1,
+    username: "Misho",
+    review:
+      "lorem Ipsum is simply  dummy. Lorem Ipsum is simply Lorem Ipsum. Lorem Ips    incorrectly reports that Lorem Ips is simply Lorem Ipsum. Lorem Ips incorrectly reports that Lorem Ips incorrectly reports that Lore      mips Lorem Ips incorrectly reports that Lore ",
+  },
+  { rating: 2, username: "Misho", review: "This is review 2" },
+  { rating: 4.5, username: "Misho", review: "This is review 3" },
+];
 
 const CourseDetailsPageNew = (props) => {
   const [courseDetails, setCourseDetails] = useState({});
@@ -42,19 +54,13 @@ const CourseDetailsPageNew = (props) => {
           discountedPrice={courseDetails.discountedPrice}
           currencySymbol="$"
         />
-        <AddToCartCard courseImage={courseDetails.courseImage} />
       </div>
-      <div className="text-xl font-semibold py-4 mx-10 w-7/12">
+      <AddToCartCard courseImage={courseDetails.courseImage} />
+      <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
         <div className="mb-3">Course Summary</div>
         {/* <div className="ml-10 align-middle">{props.courseSummary}</div> */}
         <div className="ml-10 align-middle font-normal">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae
-          corporis numquam ullam asperiores. Voluptate, repellat tempora officia
-          quo quos amet nam sint, quas et facere suscipit praesentium atque a
-          libero! Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-          Cupiditate, cumque. Optio maiores consectetur reiciendis similique,
-          minima ducimus delectus molestiae eum officia corrupti distinctio
-          dignissimos asperiores culpa odio doloribus quia nesciunt?
+          {courseDetails.summary}
         </div>
       </div>
       {loaded && (
@@ -63,12 +69,18 @@ const CourseDetailsPageNew = (props) => {
           courseDuration={courseDetails.totalHours}
         />
       )}
-      <div className="text-xl font-semibold py-4 mx-10 w-7/12">
+      <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
         <div className="mb-3">Course Requirements</div>
         <ul className="list-disc font-normal sm:grid sm:grid-cols-2 ml-10 align-middle">
           {requirements.length !== 0 && requirements}
         </ul>
       </div>
+      {loaded && (
+        <CourseReviews
+          //reviews={courseDetails.reviews}
+          reviews={rev}
+        />
+      )}
     </Fragment>
   );
 };

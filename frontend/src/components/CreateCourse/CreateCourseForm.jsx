@@ -1,106 +1,197 @@
-import { useRef,useState } from "react";
+import React, { useState } from "react";
+import TertiaryButton from "../TertiaryButton";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import SecondaryButton from "../SecondaryButton";
-import CustomInputField from "../UI/CustomInputField";
-import { Editor } from "react-draft-wysiwyg";
-import { EditorState } from "draft-js";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+
+var toolbarOptions = [
+  ["bold", "italic", "underline", "strike"],
+  ["blockquote", "code-block"],
+  [{ header: 1 }, { header: 2 }],
+  [{ list: "ordered" }, { list: "bullet" }],
+  [{ script: "sub" }, { script: "super" }],
+  [{ indent: "-1" }, { indent: "+1" }],
+  [{ direction: "rtl" }],
+  [{ size: ["small", false, "large", "huge"] }],
+  [{ header: [1, 2, 3, 4, 5, 6, false] }],
+  [{ color: [] }, { background: [] }],
+  [{ font: [] }],
+  [{ align: [] }],
+  ["clean"],
+];
+
 const CreateCourseForm = (props) => {
-  const titleRef = useRef();
-  const subjectRef = useRef();
-  const descriptionRef = useRef();
-  const imgRef = useRef();
-  const priceRef = useRef();
-  const [editorState, setEditorState] = useState(() =>
-  EditorState.createEmpty()
-);
+  const [enteredCourseTitle, setEnteredCourseTitle] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState("Beginner");
+  const [enteredImageURL, setEnteredImageURL] = useState("");
+  const [enteredOverviewURL, setEnteredOverviewURL] = useState("");
+  const [enteredCoursePrice, setEnteredCoursePrice] = useState("");
+  const [enteredCourseDescription, setEnteredCourseDescription] = useState("");
+  const [summaryValue, setSummaryValue] = useState("");
+  const [requirementsValue, setRequirementsValue] = useState("");
+
+  const courseTitleChangeHandler = (event) => {
+    setEnteredCourseTitle(event.target.value);
+  };
+
+  const beginnerClickHandler = (event) => {
+    setSelectedLevel(event.target.innerHTML);
+  };
+
+  const intermediateClickHandler = (event) => {
+    setSelectedLevel(event.target.innerHTML);
+  };
+
+  const advancedClickHandler = (event) => {
+    setSelectedLevel(event.target.innerHTML);
+  };
+
+  const imageURLChangeHandler = (event) => {
+    setEnteredImageURL(event.target.value);
+  };
+
+  const overviewURLChangeHandler = (event) => {
+    setEnteredOverviewURL(event.target.value);
+  };
+
+  const coursePriceChangeHandler = (event) => {
+    setEnteredCoursePrice(event.target.value);
+  };
+
+  const courseDescriptionChangeHandler = (event) => {
+    setEnteredCourseDescription(event.target.value);
+  };
 
   const submitHandler = (event) => {
     event.preventDefault();
     var data = {
-      courseTitle: titleRef.current.value,
-      courseDescription: descriptionRef.current.value,
-      //courseSubject : subjectRef.current.value,
-      courseImage: imgRef.current.value,
-      coursePrice: +priceRef.current.value,
+      courseTitle: enteredCourseTitle,
+      level: selectedLevel,
+      courseImage: enteredImageURL,
+      courseOverview : enteredOverviewURL,
+      coursePrice: enteredCoursePrice,
+      courseDescription: enteredCourseDescription,
+      courseSummary: summaryValue,
+      requirements: requirementsValue,
     };
     props.onSave(data);
   };
+
   return (
-    <div className="flex space-x-[16%] h-full justify-center items-center pt-[5%]">
-      <form onSubmit={submitHandler} className=" align-middle  rounded-lg ">
-        <div className="flex flex-col h-fit outline-primaryBlue w-[500px] rounded-5xl">
-          <div className="flex flex-col space-y-6 justify-center items-center bg-gray-100 rounded-lg py-2">
-            <div>
-              <div className="text-lg font-semibold mb-2">Course Title:</div>
-              <input
-                className="w-96 mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
+    <div className="bg-gray-100 mx-8 my-4 rounded-md p-6">
+      <form onSubmit={submitHandler}>
+        <label className="text-lg font-medium">Basic Information:</label>
+        <div className="md:grid grid-cols-2 space-y-4">
+          <div className="flex justify-center items-center">
+            <label className="w-32">Course Title</label>
+            <input
+              className="w-[60vw] md:w-[27vw] px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
             focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
-                ref={titleRef}
-                id="course-title"
-                label="Course Title"
+              onChange={courseTitleChangeHandler}
+              type="text"
+              required
+            />
+          </div>
+          <div className="flex justify-center items-center">
+            <label className="w-32">level</label>
+            <div className="w-[60vw] md:w-[27vw] flex justify-between">
+              <TertiaryButton
+                type="button"
+                state={selectedLevel}
+                onClick={beginnerClickHandler}
+                text="Beginner"
+                className="md:w-[8.8vw] w-[19vw] text-xs px-1"
               />
-            </div>
-            <div>
-              <div className="text-lg font-semibold mb-2">Course Subject:</div>
-              <input
-                className="w-96 mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
-              focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
-                ref={subjectRef}
-                id="course-subject"
-                label="Course Subject"
-                required
+              <TertiaryButton
+                type="button"
+                state={selectedLevel}
+                onClick={intermediateClickHandler}
+                text="Intermediate"
+                className="md:w-[8.8vw] w-[19vw] text-xs px-1"
               />
-            </div>
-            <div>
-              <div className="text-lg font-semibold mb-2">
-                Course Description:
-              </div>
-              <input
-                className="w-96 mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
-              focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
-                ref={descriptionRef}
-                id="course-description"
-                label="Course Description"
-                required
+              <TertiaryButton
+                type="button"
+                state={selectedLevel}
+                onClick={advancedClickHandler}
+                text="Advanced"
+                className="md:w-[8.8vw] w-[19vw] text-xs px-1"
               />
-            </div>
-            <div>
-              <div className="text-lg font-semibold mb-2">Image URL:</div>
-              <input
-                className="w-96 mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
-            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
-                ref={imgRef}
-                id="course-image"
-                label="Course Image URL"
-              />
-            </div>
-            <div>
-              <div className="text-lg font-semibold mb-2">Course Price:</div>
-              <input
-                className="w-96 mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
-              focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
-                ref={priceRef}
-                id="course-price"
-                label="Course Price"
-                placeholder="$"
-                required
-              />
-            </div>
-            <div className="form-controls flex justify-center">
-              <SecondaryButton className="w-96" type="submit" text="Save"></SecondaryButton>
             </div>
           </div>
-          <Editor
-          editorState={editorState}
-          onEditorStateChange={setEditorState}
-        />
-          {/* requirements */}
+          <div className="flex justify-center items-center">
+            <label className="w-32">Image URL</label>
+            <input
+              className="w-[60vw] md:w-[27vw] px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
+            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
+              onChange={imageURLChangeHandler}
+              type="text"
+              required
+            />
+          </div>
+          <div className="flex justify-center items-center">
+            <label className="w-32">Overview URL</label>
+            <input
+              className="w-[60vw] md:w-[27vw] px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
+            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
+              onChange={overviewURLChangeHandler}
+              type="text"
+              required
+            />
+          </div>
+          <div className="flex justify-center items-center">
+            <label className="w-32">price</label>
+            <input
+              className="w-[55vw] md:w-[25vw] px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
+            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
+              onChange={coursePriceChangeHandler}
+              type="number"
+              required
+              min="0"
+            />
+            <div className="w-[5vw] md:w-[2vw] flex justify-center text-gray-500">
+              $
+            </div>
+          </div>
         </div>
-        
-
+        <div className="mt-4">
+          <label className="text-lg font-medium">Course Description:</label>
+          <div>
+            <textarea
+              className="w-full px-3 py-1 mt-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm
+            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
+              onChange={courseDescriptionChangeHandler}
+              required
+            ></textarea>
+          </div>
+        </div>
+        <div className="mt-4">
+          <label className="text-lg font-medium">Course Summary:</label>
+          <div className="mt-1">
+            <ReactQuill
+              modules={{ toolbar: toolbarOptions }}
+              className="bg-white rounded-md"
+              value={summaryValue}
+              onChange={setSummaryValue}
+            />
+          </div>
+        </div>
+        <div className="mt-4">
+          <label className="text-lg font-medium">Course Requirements:</label>
+          <div className="mt-1">
+            <ReactQuill
+              modules={{ toolbar: toolbarOptions }}
+              className="bg-white rounded-md"
+              value={requirementsValue}
+              onChange={setRequirementsValue}
+            />
+          </div>
+        </div>
+        <div className="w-full flex justify-end mt-2">
+          <SecondaryButton className="w-20" type="submit" text="Next" />
+        </div>
       </form>
-      {/* <img src={fillForm} alt="fill form" className="w-1/3 h-1/3 align-middle sm:invisible md:visible" /> */}
     </div>
   );
 };
+
 export default CreateCourseForm;

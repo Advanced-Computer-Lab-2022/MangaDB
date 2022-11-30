@@ -3,7 +3,6 @@ import React from "react";
 const TertiaryButton = (props) => {
   var activated;
   if (props.state === props.text) {
-    console.log("hiiii");
     activated =
       "bg-veryLightBlue border-darkBlue ease-in-out";
   }

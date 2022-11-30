@@ -68,7 +68,7 @@ const CreateExam = (props) => {
   examState.length === 0 ? (empty = true) : (empty = false);
 
   return (
-    <Fragment>
+    <div className="mt-4">
       <CreateQuestionForm
         examState={examState[selectedQuestion - 1]}
         empty={empty}
@@ -82,19 +82,20 @@ const CreateExam = (props) => {
       ></CreateQuestionForm>
       <ThemeProvider theme={theme}>
         {!empty && (
-          <Pagination
-            className="ml-2 mr-2"
-            count={examState.length}
-            color="primary"
-            page={selectedQuestion}
-            onChange={onChangeSelectedQuestionHandler}
-          />
+          <div className="flex justify-center">
+            <Pagination
+              count={examState.length}
+              color="primary"
+              page={selectedQuestion}
+              onChange={onChangeSelectedQuestionHandler}
+            />
+          </div>
         )}
       </ThemeProvider>
-      <div className="flex justify-center items-center">
+      <div className="flex justify-end items-center px-10 mt-10">
         <SecondaryButton onClick={submitHandler}>Submit</SecondaryButton>
       </div>
-    </Fragment>
+    </div>
   );
 };
 export default CreateExam;

@@ -92,7 +92,7 @@ const Subtitle = (props) => {
           ></DeleteSubtitle>
         )}
         <div className="space-x-0 items-center mr-4">
-          <AccordionHeader onClick={handleOpen}>
+          <AccordionHeader onClick={handleOpen} className="font-medium">
             <div>{props.subtitleHeader}</div>
             <div className="flex justify-end absolute right-10 mob:relative mob:right-0 min-w-[40px] bg-gray-100 px-4 shadow-md rounded-3xl">
               {totalDuration} mins
@@ -105,7 +105,7 @@ const Subtitle = (props) => {
           shortDescription={props.shortDescription}
           introVideoUrl={props.introVideoUrl}
         ></SubtitleInfo>
-        <AccordionBody className="opacity-0 transition ease-out duration-150 flex justify-between items-center px-8">
+        <AccordionBody className="opacity-0 transition ease-out duration-150 flex justify-between items-center px-12 -mt-4">
           <div className="text-lg font-medium">Subtitle sources</div>
           <div>{addSourceIcon}</div>
         </AccordionBody>

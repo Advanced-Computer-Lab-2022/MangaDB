@@ -83,7 +83,7 @@ const AddSubtitles = (props) => {
         sources={sources}
         shortDescription={shortDescription}
         introVideoUrl={SubtitleIntroUrl}
-      ></SingleSubtitle>
+      />
     );
   });
   const showSubtitleModal = () => {
@@ -135,7 +135,7 @@ const AddSubtitles = (props) => {
                 <SubtitleForm
                   onCancel={hideSubtitleModal}
                   onConfirm={addSubtitleHandler}
-                ></SubtitleForm>
+                />
               )}
             </div>
           </div>
@@ -146,7 +146,7 @@ const AddSubtitles = (props) => {
           className="w-20"
           onClick={submitHandler}
           text="Next"
-        ></SecondaryButton>
+        />
       </div>
     </div>
   );

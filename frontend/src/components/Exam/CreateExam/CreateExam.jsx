@@ -68,34 +68,40 @@ const CreateExam = (props) => {
   examState.length === 0 ? (empty = true) : (empty = false);
 
   return (
-    <div className="mt-4">
-      <CreateQuestionForm
-        examState={examState[selectedQuestion - 1]}
-        empty={empty}
-        onQuestionChangeHandler={onQuestionChangeHandler.bind(
-          null,
-          selectedQuestion - 1
-        )}
-        onSubmit={onSaveQuestionHandler}
-        length={examState.length}
-        onQuestionRemoveHandler={onQuestionRemoveHandler}
-      ></CreateQuestionForm>
-      <ThemeProvider theme={theme}>
-        {!empty && (
-          <div className="flex justify-center">
-            <Pagination
-              count={examState.length}
-              color="primary"
-              page={selectedQuestion}
-              onChange={onChangeSelectedQuestionHandler}
-            />
-          </div>
-        )}
-      </ThemeProvider>
-      <div className="flex justify-end items-center px-10 mt-10">
-        <SecondaryButton onClick={submitHandler}>Submit</SecondaryButton>
+    <Fragment>
+      <div className="flex justify-center mb-2 mt-8 border-2 text-lg py-2 font-semibold text-center">
+        This is the course final exam, students need to pass it to receive the
+        certificate
       </div>
-    </div>
+      <div className="mt-4">
+        <CreateQuestionForm
+          examState={examState[selectedQuestion - 1]}
+          empty={empty}
+          onQuestionChangeHandler={onQuestionChangeHandler.bind(
+            null,
+            selectedQuestion - 1
+          )}
+          onSubmit={onSaveQuestionHandler}
+          length={examState.length}
+          onQuestionRemoveHandler={onQuestionRemoveHandler}
+        ></CreateQuestionForm>
+        <ThemeProvider theme={theme}>
+          {!empty && (
+            <div className="flex justify-center">
+              <Pagination
+                count={examState.length}
+                color="primary"
+                page={selectedQuestion}
+                onChange={onChangeSelectedQuestionHandler}
+              />
+            </div>
+          )}
+        </ThemeProvider>
+        <div className="flex justify-end items-center px-10 my-10">
+          <SecondaryButton onClick={submitHandler}>Submit</SecondaryButton>
+        </div>
+      </div>
+    </Fragment>
   );
 };
 export default CreateExam;

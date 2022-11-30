@@ -23,7 +23,7 @@ const AddCoursePage = (props) => {
       name: "Course Exam",
       id: 3,
       status: "",
-      description: "Create a course Exam",
+      description: "Create a Final Exam",
     },
   ]);
   const [data, setData] = useState({});

@@ -93,7 +93,7 @@ const CreateCourseForm = (props) => {
             />
           </div>
           <div className="flex justify-center items-center">
-            <label className="w-32">level</label>
+            <label className="w-32">Level</label>
             <div className="w-[60vw] md:w-[27vw] flex justify-between">
               <TertiaryButton
                 type="button"
@@ -139,7 +139,7 @@ const CreateCourseForm = (props) => {
             />
           </div>
           <div className="flex justify-center items-center">
-            <label className="w-32">price</label>
+            <label className="w-32">Price</label>
             <input
               className="w-[55vw] md:w-[25vw] px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
             focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"

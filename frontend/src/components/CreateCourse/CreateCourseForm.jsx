@@ -25,6 +25,7 @@ const CreateCourseForm = (props) => {
   const [selectedLevel, setSelectedLevel] = useState("Beginner");
   const [enteredImageURL, setEnteredImageURL] = useState("");
   const [enteredOverviewURL, setEnteredOverviewURL] = useState("");
+  const [enteredSubject, setEnteredSubject] = useState("");
   const [enteredCoursePrice, setEnteredCoursePrice] = useState("");
   const [enteredCourseDescription, setEnteredCourseDescription] = useState("");
   const [summaryValue, setSummaryValue] = useState("");
@@ -54,6 +55,10 @@ const CreateCourseForm = (props) => {
     setEnteredOverviewURL(event.target.value);
   };
 
+  const subjectChangeHandler = (event) => {
+    setEnteredSubject(event.target.value);
+  };
+
   const coursePriceChangeHandler = (event) => {
     setEnteredCoursePrice(event.target.value);
   };
@@ -69,6 +74,7 @@ const CreateCourseForm = (props) => {
       level: selectedLevel,
       courseImage: enteredImageURL,
       courseOverview : enteredOverviewURL,
+      subject: enteredSubject,
       coursePrice: enteredCoursePrice,
       courseDescription: enteredCourseDescription,
       courseSummary: summaryValue,
@@ -93,7 +99,7 @@ const CreateCourseForm = (props) => {
             />
           </div>
           <div className="flex justify-center items-center">
-            <label className="w-32">level</label>
+            <label className="w-32">Level</label>
             <div className="w-[60vw] md:w-[27vw] flex justify-between">
               <TertiaryButton
                 type="button"
@@ -139,7 +145,17 @@ const CreateCourseForm = (props) => {
             />
           </div>
           <div className="flex justify-center items-center">
-            <label className="w-32">price</label>
+            <label className="w-32">Subject</label>
+            <input
+              className="w-[60vw] md:w-[27vw] px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
+            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
+              onChange={subjectChangeHandler}
+              type="text"
+              required
+            />
+          </div>
+          <div className="flex justify-center items-center">
+            <label className="w-32">Price</label>
             <input
               className="w-[55vw] md:w-[25vw] px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
             focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"

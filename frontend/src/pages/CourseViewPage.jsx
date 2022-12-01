@@ -231,8 +231,6 @@ const CourseViewPage = () => {
   if (currentSource.sourceType === "Video") {
     displayedSource = (
       <Video
-        height={450}
-        width={700}
         isVisible={true}
         link={currentSource.link}
         onWatch={onWatchHandler}
@@ -252,16 +250,16 @@ const CourseViewPage = () => {
   return (
     <Fragment>
       <NavBar></NavBar>
-      <div classname="Controls progr etc h-8 border-1"> test</div>
-      <div className="flex">
-        <div className="video/exam frame border-2 ">{displayedSource}</div>
+      <div className="md:flex">
+        <div className="video/exam md:w-7/12 w-full mb-4 md:mb-0">
+          {displayedSource}
+        </div>
         <CourseContent
           courseDuration="35"
           content={test}
           onClick={onSourceChangeHandler}
-        ></CourseContent>
+        />
       </div>
-      <div className="subtitles"></div>
     </Fragment>
   );
 };

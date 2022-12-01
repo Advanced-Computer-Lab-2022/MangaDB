@@ -15,9 +15,20 @@ const rev = [
     username: "Misho",
     review:
       "lorem Ipsum is simply  dummy. Lorem Ipsum is simply Lorem Ipsum. Lorem Ips    incorrectly reports that Lorem Ips is simply Lorem Ipsum. Lorem Ips incorrectly reports that Lorem Ips incorrectly reports that Lore      mips Lorem Ips incorrectly reports that Lore ",
+    date: "July 23, 2021",
   },
-  { rating: 2, username: "Misho", review: "This is review 2" },
-  { rating: 4.5, username: "Misho", review: "This is review 3" },
+  {
+    rating: 2,
+    username: "Misho",
+    review: "This is review 2",
+    date: "July 23, 2021",
+  },
+  {
+    rating: 4.5,
+    username: "Misho",
+    review: "This is review 3",
+    date: "July 23, 2021",
+  },
 ];
 
 const CourseDetailsPageNew = (props) => {
@@ -35,13 +46,6 @@ const CourseDetailsPageNew = (props) => {
     });
   }, [location.state]);
 
-  var requirements = [];
-
-  if (loaded) {
-    requirements = courseDetails.requirements.map((requirement) => {
-      return <li>{requirement}</li>;
-    });
-  }
   return (
     <Fragment>
       <NavBar />
@@ -70,16 +74,16 @@ const CourseDetailsPageNew = (props) => {
       {loaded && (
         <CourseContent
           content={courseDetails.subtitles}
-          courseDuration={courseDetails.totalHours}
+          courseDuration={courseDetails.totalMins}
         />
       )}
       <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
         <div className="mb-3">Course Requirements</div>
-        <ul className="list-disc font-normal sm:grid sm:grid-cols-2 ml-10 align-middle">
-          {requirements.length !== 0 && requirements}
-        </ul>
+        <div className="ml-10 text-md font-normal">
+          {courseDetails.requirements}
+        </div>
       </div>
-      {loaded && (
+      {!loaded && (
         <CourseReviews
           //reviews={courseDetails.reviews}
           reviews={rev}

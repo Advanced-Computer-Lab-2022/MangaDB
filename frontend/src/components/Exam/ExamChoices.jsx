@@ -76,7 +76,7 @@ const ExamChoices = (props) => {
             className={({ checked, active }) =>
               classNames(
                 checked ? "border-transparent" : "border-gray-300",
-                active ? "ring-2 ring-indigo-500" : "",
+                active ? "ring-2 ring-primaryBlue" : "",
                 "relative block bg-white border rounded-lg shadow-sm px-6 py-4 cursor-pointer sm:flex sm:justify-between focus:outline-none"
               )
             }
@@ -107,7 +107,7 @@ const ExamChoices = (props) => {
                 <div
                   className={classNames(
                     active ? "border" : "border-2",
-                    checked ? "border-indigo-500" : "border-transparent",
+                    checked ? "border-primaryBlue" : "border-transparent",
                     "absolute -inset-px rounded-lg pointer-events-none"
                   )}
                   aria-hidden="true"

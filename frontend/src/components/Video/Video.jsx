@@ -26,8 +26,8 @@ const Video = (props) => {
   return (
     <div style={{ display: displayed }}>
       <ReactPlayer
-        width={props.width}
-        height={props.height}
+        width={"100%"}
+        // height={"100%"}
         controls={true}
         playing={playing}
         ref={playerRef}

@@ -7,6 +7,7 @@ const CourseReviews = (props) => {
         rating={review.rating}
         username={review.username}
         review={review.review}
+        date={review.date}
     />;
   });
   return (

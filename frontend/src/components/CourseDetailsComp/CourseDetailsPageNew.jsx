@@ -7,7 +7,7 @@ import AddToCartCard from "./AddToCartCard";
 import CourseContent from "./CourseContent";
 import CourseReviews from "./CourseReviews";
 
-const courseId = "637602ccaf6170543959970d";
+const courseId = "638643b087d3f94e4cb7a2be";
 
 const rev = [
   {
@@ -42,13 +42,6 @@ const CourseDetailsPageNew = (props) => {
     });
   }, []);
 
-  var requirements = [];
-
-  if (loaded) {
-    requirements = courseDetails.requirements.map((requirement) => {
-      return <li>{requirement}</li>;
-    });
-  }
   return (
     <Fragment>
       <NavBar />
@@ -77,14 +70,14 @@ const CourseDetailsPageNew = (props) => {
       {loaded && (
         <CourseContent
           content={courseDetails.subtitles}
-          courseDuration={courseDetails.totalHours}
+          courseDuration={courseDetails.totalMins}
         />
       )}
       <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
         <div className="mb-3">Course Requirements</div>
-        <ul className="list-disc font-normal sm:grid sm:grid-cols-2 ml-10 align-middle">
-          {requirements.length !== 0 && requirements}
-        </ul>
+        <div className="ml-10 text-md font-normal">
+          {courseDetails.requirements}
+        </div>
       </div>
       {!loaded && (
         <CourseReviews

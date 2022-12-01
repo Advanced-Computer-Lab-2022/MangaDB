@@ -34,8 +34,7 @@ const SubtitleAccordion = (props) => {
       <SubtitleBody
         onClick ={props.onClick}
         description={source.description}
-        //duration={source.duration}
-        duration="5"
+        duration={source.sourceDuration}
         type={source.sourceType}
         link = {source.link}
         id={source._id}

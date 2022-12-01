@@ -26,19 +26,22 @@ import "./App.css";
 // import InstructorCoursesPage from "./pages/InstructorCoursesPage";
 // import CourseDetailsCardNew from "./components/Course/CourseDetailsCard";
 import CourseDetailsPageNew from "./components/CourseDetailsComp/CourseDetailsPageNew";
-//import CourseReviews from "./components/CourseDetailsComp/CourseReviews";
-
+import CourseViewPage from "./pages/CourseViewPage";
+import InstructorProfilePage from "./pages/InstructorProfilePage";
+import PasswordAndPrivacy from "./components/Profile/PasswordAndPrivacy";
+import Billing from "./components/Profile/Billing";
+import Reviews from "./components/Profile/Reviews/Reviews";
 function App() {
   //return <CourseDetailsPageNew />
   //return <HomePage />;
-  return <AddCoursePage />;
-
-  
+//  return <InstructorProfilePage></InstructorProfilePage>
+  return <Reviews></Reviews>
 //   const validatedLink =  validateYouTubeUrl("https://youtu.be/BgP30ML_Tc0");
 //   console.log(validatedLink)
   
   //return  <Video isVisible={false} link="https://youtu.be/BgP30ML_Tc0"></Video>
 //  return <ExamManager></ExamManager>
-//return <AddCoursePage></AddCoursePage>
+// return <AddCoursePage></AddCoursePage>
+  // return <CourseViewPage></CourseViewPage>
 }
 export default App;

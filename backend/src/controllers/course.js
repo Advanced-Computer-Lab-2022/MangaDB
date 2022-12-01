@@ -110,7 +110,7 @@ exports.getCourse = async (req, res, next) => {
     });
   }
 };
-
+//check if course is in instructor's course list
 exports.updateCourse = async (req, res, next) => {
   await course
     .findByIdAndUpdate(req.params.id, req.body)
@@ -126,6 +126,34 @@ exports.updateCourse = async (req, res, next) => {
         message: "Could not update course!",
       });
     });
+};
+
+exports.addSubtitle = async (req, res, next) => {
+  const subtitle = req.body.subtitle;
+  const courseId = req.params.id;
+ try{
+  const foundCourse=await course.findById(courseId);
+  let subDuration=0;
+  for(let j=0;j<subtitle.sources.length;j++){
+    if(subtitle.sources[j].sourceType==='Quiz'){
+      const myExam=subtitle.sources[j].exam;
+      const examId=await examController.createExam(myExam);
+      subtitle.sources[j].quiz=examId;
+
+    }
+   subDuration+=subtitle.sources[j].sourceDuration;
+  }
+foundCourse.totalMins+=subDuration;
+  foundCourse.subtitles.push(subtitle);
+  await foundCourse.save();
+  res.status(200).json({
+    message: "Subtitle added successfully!",
+  });
+}catch(error){
+  res.status(500).json({
+    message: "Subtitle adding failed!",
+  });
+}
 };
 
 exports.deleteCourse = async (req, res, next) => {

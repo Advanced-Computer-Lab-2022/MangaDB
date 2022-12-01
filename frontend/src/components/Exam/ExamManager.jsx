@@ -14,134 +14,22 @@ const ExamManager = (props) => {
   //take the answers as props
   //take the exam questions w/o answers as props
   //take the student's answers if applicable as props
-  const examQuestionsWithoutAnswers = [
-    {
-      description: "How do you write react components",
-      choices: [
-        {
-          choiceID: "A",
-          description: "This is the First choice for this question",
-        },
-        {
-          choiceID: "B",
-          description: "This is the Second choice for this question",
-        },
-        {
-          choiceID: "C",
-          description: "This is the Third choice for this question",
-        },
-        {
-          choiceID: "D",
-          description: "This is the Fourth choice for this question",
-        },
-      ],
-    },
-    {
-      description: "this is the second question ",
-      choices: [
-        {
-          choiceID: "A",
-          description: "This is the First choice for this question",
-        },
-        {
-          choiceID: "B",
-          description: "This is the Second choice for this question",
-        },
-        {
-          choiceID: "C",
-          description: "This is the Third choice for this question",
-        },
-        {
-          choiceID: "D",
-          description: "This is the Fourth choice for this question",
-        },
-      ],
-    },
-    {
-      description: "How do you write react components 2",
-      choices: [
-        {
-          choiceID: "A",
-          description: "This is the First choice for this question",
-        },
-        {
-          choiceID: "B",
-          description: "This is the Second choice for this question",
-        },
-        {
-          choiceID: "C",
-          description: "This is the Third choice for this question",
-        },
-        {
-          choiceID: "D",
-          description: "This is the Fourth choice for this question",
-        },
-      ],
-    },
-    {
-      description: "this is the second question 3 ",
-      choices: [
-        {
-          choiceID: "A",
-          description: "This is the First choice for this question",
-        },
-        {
-          choiceID: "B",
-          description: "This is the Second choice for this question",
-        },
-        {
-          choiceID: "C",
-          description: "This is the Third choice for this question",
-        },
-        {
-          choiceID: "D",
-          description: "This is the Fourth choice for this question",
-        },
-      ],
-    },
-  ];
-  const ExamAnswers = [
-    {
-      questionID: 1,
-      answer: "A",
-    },
-    {
-      questionID: 2,
-      answer: "B",
-    },
-    {
-      questionID: 3,
-      answer: "C",
-    },
-    {
-      questionID: 4,
-      answer: "D",
-    },
-  ];
-  const studentAnswers = [
-    {
-      questionID: 1,
-      answer: "A",
-    },
-    {
-      questionID: 2,
-      answer: "C",
-    },
-    {
-      questionID: 3,
-      answer: "B",
-    },
-    {
-      questionID: 4,
-      answer: "A",
-    },
-  ];
 
+  //this will be  props.exam
+
+  const examQuestionsWithAnswers = props.exam
+
+  const studentAnswers = props.studentAnswers;;
+  var solvedBefore = true;
+  if (studentAnswers.length === 0) {
+    solvedBefore = false;
+  }
   return (
     <Exam
-      exam={examQuestionsWithoutAnswers}
-      answers={ExamAnswers}
+      exam={examQuestionsWithAnswers}
       studentAnswers={studentAnswers}
+      solvedBefore={solvedBefore}
+      onSolveExamHandler={props.onSolveExamHandler}
     ></Exam>
   );
 };

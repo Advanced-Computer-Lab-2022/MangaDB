@@ -18,6 +18,7 @@ router.get("/mostviewed", courseController.getMostViewedCourses);
 
 router.get("/mostrated", courseController.getMostRatedCourses);
 
+router.post("/addsubtitle/:id", courseController.addSubtitle);
 
 
 module.exports = router;

@@ -88,6 +88,7 @@ const Subtitle = (props) => {
         {ModalShown && (
           <DeleteSubtitle
             onClick={deleteSubtitleHandler}
+            type="subtitle"
             onCancel={hideAlertHandler}
           ></DeleteSubtitle>
         )}

@@ -15,9 +15,20 @@ const rev = [
     username: "Misho",
     review:
       "lorem Ipsum is simply  dummy. Lorem Ipsum is simply Lorem Ipsum. Lorem Ips    incorrectly reports that Lorem Ips is simply Lorem Ipsum. Lorem Ips incorrectly reports that Lorem Ips incorrectly reports that Lore      mips Lorem Ips incorrectly reports that Lore ",
+    date: "July 23, 2021",
   },
-  { rating: 2, username: "Misho", review: "This is review 2" },
-  { rating: 4.5, username: "Misho", review: "This is review 3" },
+  {
+    rating: 2,
+    username: "Misho",
+    review: "This is review 2",
+    date: "July 23, 2021",
+  },
+  {
+    rating: 4.5,
+    username: "Misho",
+    review: "This is review 3",
+    date: "July 23, 2021",
+  },
 ];
 
 const CourseDetailsPageNew = (props) => {
@@ -82,7 +93,7 @@ const CourseDetailsPageNew = (props) => {
           {requirements.length !== 0 && requirements}
         </ul>
       </div>
-      {loaded && (
+      {!loaded && (
         <CourseReviews
           //reviews={courseDetails.reviews}
           reviews={rev}

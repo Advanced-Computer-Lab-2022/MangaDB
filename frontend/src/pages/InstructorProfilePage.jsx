@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import PersonalInfoForm from "../components/Profile/PersonalInfoForm";
 import PasswordAndPrivacy from "../components/Profile/PasswordAndPrivacy";
 import Billing from "../components/Profile/Billing";
+import Reviews from "../components/Profile/Reviews/Reviews";
 import axios from "axios";
 //stub for the userPersonal Info Received
 const user = {
@@ -38,10 +39,32 @@ const user = {
       datetime: "2020-01-01",
       description: "Business Plan - Annual Billing",
       amount: "CA$109.00",
-      href: "#",
     },
   ],
 };
+const reviews = [
+  {
+    id: 1,
+    rating: 5,
+    content: "This is a really good course ",
+    author: "Omar Moataz",
+    date: "May 16, 2021",
+  },
+  {
+    id: 2,
+    rating: 5,
+    content: "This is a really good course ",
+    author: "Omar Moataz",
+    date: "May 16, 2021",
+  },
+  {
+    id: 3,
+    rating: 4.7,
+    content: "This is a really good course ",
+    author: "Omar Moataz",
+    date: "May 16, 2021",
+  },
+];
 
 const InstructorProfilePage = () => {
   const [receivedUserInfo, setReceivedUserInfo] = useState(user);
@@ -97,6 +120,10 @@ const InstructorProfilePage = () => {
       setSelectedStage(4);
     }
   };
+  const reviewReportHandler = (reviewId) => {
+    //sprint 3
+    console.log(reviewId);
+  };
 
   var displayedStep;
   if (selectedStage === 1) {
@@ -126,6 +153,14 @@ const InstructorProfilePage = () => {
         onSaveHandler={securityChangeHandler}
         selected={receivedUserInfo.emailPrivacy}
       ></PasswordAndPrivacy>
+    );
+  } else {
+    displayedStep = (
+      <Reviews
+        changeStageHandler={changeStageHandler}
+        reviewReportHandler={reviewReportHandler}
+        reviews={reviews}
+      ></Reviews>
     );
   }
   return <div> {displayedStep}</div>;

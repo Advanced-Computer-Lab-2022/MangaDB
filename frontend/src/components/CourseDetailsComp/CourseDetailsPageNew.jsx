@@ -41,6 +41,12 @@ const CourseDetailsPageNew = (props) => {
   return (
     <Fragment>
       <NavBar />
+      <div className=" bg-slate-800 h-12 text-white flex sticky top-0 justify-center items-center">
+        {" "}
+        <h1 className="font-semibold md:tracking-widest ">
+          promotion ends in: 2 days : 5 hrs : 10 minutes
+        </h1>
+      </div>
       <div className="bg-veryLightBlue py-4 px-6 flex justify-between">
         <CourseDetailsCard
           courseTitle={courseDetails.courseTitle}
@@ -55,6 +61,7 @@ const CourseDetailsPageNew = (props) => {
           currencySymbol="$"
         />
       </div>
+
       <AddToCartCard courseImage={courseDetails.courseImage} />
       <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
         <div className="mb-3">Course Summary</div>

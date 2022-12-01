@@ -1,10 +1,15 @@
 import PrimaryButton from "../PrimaryButton";
 import SecondaryButton from "../SecondaryButton";
 import Stars from "../UI/Stars";
+import Modal from "../UI/Modal";
 
 const size = 3;
 
 const TableRows = (props) => {
+
+  function addPromotionHandler(){
+
+  }
   const rows = props.rows.map((row, rowIdx) => (
     <tr
       key={row.courseId}
@@ -31,8 +36,12 @@ const TableRows = (props) => {
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         {row.totalHours}
       </td>
-      <td className=" whitespace-nowrap text-right text-sm font-medium flex space-x-4">
-        <PrimaryButton text="View" />
+      <td className=" whitespace-nowrap text-right text p-2 -sm font-medium flex space-x-4 justify-center">
+        <SecondaryButton text="View" />
+        {/* <SecondaryButton text="Edit" /> */}
+      </td>
+      <td className=" whitespace-nowrap text-right text-sm p-2 font-medium flex space-x-4 justify-center">
+        <SecondaryButton text="Add Promotion" onClick={addPromotionHandler}/>
         {/* <SecondaryButton text="Edit" /> */}
       </td>
     </tr>

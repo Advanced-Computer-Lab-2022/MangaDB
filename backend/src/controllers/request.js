@@ -185,6 +185,12 @@ exports.requestRefund = async (req, res) => {
             const refundAmount = foundUser.courseDetails[courseIndex].amountPaid;
             foundUser.courseDetails.splice(courseIndex,1);
             foundUser.wallet+=refundAmount;
+            const foundCourse = await course.findById(foundRequest.course);
+            await user.findByIdAndUpdate(foundCourse.instructor,{wallet:foundCourse.instructor.wallet-(refundAmount*0.8)})
+            .catch((err)=>{
+                console.log(err);
+            });
+            
             await foundUser.save();
             foundRequest.status="accepted";
             await foundRequest.save();

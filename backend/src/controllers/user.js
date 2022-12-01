@@ -318,8 +318,12 @@ exports.changePassword = async (req, res) => {
             for(let i=0;i<courseData.subtitles.length;i++){
               sourceNumber+=courseData.subtitles[i].sources.length;
             }
-            userData.courseDetails.push({course:courseData._id,totalSources:sourceNumber,percentageCompleted:0,amountPaid:(courseData.discountedPrice * exchangeRate)});
+            const price=Math.toFixed((courseData.discountedPrice * exchangeRate),2);
+            userData.courseDetails.push({course:courseData._id,totalSources:sourceNumber,percentageCompleted:0,amountPaid:price});
             await userData.save();
+            await user.findByIdAndUpdate(courseData.instructor,
+              { $inc: { wallet:price* 0.8 } },  //change depending on country selected by user /instructor
+              {useFindAndModify:false,new:true})
             await course.findByIdAndUpdate(courseId,{$inc:{views:1}});
 
             const info={

@@ -32,7 +32,7 @@ import PasswordAndPrivacy from "./components/Profile/PasswordAndPrivacy";
 import Billing from "./components/Profile/Billing";
 import Reviews from "./components/Profile/Reviews/Reviews";
 function App() {
-  return <CourseDetailsPageNew />
+  return <AddCoursePage />
   //return <HomePage />;
 //  return <InstructorProfilePage></InstructorProfilePage>
   //return <CourseViewPage />

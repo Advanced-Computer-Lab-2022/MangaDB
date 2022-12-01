@@ -58,20 +58,19 @@ const AddCoursePage = (props) => {
       } else if (flag) {
         newSteps.push({ ...steps[i], status: "current" });
         flag = false;
-      }
-      else if (steps[i].status === "complete") {
-        newSteps.push({ ...steps[i]});
+      } else if (steps[i].status === "complete") {
+        newSteps.push({ ...steps[i] });
       }
     }
     setSteps(newSteps);
   };
 
   const submiHandler = (thirdData) => {
-    var submitData = {...data , courseFinalExam: thirdData}
+    var submitData = { ...data, courseFinalExam: thirdData };
     console.log(submitData);
     // axios
     //   .post(
-    //     "http://localhost:3000/instructor/addcourse/635bf48c56673b3f80ac2dff",
+    //     "http://localhost:3000/instructor/addcourse/6386427487d3f94e4cb7a28d",
     //     submitData,
     //     {
     //       headers: {
@@ -80,7 +79,6 @@ const AddCoursePage = (props) => {
     //     }
     //   )
     //   .then((res) => {});
-    
   };
   return (
     <Fragment>
@@ -99,4 +97,3 @@ const AddCoursePage = (props) => {
   );
 };
 export default AddCoursePage;
-

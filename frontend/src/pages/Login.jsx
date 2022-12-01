@@ -19,6 +19,10 @@ export default function Login() {
 const GoogleLogin = (e) => {
    e.preventDefault();
 };
+const signUpHandler = () => {
+
+  navigate('/signup')
+}
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
@@ -183,8 +187,8 @@ const GoogleLogin = (e) => {
           </form>
           <p class="text-center">
             Dont't have an account?{" "}
-            <a
-              href="#"
+            <button 
+            onClick={signUpHandler}
               class="text-primaryBlue hover:opacity-70 ease-in-out duration-300 font-medium inline-flex space-x-1 items-center"
             >
               <span>Register now </span>
@@ -204,7 +208,7 @@ const GoogleLogin = (e) => {
                   />
                 </svg>
               </span>
-            </a>
+            </button>
           </p>
         </div>
       </div>

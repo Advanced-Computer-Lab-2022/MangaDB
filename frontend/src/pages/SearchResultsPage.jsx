@@ -21,7 +21,7 @@ const SearchResultsPage = () => {
   const location = useLocation();
   const defaultState = {
     displayedCourses: [],
-    search: location.state,
+    search: location.state?location.state:"",
     filters: {
       price: null,
       subjects: [],
@@ -112,7 +112,7 @@ const SearchResultsPage = () => {
           title={course.courseTitle}
           instructorName={course.instructorName}
           subject={course.subject}
-          level="Advanced"
+          level={course.level}
           description={course.courseDescription}
           coursePrice={course.coursePrice}
           discountedPrice={course.discountedPrice}

@@ -4,7 +4,7 @@ import CourseContent from "../components/CourseDetailsComp/CourseContent";
 import NavBar from "../components/NavBar";
 import ExamManager from "../components/Exam/ExamManager";
 import axios from "axios";
-
+import {useLocation} from 'react-router-dom'
 //stub of the received Data
 var test = [
   {
@@ -167,6 +167,7 @@ const CourseViewPage = () => {
   const [receivedExam, setReceivedExam] = useState(exam);
   const [receivedStudentSolution, setReceivedStudentSolution] = useState([]);
   const [receivedGrade, setReceivedGrade] = useState(7);
+  
 
   //useEffect at the start to receive the data
   useEffect(() => {

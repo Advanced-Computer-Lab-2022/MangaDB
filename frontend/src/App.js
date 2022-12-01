@@ -9,11 +9,13 @@ import CourseViewPage from "./pages/CourseViewPage";
 import AdminAddNewUser from "./pages/AdminAddNewUser";
 import InstructorCoursesPage from "./pages/InstructorCoursesPage";
 import AddCoursePage from "./pages/AddCoursePage";
+import SignUp from "./pages/SignUp";
 function App() {
   return (
     //navbar should be here
     <Routes>
       <Route path="/" element={<Login></Login>}></Route>
+      <Route path="/signup" element = {<SignUp></SignUp>}></Route>
       <Route path="/home/:id" element={<HomePage></HomePage>}></Route>
       <Route
         path="/searchresults/:id"

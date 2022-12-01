@@ -1,20 +1,30 @@
-import { useRef } from "react";
+import { useState } from "react";
 import React from "react";
 import SecondaryButton from "./SecondaryButton";
+import { useNavigate } from "react-router-dom";
 
 const Search = (props) => {
-  const inputRef = useRef();
-  if (!props.prevSearchState && props.prevmyCoursesState) {
-    inputRef.current.value = "";
-  }
+  const navigate = useNavigate();
+  // if (!props.prevSearchState && props.prevmyCoursesState) {
+  //   inputRef.current.value = "";
+  // }
+  const [searchState, setSearchState] = useState(
+    props.searchState ? props.searchState : ""
+  );
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    props.onChange(inputRef.current.value);
+    const instructorId = "6386427487d3f94e4cb7a28d";
+    navigate(`/searchresults/${instructorId}`, {
+      state: searchState,
+    });
+    props.onChange(searchState);
   };
+  const searchChangeHandler = (event) => {
+    setSearchState(event.target.value);
+  };
+
   return (
-    <div
-      className={` right-3 w-[60vw] max-w-4xl ${props.className} `}
-    >
+    <div className={` right-3 w-[60vw] max-w-4xl ${props.className} `}>
       <form onSubmit={onSubmitHandler}>
         <label
           htmlFor="default-search"
@@ -45,18 +55,12 @@ const Search = (props) => {
             id="default-search"
             className="outline-none p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-veryLightBlue focus:border-veryLightBlue  "
             placeholder="Search by course name, category, or instructor"
-            ref={inputRef}
-          >
-            
-          </input>
+            onChange={searchChangeHandler}
+            value={searchState}
+          ></input>
           <div className="mt-2 absolute right-3">
-          <SecondaryButton
-            className=""
-            text="Search"
-            type="submit"
-          />
+            <SecondaryButton className="" text="Search" type="submit" />
           </div>
-          
         </div>
       </form>
     </div>

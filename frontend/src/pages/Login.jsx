@@ -1,13 +1,11 @@
-import SecondaryButton from "../SecondaryButton";
-import { useRef, useState } from "react";
-import PasswordField from "./PasswordField";
-import logo from "../../Assets/Images/Logo.svg";
-import userIcon from "../../Assets/Images/userIcon.svg";
+import SecondaryButton from "../components/SecondaryButton";
+import { useRef, useState,useEffect } from "react";
+import PasswordField from "../components/Login-SignUp/PasswordField";
+import logo from "../Assets/Images/Logo.svg";
+import userIcon from "../Assets/Images/userIcon.svg";
 import axios from "axios";
+import {useNavigate} from "react-router-dom"
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
 
 export default function Login() {
   const PasswordRef = useRef();
@@ -16,10 +14,15 @@ export default function Login() {
   const [emptyUserName, setEmptyUserName] = useState(false);
   const [emptyPassword, setEmptyPassword] = useState(false);
   const [warning, setWarning] = useState("");
-
+  const  navigate = useNavigate();
+ 
 const GoogleLogin = (e) => {
    e.preventDefault();
 };
+const signUpHandler = () => {
+
+  navigate('/signup')
+}
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
@@ -45,6 +48,9 @@ const GoogleLogin = (e) => {
             localStorage.setItem("token", res.data.token);
             window.location.href = "/home";
             */
+           const instructorId = "6386427487d3f94e4cb7a28d"
+           navigate( `/home/${instructorId}`);
+          
           } else {
             setIncorrectData(true);
           }
@@ -107,7 +113,7 @@ const GoogleLogin = (e) => {
             <div class="flex flex-col space-y-5">
               <div className="relative">
                 <label for="UserName">
-                  <p class="font-medium text-slate-700 pb-2">UserName *</p>
+                  <p class="font-medium text-slate-700 pb-2">Username *</p>
                   <div className="relative">
                     <input
                       ref={UserNameRef}
@@ -181,8 +187,8 @@ const GoogleLogin = (e) => {
           </form>
           <p class="text-center">
             Dont't have an account?{" "}
-            <a
-              href="#"
+            <button 
+            onClick={signUpHandler}
               class="text-primaryBlue hover:opacity-70 ease-in-out duration-300 font-medium inline-flex space-x-1 items-center"
             >
               <span>Register now </span>
@@ -202,7 +208,7 @@ const GoogleLogin = (e) => {
                   />
                 </svg>
               </span>
-            </a>
+            </button>
           </p>
         </div>
       </div>

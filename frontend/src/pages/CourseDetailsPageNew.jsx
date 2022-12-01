@@ -1,13 +1,12 @@
 import React from "react";
 import { Fragment, useState, useEffect } from "react";
-import NavBar from "../NavBar";
-import CourseDetailsCard from "./CourseDetailsCard";
+import NavBar from "../components/NavBar";
+import CourseDetailsCard from "../components/CourseDetailsComp/CourseDetailsCard";
 import axios from "axios";
-import AddToCartCard from "./AddToCartCard";
-import CourseContent from "./CourseContent";
-import CourseReviews from "./CourseReviews";
-
-const courseId = "638643b087d3f94e4cb7a2be";
+import AddToCartCard from "../components/CourseDetailsComp/AddToCartCard";
+import CourseContent from "../components/CourseDetailsComp/CourseContent";
+import CourseReviews from "../components/CourseDetailsComp/CourseReviews";
+import { useLocation } from "react-router-dom";
 
 const rev = [
   {
@@ -31,16 +30,35 @@ const rev = [
   },
 ];
 
-const CourseDetailsPageNew = (props) => {
+const CourseDetailsPageNew = () => {
+  const location = useLocation();
   const [courseDetails, setCourseDetails] = useState({});
   const [loaded, setLoaded] = useState(false);
+  const [userRegistered, setUserRegistered] = useState(false);
   useEffect(() => {
+    const courseId = location.state;
+
     axios.get("http://localhost:3000/course/".concat(courseId)).then((res) => {
       setCourseDetails(res.data.course);
       setLoaded(true);
-      console.log(res.data.course);
     });
-  }, []);
+
+    const userId = "6386423d87d3f94e4cb7a289";
+    axios
+      .patch(`http://localhost:3000/user/enroll/${userId}`, {
+        courseId: location.state,
+      })
+      .then((res) => {})
+      .catch((error) => {
+        if (
+          +error.message.split(" ")[error.message.split(" ").length - 1] === 400
+        ) {
+          setUserRegistered(true);
+        } else {
+          setUserRegistered(false);
+        }
+      });
+  }, [location.state]);
 
   return (
     <Fragment>
@@ -59,7 +77,11 @@ const CourseDetailsPageNew = (props) => {
           currencySymbol="$"
         />
       </div>
-      <AddToCartCard courseImage={courseDetails.courseImage} />
+      <AddToCartCard
+        id={courseDetails._id}
+        userRegister={userRegistered}
+        courseImage={courseDetails.courseImage}
+      />
       <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
         <div className="mb-3">Course Summary</div>
         {/* <div className="ml-10 align-middle">{props.courseSummary}</div> */}
@@ -75,9 +97,10 @@ const CourseDetailsPageNew = (props) => {
       )}
       <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
         <div className="mb-3">Course Requirements</div>
-        <div className="ml-10 text-md font-normal">
-          {courseDetails.requirements}
-        </div>
+        <div
+          className="ml-10 font-normal"
+          dangerouslySetInnerHTML={{ __html: courseDetails.requirements }}
+        ></div>
       </div>
       {!loaded && (
         <CourseReviews

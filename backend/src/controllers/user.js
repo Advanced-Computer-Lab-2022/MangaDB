@@ -290,6 +290,7 @@ exports.changePassword = async (req, res) => {
         "US",
         countryCode
       );
+
       let exchangeRate = countryDetails.rate;
       let currency = countryDetails.toCountryCurrency;
       try {
@@ -300,6 +301,7 @@ exports.changePassword = async (req, res) => {
           });
         } else {
           const courseData = await course.findById(courseId);
+   
           if (!courseData) {
             res.status(404).send({
               message: `Course was not found!`,
@@ -314,11 +316,14 @@ exports.changePassword = async (req, res) => {
                 return;
               }
             }
+
             let sourceNumber=0;
             for(let i=0;i<courseData.subtitles.length;i++){
               sourceNumber+=courseData.subtitles[i].sources.length;
             }
-            const price=Math.toFixed((courseData.discountedPrice * exchangeRate),2);
+
+            let price=courseData.discountedPrice * exchangeRate;
+            price=price.toFixed(2);
             userData.courseDetails.push({course:courseData._id,totalSources:sourceNumber,percentageCompleted:0,amountPaid:price});
             await userData.save();
             await user.findByIdAndUpdate(courseData.instructor,

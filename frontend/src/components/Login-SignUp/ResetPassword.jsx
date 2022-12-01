@@ -7,11 +7,37 @@ import PasswordField from "./PasswordField";
 export default function ResetPassword() {
   const newPasswordRef = useRef();
   const confirmNewPasswordRef = useRef();
+  const [emptyPassword, setEmptyPassword] = useState(false);
+  const [emptyConfirmPassword, setEmptyConfirmPassword] = useState(false);
+  const [passwordMatch, setPasswordMatch] = useState(true);
+  const [warning, setWarning] = useState("");
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(newPasswordRef.current.value);
-    console.log(confirmNewPasswordRef.current.value);
+    if (newPasswordRef.current.value !== confirmNewPasswordRef.current.value && newPasswordRef.current.value !== "" && confirmNewPasswordRef.current.value !== "") {
+      setPasswordMatch(false);
+      console.log("passwords don't match");
+      setWarning("passwords do not match");
+    }
+    else {
+      setPasswordMatch(false);
+      setWarning("");
+    }
+    if (newPasswordRef.current.value === "") {
+      setEmptyPassword(true);
+      setWarning("please fill the following fields");
+      console.log("empty password");
+    } else {
+      setEmptyPassword(false);
+    }
+    if (confirmNewPasswordRef.current.value === "") {
+      setEmptyConfirmPassword(true);
+      console.log("empty confirm password");
+      setWarning("please fill the following fields");
+    } else {
+      setEmptyConfirmPassword(false);
+    }
+    
     //handle patch request
   };
   return (
@@ -22,16 +48,47 @@ export default function ResetPassword() {
           <p class="text-slate-500 pl-1">
             Fill up the form to reset the password
           </p>
+          <div
+            class={
+               ( (emptyPassword || emptyConfirmPassword ||  passwordMatch === false) &&warning )
+                ? "p-4 mt-3 text-red-900 bg-red-50 border rounded-md"
+                : "hidden"
+            }
+          >
+            <div class="flex justify-between flex-wrap">
+              <div class="w-0 flex-1 flex">
+                <div class="mr-3 pt-1">
+                  <svg
+                    width="26"
+                    height="26"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                  >
+                    <path d="M13.6086 3.247l8.1916 15.8c.0999.2.1998.5.1998.8 0 1-.7992 1.8-1.7982 1.8H3.7188c-.2997 0-.4995-.1-.7992-.2-.7992-.5-1.1988-1.5-.6993-2.4 5.3067-10.1184 8.0706-15.385 8.2915-15.8.3314-.6222.8681-.8886 1.4817-.897.6135-.008 1.273.2807 1.6151.897zM12 18.95c.718 0 1.3-.582 1.3-1.3 0-.718-.582-1.3-1.3-1.3-.718 0-1.3.582-1.3 1.3 0 .718.582 1.3 1.3 1.3zm-.8895-10.203v5.4c0 .5.4.9.9.9s.9-.4.9-.9v-5.3c0-.5-.4-.9-.9-.9s-.9.4-.9.8z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="text-md mt-[5px] leading-6 font-medium">
+                    {warning}
+                  </h4>
+                </div>
+              </div>
+            </div>
+          </div>
+
 
           <form action="" class="my-10" onSubmit={onSubmitHandler}>
             <div class="flex flex-col space-y-5">
               <PasswordField
                 PasswordRef={newPasswordRef}
                 label="New Password"
+                warning={emptyPassword || passwordMatch === false}
               />
               <PasswordField
                 PasswordRef={confirmNewPasswordRef}
                 label="Confirm New Password"
+                warning={emptyConfirmPassword || passwordMatch === false}
               />
               <SecondaryButton
                 type="submit"

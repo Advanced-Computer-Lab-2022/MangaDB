@@ -113,7 +113,7 @@ const GoogleLogin = (e) => {
                       ref={UserNameRef}
                       type="text"
                       class={"w-full py-3 border pl-12 border-slate-200 rounded-lg px-3 focus:outline-none focus:border-primaryBlue hover:shadow".concat(
-                        emptyUserName ? " border-red-200" : ""
+                        emptyUserName || incorrectData? " border-red-200" : ""
                       )}
                       placeholder="Username"
                     />
@@ -127,7 +127,7 @@ const GoogleLogin = (e) => {
                 <PasswordField
                   PasswordRef={PasswordRef}
                   label="Password"
-                  warning={emptyPassword}
+                  warning={emptyPassword || incorrectData}
                 />
               </div>
               <p class=" pl-3 ">

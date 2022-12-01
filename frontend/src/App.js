@@ -34,8 +34,7 @@ import Reviews from "./components/Profile/Reviews/Reviews";
 function App() {
   //return <CourseDetailsPageNew />
   //return <HomePage />;
-//  return <InstructorProfilePage></InstructorProfilePage>
-  return <Reviews></Reviews>
+ return <InstructorProfilePage></InstructorProfilePage>
 //   const validatedLink =  validateYouTubeUrl("https://youtu.be/BgP30ML_Tc0");
 //   console.log(validatedLink)
   

@@ -1,7 +1,6 @@
 import { Fragment, useState } from "react";
 import AverageSummary from "./AverageSummary";
-import ReviewsTable from "./Review";
-import SecondaryButton from "../../SecondaryButton";
+import ReviewsTable from "./ReviewsTable";
 import { Disclosure } from "@headlessui/react";
 import {
   CreditCardIcon,
@@ -20,7 +19,6 @@ const subNavigation = [
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
-
 const Reviews = (props) => {
   const onSaveHandler = (event) => {
     event.preventDefault();
@@ -97,7 +95,7 @@ const Reviews = (props) => {
                   {subNavigation.map((item, index) => (
                     <div
                       key={item.name}
-                      //   onClick={props.changeStageHandler.bind(null,item.name)}
+                        onClick={props.changeStageHandler.bind(null,item.name)}
                       className={classNames(
                         item.current
                           ? "bg-teal-50 border-teal-500 text-teal-700 hover:bg-teal-50 hover:text-teal-700"
@@ -150,11 +148,9 @@ const Reviews = (props) => {
                       Student Reviews
                     </h2>
                   </div>
-                  <ReviewsTable></ReviewsTable>
+                  <ReviewsTable reviews={props.reviews}></ReviewsTable>
                 </div>
-                <div className="mt-4 py-4 px-4 flex justify-end sm:px-6">
-                  <SecondaryButton type="submit">Save</SecondaryButton>
-                </div>
+             
               </form>
             </div>
           </div>

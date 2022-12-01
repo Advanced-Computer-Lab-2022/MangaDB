@@ -1,12 +1,13 @@
 import React from "react";
 import homeImage from "../Assets/Images/HomePage.svg";
-import Search from "../components/Search";
 import Animate from "react-smooth/lib/Animate";
 import NavBar from "../components/NavBar";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import CourseCard from "../components/Course/CourseCard";
+import SearchBar from "../components/SearchBar";
+
 const HomePage = () => {
   const [displayedCourses, setDisplayedCourses] = useState([]);
   const [currencySymbol, setCurrencySymbol] = useState("");
@@ -77,7 +78,7 @@ const HomePage = () => {
           </div>
         </div>
         <div className="flex justify-center">
-          <Search />
+          <SearchBar />
         </div>
         <div className="font-bold text-2xl mt-8 mb-4 flex justify-start mx-12 w-max">
           Most Popular:

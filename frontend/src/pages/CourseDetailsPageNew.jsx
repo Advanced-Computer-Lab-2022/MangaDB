@@ -1,13 +1,13 @@
 import React from "react";
 import { Fragment, useState, useEffect } from "react";
-import NavBar from "../NavBar";
-import CourseDetailsCard from "./CourseDetailsCard";
+import NavBar from "../components/NavBar";
+import CourseDetailsCard from "../components/CourseDetailsComp/CourseDetailsCard";
 import axios from "axios";
-import AddToCartCard from "./AddToCartCard";
-import CourseContent from "./CourseContent";
-import CourseReviews from "./CourseReviews";
+import AddToCartCard from "../components/CourseDetailsComp/AddToCartCard";
+import CourseContent from "../components/CourseDetailsComp/CourseContent";
+import CourseReviews from "../components/CourseDetailsComp/CourseReviews";
+import { useLocation } from "react-router-dom";
 
-const courseId = "637602ccaf6170543959970d";
 
 const rev = [
   {
@@ -21,15 +21,19 @@ const rev = [
 ];
 
 const CourseDetailsPageNew = (props) => {
+  const location = useLocation();
   const [courseDetails, setCourseDetails] = useState({});
   const [loaded, setLoaded] = useState(false);
+
   useEffect(() => {
+    const courseId = location.state
+
     axios.get("http://localhost:3000/course/".concat(courseId)).then((res) => {
       setCourseDetails(res.data.course);
       setLoaded(true);
       console.log(res.data.course);
     });
-  }, []);
+  }, [location.state]);
 
   var requirements = [];
 

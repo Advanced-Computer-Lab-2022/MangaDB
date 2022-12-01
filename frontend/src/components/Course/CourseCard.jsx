@@ -2,12 +2,18 @@ import React from "react";
 import reactImg from "../../Assets/Images/react.png";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Stars from "../UI/Stars";
+import { useNavigate } from "react-router-dom";
 
 const size = 5;
 
 const CourseCard = (props) => {
+  const navigate = useNavigate();
+  const clickHandler = () => {
+    const instructorId = "6386427487d3f94e4cb7a28d";
+    navigate(`/coursedetails/${instructorId}`, { state: props.id });
+  };
   return (
-    <button className="hover:scale-105 transition flex content-start relative mb-8 mx-4">
+    <button className="hover:scale-105 transition flex content-start relative mb-8 mx-4" onClick={clickHandler}>
       <div class=" relative bg-white border border-gray-200 shadow-md w-80">
         <div className="h-48 w-80">
           <img className="" src={reactImg} alt=""></img>
@@ -19,11 +25,11 @@ const CourseCard = (props) => {
 
         <div className="py-5 px-2 flex flex-col items-start">
           <div className="w-full flex justify-start">
-          <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 truncate">
-            {props.title}
-          </h5>
+            <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 truncate">
+              {props.title}
+            </h5>
           </div>
-          
+
           <p className=" text-xs font-medium text-gray-500">
             {props.instructorName} . {props.subject}
           </p>
@@ -51,9 +57,10 @@ const CourseCard = (props) => {
             )}
             <div class="text-lg font-bold tracking-tight text-gray-900 flex">
               {props.discount > 0 && (
-              <div className="line-through decoration-1 text-sm font-thin mr-2 mt-1">
-                {props.coursePrice}{props.currencySymbol.toString()}
-              </div>
+                <div className="line-through decoration-1 text-sm font-thin mr-2 mt-1">
+                  {props.coursePrice}
+                  {props.currencySymbol.toString()}
+                </div>
               )}
               {/* {props.discountedPrice === 0 ? "FREE" : props.discountedPrice}
               {props.currencySymbol.toString()} */}
@@ -61,7 +68,10 @@ const CourseCard = (props) => {
                 <div className="text-green-600">FREE</div>
               )}
               {props.discountedPrice != 0 && (
-                <div className="">{props.discountedPrice}{props.currencySymbol.toString()}</div>
+                <div className="">
+                  {props.discountedPrice}
+                  {props.currencySymbol.toString()}
+                </div>
               )}
             </div>
           </div>

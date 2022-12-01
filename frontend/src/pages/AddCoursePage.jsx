@@ -28,7 +28,7 @@ const AddCoursePage = (props) => {
   ]);
   const [data, setData] = useState({});
   const onSaveHandler = (data) => {
-    setData({ ...data, totalHours: 10, coursePrice: 10 }); //remove the totalHours and the price
+    setData({ ...data }); //remove the totalHours and the price
     var newSteps = [];
     var flag = false;
     for (var i = 0; i < steps.length; i++) {
@@ -68,17 +68,14 @@ const AddCoursePage = (props) => {
   const submiHandler = (thirdData) => {
     var submitData = { ...data, courseFinalExam: thirdData };
     console.log(submitData);
-    // axios
-    //   .post(
-    //     "http://localhost:3000/instructor/addcourse/6386427487d3f94e4cb7a28d",
-    //     submitData,
-    //     {
-    //       headers: {
-    //         "Access-Control-Allow-Origin": "*",
-    //       },
-    //     }
-    //   )
-    //   .then((res) => {});
+    axios
+      .post(
+        "http://localhost:3000/instructor/addcourse/6386427487d3f94e4cb7a28d",
+        submitData
+      )
+      .then((res) => {
+        console.log(res);
+      });
   };
   return (
     <Fragment>

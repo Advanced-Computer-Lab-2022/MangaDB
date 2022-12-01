@@ -6,8 +6,8 @@ const size = 5;
 const CourseDetailsCard = (props) => {
   const roundedRating = Math.round(+props.rating * 10) / 10;
   return (
-    <div className="md:w-6/12 shadow-lg flex">
-      <div className="w-6 bg-darkBlue"></div>
+    <div className="md:w-7/12 w-full shadow-lg flex">
+      <div className=" min-w-[16px] bg-darkBlue"></div>
       <div className="px-4 py-2 space-y-2 bg-white w-full rounded-r-lg">
         <div className="flex justify-between items-center">
           <div className="text-2xl font-semibold truncate mr-4">

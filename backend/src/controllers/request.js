@@ -185,6 +185,12 @@ exports.requestRefund = async (req, res) => {
             const refundAmount = foundUser.courseDetails[courseIndex].amountPaid;
             foundUser.courseDetails.splice(courseIndex,1);
             foundUser.wallet+=refundAmount;
+            const foundCourse = await course.findById(foundRequest.course);
+            await user.findByIdAndUpdate(foundCourse.instructor,{wallet:foundCourse.instructor.wallet-(refundAmount*0.8)})
+            .catch((err)=>{
+                console.log(err);
+            });
+            
             await foundUser.save();
             foundRequest.status="accepted";
             await foundRequest.save();
@@ -236,5 +242,17 @@ exports.requestRefund = async (req, res) => {
         }
     }
 
-
-
+    exports.deleteRequest = async (req, res) => {
+      const requestId = req.params.id;
+      try {
+        await request.findByIdAndDelete(requestId);
+        res.status(200).json({
+          message: "Request deleted successfully!",
+        });
+      } catch (err) {
+        res.status(500).json({
+          message: "Error deleting request",
+        });
+      }
+    };
+    

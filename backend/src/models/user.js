@@ -96,6 +96,10 @@ const userSchema = new mongoose.Schema({
         rating: {
           type: Number,
         },
+        date:{
+          type:Date,
+          default:Date.now
+        }
       },
     ],
   },

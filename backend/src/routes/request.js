@@ -15,4 +15,6 @@ router.patch("/access/:id", requestController.grantAccess);
 
 router.patch("/reject/:id", requestController.declineRequest);
 
+router.delete("/:id", requestController.deleteRequest);
+
 module.exports = router;

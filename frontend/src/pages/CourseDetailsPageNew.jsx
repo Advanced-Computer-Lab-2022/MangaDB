@@ -36,14 +36,14 @@ const CourseDetailsPageNew = () => {
   const [loaded, setLoaded] = useState(false);
   const [userRegistered, setUserRegistered] = useState(false);
   useEffect(() => {
-    const courseId = location.state;
+    const courseId = location.state.courseId;
 
     axios.get("http://localhost:3000/course/".concat(courseId)).then((res) => {
       setCourseDetails(res.data.course);
       setLoaded(true);
     });
 
-    const userId = "6386423d87d3f94e4cb7a289";
+    const userId = location.state.userId;
     axios
       .patch(`http://localhost:3000/user/enroll/${userId}`, {
         courseId: location.state,

@@ -77,7 +77,7 @@ const CreateCourseForm = (props) => {
       subject: enteredSubject,
       coursePrice: enteredCoursePrice,
       courseDescription: enteredCourseDescription,
-      courseSummary: summaryValue,
+      summary: summaryValue,
       requirements: requirementsValue,
     };
     props.onSave(data);

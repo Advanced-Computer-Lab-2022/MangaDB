@@ -5,6 +5,7 @@ import logo from "../Assets/Images/Logo.svg";
 import userIcon from "../Assets/Images/userIcon.svg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 export default function Login() {
   const PasswordRef = useRef();
@@ -28,10 +29,16 @@ export default function Login() {
       if (UserNameRef.current.value === "") {
         setEmptyUserName(true);
         setWarning("please fill the following fields");
+      } else {
+        setEmptyPassword(false);
+        setWarning("");
       }
       if (PasswordRef.current.value === "") {
         setEmptyPassword(true);
         setWarning("please fill the following fields");
+      } else {
+        setEmptyPassword(false);
+        setWarning("");
       }
       return;
     } else {
@@ -41,10 +48,15 @@ export default function Login() {
           password: PasswordRef.current.value,
         })
         .then((res) => {
+          /*
+            localStorage.setItem("token", res.data.token);
+            window.location.href = "/home";
+            */
           const instructorId = "6386427487d3f94e4cb7a28d";
-          console.log(res);
+          console.log(res.headers);
+          console.log(Cookies.get("token"))
           console.log(res.data.split(".")[0]);
-          navigate(`/home/${instructorId}`, { state: res.data.split(".")[0] });
+          navigate(`/home/${instructorId}`, {state: res.data.split(".")[0]});
         })
         .catch((error) => {
           if (
@@ -65,6 +77,15 @@ export default function Login() {
 
     //handle patch request
   };
+
+  const forgetPasswordHandler = () => {
+    if (UserNameRef.current.value === "") {
+      setEmptyUserName(true);
+      setWarning("please fill the following fields");
+    } else {
+    }
+  };
+
   return (
     <div class="mt-[7%]">
       <div class="antialiased ">
@@ -137,12 +158,12 @@ export default function Login() {
                 />
               </div>
               <p class=" pl-3 ">
-                <a
-                  href="#"
+                <button
+                  onClick={forgetPasswordHandler}
                   class="text-primaryBlue hover:opacity-70 ease-in-out duration-300 font-medium inline-flex space-x-1 items-center"
                 >
                   <span>Forgot Password? </span>
-                </a>
+                </button>
               </p>
               <SecondaryButton
                 type="submit"

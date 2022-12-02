@@ -55,7 +55,7 @@ const SourceInfo = (props) => {
         sourceType: sourceType,
         link: defaultlinkValue,
         exam: newExamState,
-        duration: sourceDuration,
+        sourceDuration: +sourceDuration,
       };
 
       props.onSourceEdit(newSourceData);
@@ -65,7 +65,7 @@ const SourceInfo = (props) => {
         sourceType: sourceType,
         link: defaultlinkValue,
         exam: newExamState,
-        duration: newExamState.length,
+        sourceDuration: +newExamState.length,
       };
 
       props.onSourceEdit(newSourceData);
@@ -84,7 +84,7 @@ const SourceInfo = (props) => {
         sourceType: sourceType,
         link: defaultlinkValue,
         exam: newExamState,
-        duration: sourceDuration,
+        sourceDuration: +sourceDuration,
       };
 
       props.onSourceEdit(newSourceData);
@@ -94,7 +94,7 @@ const SourceInfo = (props) => {
         sourceType: sourceType,
         link: defaultlinkValue,
         exam: newExamState,
-        duration: newExamState.length,
+        sourceDuration: +newExamState.length,
       };
 
       props.onSourceEdit(newSourceData);
@@ -112,7 +112,7 @@ const SourceInfo = (props) => {
         sourceType: sourceType,
         link: defaultlinkValue,
         exam: newExamState,
-        duration: sourceDuration,
+        sourceDuration: +sourceDuration,
       };
 
       props.onSourceEdit(newSourceData);
@@ -122,7 +122,7 @@ const SourceInfo = (props) => {
         sourceType: sourceType,
         link: defaultlinkValue,
         exam: newExamState,
-        duration: newExamState.length,
+        sourceDuration: +newExamState.length,
       };
 
       props.onSourceEdit(newSourceData);
@@ -144,7 +144,7 @@ const SourceInfo = (props) => {
         sourceType: event.target.innerHTML,
         link: defaultlinkValue,
         exam: examState,
-        duration: sourceDuration,
+        sourceDuration: +sourceDuration,
       };
       props.onSourceEdit(newSourceData);
     } else {
@@ -153,7 +153,7 @@ const SourceInfo = (props) => {
         sourceType: event.target.innerHTML,
         link: defaultlinkValue,
         exam: examState,
-        duration: examState.length,
+        sourceDuration: +examState.length,
       };
       props.onSourceEdit(newSourceData);
     }
@@ -168,7 +168,7 @@ const SourceInfo = (props) => {
         sourceType: sourceType,
         link: defaultlinkValue,
         exam: examState,
-        duration: sourceDuration,
+        sourceDuration: +sourceDuration,
       };
       props.onSourceEdit(newSourceData);
     } else {
@@ -177,7 +177,7 @@ const SourceInfo = (props) => {
         sourceType: sourceType,
         link: defaultlinkValue,
         exam: examState,
-        duration: examState.length,
+        sourceDuration: +examState.length,
       };
       props.onSourceEdit(newSourceData);
     }
@@ -190,7 +190,7 @@ const SourceInfo = (props) => {
         sourceType: sourceType,
         link: event.target.value,
         exam: examState,
-        duration: sourceDuration,
+        sourceDuration: +sourceDuration,
       };
       props.onSourceEdit(newSourceData);
     } else {
@@ -199,7 +199,7 @@ const SourceInfo = (props) => {
         sourceType: sourceType,
         link: event.target.value,
         exam: examState,
-        duration: examState.length,
+        sourceDuration: +examState.length,
       };
       props.onSourceEdit(newSourceData);
     }
@@ -212,7 +212,7 @@ const SourceInfo = (props) => {
         sourceType: sourceType,
         link: defaultlinkValue,
         exam: examState,
-        duration: duration,
+        sourceDuration: +duration,
       };
       props.onSourceEdit(newSourceData);
       setSourceDuration(duration);
@@ -242,7 +242,7 @@ const SourceInfo = (props) => {
           sourceType: sourceType,
           link: defaultlinkValue,
           exam: examState,
-          duration: 0,
+          sourceDuration: +0,
         };
         props.onSourceEdit(newSourceData);
         setSourceDuration(0);
@@ -252,7 +252,7 @@ const SourceInfo = (props) => {
           sourceType: sourceType,
           link: defaultlinkValue,
           exam: examState,
-          duration: sourceDuration,
+          sourceDuration: +sourceDuration,
         };
         props.onSourceEdit(newSourceData);
       }

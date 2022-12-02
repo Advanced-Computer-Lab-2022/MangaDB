@@ -1,18 +1,17 @@
-import logo from "../../Assets/Images/Logo.svg";
-import userIcon from "../../Assets/Images/userIcon.svg";
-import PasswordField from "./PasswordField";
-import SecondaryButton from "../SecondaryButton";
+import logo from "../Assets/Images/Logo.svg";
+import userIcon from "../Assets/Images/userIcon.svg";
+import PasswordField from "../components/Login-SignUp/PasswordField";
+import SecondaryButton from "../components/SecondaryButton";
 import { useRef, useState } from "react";
 import axios from "axios";
-import TextField from "./TextField";
-import nameTag from "../../Assets/Images/nameTag.svg";
-import BadgeIcon from "@mui/icons-material/Badge";
+import TextField from "../components/Login-SignUp/TextField";
+import nameTag from "../Assets/Images/nameTag.svg";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-
+import {useNavigate} from 'react-router-dom'
 function emailRegex(email) {
   const re =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -27,7 +26,6 @@ export default function SignUp() {
   const FirstNameRef = useRef();
   const LastNameRef = useRef();
   const [gender, setGender] = useState("male");
-  const [incorrectData, setIncorrectData] = useState(false);
   const [emptyUserName, setEmptyUserName] = useState(false);
   const [emptyPassword, setEmptyPassword] = useState(false);
   const [emptyConfirmPassword, setEmptyConfirmPassword] = useState(false);
@@ -36,8 +34,8 @@ export default function SignUp() {
   const [emptyLastName, setEmptyLastName] = useState(false);
   const [warning, setWarning] = useState();
   const [passwordMatch, setPasswordMatch] = useState(true);
-    const [emailValid, setEmailValid] = useState(true);
-
+  const [emailValid, setEmailValid] = useState(true);
+  const navigate = useNavigate();
 
   const genderChangeHandler = (e) => {
     setGender(e.target.value);
@@ -99,7 +97,21 @@ export default function SignUp() {
         }
         
 
-      
+      if(!warning){
+        const sentData = {
+          userName : UserNameRef.current.value,
+          password : PasswordRef.current.value,
+          email : EmailRef.current.value,
+          firstName: FirstNameRef.current.value,
+          lastName : LastNameRef.current.value,
+          gender : gender === "male" ? "Male" : "Female",
+          role:"TRAINEE"
+        }
+        console.log(sentData)
+        axios.post('http://localhost:3000/user/register', sentData).then(res => {
+          navigate(`/home/1`, {state: res.data._id});
+        }) 
+      }
       return;
     
     

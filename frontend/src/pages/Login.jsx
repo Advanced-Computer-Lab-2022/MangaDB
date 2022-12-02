@@ -1,13 +1,11 @@
-import SecondaryButton from "../SecondaryButton";
-import { useRef, useState } from "react";
-import PasswordField from "./PasswordField";
-import logo from "../../Assets/Images/Logo.svg";
-import userIcon from "../../Assets/Images/userIcon.svg";
+import SecondaryButton from "../components/SecondaryButton";
+import { useRef, useState, useEffect } from "react";
+import PasswordField from "../components/Login-SignUp/PasswordField";
+import logo from "../Assets/Images/Logo.svg";
+import userIcon from "../Assets/Images/userIcon.svg";
 import axios from "axios";
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 export default function Login() {
   const PasswordRef = useRef();
@@ -16,10 +14,14 @@ export default function Login() {
   const [emptyUserName, setEmptyUserName] = useState(false);
   const [emptyPassword, setEmptyPassword] = useState(false);
   const [warning, setWarning] = useState("");
+  const navigate = useNavigate();
 
-const GoogleLogin = (e) => {
-   e.preventDefault();
-};
+  const GoogleLogin = (e) => {
+    e.preventDefault();
+  };
+  const signUpHandler = () => {
+    navigate("/signup");
+  };
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
@@ -27,10 +29,16 @@ const GoogleLogin = (e) => {
       if (UserNameRef.current.value === "") {
         setEmptyUserName(true);
         setWarning("please fill the following fields");
+      } else {
+        setEmptyPassword(false);
+        setWarning("");
       }
       if (PasswordRef.current.value === "") {
         setEmptyPassword(true);
         setWarning("please fill the following fields");
+      } else {
+        setEmptyPassword(false);
+        setWarning("");
       }
       return;
     } else {
@@ -40,25 +48,44 @@ const GoogleLogin = (e) => {
           password: PasswordRef.current.value,
         })
         .then((res) => {
-          if (res.data.status === "success") {
-            /*
+          /*
             localStorage.setItem("token", res.data.token);
             window.location.href = "/home";
             */
-          } else {
-            setIncorrectData(true);
-          }
+          const instructorId = "6386427487d3f94e4cb7a28d";
+          console.log(res.headers);
+          console.log(Cookies.get("token"))
+          console.log(res.data.split(".")[0]);
+          navigate(`/home/${instructorId}`, {state: res.data.split(".")[0]});
         })
-        .catch((err) => {
-          setIncorrectData(true);
-          setEmptyUserName(false);
-          setEmptyPassword(false);
-          setWarning("Incorrect username or password");
+        .catch((error) => {
+          if (
+            +error.message.split(" ")[error.message.split(" ").length - 1] ===
+              401 ||
+            +error.message.split(" ")[error.message.split(" ").length - 1] ===
+              404 ||
+            +error.message.split(" ")[error.message.split(" ").length - 1] ===
+              500
+          ) {
+            setIncorrectData(true);
+            setEmptyUserName(false);
+            setEmptyPassword(false);
+            setWarning("Incorrect username or password");
+          }
         });
     }
 
     //handle patch request
   };
+
+  const forgetPasswordHandler = () => {
+    if (UserNameRef.current.value === "") {
+      setEmptyUserName(true);
+      setWarning("please fill the following fields");
+    } else {
+    }
+  };
+
   return (
     <div class="mt-[7%]">
       <div class="antialiased ">
@@ -103,17 +130,17 @@ const GoogleLogin = (e) => {
               </div>
             </div>
           </div>
-          <form action="" class="my-10" >
+          <form action="" class="my-10">
             <div class="flex flex-col space-y-5">
               <div className="relative">
                 <label for="UserName">
-                  <p class="font-medium text-slate-700 pb-2">UserName *</p>
+                  <p class="font-medium text-slate-700 pb-2">Username *</p>
                   <div className="relative">
                     <input
                       ref={UserNameRef}
                       type="text"
                       class={"w-full py-3 border pl-12 border-slate-200 rounded-lg px-3 focus:outline-none focus:border-primaryBlue hover:shadow".concat(
-                        emptyUserName || incorrectData? " border-red-200" : ""
+                        emptyUserName || incorrectData ? " border-red-200" : ""
                       )}
                       placeholder="Username"
                     />
@@ -131,12 +158,12 @@ const GoogleLogin = (e) => {
                 />
               </div>
               <p class=" pl-3 ">
-                <a
-                  href="#"
+                <button
+                  onClick={forgetPasswordHandler}
                   class="text-primaryBlue hover:opacity-70 ease-in-out duration-300 font-medium inline-flex space-x-1 items-center"
                 >
                   <span>Forgot Password? </span>
-                </a>
+                </button>
               </p>
               <SecondaryButton
                 type="submit"
@@ -149,7 +176,7 @@ const GoogleLogin = (e) => {
                 <h2 className="opacity-50">OR Sign In With</h2>
               </div>
               <button
-              onClick={GoogleLogin}
+                onClick={GoogleLogin}
                 className="flex space-x-2 items-center justify-center py-3 font-semibold hover:opacity-80  hover:text-black ease-in-out duration-300 border-2 rounded-lg hover:shadow-md text-indigo-500"
                 text="Login with Google"
               >
@@ -181,8 +208,8 @@ const GoogleLogin = (e) => {
           </form>
           <p class="text-center">
             Dont't have an account?{" "}
-            <a
-              href="#"
+            <button
+              onClick={signUpHandler}
               class="text-primaryBlue hover:opacity-70 ease-in-out duration-300 font-medium inline-flex space-x-1 items-center"
             >
               <span>Register now </span>
@@ -202,7 +229,7 @@ const GoogleLogin = (e) => {
                   />
                 </svg>
               </span>
-            </a>
+            </button>
           </p>
         </div>
       </div>

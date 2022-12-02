@@ -1,8 +1,8 @@
-import SecondaryButton from "../SecondaryButton";
+import SecondaryButton from "../components/SecondaryButton";
 import { useRef, useState } from "react";
 import { EyeIcon } from "@heroicons/react/solid";
 import { EyeOffIcon } from "@heroicons/react/solid";
-import PasswordField from "./PasswordField";
+import PasswordField from "../components/Login-SignUp/PasswordField";
 
 export default function ResetPassword() {
   const newPasswordRef = useRef();

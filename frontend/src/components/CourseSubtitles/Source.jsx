@@ -94,7 +94,7 @@ const Source = (props) => {
                 {sourceIcon} {props.source.description}
               </div>
               <div className="flex justify-end font-light text-md absolute right-10 mob:relative mob:right-0 min-w-[40px] bg-gray-100 px-4 shadow-md rounded-3xl">
-                {props.source.duration} mins
+                {props.source.sourceDuration} mins
               </div>
             </AccordionHeader>
           </div>

@@ -10,7 +10,7 @@ const CourseCard = (props) => {
   const navigate = useNavigate();
   const clickHandler = () => {
     const instructorId = "6386427487d3f94e4cb7a28d";
-    navigate(`/coursedetails/${instructorId}`, { state: props.id });
+    navigate(`/coursedetails/${instructorId}`, { state: {courseId:props.id, userId:props.userId}} );
   };
   return (
     <button className="hover:scale-105 transition flex content-start relative mb-8 mx-4" onClick={clickHandler}>

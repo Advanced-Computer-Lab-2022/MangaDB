@@ -27,6 +27,7 @@ const HomePage = () => {
       .then((res) => {
         setDisplayedCourses(res.data.courses);
         setCurrencySymbol(res.data.symbol);
+        console.log(location);
       });
   }, [countryCode]);
   
@@ -40,6 +41,7 @@ const HomePage = () => {
     return (
       <CourseCard
         id= {course._id}
+        userId={location.state}
         duration={course.totalHours}
         title={course.courseTitle}
         instructorName={course.instructorName}

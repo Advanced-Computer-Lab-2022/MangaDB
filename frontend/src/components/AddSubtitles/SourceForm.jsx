@@ -69,7 +69,7 @@ const SourceForm = (props) => {
       sourceData = {
         description: title,
         sourceType: type,
-        duration: examState.length,
+        sourceDuration: examState.length,
         exam: examState,
       };
     } else {
@@ -78,7 +78,7 @@ const SourceForm = (props) => {
         description: title,
         sourceType: type,
         link,
-        duration: sourceDuration,
+        sourceDuration: +sourceDuration,
       };
     }
 

@@ -53,9 +53,6 @@ export default function Login() {
             window.location.href = "/home";
             */
           const instructorId = "6386427487d3f94e4cb7a28d";
-          console.log(res.headers);
-          console.log(Cookies.get("token"))
-          console.log(res.data.split(".")[0]);
           navigate(`/home/${instructorId}`, {state: res.data.split(".")[0]});
         })
         .catch((error) => {

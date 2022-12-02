@@ -13,7 +13,6 @@ const HomePage = () => {
   const [currencySymbol, setCurrencySymbol] = useState("");
   const [countryCode, setCountryCode] = useState("US");
   const location = useLocation()
-  console.log(location);
   const appear = {
     opacity: 0,
     transition: {
@@ -27,7 +26,6 @@ const HomePage = () => {
       .then((res) => {
         setDisplayedCourses(res.data.courses);
         setCurrencySymbol(res.data.symbol);
-        console.log(location);
       });
   }, [countryCode]);
   
@@ -36,7 +34,6 @@ const HomePage = () => {
     console.log(e);
   setCountryCode(e)
   }
-  console.log(displayedCourses);
   const courses = displayedCourses.map((course) => {
     return (
       <CourseCard
@@ -55,7 +52,6 @@ const HomePage = () => {
       ></CourseCard>
     );
   });
-
   return (
     <Animate to="1" from="0" attributeName="opacity">
       <NavBar onChange={onChangeHandler}></NavBar>

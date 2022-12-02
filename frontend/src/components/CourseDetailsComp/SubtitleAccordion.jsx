@@ -9,13 +9,7 @@ import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownR
 import SubtitleBody from "./SubtitleBody";
 
 const SubtitleAccordion = (props) => {
-  useEffect(() => {
-    console.log(
-      document
-        .getElementsByClassName("AccordionOpenButton")[0]
-        .parentElement.classList.add("AccordionOpenParent")
-    );
-  }, []);
+
   const [isOpened, setIsOpened] = useState(false);
   const handleOpen = () => {
     setIsOpened((prevOpen) => !prevOpen);

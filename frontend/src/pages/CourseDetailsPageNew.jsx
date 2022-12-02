@@ -43,10 +43,10 @@ const CourseDetailsPageNew = () => {
       setLoaded(true);
     });
 
-    const userId = location.state.userId;
+    const userId = "638a07cdbc3508481a2d7da9";
     axios
       .patch(`http://localhost:3000/user/enroll/${userId}`, {
-        courseId: location.state,
+        courseId: location.state.courseId,
       })
       .then((res) => {})
       .catch((error) => {

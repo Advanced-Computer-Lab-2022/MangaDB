@@ -4,60 +4,7 @@ import CourseContent from "../components/CourseDetailsComp/CourseContent";
 import NavBar from "../components/NavBar";
 import ExamManager from "../components/Exam/ExamManager";
 import axios from "axios";
-import {useLocation} from 'react-router-dom'
-//stub of the received Data
-var test = [
-  {
-    description: "this is subtitle1",
-    subtitleDuration: "20",
-    sources: [
-      {
-        _id: "1",
-        sourceType: "Video",
-        description: "this is Source1",
-        link: "https://youtu.be/BgP30ML_Tc0",
-      },
-      {
-        _id: "2",
-        sourceType: "Video",
-        description: "this is Source2",
-        link: "https://www.youtube.com/watch?v=oAAp3vywa2E",
-      },
-      {
-        _id: "3",
-        sourceType: "Video",
-        description: "this is Source3",
-        link: "https://www.youtube.com/watch?v=vHuSz4fRM88",
-      },
-    ],
-  },
-  {
-    _id: "4",
-    description: "this is subtitle2",
-    subtitleDuration: "30",
-    sources: [
-      {
-        _id: "5",
-        sourceType: "Quiz",
-        quiz: "testID",
-        description: "this is Source3",
-        link: "https://www.youtube.com/watch?v=KZCsisctSso",
-      },
-      {
-        _id: "6",
-        sourceType: "Video",
-        description: "this is Source4",
-        link: "https://www.youtube.com/watch?v=07_5PQHCSiM",
-      },
-      {
-        _id: "7",
-        sourceType: "Video",
-        description: "this is Source5",
-        link: "https://www.youtube.com/watch?v=G1RtAmI0-vc",
-      },
-    ],
-  },
-];
+import { useLocation } from "react-router-dom";
 
 //stub for the studentAnswers
 const studentAnswers = ["4", "3", "2", "1"];
@@ -161,27 +108,30 @@ const CourseViewPage = () => {
   //at the top below the navbar will have a div with the progress and view notes  and some extra controls..
 
   //this page will handle the viewed sources and solving exams and notes areas..
-
-  const [currentSource, setCurrentSource] = useState(test[0].sources[0]);
-  const [receivedData, setReceivedData] = useState(test);
+  const location = useLocation();
+  const [receivedData, setReceivedData] = useState({});
+  const [currentSource, setCurrentSource] = useState('');
   const [receivedExam, setReceivedExam] = useState(exam);
   const [receivedStudentSolution, setReceivedStudentSolution] = useState([]);
   const [receivedGrade, setReceivedGrade] = useState(7);
-  
 
   //useEffect at the start to receive the data
   useEffect(() => {
-    //send the userId and courseId
-    var endPoint = "asdasdasdsadasdsadasdasdasd";
-    axios.get(endPoint).then((res) => {
-      setReceivedData(res.data);
+    const courseId = location.state;
+    //shouldnt we send the userId ??
+    axios.get(`http://localhost:3000/course/${courseId}`).then((res) => {
+      setReceivedData(res.data.course);
+      setCurrentSource(res.data.course.subtitles[0].sources[0])
+
     });
-  }, []);
+  }, [location.state]);
+
 
   const onSourceChangeHandler = (source) => {
     setCurrentSource(source);
   };
 
+  console.log(receivedData)
   const onSolveExamHandler = (receivedSolution) => {
     //should mark this as visited in the back and store the data
     //send the sourceId , examId ,userid and courseId
@@ -257,7 +207,7 @@ const CourseViewPage = () => {
         </div>
         <CourseContent
           courseDuration="35"
-          content={test}
+          content={receivedData.subtitles}
           onClick={onSourceChangeHandler}
         />
       </div>

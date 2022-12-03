@@ -109,7 +109,7 @@ const Exam = (props) => {
     );
   }
   return (
-    <Fragment>
+    <div className="px-2">
       <p className="tracking-wide text-gray-500 md:text-lg dark:text-gray-400 m-4">
         {"Question " + selectedQuestion + ": "}
         {props.exam[selectedQuestion - 1].description}
@@ -145,7 +145,7 @@ const Exam = (props) => {
           }
         ></SecondaryButton>
       </div>
-    </Fragment>
+    </div>
   );
 };
 

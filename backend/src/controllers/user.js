@@ -5,6 +5,7 @@ const mailer=require('../helper/mailer');
 const course=require('../models/course');
 const currencyConverter = require("../helper/currencyconverter"); 
 const payment=require('../helper/payment');
+const blackList=require('../models/token');
 
 
 exports.createUser = async (req, res) => {
@@ -136,7 +137,8 @@ exports.login = async (req, res) => {
           res.cookie("token", token, {
             httpOnly: true,
           });
-          res.send(token);
+          res.status(200).send({ message: "login successfully", token: token ,
+        id: data._id });
         }
       }
     });
@@ -203,15 +205,14 @@ exports.changePassword = async (req, res) => {
 };
 
     exports.forgetPassword = async (req, res) => {
-        const { userName, email } = req.body;
+        const { userName } = req.body;
         try {
             await user.findOne({
-                userName,
-                email
+                userName
             }).then(async (data) => {
                 if (!data) {
                     res.status(404).send({
-                        message: `Cannot find user with userName=${userName} and email=${email}. Maybe user was not found!`,
+                        message: `Cannot find user with userName=${userName}`,
                     });
                 } else {
                   const token = jwt.sign(
@@ -222,7 +223,7 @@ exports.changePassword = async (req, res) => {
                     httpOnly: true,
                   });
                     const mailOptions = {
-                        email: email,
+                        email: data.email,
                         subject: 'Reset Password',
                         html: `<h1>Reset Password</h1>
                         <p>Click on the link to reset your password</p>
@@ -270,7 +271,11 @@ exports.changePassword = async (req, res) => {
 
 
     exports.logout = async (req, res) => {
+      // const authHeader = req.header('Authorization');
+      // const token = authHeader && authHeader.split(" ")[1];
       try { 
+        // const invalidToken=new blackList({token});
+        // await invalidToken.save();
         res.clearCookie("token");
         res.send({message: "logout successfully"});
       } catch (err) {

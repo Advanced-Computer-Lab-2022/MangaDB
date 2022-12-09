@@ -1,21 +1,28 @@
 const problem = require("../models/problem");
+const course = require("../models/course");
 
 exports.createProblem = async (req, res) => {
-  const course = req.body.courseId;
+  const courseId = req.body.courseId;
   const user = req.body.userId;
   const type = req.body.type;
   const description = req.body.description;
+
+  const foundCourse = await course.findById(courseId);
+  if (!foundCourse) {
+    return res.status(404).send({ message: "Course not found" });
+  }
+
   const newProblem = new problem({
-    course: course,
+    course: courseId,
     user: user,
     type: type,
     description: description,
   });
   try {
     await newProblem.save();
-    res.status(201).send(problem);
+    res.status(201).send("Problem created successfully");
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).send(error);
   }
 };
 
@@ -31,15 +38,17 @@ exports.getProblems = async (req, res) => {
 exports.getProblem = async (req, res) => {
   const _id = req.params.id;
   try {
-    const problem = await problem.findById(_id);
-    if (!problem) {
+    const foundProblem = await problem.findById(_id);
+    if (!foundProblem) {
       return res.status(404).send();
     }
-    if (problem.seen === false) {
-      problem.seen = true;
-      await problem.save();
+     if (foundProblem.seen === false) {
+      if(req.user.role === "ADMIN"){
+     //  foundProblem.seen = true;
+      await foundProblem.save();
+      }
     }
-    res.send(problem);
+    res.send(foundProblem);
   } catch (error) {
     res.status(500).send(error);
   }
@@ -48,11 +57,11 @@ exports.getProblem = async (req, res) => {
 exports.deleteProblem = async (req, res) => {
   const _id = req.params.id;
   try {
-    const problem = await problem.findByIdAndDelete(_id);
-    if (!problem) {
+    const foundProblem = await problem.findByIdAndDelete(_id);
+    if (!foundProblem) {
       return res.status(404).send();
     }
-    res.status(200).send({ message: "Problem deleted successfully", problem });
+    res.status(200).send({ message: "Problem deleted successfully", foundProblem });
   } catch (error) {
     res.status(500).send(error);
   }
@@ -63,7 +72,7 @@ exports.updateProblem = async (req, res) => {
   const seen = req.body.seen;
   const _id = req.params.id;
   try {
-    const problem = await problem.findByIdAndUpdate(
+    const foundProblem = await problem.findByIdAndUpdate(
       _id,
       {
         status,
@@ -71,10 +80,10 @@ exports.updateProblem = async (req, res) => {
       },
       { new: true }
     );
-    if (!problem) {
+    if (!foundProblem) {
       return res.status(404).send();
     }
-    res.send(problem);
+    res.status(200).send({ message: "Problem updated successfully", foundProblem });
   } catch (error) {
     res.status(500).send(error);
   }
@@ -82,17 +91,18 @@ exports.updateProblem = async (req, res) => {
 
 exports.followUpProblem = async (req, res) => {
   const followUpComment = req.body.followUpComment;
+  const userId=req.body.userId;
   const _id = req.params.id;
   try {
-    const problem = await problem.findOne({ _id });
-    if (!problem) {
-      return res.status(404).send();
+    const foundProblem = await problem.findOne({ _id, user: userId });
+    if (!foundProblem) {
+      return res.status(400).send("Problem doesn't belong to user");
     }
-    if (problem.status === "resolved") {
+    if (foundProblem.status == "resolved") {
       return res.status(400).send({ message: "Problem already resolved" });
     }
-    problem.followUpComment = followUpComment;
-    await problem.save();
+    foundProblem.followUpComment = followUpComment;
+    await foundProblem.save();
     res.status(200).send("Follow up comment added successfully");
   } catch (error) {
     res.status(500).send("Internal server error");

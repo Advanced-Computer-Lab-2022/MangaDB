@@ -197,11 +197,8 @@ exports.createCourse = async (req, res, next) => {
     subject: req.body.subject,
     instructor: instructorId,
     instructorName: instructorName,
-    discount: req.body.discount,
-    rating: req.body.rating,
-    reviews: req.body.reviews,
+    discount: discount,
     requirements: req.body.requirements,                                                                                   
-    views: req.body.views,
     summary: req.body.summary,
     certificate: req.body.certificate,
   });

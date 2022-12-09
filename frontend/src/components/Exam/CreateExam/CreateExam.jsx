@@ -2,7 +2,7 @@ import { Fragment, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 import CreateQuestionForm from "../../AddSubtitles/CreateQuestion/CreateQuestionForm";
-import SecondaryButton from "../../SecondaryButton";
+import SecondaryButton from "../../UI/SecondaryButton";
 //Theme to change the pagination color
 const theme = createTheme({
   status: {

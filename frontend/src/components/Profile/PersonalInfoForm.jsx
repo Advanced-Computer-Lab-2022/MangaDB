@@ -1,11 +1,11 @@
 import { Fragment, useState } from "react";
-import TertiaryButton from "../TertiaryButton";
+import TertiaryButton from "../UI/TertiaryButton";
 import countryList from "react-select-country-list";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import SecondaryButton from "../SecondaryButton";
+import SecondaryButton from "../UI/SecondaryButton";
 import { Disclosure } from "@headlessui/react";
 import {
   CreditCardIcon,

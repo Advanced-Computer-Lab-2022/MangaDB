@@ -3,8 +3,8 @@ import PriceFilter from "./PriceFilter";
 import RatingFilter from "./RatingFilter";
 import SubjectFilter from "./SubjectFilter";
 import Divider from "@mui/material/Divider";
-import SecondaryButton from "../SecondaryButton";
-import PrimaryButton from "../PrimaryButton";
+import SecondaryButton from "../UI/SecondaryButton";
+import PrimaryButton from "../UI/PrimaryButton";
 import Modal from "../UI/Modal";
 const Filters = (props) => {
   const defaultFilterState = {

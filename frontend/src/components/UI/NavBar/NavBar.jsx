@@ -1,7 +1,7 @@
-import logo from "../Assets/Images/Logo.svg";
+import logo from "../../../Assets/Images/Logo.svg";
 import CountryManager from "./CountryManager";
-import PrimaryButton from "./PrimaryButton";
-import SecondaryButton from "./SecondaryButton";
+import PrimaryButton from "../PrimaryButton";
+import SecondaryButton from "../SecondaryButton";
 
 const NavBar = (props) => {
   return (

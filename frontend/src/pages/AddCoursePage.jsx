@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import axios from "axios";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/UI/NavBar/NavBar";
 import CreateCourseForm from "../components/CreateCourse/CreateCourseForm";
 import StepsBar from "../components/CreateCourse/StepsBar";
 import AddSubtitles from "../components/AddSubtitles/AddSubtitles";

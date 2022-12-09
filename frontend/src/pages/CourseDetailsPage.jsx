@@ -1,6 +1,6 @@
 import React from "react";
 import { Fragment, useState, useEffect } from "react";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/UI/NavBar/NavBar";
 import CourseDetailsCard from "../components/CourseDetailsComp/CourseDetailsCard";
 import axios from "axios";
 import AddToCartCard from "../components/CourseDetailsComp/AddToCartCard";
@@ -30,7 +30,7 @@ const rev = [
   },
 ];
 
-const CourseDetailsPageNew = () => {
+const CourseDetailsPage = () => {
   const location = useLocation();
   const [courseDetails, setCourseDetails] = useState({});
   const [loaded, setLoaded] = useState(false);
@@ -112,4 +112,4 @@ const CourseDetailsPageNew = () => {
   );
 };
 
-export default CourseDetailsPageNew;
+export default CourseDetailsPage;

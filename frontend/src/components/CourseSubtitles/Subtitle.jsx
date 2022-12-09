@@ -3,7 +3,6 @@ import SubtitleInfo from "../AddSubtitles/SubtitleInfo";
 import SourceForm from "../AddSubtitles/SourceForm";
 import DeleteSubtitle from "../AddSubtitles/DeleteSubtitle";
 import { ThemeProvider } from "@material-tailwind/react";
-
 import {
   Accordion,
   AccordionHeader,
@@ -12,7 +11,7 @@ import {
 import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import Source from "./Source";
-import SecondaryButton from "../SecondaryButton";
+import SecondaryButton from "../UI/SecondaryButton";
 
 const Subtitle = (props) => {
   const [isOpened, setIsOpened] = useState(false);

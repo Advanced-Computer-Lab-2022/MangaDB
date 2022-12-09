@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import HomePage from "./pages/HomePage";
 import SearchResultsPage from "./pages/SearchResultsPage";
 import InstructorProfilePage from "./pages/InstructorProfilePage";
-import CourseDetailsPageNew from "./pages/CourseDetailsPageNew";
+import CourseDetailsPage from "./pages/CourseDetailsPage";
 import CourseViewPage from "./pages/CourseViewPage";
 import AdminAddNewUser from "./pages/AdminAddNewUser";
 import InstructorCoursesPage from "./pages/InstructorCoursesPage";
@@ -25,7 +25,7 @@ function App() {
       ></Route>
       <Route
         path="/coursedetails/:id"
-        element={<CourseDetailsPageNew></CourseDetailsPageNew>}
+        element={<CourseDetailsPage></CourseDetailsPage>}
       ></Route>
       <Route
         path="/courseview/:id"

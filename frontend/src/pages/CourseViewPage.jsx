@@ -1,7 +1,7 @@
 import { useState, useEffect, Fragment } from "react";
 import Video from "../components/Video/Video";
 import CourseContent from "../components/CourseDetailsComp/CourseContent";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/UI/NavBar/NavBar";
 import ExamManager from "../components/Exam/ExamManager";
 import axios from "axios";
 import { useLocation } from "react-router-dom";

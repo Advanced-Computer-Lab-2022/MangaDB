@@ -1,5 +1,5 @@
 import React from "react";
-import SecondaryButton from "../SecondaryButton";
+import SecondaryButton from "../UI/SecondaryButton";
 import reactImage from "../../Assets/Images/react.png";
 import { useNavigate } from "react-router-dom";
 

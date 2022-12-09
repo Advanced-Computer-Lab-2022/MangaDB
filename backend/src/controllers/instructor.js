@@ -179,5 +179,43 @@ exports.deleteRating = async (req, res) => {
 
 }
 
+exports.getRating = async (req, res) => {
+    const instructorId = req.params.id;
+    const userId = req.body.userId;
+    try {
+        let foundInstructor=await user
+        .findById(instructorId)
+        
+        if(!foundInstructor||foundInstructor.role!=="INSTRUCTOR"){
+            res.status(404).send({
+                message: `Cannot get rating of instructor with id=${instructorId}. Maybe instructor was not found!`,
+                });
+        }else{
+            let found=false;
+            foundInstructor.reviews.forEach((element) => {
+                if (element.user == userId) {
+                  found=true;
+                  res.status(200).send({
+                    message: "Instructor rating was found successfully.",
+                    review : element
+                });
+                }
+              });
+              if(!found){
+                res.status(404).send({
+                    message: `Cannot get rating of instructor with id=${instructorId}. User has not rated this instructor!`,
+                    review : null
+                    });
+              }
+            }
+        }
+    catch (err) {
+        res.status(500).send({
+            message: err.message || "Some error occurred while getting instructor rating.",
+        });
+    }
+
+}
+
 
 

@@ -190,6 +190,7 @@ exports.createCourse = async (req, res, next) => {
   const newCourse = new course({
     courseTitle: req.body.courseTitle,
     courseDescription: req.body.courseDescription,
+    courseOverview: req.body.courseOverview,
     coursePrice: req.body.coursePrice,
     level: req.body.level,
     courseImage: req.body.courseImage,
@@ -197,7 +198,6 @@ exports.createCourse = async (req, res, next) => {
     instructor: instructorId,
     instructorName: instructorName,
     discount: req.body.discount,
-    discountedPrice: req.body.coursePrice - req.body.coursePrice * discount,
     rating: req.body.rating,
     reviews: req.body.reviews,
     requirements: req.body.requirements,                                                                                   
@@ -223,7 +223,9 @@ exports.createCourse = async (req, res, next) => {
   }
   newCourse.subtitles=subtitles;
   newCourse.totalMins=courseDuration;
-
+ // let finalExam=req.body.finalExam;
+  //finalExam=await examController.createExam(finalExam);
+  //newCourse.finalExam=finalExam;
   await newCourse
     .save()
     .then((createdCourse) => {
@@ -575,3 +577,28 @@ exports.openCourse = async (req, res, next) => {
   });
 };
 
+exports.getRating = async (req, res, next) => {
+  const courseId = req.params.id;
+  const userId = req.body.userId;
+  const foundCourse = await course.findById(courseId).catch((error) => {
+    res.status(500).json({
+      message: "Fetching course failed!",
+    });
+  });
+  let found=false;
+  for (let i = 0; i < foundCourse.reviews.length; i++) {
+    if (foundCourse.reviews[i].user == userId) {
+      found=true;
+      return res.status(200).json({
+        message: "Rating fetched successfully!",
+        rating: foundCourse.reviews[i],
+      });
+    }
+  }
+  if(!found){
+    return res.status(200).json({
+      message: "user has not rated this course!",
+      rating: null,
+    });
+  }
+};

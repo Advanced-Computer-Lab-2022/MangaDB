@@ -1,10 +1,10 @@
 import axios from "axios";
 import { Fragment, useState, useEffect, useReducer } from "react";
 import { useLocation } from "react-router-dom";
-import NavBar from "../components/NavBar";
-import Search from "../components/Search";
+import NavBar from "../components/UI/NavBar/NavBar";
+import Search from "../components/UI/Search/Search";
 import Filters from "../components/Filters/Filters";
-import SecondaryButton from "../components/SecondaryButton";
+import SecondaryButton from "../components/UI/SecondaryButton";
 import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
 import CourseCardListView from "../components/Course/CourseCardListView";
 import CourseCard from "../components/Course/CourseCard";

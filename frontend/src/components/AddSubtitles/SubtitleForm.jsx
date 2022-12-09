@@ -1,5 +1,6 @@
 import { Fragment, useRef } from "react";
-import PrimaryButton from "../PrimaryButton";
+import PrimaryButton from "../UI/PrimaryButton";
+
 const SubtitleForm = (props) => {
   const titleRef = useRef();
   const videoRef = useRef();

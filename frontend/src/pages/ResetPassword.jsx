@@ -1,4 +1,4 @@
-import SecondaryButton from "../components/SecondaryButton";
+import SecondaryButton from "../components/UI/SecondaryButton";
 import { useRef, useState } from "react";
 import { EyeIcon } from "@heroicons/react/solid";
 import { EyeOffIcon } from "@heroicons/react/solid";

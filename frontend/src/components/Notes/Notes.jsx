@@ -10,9 +10,11 @@ const Notes = (props) => {
   const onHidehandler = () => {
     setShowForm(false);
   };
-  const displayedNotes = props.notes.map((note) => {
+  const displayedNotes = props.notes.map((note ,index) => {
     return (
       <NotesCard
+        editNote={props.editNote.bind(null, index)}
+        deleteNote={props.deleteNote.bind(null, index)}
         note={note.note}
         timestamp={note.timestamp}
         sourceDescription={note.sourceDescription}
@@ -43,10 +45,16 @@ const Notes = (props) => {
         </div>
       )}
       {showForm && (
-        <NotesForm
-          onHidehandler={onHidehandler}
-          resumeVideo={props.resumeVideo}
-        ></NotesForm>
+        <div className="flex items-center space-x-2 ">
+          <div className="bg-black text-white rounded-full px-2 font-semibold  ">
+            {props.timestamp}
+          </div>
+          <NotesForm
+            addNote={props.addNote}
+            onHidehandler={onHidehandler}
+            resumeVideo={props.resumeVideo}
+          ></NotesForm>
+        </div>
       )}
       <div className="mt-8"> {displayedNotes}</div>
     </Fragment>

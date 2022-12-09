@@ -196,11 +196,24 @@ const CourseViewPage = () => {
     }
   }, [currentSource]);
 
+  if(currentSource!==""){
+    var subtitle;
+  for(var i = 0; i <receivedData.subtitles.length; i++) {
+    for(var j = 0; j <receivedData.subtitles[i].sources.length; j++) {
+      if(currentSource._id===receivedData.subtitles[i].sources[j]._id){
+         subtitle = receivedData.subtitles[i].description;
+      }
+    }
+  }
+  }
+
   //we will have an array of viewed sources
   var displayedSource;
   if (currentSource.sourceType === "Video") {
     displayedSource = (
       <NotesManager
+        source={currentSource.description}
+        subtitle={subtitle}
         notes={notes}
         isVisible={true}
         link={currentSource.link}

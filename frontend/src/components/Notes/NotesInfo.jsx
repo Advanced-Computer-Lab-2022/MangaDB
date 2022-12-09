@@ -9,9 +9,8 @@ var toolbarOptions = [
   [{ font: [] }],
 ];
 
-const NotesForm = (props) => {
-  const defaultNote = props.currentNote ? props.currentNote : "";
-  const [currentNote, setCurrentNote] = useState(defaultNote);
+const NotesInfo = (props) => {
+  const [currentNote, setCurrentNote] = useState(props.currentNote);
 
   const changeHandler = (event) => {
     setCurrentNote(event);
@@ -19,12 +18,10 @@ const NotesForm = (props) => {
 
   const cancelHandler = () => {
     props.onHidehandler();
-    props.resumeVideo();
   };
   const onSaveHandler = () => {
-    props.addNote(currentNote);
+    props.editNote(currentNote)
     props.onHidehandler();
-    props.resumeVideo();
   };
 
   return (
@@ -46,4 +43,4 @@ const NotesForm = (props) => {
     </div>
   );
 };
-export default NotesForm;
+export default NotesInfo;

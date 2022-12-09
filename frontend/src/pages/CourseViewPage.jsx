@@ -3,6 +3,7 @@ import Video from "../components/Video/Video";
 import CourseContent from "../components/CourseDetailsComp/CourseContent";
 import NavBar from "../components/UI/NavBar/NavBar";
 import ExamManager from "../components/Exam/ExamManager";
+import NotesManager from "../components/Notes/NotesManager";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 
@@ -100,7 +101,27 @@ const exam = [
     ],
   },
 ];
-
+//stub for the notes
+const notes = [
+  {
+    note: "test1 ",
+    sourceDescription: "226.redux VS Context",
+    subtitleDescription: "18.Diving Into Redux",
+    timestamp: "0:52",
+  },
+  {
+    note: "test2 ",
+    sourceDescription: "225.redux VS Context",
+    subtitleDescription: "18.Diving Into Redux",
+    timestamp: "10:33",
+  },
+  {
+    note: "test3 ",
+    sourceDescription: "225.redux VS Context",
+    subtitleDescription: "18.Diving Into Redux",
+    timestamp: "12:52",
+  },
+];
 const CourseViewPage = () => {
   //will give the backend the id of the clicked course , then will fetch all the details about that course
   //to fill the subtitle accordion and create an onClick function to change the link of the video playing.
@@ -110,7 +131,7 @@ const CourseViewPage = () => {
   //this page will handle the viewed sources and solving exams and notes areas..
   const location = useLocation();
   const [receivedData, setReceivedData] = useState({});
-  const [currentSource, setCurrentSource] = useState('');
+  const [currentSource, setCurrentSource] = useState("");
   const [receivedExam, setReceivedExam] = useState(exam);
   const [receivedStudentSolution, setReceivedStudentSolution] = useState([]);
   const [receivedGrade, setReceivedGrade] = useState(7);
@@ -121,17 +142,15 @@ const CourseViewPage = () => {
     //shouldnt we send the userId ??
     axios.get(`http://localhost:3000/course/${courseId}`).then((res) => {
       setReceivedData(res.data.course);
-      setCurrentSource(res.data.course.subtitles[0].sources[0])
-
+      setCurrentSource(res.data.course.subtitles[0].sources[0]);
     });
   }, [location.state]);
-
 
   const onSourceChangeHandler = (source) => {
     setCurrentSource(source);
   };
 
-  console.log(receivedData)
+  console.log(receivedData);
   const onSolveExamHandler = (receivedSolution) => {
     //should mark this as visited in the back and store the data
     //send the sourceId , examId ,userid and courseId
@@ -181,11 +200,12 @@ const CourseViewPage = () => {
   var displayedSource;
   if (currentSource.sourceType === "Video") {
     displayedSource = (
-      <Video
+      <NotesManager
+        notes={notes}
         isVisible={true}
         link={currentSource.link}
         onWatch={onWatchHandler}
-      ></Video>
+      ></NotesManager>
     );
   } else {
     displayedSource = (

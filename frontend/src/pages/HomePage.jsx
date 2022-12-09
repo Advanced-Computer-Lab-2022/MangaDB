@@ -1,12 +1,12 @@
 import React from "react";
 import homeImage from "../Assets/Images/HomePage.svg";
 import Animate from "react-smooth/lib/Animate";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/UI/NavBar/NavBar";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import CourseCard from "../components/Course/CourseCard";
-import SearchBar from "../components/SearchBar";
+import SearchBar from "../components/UI/Search/SearchBar";
 import {useLocation} from 'react-router-dom'
 const HomePage = () => {
   const [displayedCourses, setDisplayedCourses] = useState([]);

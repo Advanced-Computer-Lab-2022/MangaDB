@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import SecondaryButton from "../SecondaryButton";
+import SecondaryButton from "../UI/SecondaryButton";
 import SubtitleForm from "./SubtitleForm";
 import SingleSubtitle from "./SingleSubtitle";
 import Modal from "../UI/Modal";

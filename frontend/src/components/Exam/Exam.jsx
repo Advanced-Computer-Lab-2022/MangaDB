@@ -1,7 +1,7 @@
 import { useState, Fragment, useEffect } from "react";
 import Pagination from "@mui/material/Pagination";
 import ExamChoices from "./ExamChoices";
-import SecondaryButton from "../SecondaryButton";
+import SecondaryButton from "../UI/SecondaryButton";
 import SolvedExamChoices from "./SolvedExamChoices";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 const theme = createTheme({

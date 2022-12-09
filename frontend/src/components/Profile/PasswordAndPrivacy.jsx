@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import SecondaryButton from "../SecondaryButton";
+import SecondaryButton from "../UI/SecondaryButton";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Disclosure, RadioGroup } from "@headlessui/react";

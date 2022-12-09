@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import TertiaryButton from "../TertiaryButton";
+import TertiaryButton from "../UI/TertiaryButton";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import SecondaryButton from "../SecondaryButton";
+import SecondaryButton from "../UI/SecondaryButton";
 
 var toolbarOptions = [
   ["bold", "italic", "underline", "strike"],

@@ -1,4 +1,4 @@
-import SecondaryButton from "../components/SecondaryButton";
+import SecondaryButton from "../components/UI/SecondaryButton";
 import { useRef, useState, useEffect } from "react";
 import PasswordField from "../components/Login-SignUp/PasswordField";
 import logo from "../Assets/Images/Logo.svg";

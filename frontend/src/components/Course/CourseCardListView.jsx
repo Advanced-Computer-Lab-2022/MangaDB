@@ -2,7 +2,7 @@ import React from "react";
 import reactImg from "../../Assets/Images/react.png";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Stars from "../UI/Stars";
-import SecondaryButton from "../SecondaryButton";
+import SecondaryButton from "../UI/SecondaryButton";
 import { useNavigate } from "react-router-dom";
 
 const size = 5;

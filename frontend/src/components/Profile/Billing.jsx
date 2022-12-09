@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import SecondaryButton from "../SecondaryButton";
+import SecondaryButton from "../UI/SecondaryButton";
 import { Disclosure } from "@headlessui/react";
 import {
   CreditCardIcon,

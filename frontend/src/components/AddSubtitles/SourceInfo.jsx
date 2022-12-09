@@ -2,8 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import RadioTypes from "./RadioTypes";
 import CreateExamManager from "./CreateQuestion/CreateExamManager";
 import Video from "../Video/Video";
-import TertiaryButton from "../TertiaryButton";
-
+import TertiaryButton from "../UI/TertiaryButton";
 const SourceInfo = (props) => {
   var source = props.source;
   var defaultShowFlag = source.sourceType === "Quiz" ? true : false;

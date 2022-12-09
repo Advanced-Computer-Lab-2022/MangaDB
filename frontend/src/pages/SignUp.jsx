@@ -1,7 +1,7 @@
 import logo from "../Assets/Images/Logo.svg";
 import userIcon from "../Assets/Images/userIcon.svg";
 import PasswordField from "../components/Login-SignUp/PasswordField";
-import SecondaryButton from "../components/SecondaryButton";
+import SecondaryButton from "../components/UI/SecondaryButton";
 import { useRef, useState } from "react";
 import axios from "axios";
 import TextField from "../components/Login-SignUp/TextField";

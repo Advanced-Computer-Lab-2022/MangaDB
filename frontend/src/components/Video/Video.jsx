@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import SecondaryButton from "../SecondaryButton";
+import SecondaryButton from "../UI/SecondaryButton";
 import ReactPlayer from "react-player";
 const youtubeEmbed = require("youtube-embed");
 const Video = (props) => {

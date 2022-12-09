@@ -1,6 +1,7 @@
 import { Fragment, useRef } from "react";
 import Divider from "@mui/material/Divider";
-import PrimaryButton from "../PrimaryButton";
+import PrimaryButton from "../UI/PrimaryButton";
+
 const SubtitleForm = (props) => {
   const titleRef = useRef();
   const videoRef = useRef();

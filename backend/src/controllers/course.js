@@ -223,9 +223,9 @@ exports.createCourse = async (req, res, next) => {
   }
   newCourse.subtitles=subtitles;
   newCourse.totalMins=courseDuration;
-  let finalExam=req.body.finalExam;
-  finalExam=await examController.createExam(finalExam);
-  newCourse.finalExam=finalExam;
+ // let finalExam=req.body.finalExam;
+  //finalExam=await examController.createExam(finalExam);
+  //newCourse.finalExam=finalExam;
   await newCourse
     .save()
     .then((createdCourse) => {

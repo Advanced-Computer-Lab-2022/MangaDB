@@ -544,73 +544,75 @@ exports.addNotes = async (req, res) => {
     res.status(500).send({
       message: "Error in adding notes",
     });
-  };
-  exports.solveExam= async (req, res,next) => {
-    const myUser=await user.findOne({_id:req.body.userid});
-    const courseId = req.body.courseid;
-    try {
-    if(!myUser){
-      res.status(404).json({message:"User Not Found"});
-      return;
-    }
-    console.log(myUser.userName);
-    let courseIndex=-1;
-    let courseFound=false;
-    for(let i=0;i<myUser.courseDetails.length;i++){
-      if(myUser.courseDetails[i].course[0]==courseId){
-        courseIndex=i;
-        courseFound=true;
-        break;
-      }}
-      if(!courseFound){
-        res.status(400).send({
-          message: `User not registered in course`,
-        });
-        return;
-      }
-      const myExam=await exam.findOne({_id:req.body.examid});
-      if(!myExam){
-        res.status(404).send({
-          message: `Exam Not Found`
-        });
-        return;
-
-      }
-      let studentAnswers=[];
-      let studentGrade=myExam.totalGrade;
-      let reqStudentAnswers=req.body.studentAnswers;
-      for(let i=0;i<myExam.exercises.length;i++){
-        let correctSolution=myExam.exercises[i].solution;
-        let questionNum=i+1;
-        let studentAnswer="";
-        for(let j=0;j<reqStudentAnswers.length;j++){
-          if(questionNum==reqStudentAnswers[j].questionNumber){
-            studentAnswer=studentAnswer+reqStudentAnswers[j].choice.choiceId;
-            reqStudentAnswers.splice(j,1);
-
-          }
-        }
-        if(studentAnswer!=correctSolution){
-          studentGrade--;
-        }
-        studentAnswers.push(studentAnswer);
-      }
-      myUser.courseDetails[courseIndex].exams.push({examId:req.body.examid,score:studentGrade,answers:studentAnswers});
-      await myUser.save();
-      res.status(200).json({score:studentGrade});
-
-
-
-
-    }
   
-  catch (err) {
-    res.status(500).send({
-      message: "Error in Solving Exam"
-    });
-  }
+ 
 
 
  
 };
-}
+};
+exports.solveExam=async (req, res) => {
+  const myUser=await user.findOne({_id:req.body.userid});
+  const courseId = req.body.courseid;
+  try {
+  if(!myUser){
+    res.status(404).json({message:"User Not Found"});
+    return;
+  }
+  console.log(myUser.userName);
+  let courseIndex=-1;
+  let courseFound=false;
+  for(let i=0;i<myUser.courseDetails.length;i++){
+    if(myUser.courseDetails[i].course[0]==courseId){
+      courseIndex=i;
+      courseFound=true;
+      break;
+    }}
+    if(!courseFound){
+      res.status(400).send({
+        message: `User not registered in course`,
+      });
+      return;
+    }
+    const myExam=await exam.findOne({_id:req.body.examid});
+    if(!myExam){
+      res.status(404).send({
+        message: `Exam Not Found`
+      });
+      return;
+
+    }
+    let studentAnswers=[];
+    let studentGrade=myExam.totalGrade;
+    let reqStudentAnswers=req.body.studentAnswers;
+    for(let i=0;i<myExam.exercises.length;i++){
+      let correctSolution=myExam.exercises[i].solution;
+      let questionNum=i+1;
+      let studentAnswer="";
+      for(let j=0;j<reqStudentAnswers.length;j++){
+        if(questionNum==reqStudentAnswers[j].questionNumber){
+          studentAnswer=studentAnswer+reqStudentAnswers[j].choice.choiceId;
+          reqStudentAnswers.splice(j,1);
+
+        }
+      }
+      if(studentAnswer!=correctSolution){
+        studentGrade--;
+      }
+      studentAnswers.push(studentAnswer);
+    }
+    myUser.courseDetails[courseIndex].exams.push({examId:req.body.examid,score:studentGrade,answers:studentAnswers});
+    await myUser.save();
+    res.status(200).json({score:studentGrade});
+
+
+
+
+  }
+
+catch (err) {
+  res.status(500).send({
+    message: "Error in Solving Exam"
+  });
+};
+};

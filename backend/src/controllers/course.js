@@ -49,6 +49,7 @@ exports.getAllCourses = async (req, res, next) => {
       courseTitle: 1,
       courseImage: 1,
       totalMins: 1,
+      level: 1,
       courseDescription: 1,
       coursePrice: 1,
       summary: 1,
@@ -109,7 +110,7 @@ exports.getCourse = async (req, res, next) => {
     });
   }
 };
-
+//check if course is in instructor's course list
 exports.updateCourse = async (req, res, next) => {
   await course
     .findByIdAndUpdate(req.params.id, req.body)
@@ -125,6 +126,34 @@ exports.updateCourse = async (req, res, next) => {
         message: "Could not update course!",
       });
     });
+};
+
+exports.addSubtitle = async (req, res, next) => {
+  const subtitle = req.body.subtitle;
+  const courseId = req.params.id;
+ try{
+  const foundCourse=await course.findById(courseId);
+  let subDuration=0;
+  for(let j=0;j<subtitle.sources.length;j++){
+    if(subtitle.sources[j].sourceType==='Quiz'){
+      const myExam=subtitle.sources[j].exam;
+      const examId=await examController.createExam(myExam);
+      subtitle.sources[j].quiz=examId;
+
+    }
+   subDuration+=subtitle.sources[j].sourceDuration;
+  }
+foundCourse.totalMins+=subDuration;
+  foundCourse.subtitles.push(subtitle);
+  await foundCourse.save();
+  res.status(200).json({
+    message: "Subtitle added successfully!",
+  });
+}catch(error){
+  res.status(500).json({
+    message: "Subtitle adding failed!",
+  });
+}
 };
 
 exports.deleteCourse = async (req, res, next) => {
@@ -161,16 +190,17 @@ exports.createCourse = async (req, res, next) => {
   const newCourse = new course({
     courseTitle: req.body.courseTitle,
     courseDescription: req.body.courseDescription,
+    courseOverview: req.body.courseOverview,
     coursePrice: req.body.coursePrice,
+    level: req.body.level,
     courseImage: req.body.courseImage,
     subject: req.body.subject,
     instructor: instructorId,
     instructorName: instructorName,
     discount: req.body.discount,
-    discountedPrice: req.body.coursePrice - req.body.coursePrice * discount,
     rating: req.body.rating,
     reviews: req.body.reviews,
-    requirements: req.body.requirements,
+    requirements: req.body.requirements,                                                                                   
     views: req.body.views,
     summary: req.body.summary,
     certificate: req.body.certificate,
@@ -193,7 +223,9 @@ exports.createCourse = async (req, res, next) => {
   }
   newCourse.subtitles=subtitles;
   newCourse.totalMins=courseDuration;
-
+ // let finalExam=req.body.finalExam;
+  //finalExam=await examController.createExam(finalExam);
+  //newCourse.finalExam=finalExam;
   await newCourse
     .save()
     .then((createdCourse) => {
@@ -260,6 +292,7 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
       courseTitle: 1,
       courseImage: 1,
       totalMins: 1,
+      level: 1,
       courseDescription: 1,
       summary: 1,
       coursePrice: 1,
@@ -310,7 +343,7 @@ exports.rateCourse = async (req, res, next) => {
       (1 / (reviewCount + 1)) * rating;
     newRating = newRating.toFixed(2);
     foundCourse.rating = newRating;
-    foundCourse.reviews.push({ user: userId, review: review, rating: rating });
+    foundCourse.reviews.push({ user: userId,userName: foundUser.firstName + " "+foundUser.lastName , review: review, rating: rating });
     foundCourse.save();
     res.status(200).json({
       message: "Course rated successfully!",
@@ -418,6 +451,7 @@ exports.getMostViewedCourses = async (req, res, next) => {
       courseTitle: 1,
       courseImage: 1,
       totalMins: 1,
+      level: 1,
       courseDescription: 1,
       summary: 1,
       coursePrice: 1,
@@ -492,6 +526,7 @@ exports.getMostRatedCourses = async (req, res, next) => {
       courseTitle: 1,
       courseImage: 1,
       totalMins: 1,
+      level: 1,
       courseDescription: 1,
       summary: 1,
       coursePrice: 1,
@@ -542,3 +577,28 @@ exports.openCourse = async (req, res, next) => {
   });
 };
 
+exports.getRating = async (req, res, next) => {
+  const courseId = req.params.id;
+  const userId = req.body.userId;
+  const foundCourse = await course.findById(courseId).catch((error) => {
+    res.status(500).json({
+      message: "Fetching course failed!",
+    });
+  });
+  let found=false;
+  for (let i = 0; i < foundCourse.reviews.length; i++) {
+    if (foundCourse.reviews[i].user == userId) {
+      found=true;
+      return res.status(200).json({
+        message: "Rating fetched successfully!",
+        rating: foundCourse.reviews[i],
+      });
+    }
+  }
+  if(!found){
+    return res.status(200).json({
+      message: "user has not rated this course!",
+      rating: null,
+    });
+  }
+};

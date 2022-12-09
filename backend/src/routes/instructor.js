@@ -14,4 +14,6 @@ router.post("/rate/:id", instructorController.rateInstructor);
 
 router.patch("/rate/:id", instructorController.editRating);
 
+router.get("/rate/:id", instructorController.getRating);
+
 module.exports = router;

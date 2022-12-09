@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import axios from "axios";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/UI/NavBar/NavBar";
 import CreateCourseForm from "../components/CreateCourse/CreateCourseForm";
 import StepsBar from "../components/CreateCourse/StepsBar";
 import AddSubtitles from "../components/AddSubtitles/AddSubtitles";
@@ -23,12 +23,12 @@ const AddCoursePage = (props) => {
       name: "Course Exam",
       id: 3,
       status: "",
-      description: "Create a course Exam",
+      description: "Create a Final Exam",
     },
   ]);
   const [data, setData] = useState({});
   const onSaveHandler = (data) => {
-    setData({ ...data, totalHours: 10, coursePrice: 10 }); //remove the totalHours and the price
+    setData({ ...data }); //remove the totalHours and the price
     var newSteps = [];
     var flag = false;
     for (var i = 0; i < steps.length; i++) {
@@ -58,29 +58,24 @@ const AddCoursePage = (props) => {
       } else if (flag) {
         newSteps.push({ ...steps[i], status: "current" });
         flag = false;
-      }
-      else if (steps[i].status === "complete") {
-        newSteps.push({ ...steps[i]});
+      } else if (steps[i].status === "complete") {
+        newSteps.push({ ...steps[i] });
       }
     }
     setSteps(newSteps);
   };
 
   const submiHandler = (thirdData) => {
-    var submitData = {...data , courseFinalExam: thirdData}
+    var submitData = { ...data, courseFinalExam: thirdData };
     console.log(submitData);
-    // axios
-    //   .post(
-    //     "http://localhost:3000/instructor/addcourse/635bf48c56673b3f80ac2dff",
-    //     submitData,
-    //     {
-    //       headers: {
-    //         "Access-Control-Allow-Origin": "*",
-    //       },
-    //     }
-    //   )
-    //   .then((res) => {});
-    
+    axios
+      .post(
+        "http://localhost:3000/instructor/addcourse/6386427487d3f94e4cb7a28d",
+        submitData
+      )
+      .then((res) => {
+        console.log(res);
+      });
   };
   return (
     <Fragment>

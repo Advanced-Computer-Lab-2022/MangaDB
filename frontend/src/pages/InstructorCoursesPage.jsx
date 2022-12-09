@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect, useReducer } from "react";
 import axios from "axios";
 import Table from "../components/Table/Table";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/UI/NavBar/NavBar";
 import InstructorControls from "../components/Table/InstructorControls";
 import Filters from "../components/Filters/Filters";
 const options = [

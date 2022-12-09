@@ -2,11 +2,17 @@ import React from "react";
 import reactImg from "../../Assets/Images/react.png";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Stars from "../UI/Stars";
-import SecondaryButton from "../SecondaryButton";
+import SecondaryButton from "../UI/SecondaryButton";
+import { useNavigate } from "react-router-dom";
 
 const size = 5;
 
 const CourseCardListView = (props) => {
+  const navigate = useNavigate();
+  const clickHandler = () => {
+    const instructorId = "6386427487d3f94e4cb7a28d";
+    navigate(`/coursedetails/${instructorId}`,{state:props.id})
+  };
   return (
     <div class="relative w-4/5 flex items-center bg-white border border-gray-200 shadow-md rounded-md">
       <img class="max-w-xs h-full" src={reactImg} alt=""></img>
@@ -60,7 +66,11 @@ const CourseCardListView = (props) => {
                 <div className="mr-6">{props.discountedPrice}$</div>
               )}
             </h5>
-            <SecondaryButton text="View" className="text-md font-bold" />
+            <SecondaryButton
+              onClick={clickHandler}
+              text="View"
+              className="text-md font-bold"
+            />
           </div>
         </div>
       </div>

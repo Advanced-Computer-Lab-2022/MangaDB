@@ -9,6 +9,9 @@ const courseSchema = new mongoose.Schema({
   courseDescription: {
     type: String,
   },
+  courseOverview: {
+    type: String,
+  },
   totalMins: {
     type: Number,
   },
@@ -48,17 +51,24 @@ const courseSchema = new mongoose.Schema({
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",
         },
+        userName: {
+          type: String,
+        },
         review: {
           type: String,
         },
         rating: {
           type: Number,
         },
+        date:{
+          type:Date,
+          default:Date.now
+        }
       },
     ],
   },
   requirements: {
-    type: [String],
+    type: String,
   },
   views: {
     type: Number,

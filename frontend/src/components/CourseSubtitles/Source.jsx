@@ -1,7 +1,8 @@
-import { useState, Fragment } from "react";
+import { useState } from "react";
 import SourceInfo from "../AddSubtitles/SourceInfo";
 import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
+import DeleteSubtitle from "../AddSubtitles/DeleteSubtitle";
 import {
   Accordion,
   AccordionHeader,
@@ -9,6 +10,7 @@ import {
 } from "@material-tailwind/react";
 const Source = (props) => {
   const [isOpened, setIsOpened] = useState(false);
+  const [ModalShown, setModalShown] = useState(false);
   const handleOpen = () => {
     setIsOpened((prevOpen) => !prevOpen);
   };
@@ -16,6 +18,14 @@ const Source = (props) => {
     mount: { scale: 1, opacity: 1 },
     unmount: { scale: 0.9 },
   };
+
+  const showAlertHandler = () => {
+    setModalShown(true);
+  };
+  const hideAlertHandler = () => {
+    setModalShown(false);
+  };
+
   const icon = isOpened ? (
     <KeyboardArrowUpRoundedIcon />
   ) : (
@@ -63,31 +73,40 @@ const Source = (props) => {
       </svg>
     );
   }
- 
 
   return (
-    <Fragment>
+    <div className="px-20">
       {props.isOpened && (
         <Accordion icon={icon} open={isOpened} animate={customAnimation}>
+          {ModalShown && (
+            <DeleteSubtitle
+              onClick={props.onRemoveSourceHandler}
+              type="source"
+              onCancel={hideAlertHandler}
+            ></DeleteSubtitle>
+          )}
           <div className="space-x-0 items-center mr-4">
             <AccordionHeader onClick={handleOpen}>
-              <div className="flex">
+            
+              <div className="flex font-light text-md">
                 {sourceIcon} {props.source.description}
               </div>
-              {props.source.duration}
+              <div className="flex justify-end font-light text-md absolute right-10 mob:relative mob:right-0 min-w-[40px] bg-gray-100 px-4 shadow-md rounded-3xl">
+                {props.source.sourceDuration} mins
+              </div>
             </AccordionHeader>
           </div>
-          <AccordionBody className="opacity-0 transition ease-out duration-150" >
+          <AccordionBody className="opacity-0 transition ease-out duration-150">
             <SourceInfo
               onSourceEdit={props.onSourceEdit}
               source={props.source}
               isOpened={isOpened}
             ></SourceInfo>{" "}
           </AccordionBody>
-          <AccordionBody className="opacity-0 transition ease-out duration-150">
-          <button
+          <AccordionBody className="opacity-0 transition ease-out duration-150 px-20">
+            <button
               type="button"
-              onClick={props.onRemoveSourceHandler}
+              onClick={showAlertHandler}
               className="mb-2 inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm"
             >
               Delete Source
@@ -95,7 +114,7 @@ const Source = (props) => {
           </AccordionBody>
         </Accordion>
       )}
-    </Fragment>
+    </div>
   );
 };
 

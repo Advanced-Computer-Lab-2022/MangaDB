@@ -1,16 +1,22 @@
 import { useRef } from "react";
 import React from "react";
-import SecondaryButton from "./SecondaryButton";
+import SecondaryButton from "../SecondaryButton";
+import {useNavigate} from "react-router-dom"
 
-const Search = (props) => {
+const SearchBar = (props) => {
+  const navigate = useNavigate();
   const inputRef = useRef();
   if (!props.prevSearchState && props.prevmyCoursesState) {
     inputRef.current.value = "";
   }
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    props.onChange(inputRef.current.value);
+    const instructorId = "6386427487d3f94e4cb7a28d"
+    navigate( `/searchresults/${instructorId}`,{state:inputRef.current.value});
+    //props.onChange(inputRef.current.value);
+
   };
+
   return (
     <div
       className={` right-3 w-[60vw] max-w-4xl ${props.className} `}
@@ -62,4 +68,4 @@ const Search = (props) => {
     </div>
   );
 };
-export default Search;
+export default SearchBar;

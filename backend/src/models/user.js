@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
     type: [
       {
         course: {
-          type: [mongoose.Schema.Types.ObjectId],
+          type: mongoose.Schema.Types.ObjectId,
           ref: "Course",
         },
         viewedSources: {
@@ -87,12 +87,19 @@ const userSchema = new mongoose.Schema({
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",
         },
+        userName: {
+          type: String,
+        },
         review: {
           type: String,
         },
         rating: {
           type: Number,
         },
+        date:{
+          type:Date,
+          default:Date.now
+        }
       },
     ],
   },

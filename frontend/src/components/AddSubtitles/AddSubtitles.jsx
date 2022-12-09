@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import SecondaryButton from "../SecondaryButton";
+import SecondaryButton from "../UI/SecondaryButton";
 import SubtitleForm from "./SubtitleForm";
 import SingleSubtitle from "./SingleSubtitle";
 import Modal from "../UI/Modal";
@@ -46,8 +46,8 @@ const AddSubtitles = (props) => {
     for (var i = 0; i < subtitles.length; i++) {
       if (subtitles[i].id === subtitleId) {
         subtitles[i].subtitle = newData.title;
-        subtitles[i].shortDescription = newData.shortDescription;
-        subtitles[i].introVideoUrl = newData.introVideoUrl;
+        subtitles[i].description = newData.shortDescription;
+        subtitles[i].introductionVideo = newData.introVideoUrl;
         newSubtitles.push(subtitles[i]);
         continue;
       }
@@ -68,8 +68,8 @@ const AddSubtitles = (props) => {
   };
 
   const displayedSubtitles = subtitles.map((subtitle) => {
-    const SubtitleIntroUrl = subtitle.introVideoUrl;
-    const shortDescription = subtitle.shortDescription;
+    const SubtitleIntroUrl = subtitle.introductionVideo;
+    const description = subtitle.description;
     const subtitleTitle = subtitle.subtitle;
     const sources = subtitle.sources;
     return (
@@ -81,9 +81,9 @@ const AddSubtitles = (props) => {
         onSubtitleRemove={onRemoveSubtitle.bind(null, subtitle.id)}
         title={subtitleTitle}
         sources={sources}
-        shortDescription={shortDescription}
+        shortDescription={description}
         introVideoUrl={SubtitleIntroUrl}
-      ></SingleSubtitle>
+      />
     );
   });
   const showSubtitleModal = () => {
@@ -97,8 +97,8 @@ const AddSubtitles = (props) => {
     const newSubtitle = {
       id: subtitles.length,
       subtitle: subtitleData.title,
-      introVideoUrl: subtitleData.videoURL,
-      shortDescription: subtitleData.description,
+      introductionVideo: subtitleData.videoURL,
+      description: subtitleData.description,
       sources: [],
     };
 
@@ -111,47 +111,44 @@ const AddSubtitles = (props) => {
     props.onConfirm(subtitles);
   };
   return (
-    <Fragment>
-      <section aria-labelledby="notes-title">
-        <div className="bg-white shadow sm:rounded-lg sm:overflow-hidden">
-          <div className="divide-y divide-gray-300">
-            <div className="bg-gray-100 px-4 py-5 sm:px-6 flex items-center ">
-              <h2
-                id="notes-title"
-                className="text-lg font-bold text-gray-900 flex-1"
-              >
-                Course Content
-              </h2>
-              <div>
-                <SecondaryButton
-                  onClick={showSubtitleModal}
-                  text="Add Subtitle"
-                ></SecondaryButton>
-              </div>
-            </div>
-            <div className="ml-4 px-4 py-6 sm:px-6">
-              <div className="flex space-x-2 justify-center">
-                <div className="flex-col min-w-[80%]">
-                  {displayedSubtitles}
-                  {subtitleModalShown && (
-                    <SubtitleForm
-                      onCancel={hideSubtitleModal}
-                      onConfirm={addSubtitleHandler}
-                    ></SubtitleForm>
-                  )}
-                </div>
-              </div>
+    <div className="mx-8 my-4 rounded-md p-6">
+      <div className="bg-white shadow sm:overflow-hidden">
+        <div className="bg-gray-100 px-4 py-5 sm:px-6 flex items-center ">
+          <h2
+            id="notes-title"
+            className="text-lg font-bold text-gray-900 flex-1"
+          >
+            Course Content
+          </h2>
+          <div>
+            <SecondaryButton
+              onClick={showSubtitleModal}
+              text="Add Subtitle"
+            ></SecondaryButton>
+          </div>
+        </div>
+        <div className="ml-4 px-4 py-6 sm:px-6">
+          <div className="flex space-x-2 justify-center">
+            <div className="flex-col min-w-[80%]">
+              {displayedSubtitles}
+              {subtitleModalShown && (
+                <SubtitleForm
+                  onCancel={hideSubtitleModal}
+                  onConfirm={addSubtitleHandler}
+                />
+              )}
             </div>
           </div>
         </div>
-      </section>
-      <div className="flex justify-end mt-4 mr-9">
-        <SecondaryButton
-          onClick={submitHandler}
-          text="Submit"
-        ></SecondaryButton>
       </div>
-    </Fragment>
+      <div className="flex justify-end mt-2">
+        <SecondaryButton
+          className="w-20"
+          onClick={submitHandler}
+          text="Next"
+        />
+      </div>
+    </div>
   );
 };
 export default AddSubtitles;

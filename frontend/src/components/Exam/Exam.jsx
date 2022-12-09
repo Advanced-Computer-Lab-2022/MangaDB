@@ -1,9 +1,9 @@
 import { useState, Fragment, useEffect } from "react";
 import Pagination from "@mui/material/Pagination";
 import ExamChoices from "./ExamChoices";
-import SecondaryButton from "../SecondaryButton";
+import SecondaryButton from "../UI/SecondaryButton";
 import SolvedExamChoices from "./SolvedExamChoices";
-import { createTheme,ThemeProvider } from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 const theme = createTheme({
   status: {
     danger: "#e53e3e",
@@ -24,7 +24,6 @@ const Exam = (props) => {
   const [examState, setExamState] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(1);
   const [prevButtonState, setPrevButtonState] = useState(true);
-  //const [nextButtonState, setNextButtonState] = useState(false);
   const onChangeQuestionHandler = (event, value) => {
     setSelectedQuestion(value);
   };
@@ -35,11 +34,6 @@ const Exam = (props) => {
     } else {
       setPrevButtonState(false);
     }
-    // if (selectedQuestion === props.exam.length) {
-    //   setNextButtonState(true);
-    // } else {
-    //   setNextButtonState(false);
-    // }
   }, [selectedQuestion, props.exam]);
 
   // 2 functions to handle the onClick of the buttons
@@ -88,7 +82,7 @@ const Exam = (props) => {
     setExamState(newExamState);
   };
   const onSubmitHandler = () => {
-    console.log(examState);
+    props.onSolveExamHandler(examState);
   };
   var SolvedBefore;
   for (var j = 0; j < examState.length; j++) {
@@ -96,24 +90,31 @@ const Exam = (props) => {
       SolvedBefore = examState[j].choice;
     }
   }
+  var displayedExam;
+  if (props.solvedBefore) {
+    displayedExam = (
+      <SolvedExamChoices
+        correct={props.exam[selectedQuestion - 1].solution}
+        studentAnswers={props.studentAnswers[selectedQuestion - 1]}
+        choices={props.exam[selectedQuestion - 1].choices}
+      ></SolvedExamChoices>
+    );
+  } else {
+    displayedExam = (
+      <ExamChoices
+        selected={SolvedBefore}
+        choices={props.exam[selectedQuestion - 1].choices}
+        onSaveChoice={onSaveChoice.bind(null, selectedQuestion)}
+      ></ExamChoices>
+    );
+  }
   return (
-    <Fragment>
+    <div className="px-2">
       <p className="tracking-wide text-gray-500 md:text-lg dark:text-gray-400 m-4">
         {"Question " + selectedQuestion + ": "}
         {props.exam[selectedQuestion - 1].description}
       </p>
-      <SolvedExamChoices
-        selected={SolvedBefore}
-        correct={props.answers[selectedQuestion - 1]}
-        studentAnswers={
-          props.studentAnswers[selectedQuestion - 1].questionID ===
-          selectedQuestion
-            ? props.studentAnswers[selectedQuestion - 1]
-            : false
-        }
-        choices={props.exam[selectedQuestion - 1].choices}
-        onSaveChoice={onSaveChoice.bind(null, selectedQuestion)}
-      ></SolvedExamChoices>
+      {displayedExam}
       <div className="mt-2 flex items-center justify-center">
         <SecondaryButton
           disabled={prevButtonState}
@@ -144,7 +145,7 @@ const Exam = (props) => {
           }
         ></SecondaryButton>
       </div>
-    </Fragment>
+    </div>
   );
 };
 

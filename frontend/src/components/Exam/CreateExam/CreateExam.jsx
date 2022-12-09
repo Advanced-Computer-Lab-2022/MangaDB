@@ -2,7 +2,7 @@ import { Fragment, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 import CreateQuestionForm from "../../AddSubtitles/CreateQuestion/CreateQuestionForm";
-import SecondaryButton from "../../SecondaryButton";
+import SecondaryButton from "../../UI/SecondaryButton";
 //Theme to change the pagination color
 const theme = createTheme({
   status: {
@@ -69,30 +69,37 @@ const CreateExam = (props) => {
 
   return (
     <Fragment>
-      <CreateQuestionForm
-        examState={examState[selectedQuestion - 1]}
-        empty={empty}
-        onQuestionChangeHandler={onQuestionChangeHandler.bind(
-          null,
-          selectedQuestion - 1
-        )}
-        onSubmit={onSaveQuestionHandler}
-        length={examState.length}
-        onQuestionRemoveHandler={onQuestionRemoveHandler}
-      ></CreateQuestionForm>
-      <ThemeProvider theme={theme}>
-        {!empty && (
-          <Pagination
-            className="ml-2 mr-2"
-            count={examState.length}
-            color="primary"
-            page={selectedQuestion}
-            onChange={onChangeSelectedQuestionHandler}
-          />
-        )}
-      </ThemeProvider>
-      <div className="flex justify-center items-center">
-        <SecondaryButton onClick={submitHandler}>Submit</SecondaryButton>
+      <div className="flex justify-center mb-2 mt-8 border-2 text-lg py-2 font-semibold text-center">
+        This is the course final exam, students need to pass it to receive the
+        certificate
+      </div>
+      <div className="mt-4">
+        <CreateQuestionForm
+          examState={examState[selectedQuestion - 1]}
+          empty={empty}
+          onQuestionChangeHandler={onQuestionChangeHandler.bind(
+            null,
+            selectedQuestion - 1
+          )}
+          onSubmit={onSaveQuestionHandler}
+          length={examState.length}
+          onQuestionRemoveHandler={onQuestionRemoveHandler}
+        ></CreateQuestionForm>
+        <ThemeProvider theme={theme}>
+          {!empty && (
+            <div className="flex justify-center">
+              <Pagination
+                count={examState.length}
+                color="primary"
+                page={selectedQuestion}
+                onChange={onChangeSelectedQuestionHandler}
+              />
+            </div>
+          )}
+        </ThemeProvider>
+        <div className="flex justify-end items-center px-10 my-10">
+          <SecondaryButton onClick={submitHandler}>Submit</SecondaryButton>
+        </div>
       </div>
     </Fragment>
   );

@@ -1,17 +1,18 @@
 import React from "react";
 import homeImage from "../Assets/Images/HomePage.svg";
-import Search from "../components/Search";
 import Animate from "react-smooth/lib/Animate";
 import NavBar from "../components/NavBar";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import CourseCard from "../components/Course/CourseCard";
+import SearchBar from "../components/SearchBar";
+import {useLocation} from 'react-router-dom'
 const HomePage = () => {
   const [displayedCourses, setDisplayedCourses] = useState([]);
   const [currencySymbol, setCurrencySymbol] = useState("");
   const [countryCode, setCountryCode] = useState("US");
-
+  const location = useLocation()
   const appear = {
     opacity: 0,
     transition: {
@@ -33,15 +34,16 @@ const HomePage = () => {
     console.log(e);
   setCountryCode(e)
   }
-  console.log(displayedCourses);
   const courses = displayedCourses.map((course) => {
     return (
       <CourseCard
+        id= {course._id}
+        userId={location.state}
         duration={course.totalHours}
         title={course.courseTitle}
         instructorName={course.instructorName}
         subject={course.subject}
-        level="Advanced"
+        level={course.level}
         coursePrice={course.coursePrice}
         discountedPrice={course.discountedPrice}
         discount={course.discount}
@@ -50,7 +52,6 @@ const HomePage = () => {
       ></CourseCard>
     );
   });
-
   return (
     <Animate to="1" from="0" attributeName="opacity">
       <NavBar onChange={onChangeHandler}></NavBar>
@@ -77,7 +78,7 @@ const HomePage = () => {
           </div>
         </div>
         <div className="flex justify-center">
-          <Search />
+          <SearchBar />
         </div>
         <div className="font-bold text-2xl mt-8 mb-4 flex justify-start mx-12 w-max">
           Most Popular:

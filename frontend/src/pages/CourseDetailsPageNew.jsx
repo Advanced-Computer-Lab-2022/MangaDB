@@ -1,13 +1,12 @@
 import React from "react";
 import { Fragment, useState, useEffect } from "react";
-import NavBar from "../NavBar";
-import CourseDetailsCard from "./CourseDetailsCard";
+import NavBar from "../components/NavBar";
+import CourseDetailsCard from "../components/CourseDetailsComp/CourseDetailsCard";
 import axios from "axios";
-import AddToCartCard from "./AddToCartCard";
-import CourseContent from "./CourseContent";
-import CourseReviews from "./CourseReviews";
-
-const courseId = "637602ccaf6170543959970d";
+import AddToCartCard from "../components/CourseDetailsComp/AddToCartCard";
+import CourseContent from "../components/CourseDetailsComp/CourseContent";
+import CourseReviews from "../components/CourseDetailsComp/CourseReviews";
+import { useLocation } from "react-router-dom";
 
 const rev = [
   {
@@ -15,29 +14,52 @@ const rev = [
     username: "Misho",
     review:
       "lorem Ipsum is simply  dummy. Lorem Ipsum is simply Lorem Ipsum. Lorem Ips    incorrectly reports that Lorem Ips is simply Lorem Ipsum. Lorem Ips incorrectly reports that Lorem Ips incorrectly reports that Lore      mips Lorem Ips incorrectly reports that Lore ",
+    date: "July 23, 2021",
   },
-  { rating: 2, username: "Misho", review: "This is review 2" },
-  { rating: 4.5, username: "Misho", review: "This is review 3" },
+  {
+    rating: 2,
+    username: "Misho",
+    review: "This is review 2",
+    date: "July 23, 2021",
+  },
+  {
+    rating: 4.5,
+    username: "Misho",
+    review: "This is review 3",
+    date: "July 23, 2021",
+  },
 ];
 
-const CourseDetailsPageNew = (props) => {
+const CourseDetailsPageNew = () => {
+  const location = useLocation();
   const [courseDetails, setCourseDetails] = useState({});
   const [loaded, setLoaded] = useState(false);
+  const [userRegistered, setUserRegistered] = useState(false);
   useEffect(() => {
+    const courseId = location.state.courseId;
+
     axios.get("http://localhost:3000/course/".concat(courseId)).then((res) => {
       setCourseDetails(res.data.course);
       setLoaded(true);
-      console.log(res.data.course);
     });
-  }, []);
 
-  var requirements = [];
+    const userId = "638a07cdbc3508481a2d7da9";
+    axios
+      .patch(`http://localhost:3000/user/enroll/${userId}`, {
+        courseId: location.state.courseId,
+      })
+      .then((res) => {})
+      .catch((error) => {
+        if (
+          +error.message.split(" ")[error.message.split(" ").length - 1] === 400
+        ) {
+          setUserRegistered(true);
+        } else {
+          setUserRegistered(false);
+        }
+      });
+  }, [location.state]);
 
-  if (loaded) {
-    requirements = courseDetails.requirements.map((requirement) => {
-      return <li>{requirement}</li>;
-    });
-  }
   return (
     <Fragment>
       <NavBar />
@@ -55,7 +77,11 @@ const CourseDetailsPageNew = (props) => {
           currencySymbol="$"
         />
       </div>
-      <AddToCartCard courseImage={courseDetails.courseImage} />
+      <AddToCartCard
+        id={courseDetails._id}
+        userRegister={userRegistered}
+        courseImage={courseDetails.courseImage}
+      />
       <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
         <div className="mb-3">Course Summary</div>
         {/* <div className="ml-10 align-middle">{props.courseSummary}</div> */}
@@ -66,16 +92,17 @@ const CourseDetailsPageNew = (props) => {
       {loaded && (
         <CourseContent
           content={courseDetails.subtitles}
-          courseDuration={courseDetails.totalHours}
+          courseDuration={courseDetails.totalMins}
         />
       )}
       <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
         <div className="mb-3">Course Requirements</div>
-        <ul className="list-disc font-normal sm:grid sm:grid-cols-2 ml-10 align-middle">
-          {requirements.length !== 0 && requirements}
-        </ul>
+        <div
+          className="ml-10 font-normal"
+          dangerouslySetInnerHTML={{ __html: courseDetails.requirements }}
+        ></div>
       </div>
-      {loaded && (
+      {!loaded && (
         <CourseReviews
           //reviews={courseDetails.reviews}
           reviews={rev}

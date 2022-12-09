@@ -46,8 +46,8 @@ const AddSubtitles = (props) => {
     for (var i = 0; i < subtitles.length; i++) {
       if (subtitles[i].id === subtitleId) {
         subtitles[i].subtitle = newData.title;
-        subtitles[i].shortDescription = newData.shortDescription;
-        subtitles[i].introVideoUrl = newData.introVideoUrl;
+        subtitles[i].description = newData.shortDescription;
+        subtitles[i].introductionVideo = newData.introVideoUrl;
         newSubtitles.push(subtitles[i]);
         continue;
       }
@@ -68,8 +68,8 @@ const AddSubtitles = (props) => {
   };
 
   const displayedSubtitles = subtitles.map((subtitle) => {
-    const SubtitleIntroUrl = subtitle.introVideoUrl;
-    const shortDescription = subtitle.shortDescription;
+    const SubtitleIntroUrl = subtitle.introductionVideo;
+    const description = subtitle.description;
     const subtitleTitle = subtitle.subtitle;
     const sources = subtitle.sources;
     return (
@@ -81,7 +81,7 @@ const AddSubtitles = (props) => {
         onSubtitleRemove={onRemoveSubtitle.bind(null, subtitle.id)}
         title={subtitleTitle}
         sources={sources}
-        shortDescription={shortDescription}
+        shortDescription={description}
         introVideoUrl={SubtitleIntroUrl}
       />
     );
@@ -97,8 +97,8 @@ const AddSubtitles = (props) => {
     const newSubtitle = {
       id: subtitles.length,
       subtitle: subtitleData.title,
-      introVideoUrl: subtitleData.videoURL,
-      shortDescription: subtitleData.description,
+      introductionVideo: subtitleData.videoURL,
+      description: subtitleData.description,
       sources: [],
     };
 

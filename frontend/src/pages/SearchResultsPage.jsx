@@ -1,12 +1,13 @@
 import axios from "axios";
 import { Fragment, useState, useEffect, useReducer } from "react";
+import { useLocation } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import Search from "../components/Search";
 import Filters from "../components/Filters/Filters";
 import SecondaryButton from "../components/SecondaryButton";
 import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
 import CourseCardListView from "../components/Course/CourseCardListView";
-import CourseCard from "../components/Course/CourseCard"
+import CourseCard from "../components/Course/CourseCard";
 const options = [
   { id: 1, name: "Web Development" },
   { id: 2, name: "Machine Learning" },
@@ -16,10 +17,11 @@ const options = [
 ];
 
 const icon = <TuneOutlinedIcon className="ml-2" />;
-const SearchResultsPage = (props) => {
+const SearchResultsPage = () => {
+  const location = useLocation();
   const defaultState = {
     displayedCourses: [],
-    search: "",
+    search: location.state?location.state:"",
     filters: {
       price: null,
       subjects: [],
@@ -45,6 +47,7 @@ const SearchResultsPage = (props) => {
     ReducerFunction,
     defaultState
   );
+
   const [showFilters, setShowFilters] = useState(false);
   const showFiltersHandler = () => {
     setShowFilters(true);
@@ -60,7 +63,7 @@ const SearchResultsPage = (props) => {
     setShowFilters(false);
   };
 
-  useEffect(() =>{
+  useEffect(() => {
     var param = "";
     if (searchState.search !== "")
       param = param + "?search=" + searchState.search;
@@ -90,33 +93,39 @@ const SearchResultsPage = (props) => {
     axios.get("http://localhost:3000/course/" + param).then((res) => {
       dispatchSearch({ type: "COURSES", value: res.data.courses });
     });
-  },[searchState.search,searchState.filters])
+  }, [searchState.search, searchState.filters]);
   var coursesListView;
   var coursesCardsView;
   if (searchState.displayedCourses.length === 0) {
-    coursesListView = <div className="text-xl font-semibold mt-16">No Courses Found.</div>;
-    coursesCardsView = <div className="text-xl font-semibold mt-16">No Courses Found.</div>;
+    coursesListView = (
+      <div className="text-xl font-semibold mt-16">No Courses Found.</div>
+    );
+    coursesCardsView = (
+      <div className="text-xl font-semibold mt-16">No Courses Found.</div>
+    );
   } else {
     coursesListView = searchState.displayedCourses.map((course) => {
       return (
         <CourseCardListView
-        duration={course.totalHours}
-        title={course.courseTitle}
-        instructorName={course.instructorName}
-        subject={course.subject}
-        level="Advanced"
-        description={course.courseDescription}
-        coursePrice={course.coursePrice}
-        discountedPrice={course.discountedPrice}
-        discount={course.discount}
-        rating={course.rating}
-        // currencySymbol={currencySymbol}
+          id={course._id}
+          duration={course.totalHours}
+          title={course.courseTitle}
+          instructorName={course.instructorName}
+          subject={course.subject}
+          level={course.level}
+          description={course.courseDescription}
+          coursePrice={course.coursePrice}
+          discountedPrice={course.discountedPrice}
+          discount={course.discount}
+          rating={course.rating}
+          // currencySymbol={currencySymbol}
         ></CourseCardListView>
       );
     });
     coursesCardsView = searchState.displayedCourses.map((course) => {
-      return (     
+      return (
         <CourseCard
+          id={course._id}
           duration={course.totalHours}
           title={course.courseTitle}
           instructorName={course.instructorName}
@@ -136,6 +145,7 @@ const SearchResultsPage = (props) => {
       <NavBar />
       <div className="flex justify-center space-x-4 mb-3 items-center">
         <Search
+          searchState={searchState.search}
           onChange={searchBarChangeHandler}
           className="ml-4"
         />
@@ -158,8 +168,12 @@ const SearchResultsPage = (props) => {
 
       <div className="flex flex-col gap-y-4 mb-4">
         <div className="font-bold text-2xl ml-24">Results:</div>
-        <div className="flex-col items-center gap-y-4 hidden lg:flex">{coursesListView}</div>
-        <div className="flex justify-around flex-wrap lg:hidden">{coursesCardsView}</div>
+        <div className="flex-col items-center gap-y-4 hidden lg:flex">
+          {coursesListView}
+        </div>
+        <div className="flex justify-around flex-wrap lg:hidden">
+          {coursesCardsView}
+        </div>
       </div>
     </Fragment>
   );

@@ -230,7 +230,7 @@ const Billing = (props) => {
                         htmlFor="last-name"
                         className="block text-sm font-medium text-gray-700"
                       >
-                        CVC
+                        CVV
                       </label>
                       <input
                         value={cvc}

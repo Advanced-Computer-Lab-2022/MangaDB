@@ -2,6 +2,7 @@ const course = require("../models/course");
 const user = require("../models/user");
 const currencyConverter = require("../helper/currencyconverter");
 const examController=require('./exam');
+const exam = require("../models/exam");
 
 
 exports.getAllCourses = async (req, res, next) => {
@@ -84,7 +85,11 @@ exports.getCourse = async (req, res, next) => {
     res.status(500).json({
       message: "Fetching course failed!",
     });
-  });
+  })
+  if(!foundCourse)
+  return;
+
+  foundCourse=await foundCourse.populate("subtitles.sources.quiz");
   const countryCode = req.query.CC || "US";
   let countryDetails = await currencyConverter.convertCurrency(
     "US",
@@ -198,6 +203,7 @@ exports.createCourse = async (req, res, next) => {
     instructor: instructorId,
     instructorName: instructorName,
     discount: req.body.discount,
+    discountedPrice: req.body.coursePrice-(req.body.coursePrice*discount),
     rating: req.body.rating,
     reviews: req.body.reviews,
     requirements: req.body.requirements,                                                                                   

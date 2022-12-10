@@ -1,10 +1,8 @@
 import React from "react";
 
+
 const SubtitleBody = (props) => {
-  // duration
-  // description
-  // type
-  // onClick
+ 
 
   const clickHandler = () =>{
     var source = {

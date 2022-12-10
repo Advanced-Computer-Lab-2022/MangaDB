@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState } from "react";
 import SourceInfo from "../AddSubtitles/SourceInfo";
 import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
@@ -87,9 +87,7 @@ const Source = (props) => {
           )}
           <div className="space-x-0 items-center mr-4">
             <AccordionHeader onClick={handleOpen}>
-              {/* <div className="flex font-light text-md">
-                {sourceIcon} {props.source.description}
-              </div> */}
+            
               <div className="flex font-light text-md">
                 {sourceIcon} {props.source.description}
               </div>

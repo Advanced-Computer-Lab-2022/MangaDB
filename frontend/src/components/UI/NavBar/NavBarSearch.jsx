@@ -4,10 +4,11 @@ import CountryManager from "./CountryManager";
 import PrimaryButton from "../PrimaryButton";
 import SecondaryButton from "../SecondaryButton";
 import { Divider } from "@mui/material";
+import SearchBar from "../Search/SearchBar";
 
-let navButtons = ["Home", "My Courses", "FAQs", "Cart", "Profile"];
+let navButtons = ["Home", "My Courses", "FAQs", "Cart", "Sign In"];
 
-const NavBar = (props) => {
+const NavBarSearch = (props) => {
   const [open, setOpen] = useState(false);
 
   const openToggleHandler = () => {
@@ -16,12 +17,12 @@ const NavBar = (props) => {
 
   return (
     <div
-      className={`w-full sticky z-[100] bg-white top-0 left-0 md:${"shadow-md"} ${
+      className={`w-full fixed top-0 left-0 md:${"shadow-md"} ${
         !open ? "shadow-md" : "shadow-none"
       }`}
     >
-      <div className="md:flex py-2 px-8 items-center justify-between relative z-10">
-        <div className="cursor-pointer flex items-center font-semibold text-2xl md:mb-0 bg-white">
+      <div className="md:flex py-2 px-8 items-center justify-between">
+        <div className="cursor-pointer flex items-center font-semibold text-2xl md:mb-0">
           <span>
             <img className="h-10" src={logo} alt="logo" />
           </span>
@@ -66,12 +67,13 @@ const NavBar = (props) => {
           </PrimaryButton>
         </div>
         <ul
-          className={`md:flex pb-4 md:pb-0 md:items-center pt-4 space-y-8 md:space-y-0 md:space-x-12 my-4 md:my-0 absolute bg-white md:static md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-300 ease-in-out md:shadow-none shadow-md ${
-            open ? "top-14" : "top-[-490px]"
+          className={`md:flex pb-4 md:pb-0 md:items-center space-y-8 md:space-y-0 md:space-x-12 my-4 md:my-0 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-300 ease-in-out md:shadow-none shadow-md ${
+            open ? "top-20" : "top-[-490px]"
           }`}
         >
+          {/* <SearchBar className="w-[20vw]" /> */}
           {navButtons.map((navButton) => {
-            if (navButton !== "Cart" && navButton !== "Sign In" && navButton !== "Profile") {
+            if (navButton !== "Cart" && navButton !== "Sign In") {
               return (
                 <li>
                   <PrimaryButton text={navButton} />
@@ -80,20 +82,17 @@ const NavBar = (props) => {
             } else if (navButton === "Cart") {
               return (
                 <li>
-                  <PrimaryButton>
-                    <span className="md:hidden">{navButton}</span>
-                    <span className="hidden md:block">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="22"
-                        height="22"
-                        fill="currentColor"
-                        class="bi bi-cart"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-                      </svg>
-                    </span>
+                  <PrimaryButton className="">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="22"
+                      height="22"
+                      fill="currentColor"
+                      class="bi bi-cart"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                    </svg>
                   </PrimaryButton>
                 </li>
               );
@@ -101,13 +100,6 @@ const NavBar = (props) => {
               return (
                 <li>
                   <SecondaryButton text={navButton} />
-                </li>
-              );
-            } else if (navButton === "Profile") {
-              return (
-                <li>
-                  <PrimaryButton>
-                  </PrimaryButton>
                 </li>
               );
             }
@@ -121,4 +113,4 @@ const NavBar = (props) => {
   );
 };
 
-export default NavBar;
+export default NavBarSearch;

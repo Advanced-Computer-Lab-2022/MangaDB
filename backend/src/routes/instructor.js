@@ -16,4 +16,6 @@ router.patch("/rate/:id", instructorController.editRating);
 
 router.get("/rate/:id", instructorController.getRating);
 
+router.get("/amountowed/:id", instructorController.getMoneyOwed);
+
 module.exports = router;

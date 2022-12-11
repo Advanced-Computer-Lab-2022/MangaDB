@@ -1,5 +1,6 @@
 const course=require('../models/course');
 const user = require('../models/user');
+const invoice = require('../models/invoice');
 
 exports.updateUser = (req, res) => {
     const id = req.params.id;
@@ -217,5 +218,29 @@ exports.getRating = async (req, res) => {
 
 }
 
+
+exports.getMoneyOwed = async (req, res) => {
+    const instructorId=req.params.id;
+    let date=new Date(Date.now());
+    let startOfMonth=new Date(date.getFullYear(),date.getMonth(),1);
+    date=date.toISOString();
+    startOfMonth=startOfMonth.toISOString();
+    try {
+        const invoiceData=await invoice.find({$and: [{instructor:instructorId},{invoiceDate:{$gte:startOfMonth}},{invoiceDate:{$lte:date}}]});
+        let total=0;
+        invoiceData.forEach((element) => {
+            total+=element.totalAmount*0.8;
+        }
+        );
+        res.status(200).send({
+            message: "Instructor money owed was found successfully.",
+            moneyOwed : total
+        });
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Some error occurred while getting instructor money owed.",
+        });
+    }
+};
 
 

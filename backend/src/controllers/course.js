@@ -89,7 +89,9 @@ exports.getCourse = async (req, res, next) => {
     });
   })
   if(!foundCourse)
-  return;
+  return res.status(404).json({
+    message: "Course not found!",
+    });
 
   foundCourse=await foundCourse.populate("subtitles.sources.quiz");
   const foundUser = await user.findById(userId).catch((error) => {
@@ -129,7 +131,7 @@ exports.getCourse = async (req, res, next) => {
     res.status(200).json({
       message: "Course fetched successfully!",
       course: foundCourse,
-      userData: userCourseData ,
+     userData: userCourseData ,
       symbol: symbol,
     });
   } else {
@@ -231,7 +233,6 @@ exports.createCourse = async (req, res, next) => {
     discountedPrice: req.body.coursePrice-(req.body.coursePrice*discount),
     requirements: req.body.requirements,                                                                                   
     summary: req.body.summary,
-    certificate: req.body.certificate,
   });
   let subDuration=0;
   let courseDuration=0;
@@ -682,4 +683,6 @@ exports.addSource = async (req, res, next) => {
 };
 
 
+
+  
  

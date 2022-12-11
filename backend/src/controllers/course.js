@@ -608,3 +608,23 @@ exports.getRating = async (req, res, next) => {
     });
   }
 };
+exports.updateDiscountedPrice= async()=>{
+  const courses=await course.find();
+  const currentDate=new Date(Date.now());
+  for(let i=0;i<courses.length;i++){
+   let course=courses[i];
+   let startDate=course.discountStartDate;
+   let endDate=courses[i].discountEndDate;
+   if(startDate&&startDate<=currentDate&&endDate>currentDate){
+    course.discountedPrice=course.coursePrice-(course.coursePrice*course.discount);
+    await  course.save();
+   }
+   if(endDate&&endDate<=currentDate){
+    course.discount=0;
+    course.discountedPrice= course.coursePrice;
+    await  course.save();
+   }
+  
+  }
+
+};

@@ -8,12 +8,14 @@ router.get("/searchcourses/:id", courseController.searchCoursesByInstructor);
 
 router.put("/updatecourse/:id", courseController.updateCourse);
 
-router.patch("/updateuser/:id", instructorController.updateUser);//not needed
+router.patch("/updateuser/:id", instructorController.updateUser); //not needed
 
 router.post("/rate/:id", instructorController.rateInstructor);
 
 router.patch("/rate/:id", instructorController.editRating);
 
 router.get("/rate/:id", instructorController.getRating);
+
+router.patch("/creatediscount/:id",instructorController.setDiscount);
 
 module.exports = router;

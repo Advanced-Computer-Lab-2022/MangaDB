@@ -1,5 +1,4 @@
-import PrimaryButton from "../PrimaryButton";
-import SecondaryButton from "../SecondaryButton";
+import PrimaryButton from "../UI/PrimaryButton"
 import Modal from "../UI/Modal";
 const DeleteSubtitle = (props) => {
   return (

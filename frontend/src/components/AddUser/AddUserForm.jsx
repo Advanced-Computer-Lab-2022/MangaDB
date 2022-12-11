@@ -1,8 +1,8 @@
 import AddUserToggle from "./AddUserToggle";
-import Card from "./UI/Card";
+import Card from "../UI/Card";
 import TextField from "@mui/material/TextField";
-import SecondaryButton from "./SecondaryButton";
-import AddUser from "../Assets/Images/AddUser.svg";
+import SecondaryButton from "../UI/SecondaryButton";
+import AddUser from "../../Assets/Images/AddUser.svg";
 import { useState } from "react";
 import axios from "axios";
 const addUserReqBody = {

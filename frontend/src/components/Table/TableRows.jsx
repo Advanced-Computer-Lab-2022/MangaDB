@@ -1,5 +1,5 @@
-import PrimaryButton from "../PrimaryButton";
-import SecondaryButton from "../SecondaryButton";
+import PrimaryButton from "../UI/PrimaryButton";
+import SecondaryButton from "../UI/SecondaryButton";
 import Stars from "../UI/Stars";
 
 const size = 3;

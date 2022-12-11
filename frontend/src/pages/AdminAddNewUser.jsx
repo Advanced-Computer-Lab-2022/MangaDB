@@ -1,5 +1,5 @@
-import AddUserForm from "../components/AddUserForm";
-import NavBar from "../components/NavBar";
+import AddUserForm from "../components/AddUser/AddUserForm";
+import NavBar from "../components/UI/NavBar/NavBar";
 
 export default function AdminAddNewUser() {
 /*

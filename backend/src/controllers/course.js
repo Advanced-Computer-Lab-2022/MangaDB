@@ -2,6 +2,7 @@ const course = require("../models/course");
 const user = require("../models/user");
 const currencyConverter = require("../helper/currencyconverter");
 const examController=require('./exam');
+const exam = require("../models/exam");
 
 
 exports.getAllCourses = async (req, res, next) => {
@@ -86,7 +87,11 @@ exports.getCourse = async (req, res, next) => {
     res.status(500).json({
       message: "Fetching course failed!",
     });
-  });
+  })
+  if(!foundCourse)
+  return;
+
+  foundCourse=await foundCourse.populate("subtitles.sources.quiz");
   const foundUser = await user.findById(userId).catch((error) => {
     res.status(500).json({
       message: "Fetching user failed!",
@@ -223,6 +228,7 @@ exports.createCourse = async (req, res, next) => {
     instructor: instructorId,
     instructorName: instructorName,
     discount: discount,
+    discountedPrice: req.body.coursePrice-(req.body.coursePrice*discount),
     requirements: req.body.requirements,                                                                                   
     summary: req.body.summary,
     certificate: req.body.certificate,
@@ -245,9 +251,9 @@ exports.createCourse = async (req, res, next) => {
   }
   newCourse.subtitles=subtitles;
   newCourse.totalMins=courseDuration;
-  let finalExam=req.body.finalExam;
-  finalExam=await examController.createExam(finalExam);
-  newCourse.finalExam=finalExam;
+ // let finalExam=req.body.finalExam;
+  //finalExam=await examController.createExam(finalExam);
+  //newCourse.finalExam=finalExam;
   await newCourse
     .save()
     .then((createdCourse) => {

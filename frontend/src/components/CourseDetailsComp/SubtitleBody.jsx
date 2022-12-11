@@ -1,12 +1,8 @@
 import React from "react";
-import vidImgPath from "../../Assets/videoIcon.png";
-import txtImgPath from "../../Assets/textIcon.png";
+
 
 const SubtitleBody = (props) => {
-  // duration
-  // description
-  // type
-  // onClick
+ 
 
   const clickHandler = () =>{
     var source = {

@@ -78,8 +78,9 @@ const InstructorProfilePage = () => {
 
   //function to handle submitting changes to the personal info
   const personalInfoSaveHandler = (data) => {
+    console.log(data);
     axios
-      .post("http://localhost:3000/instructor/", data, {
+      .patch("http://localhost:3000/user/updateuser/638a07cdbc3508481a2d7da9", data, {
         headers: {
           "Access-Control-Allow-Origin": "*",
         },
@@ -90,7 +91,7 @@ const InstructorProfilePage = () => {
   //function to handle the change of password or privacy
   const securityChangeHandler = (data) => {
     axios
-      .post("http://localhost:3000/instructor/", data, {
+      .patch("http://localhost:3000/user/updateuser/638a07cdbc3508481a2d7da9", data, {
         headers: {
           "Access-Control-Allow-Origin": "*",
         },

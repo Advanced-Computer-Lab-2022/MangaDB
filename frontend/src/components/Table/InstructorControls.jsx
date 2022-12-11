@@ -1,7 +1,7 @@
 import { Fragment } from "react";
-import Search from "../Search";
-import SecondaryButton from "../SecondaryButton";
-import TertiaryButton from "../TertiaryButton";
+import Search from "../UI/Search/Search";
+import SecondaryButton from "../UI/SecondaryButton";
+import TertiaryButton from "../UI/TertiaryButton";
 import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
 
 const icon = <TuneOutlinedIcon className="ml-2" />;

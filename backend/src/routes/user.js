@@ -23,10 +23,10 @@ router.patch('/opensource/:id',userController.openSource);
 router.get('/progress/:id',userController.getProgress);
 
 router.patch('/notes/:id',userController.addNotes);
+
 router.post('/solveexam',userController.solveExam);
 
 router.get('/courses/:id',userController.getRegisteredCourses);
-
 
 
 module.exports=router;

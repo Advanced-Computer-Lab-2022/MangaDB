@@ -11,5 +11,7 @@ router.delete('/deleteuser/:id', userController.deleteUser);
 
 router.get('/getuser/:id', userController.getUserById);
 
+router.patch("/creatediscount/",userController.setDiscount);
+
 
 module.exports=router;

@@ -1,5 +1,6 @@
 import { useState, useEffect, Fragment } from "react";
 import Video from "../components/Video/Video";
+import ProgressManager from "../components/Progress/ProgressManager";
 import CourseContent from "../components/CourseDetailsComp/CourseContent";
 import NavBar from "../components/UI/NavBar/NavBar";
 import ExamManager from "../components/Exam/ExamManager";
@@ -196,15 +197,15 @@ const CourseViewPage = () => {
     }
   }, [currentSource]);
 
-  if(currentSource!==""){
+  if (currentSource !== "") {
     var subtitle;
-  for(var i = 0; i <receivedData.subtitles.length; i++) {
-    for(var j = 0; j <receivedData.subtitles[i].sources.length; j++) {
-      if(currentSource._id===receivedData.subtitles[i].sources[j]._id){
-         subtitle = receivedData.subtitles[i].description;
+    for (var i = 0; i < receivedData.subtitles.length; i++) {
+      for (var j = 0; j < receivedData.subtitles[i].sources.length; j++) {
+        if (currentSource._id === receivedData.subtitles[i].sources[j]._id) {
+          subtitle = receivedData.subtitles[i].description;
+        }
       }
     }
-  }
   }
 
   //we will have an array of viewed sources
@@ -234,6 +235,13 @@ const CourseViewPage = () => {
   return (
     <Fragment>
       <NavBar></NavBar>
+      <div className="flex justify-center items-center ">
+        <div className="font-semibold text-2xl w-2/3">
+          {receivedData.courseTitle}
+        </div>
+        <ProgressManager></ProgressManager>
+      </div>
+
       <div className="md:flex">
         <div className="video/exam md:w-7/12 w-full mb-4 md:mb-0">
           {displayedSource}

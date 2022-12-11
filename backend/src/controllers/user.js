@@ -446,10 +446,10 @@ exports.openSource = async (req, res) => {
     });
   }
 };
-
+//probably useless
 exports.getProgress = async (req, res) => {
-  const id = req.params.id;
-  const { courseId } = req.body;
+  const courseId = req.params.id;
+  const { id } = req.body;
   try {
     const userData = await user.findById(id);
     if (!userData) {

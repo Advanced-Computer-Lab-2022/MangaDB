@@ -44,7 +44,16 @@ const userSchema = new mongoose.Schema({
             type: String,
           },
           notes: {
-            type: String,
+            type: [
+              {
+                note: {
+                  type: String,
+                },
+                timestamp: {
+                  type: String,
+                },
+              }
+            ]
           }}
     ]},
         totalSources: {

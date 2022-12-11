@@ -43,10 +43,10 @@ exports.getProblem = async (req, res) => {
       return res.status(404).send();
     }
      if (foundProblem.seen === false) {
-      if(req.user.role === "ADMIN"){
+      //if(req.user.role === "ADMIN"){
      //  foundProblem.seen = true;
       await foundProblem.save();
-      }
+      //}
     }
     res.send(foundProblem);
   } catch (error) {

@@ -36,6 +36,7 @@ const NotesCard = (props) => {
           <div className="ml-2 font-semibold flex-1">
             {props.subtitleDescription}
           </div>
+          <div className="text-sm text-gray-500">{props.sourceDescription}</div>
           <div className="flex space-x-2">
             <svg
               onClick={onShowForm}

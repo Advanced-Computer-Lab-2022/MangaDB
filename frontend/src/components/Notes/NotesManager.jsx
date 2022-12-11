@@ -19,6 +19,7 @@ const NotesManager = (props) => {
     });
   }, [notes]);
 
+  console.log(notes);
   // add delete edit notes
   const addNote = (note) => {
     var obj = {

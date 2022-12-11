@@ -8,7 +8,6 @@ const Video = (props) => {
   const playerRef = useRef();
   //pass the embedded link or the video link both work
   const embeddedURL = youtubeEmbed(props.link);
- 
   //needed to get the video duration from the url in case of Addcourse
   const onReadyHandler = () => {
     props.getSourceDuration((playerRef.current.getDuration() / 60).toFixed(0));

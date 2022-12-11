@@ -645,3 +645,28 @@ exports.registerToCourse=async (req, res) => {
   });
 };
 
+exports.setDiscount= async (req, res) => {
+  let courses=req.body.courses;
+  let allCourses=req.body.allCourses;
+  let count=0;
+  if(!allCourses){
+    count=await course.find( {$and: [{ _id: { $in:courses } },{discount:{$ne:0}}]}).count();
+    courses=await course.find({ _id: { $in:courses }});
+  }
+  else{
+    count=await course.find({discount:{$ne:0}}).count();
+    courses=await course.find();
+  }
+  if(count!=0){
+    res.status(400).json({message:"cannot set more than discount for same course"});
+    return;
+  }
+  for(let i=0;i<courses.length;i++){
+    let currentCourse=courses[i];
+   currentCourse.discount=req.body.discount;
+   currentCourse.discountStartDate=req.body.discountStartDate;
+   currentCourse.discountEndDate=req.body.discountEndDate;
+   await currentCourse.save();
+  }
+  res.status(200).json({message:"All Discounts Set Successfully"});
+  };

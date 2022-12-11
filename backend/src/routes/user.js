@@ -29,5 +29,4 @@ router.post('/solveexam',userController.solveExam);
 router.get('/mycourses/:id',userController.getRegisteredCourses);
 
 
-
 module.exports=router;

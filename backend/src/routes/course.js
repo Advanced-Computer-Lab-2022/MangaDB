@@ -24,4 +24,6 @@ router.get("/rate/:id", courseController.getRating);
 
 
 
+
+
 module.exports = router;

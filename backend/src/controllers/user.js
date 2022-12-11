@@ -3,11 +3,9 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mailer=require('../helper/mailer');
 const course=require('../models/course');
-const currencyConverter = require("../helper/currencyconverter"); 
-const payment=require('../helper/payment');
 const exam=require('../models/exam');
 const blackList=require('../models/token');
-
+const invoice=require('../models/invoice');
 
 exports.createUser = async (req, res) => {
   if (!req.body.userName || !req.body.password || !req.body.role) {
@@ -285,90 +283,6 @@ exports.resetPassword = async (req, res) => {
       }
     };
 
-//payment gateway
-
-exports.registerCourse = async (req, res) => {
-  const id = req.params.id;
-  const { courseId } = req.body;
-  const countryCode = req.query.CC || "US";
-  let countryDetails = await currencyConverter.convertCurrency(
-    "US",
-    countryCode
-  );
-
-  let exchangeRate = countryDetails.rate;
-  let currency = countryDetails.toCountryCurrency;
-  try {
-    const userData = await user.findById(id);
-    if (!userData) {
-      res.status(404).send({
-        message: `Cannot update user with id=${id}. Maybe user was not found!`,
-      });
-    } else {
-      const courseData = await course.findById(courseId);
-
-      if (!courseData) {
-        res.status(404).send({
-          message: `Course was not found!`,
-        });
-      } else {
-        for (var i = 0; i < userData.courseDetails.length; i++) {
-          if (userData.courseDetails[i].course == courseId) {
-            res.status(400).send({
-              message: `You have already registered for this course!`,
-            });
-            return;
-          }
-        }
-
-        let sourceNumber = 0;
-        for (let i = 0; i < courseData.subtitles.length; i++) {
-          sourceNumber += courseData.subtitles[i].sources.length;
-        }
-
-        let price = courseData.discountedPrice * exchangeRate;
-        price = price.toFixed(2);
-        userData.courseDetails.push({
-          course: courseData._id,
-          totalSources: sourceNumber,
-          percentageCompleted: 0,
-          amountPaid: price,
-        });
-        await userData.save();
-        await user.findByIdAndUpdate(
-          courseData.instructor,
-          { $inc: { wallet: price * 0.8 } }, //change depending on country selected by user /instructor
-          { useFindAndModify: false, new: true }
-        );
-        await course.findByIdAndUpdate(courseId, { $inc: { views: 1 } });
-
-        const info = {
-          currency: currency,
-          name: courseData.courseTitle,
-          price: courseData.discountedPrice * exchangeRate,
-        };
-        await payment.createPaymentIntent(info).then((data) => {
-          if (!data) {
-            res.status(500).send({
-              message: "Error in payment",
-            });
-            return;
-          }
-
-          res.send({
-            message: "user registered for course successfully.",
-            data,
-          });
-        });
-      }
-    }
-  } catch (err) {
-    res.status(500).send({
-      message: "Error in registering course",
-    });
-  }
-};
-
 //get courses this user is registered in
 exports.getRegisteredCourses = async (req, res) => {
   const id = req.params.id;
@@ -447,10 +361,10 @@ exports.openSource = async (req, res) => {
     });
   }
 };
-
+//probably useless
 exports.getProgress = async (req, res) => {
-  const id = req.params.id;
-  const { courseId } = req.body;
+  const courseId = req.params.id;
+  const { id } = req.body;
   try {
     const userData = await user.findById(id);
     if (!userData) {
@@ -551,6 +465,86 @@ exports.addNotes = async (req, res) => {
  
 };
 };
+
+exports.getSourceNotes = async (req, res) => {
+  const sourceId = req.query.sourceId;
+  const courseId=req.params.id;
+  const userId=req.query.userId;
+
+  try{
+    const courseData=await course.findById(courseId);
+    const userData = await user.findById(userId);
+    if (!userData) {
+      res.status(404).send({
+        message: `User was not found!`,
+      });
+    }
+    else{
+      let courseIndex = -1;
+      let courseFound = false;
+      for (let i = 0; i < userData.courseDetails.length; i++) {
+        if (userData.courseDetails[i].course == courseId) {
+          courseIndex = i;
+          courseFound = true;
+          break;
+        }
+      }
+
+      if (!courseFound) {
+        res.status(400).send({
+          message: `User not registered in course`,
+        });
+      } else {
+        let sourceIndex = -1;
+        let sourceFound = false;
+        for (
+          let j = 0;
+          j < userData.courseDetails[courseIndex].viewedSources.length;
+          j++
+        ) {
+          if (
+            userData.courseDetails[courseIndex].viewedSources[j].sourceId ==
+            sourceId
+          ) {
+            sourceIndex = j;
+            sourceFound = true;
+            break;
+          }
+        }
+        if (!sourceFound) {
+          res.status(400).send({
+            message: `User not opened source`,
+          });
+        } else {
+          let sourceIndex = -1;
+          let subtitleIndex = -1;
+          for(let i=0;i<courseData.subtitles.length;i++){
+            for(let j=0;j<courseData.subtitles[i].sources.length;j++){
+              if(courseData.subtitles[i].sources[j]._id==sourceId){
+                sourceIndex=i;
+                subtitleIndex=j;
+                break;
+              }
+            }
+          }
+          res.status(200).send({
+            notes: userData.courseDetails[courseIndex].viewedSources[sourceIndex].notes,
+            sourceIndex:sourceIndex,
+            subtitleIndex:subtitleIndex
+          });
+        }
+      }
+    }
+  }
+  catch(err){
+    res.status(500).send({
+      message: "Error in getting notes",
+    });
+  }
+};
+
+
+
 exports.solveExam=async (req, res) => {
   const myUser=await user.findOne({_id:req.body.userid});
   const courseId = req.body.courseid;
@@ -615,6 +609,40 @@ catch (err) {
     message: "Error in Solving Exam"
   });
 };
+};
+
+exports.registerToCourse=async (req, res) => {
+  const invoiceId = req.body.invoiceId;
+  const foundInvoice=await invoice.findOne({_id:invoiceId}).catch((err) => {
+   return res.status(500).send({
+      message: "Error in getting invoice",
+      });
+  });
+  if(!foundInvoice){
+    return res.status(404).send({
+      message: "Invoice not found",
+    });
+  }
+  const courseId =foundInvoice.course;
+  const userId= foundInvoice.user;
+  const courseData = await course.findById(courseId);
+  
+  const userData = await user.findById(userId);
+  let sourceNumber = 0;
+  for (let i = 0; i < courseData.subtitles.length; i++) {
+    sourceNumber += courseData.subtitles[i].sources.length;
+  }
+
+  userData.courseDetails.push({
+    course: courseData._id,
+    totalSources: sourceNumber,
+    percentageCompleted: 0,
+  });
+  await userData.save();
+  await course.findByIdAndUpdate(courseId, { $inc: { views: 1 } });
+  res.status(200).send({
+    message: "User registered successfully",
+  });
 };
 
 exports.setDiscount= async (req, res) => {

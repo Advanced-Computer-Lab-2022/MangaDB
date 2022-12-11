@@ -1,6 +1,7 @@
 const course = require("../models/course");
 const user = require("../models/user");
 const request = require("../models/request");
+const invoice=require("../models/invoice");
 
 
 exports.requestRefund = async (req, res) => {
@@ -182,14 +183,15 @@ exports.requestRefund = async (req, res) => {
                     message: "Course not found!",
                 });
             }
-            const refundAmount = foundUser.courseDetails[courseIndex].amountPaid;
-            foundUser.courseDetails.splice(courseIndex,1);
-            foundUser.wallet+=refundAmount;
-            const foundCourse = await course.findById(foundRequest.course);
-            await user.findByIdAndUpdate(foundCourse.instructor,{wallet:foundCourse.instructor.wallet-(refundAmount*0.8)})
-            .catch((err)=>{
+
+            const refundAmount = await invoice.findOne({course:foundRequest.course,user:foundRequest.user}).then((invoice)=>{
+                return invoice.totalAmount;
+            }).catch((err)=>{
                 console.log(err);
             });
+
+            foundUser.courseDetails.splice(courseIndex,1);
+            foundUser.wallet+=refundAmount;
             
             await foundUser.save();
             foundRequest.status="accepted";

@@ -44,7 +44,16 @@ const userSchema = new mongoose.Schema({
             type: String,
           },
           notes: {
-            type: String,
+            type: [
+              {
+                note: {
+                  type: String,
+                },
+                timestamp: {
+                  type: String,
+                },
+              }
+            ]
           }}
     ]},
         totalSources: {
@@ -53,9 +62,7 @@ const userSchema = new mongoose.Schema({
         percentageCompleted: {
           type: Number,
         },
-        amountPaid: {
-          type: Number,
-        },
+      
         exams: {type:[
           {
             examId: {

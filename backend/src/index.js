@@ -19,6 +19,8 @@ app.use('/course', require('./routes/course'));
 app.use('/admin', require('./routes/admin'));
 app.use('/user', require('./routes/user'));
 app.use('/request', require('./routes/request'));
+app.use('/problem', require('./routes/problem'));
+app.use('/invoice', require('./routes/invoice'));
 const rule = new schedule.RecurrenceRule();
 rule.second = 0;
 const job = schedule.scheduleJob(rule, courseController.updateDiscountedPrice);

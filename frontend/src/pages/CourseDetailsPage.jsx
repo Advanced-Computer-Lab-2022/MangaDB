@@ -40,9 +40,9 @@ const CourseDetailsPage = () => {
 
     axios.get("http://localhost:3000/course/".concat(courseId)).then((res) => {
       setCourseDetails(res.data.course);
+      console.log(res.data.course);
       setLoaded(true);
     });
-
     const userId = "638a07cdbc3508481a2d7da9";
     axios
       .patch(`http://localhost:3000/user/enroll/${userId}`, {
@@ -78,6 +78,7 @@ const CourseDetailsPage = () => {
         />
       </div>
       <AddToCartCard
+        courseOverview={courseDetails.courseOverview}
         id={courseDetails._id}
         userRegister={userRegistered}
         courseImage={courseDetails.courseImage}

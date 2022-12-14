@@ -29,6 +29,10 @@ const problemSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    followUpComment: {
+        type: String,
+    }
+    ,
     description:{
         type: String,
 

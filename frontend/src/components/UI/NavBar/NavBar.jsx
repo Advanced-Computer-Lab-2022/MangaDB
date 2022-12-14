@@ -4,8 +4,20 @@ import CountryManager from "./CountryManager";
 import PrimaryButton from "../PrimaryButton";
 import SecondaryButton from "../SecondaryButton";
 import { Divider } from "@mui/material";
+import avatar from "../../../Assets/Images/blueAvatar.png";
+import HomeNavBar from "./HomeNavBar";
+import MyCoursesNavBar from "./MyCoursesNavBar";
+import FAQsNavBar from "./FAQsNavBar";
+import CartNavBar from "./CartNavBar";
+import ProfileNavBar from "./ProfileNavBar";
+import RequestCourseNavBar from "./RequestCourseNavBar";
+import SignInNavBar from "./SignInNavBar";
+import DashboardNavBar from "./DashboardNavBar";
+import AddCourseNavBar from "./AddCourseNavBar";
+import AddUserNavBar from "./AddUserNavBar";
+import RequestedCoursesNavBar from "./RequestedCoursesNavBar";
 
-let navButtons = ["Home", "My Courses", "FAQs", "Cart", "Profile"];
+var navButtons = [{name: "Home", active: true},{name: "My Courses", active: false},{name: "FAQs", active: false},{name: "Cart", active: false},{name: "Profile", active: false}]
 
 const NavBar = (props) => {
   const [open, setOpen] = useState(false);
@@ -66,50 +78,34 @@ const NavBar = (props) => {
           </PrimaryButton>
         </div>
         <ul
-          className={`md:flex pb-4 md:pb-0 md:items-center pt-4 space-y-8 md:space-y-0 md:space-x-12 my-4 md:my-0 absolute bg-white md:static md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-300 ease-in-out md:shadow-none shadow-md ${
+          className={`md:flex pb-4 md:pb-0 md:items-center pt-4 md:pt-0 space-y-8 md:space-y-0 md:space-x-12 my-4 md:my-0 absolute bg-white md:static md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-300 ease-in-out md:shadow-none shadow-md ${
             open ? "top-14" : "top-[-490px]"
           }`}
         >
+          {/* Profile will not appear active */}
           {navButtons.map((navButton) => {
-            if (navButton !== "Cart" && navButton !== "Sign In" && navButton !== "Profile") {
-              return (
-                <li>
-                  <PrimaryButton text={navButton} />
-                </li>
-              );
-            } else if (navButton === "Cart") {
-              return (
-                <li>
-                  <PrimaryButton>
-                    <span className="md:hidden">{navButton}</span>
-                    <span className="hidden md:block">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="22"
-                        height="22"
-                        fill="currentColor"
-                        class="bi bi-cart"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-                      </svg>
-                    </span>
-                  </PrimaryButton>
-                </li>
-              );
-            } else if (navButton === "Sign In") {
-              return (
-                <li>
-                  <SecondaryButton text={navButton} />
-                </li>
-              );
-            } else if (navButton === "Profile") {
-              return (
-                <li>
-                  <PrimaryButton>
-                  </PrimaryButton>
-                </li>
-              );
+            if (navButton.name === "Home") {
+              return <HomeNavBar active={navButton.active} />;
+            } else if (navButton.name === "My Courses") {
+              return <MyCoursesNavBar active={navButton.active} />;
+            } else if (navButton.name === "FAQs") {
+              return <FAQsNavBar active={navButton.active} />;
+            } else if (navButton.name === "Cart") {
+              return <CartNavBar active={navButton.active} />;
+            } else if (navButton.name === "Profile") {
+              return <ProfileNavBar active={navButton.active} />;
+            } else if (navButton.name === "Request Course") {
+              return <RequestCourseNavBar active={navButton.active} />;
+            } else if (navButton.name === "Sign In") {
+              return <SignInNavBar active={navButton.active} />;
+            } else if (navButton.name === "Dashboard") {
+              return <DashboardNavBar active={navButton.active} />;
+            } else if (navButton.name === "Add Course") {
+              return <AddCourseNavBar active={navButton.active} />;
+            } else if (navButton.name === "Add User") {
+              return <AddUserNavBar active={navButton.active} />;
+            } else if (navButton.name === "Requested Courses") {
+              return <RequestedCoursesNavBar active={navButton.active} />;
             }
           })}
           <li className="cursor-pointer">

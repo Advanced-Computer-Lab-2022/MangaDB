@@ -16,7 +16,7 @@ router.post('/register', userController.createUser);
 
 router.post('/logout',userController.logout);
 
-router.patch('/enroll/:id',userController.registerCourse);
+router.post('/enroll',userController.registerToCourse);
 
 router.patch('/opensource/:id',userController.openSource);
 
@@ -24,8 +24,15 @@ router.get('/progress/:id',userController.getProgress);
 
 router.patch('/notes/:id',userController.addNotes);
 
-router.get('/courses/:id',userController.getRegisteredCourses);
+router.get('/sourcenotes/:id',userController.getSourceNotes);
 
+router.get('/subtitlenotes/:id',userController.getSubtitleNotes);
+
+router.get('/coursenotes/:id',userController.getCourseNotes);
+
+router.post('/solveexam',userController.solveExam);
+
+router.get('/mycourses/:id',userController.getRegisteredCourses);
 
 
 module.exports=router;

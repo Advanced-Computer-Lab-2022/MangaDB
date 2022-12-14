@@ -3,10 +3,9 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mailer=require('../helper/mailer');
 const course=require('../models/course');
-const currencyConverter = require("../helper/currencyconverter"); 
-const payment=require('../helper/payment');
+const exam=require('../models/exam');
 const blackList=require('../models/token');
-
+const invoice=require('../models/invoice');
 
 exports.createUser = async (req, res) => {
   if (!req.body.userName || !req.body.password || !req.body.role) {
@@ -138,7 +137,7 @@ exports.login = async (req, res) => {
             httpOnly: true,
           });
           res.status(200).send({ message: "login successfully", token: token ,
-        id: data._id });
+        role: data.role });
         }
       }
     });
@@ -284,90 +283,6 @@ exports.resetPassword = async (req, res) => {
       }
     };
 
-//payment gateway
-
-exports.registerCourse = async (req, res) => {
-  const id = req.params.id;
-  const { courseId } = req.body;
-  const countryCode = req.query.CC || "US";
-  let countryDetails = await currencyConverter.convertCurrency(
-    "US",
-    countryCode
-  );
-
-  let exchangeRate = countryDetails.rate;
-  let currency = countryDetails.toCountryCurrency;
-  try {
-    const userData = await user.findById(id);
-    if (!userData) {
-      res.status(404).send({
-        message: `Cannot update user with id=${id}. Maybe user was not found!`,
-      });
-    } else {
-      const courseData = await course.findById(courseId);
-
-      if (!courseData) {
-        res.status(404).send({
-          message: `Course was not found!`,
-        });
-      } else {
-        for (var i = 0; i < userData.courseDetails.length; i++) {
-          if (userData.courseDetails[i].course == courseId) {
-            res.status(400).send({
-              message: `You have already registered for this course!`,
-            });
-            return;
-          }
-        }
-
-        let sourceNumber = 0;
-        for (let i = 0; i < courseData.subtitles.length; i++) {
-          sourceNumber += courseData.subtitles[i].sources.length;
-        }
-
-        let price = courseData.discountedPrice * exchangeRate;
-        price = price.toFixed(2);
-        userData.courseDetails.push({
-          course: courseData._id,
-          totalSources: sourceNumber,
-          percentageCompleted: 0,
-          amountPaid: price,
-        });
-        await userData.save();
-        await user.findByIdAndUpdate(
-          courseData.instructor,
-          { $inc: { wallet: price * 0.8 } }, //change depending on country selected by user /instructor
-          { useFindAndModify: false, new: true }
-        );
-        await course.findByIdAndUpdate(courseId, { $inc: { views: 1 } });
-
-        const info = {
-          currency: currency,
-          name: courseData.courseTitle,
-          price: courseData.discountedPrice * exchangeRate,
-        };
-        await payment.createPaymentIntent(info).then((data) => {
-          if (!data) {
-            res.status(500).send({
-              message: "Error in payment",
-            });
-            return;
-          }
-
-          res.send({
-            message: "user registered for course successfully.",
-            data,
-          });
-        });
-      }
-    }
-  } catch (err) {
-    res.status(500).send({
-      message: "Error in registering course",
-    });
-  }
-};
-
 //get courses this user is registered in
 exports.getRegisteredCourses = async (req, res) => {
   const id = req.params.id;
@@ -382,7 +297,7 @@ exports.getRegisteredCourses = async (req, res) => {
     }
   } catch (err) {
     res.status(500).send({
-      message: "Error in getting registered courses",
+      message: "Error in getting registered courses"
     });
   }
 };
@@ -427,8 +342,30 @@ exports.openSource = async (req, res) => {
             return;
           }
         }
+        const courseData = await course.findById(courseId);
+
+        let sourceDescription="";
+        let sourceIndex=-1;
+        let subtitleDescription="";
+        let subtitleIndex=-1;
+        for(let i=0;i<courseData.subtitles.length;i++){
+          for(let j=0;j<courseData.subtitles[i].sources.length;j++){
+            if(courseData.subtitles[i].sources[j]._id==sourceId){
+              sourceDescription=courseData.subtitles[i].sources[j].description;
+              sourceIndex=j;
+              subtitleDescription=courseData.subtitles[i].description;
+              subtitleIndex=i;
+              break;
+            }
+          }
+        }
+
         userData.courseDetails[courseIndex].viewedSources.push({
           sourceId: sourceId,
+          sourceDescription: sourceDescription,
+          subtitleDescription: subtitleDescription,
+          subtitleIndex: subtitleIndex,
+          sourceIndex: sourceIndex,
         });
         let percentage =
           userData.courseDetails[courseIndex].viewedSources.length /
@@ -437,7 +374,6 @@ exports.openSource = async (req, res) => {
         userData.courseDetails[courseIndex].percentageCompleted = percentage;
         await userData.save();
         res.status(200).send({ message: "source opened successfully" });
-        console.log(`source ${sourceId} opened successfully`);
       }
     }
   } catch (err) {
@@ -446,10 +382,10 @@ exports.openSource = async (req, res) => {
     });
   }
 };
-
+//probably useless
 exports.getProgress = async (req, res) => {
-  const id = req.params.id;
-  const { courseId } = req.body;
+  const courseId = req.params.id;
+  const { id } = req.body;
   try {
     const userData = await user.findById(id);
     if (!userData) {
@@ -539,9 +475,286 @@ exports.addNotes = async (req, res) => {
         }
       }
     }
-  } catch (err) {
+  }  catch (err) {
     res.status(500).send({
       message: "Error in adding notes",
     });
+  
+ 
+
+
+ 
+};
+};
+
+exports.getCourseNotes = async (req, res) => {
+  const id = req.params.id;
+  const { courseId } = req.body;
+  try {
+    const userData = await user.findById(id);
+    if (!userData) {
+      res.status(404).send({
+        message: `User was not found!`,
+      });
+    } else {
+      let courseIndex = -1;
+      let courseFound = false;
+      for (let i = 0; i < userData.courseDetails.length; i++) {
+        if (userData.courseDetails[i].course == courseId) {
+          courseIndex = i;
+          courseFound = true;
+          break;
+        }
+      }
+
+      if (!courseFound) {
+        res.status(400).send({
+          message: `User not registered in course`,
+        });
+      } else {
+        res.status(200).send({
+          noteData: userData.courseDetails[courseIndex].viewedSources,
+        });
+          
+      }
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: "Error in getting notes",
+    });
   }
 };
+
+exports.getSubtitleNotes = async (req, res) => {
+  const id = req.params.id;
+  const { courseId, subtitleId } = req.body;
+  try {
+    const userData = await user.findById(id);
+    if (!userData) {
+      res.status(404).send({
+        message: `User was not found!`,
+      });
+    } else {
+      let courseIndex = -1;
+      let courseFound = false;
+      for (let i = 0; i < userData.courseDetails.length; i++) {
+        if (userData.courseDetails[i].course == courseId) {
+          courseIndex = i;
+          courseFound = true;
+          break;
+        }
+      }
+
+      if (!courseFound) {
+        res.status(400).send({
+          message: `User not registered in course`,
+        });
+      } else {
+        const courseData=await course.findById(courseId);
+        let subtitleIndex=-1;
+        for(let i =0;i<courseData.subtitles.length;i++){
+          if(courseData.subtitles[i]._id==subtitleId){
+            subtitleIndex=i;
+            break;
+          }
+        }
+        if(subtitleIndex==-1){
+          res.status(400).send({
+            message: `Subtitle not found`,
+          });
+        }
+        else{
+          const subtitleNotes=[];
+          for(let i=0;i<userData.courseDetails[courseIndex].viewedSources.length;i++){
+            if(userData.courseDetails[courseIndex].viewedSources[i].subtitleIndex==subtitleIndex){
+              subtitleNotes.push(userData.courseDetails[courseIndex].viewedSources[i]);
+            }
+          }
+          res.status(200).send({
+            noteData: subtitleNotes,
+          });
+        }
+      }
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: "Error in getting notes",
+    });
+  }
+};
+
+exports.getSourceNotes=async (req, res) => {
+  const id = req.params.id;
+  const { courseId, sourceId } = req.body;
+  try {
+    const userData = await user.findById(id);
+    if (!userData) {
+      res.status(404).send({
+        message: `User was not found!`,
+      });
+    } else {
+      let courseIndex = -1;
+      let courseFound = false;
+      for (let i = 0; i < userData.courseDetails.length; i++) {
+        if (userData.courseDetails[i].course == courseId) {
+          courseIndex = i;
+          courseFound = true;
+          break;
+        }
+      }
+
+      if (!courseFound) {
+        res.status(400).send({
+          message: `User not registered in course`,
+        });
+      } else {
+        for(let i=0;i<userData.courseDetails[courseIndex].viewedSources.length;i++){
+          if(userData.courseDetails[courseIndex].viewedSources[i].sourceId==sourceId){
+            res.status(200).send({
+              noteData: userData.courseDetails[courseIndex].viewedSources[i],
+            });
+            return;
+          }
+        }
+        res.status(400).send({
+          message: `Source not found`,
+        });
+      }
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: "Error in getting notes",
+    });
+  }
+};
+
+
+
+
+
+
+exports.solveExam=async (req, res) => {
+  const myUser=await user.findOne({_id:req.body.userid});
+  const courseId = req.body.courseid;
+  try {
+  if(!myUser){
+    res.status(404).json({message:"User Not Found"});
+    return;
+  }
+  console.log(myUser.userName);
+  let courseIndex=-1;
+  let courseFound=false;
+  for(let i=0;i<myUser.courseDetails.length;i++){
+    if(myUser.courseDetails[i].course[0]==courseId){
+      courseIndex=i;
+      courseFound=true;
+      break;
+    }}
+    if(!courseFound){
+      res.status(400).send({
+        message: `User not registered in course`,
+      });
+      return;
+    }
+    const myExam=await exam.findOne({_id:req.body.examid});
+    if(!myExam){
+      res.status(404).send({
+        message: `Exam Not Found`
+      });
+      return;
+
+    }
+    let studentAnswers=[];
+    let studentGrade=myExam.totalGrade;
+    let reqStudentAnswers=req.body.studentAnswers;
+    for(let i=0;i<myExam.exercises.length;i++){
+      let correctSolution=myExam.exercises[i].solution;
+      let questionNum=i+1;
+      let studentAnswer="";
+      for(let j=0;j<reqStudentAnswers.length;j++){
+        if(questionNum==reqStudentAnswers[j].questionNumber){
+          studentAnswer=studentAnswer+reqStudentAnswers[j].choice.choiceId;
+          reqStudentAnswers.splice(j,1);
+
+        }
+      }
+      if(studentAnswer!=correctSolution){
+        studentGrade--;
+      }
+      studentAnswers.push(studentAnswer);
+    }
+    myUser.courseDetails[courseIndex].exams.push({examId:req.body.examid,score:studentGrade,answers:studentAnswers});
+    await myUser.save();
+    res.status(200).json({score:studentGrade});
+
+
+
+
+  }
+
+catch (err) {
+  res.status(500).send({
+    message: "Error in Solving Exam"
+  });
+};
+};
+
+exports.registerToCourse=async (req, res) => {
+  const invoiceId = req.body.invoiceId;
+  const foundInvoice=await invoice.findOne({_id:invoiceId}).catch((err) => {
+   return res.status(500).send({
+      message: "Error in getting invoice",
+      });
+  });
+  if(!foundInvoice){
+    return res.status(404).send({
+      message: "Invoice not found",
+    });
+  }
+  const courseId =foundInvoice.course;
+  const userId= foundInvoice.user;
+  const courseData = await course.findById(courseId);
+  
+  const userData = await user.findById(userId);
+  let sourceNumber = 0;
+  for (let i = 0; i < courseData.subtitles.length; i++) {
+    sourceNumber += courseData.subtitles[i].sources.length;
+  }
+
+  userData.courseDetails.push({
+    course: courseData._id,
+    totalSources: sourceNumber,
+    percentageCompleted: 0,
+  });
+  await userData.save();
+  await course.findByIdAndUpdate(courseId, { $inc: { views: 1 } });
+  res.status(200).send({
+    message: "User registered successfully",
+  });
+};
+
+exports.setDiscount= async (req, res) => {
+  let courses=req.body.courses;
+  let allCourses=req.body.allCourses;
+  let count=0;
+  if(!allCourses){
+    count=await course.find( {$and: [{ _id: { $in:courses } },{discount:{$ne:0}}]}).count();
+    courses=await course.find({ _id: { $in:courses }});
+  }
+  else{
+    count=await course.find({discount:{$ne:0}}).count();
+    courses=await course.find();
+  }
+  if(count!=0){
+    res.status(400).json({message:"cannot set more than discount for same course"});
+    return;
+  }
+  for(let i=0;i<courses.length;i++){
+    let currentCourse=courses[i];
+   currentCourse.discount=req.body.discount;
+   currentCourse.discountStartDate=req.body.discountStartDate;
+   currentCourse.discountEndDate=req.body.discountEndDate;
+   await currentCourse.save();
+  }
+  res.status(200).json({message:"All Discounts Set Successfully"});
+  };

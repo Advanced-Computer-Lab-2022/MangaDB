@@ -23,7 +23,7 @@ const CountryManager = (props) => {
     setIsClicked(false);
   };
   return (
-    <div className="mt-[11px]">
+    <div>
       <img
       className="object-cover w-9 max-h-5"
         loading="lazy"

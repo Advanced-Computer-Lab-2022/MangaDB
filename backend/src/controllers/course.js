@@ -2,6 +2,7 @@ const course = require("../models/course");
 const user = require("../models/user");
 const currencyConverter = require("../helper/currencyconverter");
 const examController=require('./exam');
+const exam = require("../models/exam");
 
 
 exports.getAllCourses = async (req, res, next) => {
@@ -80,11 +81,39 @@ exports.getAllCourses = async (req, res, next) => {
 };
 
 exports.getCourse = async (req, res, next) => {
-  let foundCourse = await course.findById(req.params.id).catch((error) => {
+  const courseId = req.params.id;
+  const userId = req.body.userId;
+  let foundCourse = await course.findById(courseId).catch((error) => {
     res.status(500).json({
       message: "Fetching course failed!",
     });
+  })
+  if(!foundCourse)
+  return res.status(404).json({
+    message: "Course not found!",
+    });
+
+  foundCourse=await foundCourse.populate("subtitles.sources.quiz");
+  const foundUser = await user.findById(userId).catch((error) => {
+    res.status(500).json({
+      message: "Fetching user failed!",
+    });
   });
+  let found=false;
+  let userCourseData=null;
+  for(let i=0;i<foundUser.courseDetails.length;i++){
+    if(foundUser.courseDetails[i].course==courseId){
+      userCourseData=foundUser.courseDetails[i];
+      found=true;
+      break;
+    }
+  }
+  if(!found){
+    res.status(400).json({
+      message: "You do ot have access to this course",
+      });
+  }
+
   const countryCode = req.query.CC || "US";
   let countryDetails = await currencyConverter.convertCurrency(
     "US",
@@ -102,6 +131,7 @@ exports.getCourse = async (req, res, next) => {
     res.status(200).json({
       message: "Course fetched successfully!",
       course: foundCourse,
+     userData: userCourseData ,
       symbol: symbol,
     });
   } else {
@@ -110,7 +140,9 @@ exports.getCourse = async (req, res, next) => {
     });
   }
 };
+
 //check if course is in instructor's course list
+
 exports.updateCourse = async (req, res, next) => {
   await course
     .findByIdAndUpdate(req.params.id, req.body)
@@ -197,13 +229,10 @@ exports.createCourse = async (req, res, next) => {
     subject: req.body.subject,
     instructor: instructorId,
     instructorName: instructorName,
-    discount: req.body.discount,
-    rating: req.body.rating,
-    reviews: req.body.reviews,
+    discount: discount,
+    discountedPrice: req.body.coursePrice-(req.body.coursePrice*discount),
     requirements: req.body.requirements,                                                                                   
-    views: req.body.views,
     summary: req.body.summary,
-    certificate: req.body.certificate,
   });
   let subDuration=0;
   let courseDuration=0;
@@ -577,6 +606,19 @@ exports.openCourse = async (req, res, next) => {
   });
 };
 
+exports.getCourseRating = async (req, res, next) => {
+  const courseId = req.params.id;
+  const foundCourse = await course.findById(courseId).catch((error) => {
+    res.status(500).json({
+      message: "Fetching course failed!",
+    });
+  });
+  res.status(200).json({
+    message: "Rating fetched successfully!",
+    review: foundCourse.reviews,
+  });
+};
+
 exports.getRating = async (req, res, next) => {
   const courseId = req.params.id;
   const userId = req.body.userId;
@@ -601,4 +643,66 @@ exports.getRating = async (req, res, next) => {
       rating: null,
     });
   }
+};
+
+exports.addSource = async (req, res, next) => {
+
+  const courseId = req.params.id;
+  const userId = req.body.userId;
+  const source = req.body.source;
+  const subtitleId=req.body.subtitleId;
+  const foundCourse = await course.findById(courseId).catch((error) => {
+    res.status(500).json({
+      message: "Fetching course failed!",
+    });
+  });
+  if(source.sourceType==='Quiz'){
+    const myExam=source.exam;
+    const examId=await examController.createExam(myExam);
+    source.quiz=examId;
+  }
+
+  for(let i=0;i<foundCourse.subtitles.length;i++){
+    if(foundCourse.subtitles[i]._id==subtitleId){
+      foundCourse.subtitles[i].sources.push(source);
+      foundCourse.subtitles[i].subtitleDuration+=source.duration;
+      foundCourse.totalMins+=source.duration;
+      break;
+    }
+
+  }
+  foundCourse.save().catch((error) => {
+    res.status(500).json({
+      message: "Adding source failed!",
+    });
+  }
+  );
+  res.status(200).json({
+    message: "Source added successfully!",
+  });
+};
+
+
+
+  
+ 
+exports.updateDiscountedPrice= async()=>{
+  const courses=await course.find();
+  const currentDate=new Date(Date.now());
+  for(let i=0;i<courses.length;i++){
+   let course=courses[i];
+   let startDate=course.discountStartDate;
+   let endDate=courses[i].discountEndDate;
+   if(startDate&&startDate<=currentDate&&endDate>currentDate){
+    course.discountedPrice=course.coursePrice-(course.coursePrice*course.discount);
+    await  course.save();
+   }
+   if(endDate&&endDate<=currentDate){
+    course.discount=0;
+    course.discountedPrice= course.coursePrice;
+    await  course.save();
+   }
+  
+  }
+
 };

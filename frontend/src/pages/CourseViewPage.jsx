@@ -10,98 +10,6 @@ import { useLocation } from "react-router-dom";
 
 //stub for the studentAnswers
 const studentAnswers = ["4", "3", "2", "1"];
-
-//stub for the Exam/Quiz
-const exam = [
-  {
-    question: "How do you write react components",
-    solution: "1",
-    choices: [
-      {
-        choiceId: "1",
-        description: "This is the First choice for this question",
-      },
-      {
-        choiceId: "2",
-        description: "This is the Second choice for this question",
-      },
-      {
-        choiceId: "3",
-        description: "This is the Third choice for this question",
-      },
-      {
-        choiceId: "4",
-        description: "This is the Fourth choice for this question",
-      },
-    ],
-  },
-  {
-    question: "this is the second question ",
-    solution: "2",
-    choices: [
-      {
-        choiceId: "1",
-        description: "This is the First choice for this question",
-      },
-      {
-        choiceId: "2",
-        description: "This is the Second choice for this question",
-      },
-      {
-        choiceId: "3",
-        description: "This is the Third choice for this question",
-      },
-      {
-        choiceId: "4",
-        description: "This is the Fourth choice for this question",
-      },
-    ],
-  },
-  {
-    question: "How do you write react components 2",
-    solution: "3",
-    choices: [
-      {
-        choiceId: "1",
-        description: "This is the First choice for this question",
-      },
-      {
-        choiceId: "2",
-        description: "This is the Second choice for this question",
-      },
-      {
-        choiceId: "3",
-        description: "This is the Third choice for this question",
-      },
-      {
-        choiceId: "4",
-        description: "This is the Fourth choice for this question",
-      },
-    ],
-  },
-  {
-    question: "this is the second question 3 ",
-    solution: "4",
-    choices: [
-      {
-        choiceId: "1",
-        description: "This is the First choice for this question",
-      },
-      {
-        choiceId: "2",
-        description: "This is the Second choice for this question",
-      },
-      {
-        choiceId: "3",
-        description: "This is the Third choice for this question",
-      },
-      {
-        choiceId: "4",
-        description: "This is the Fourth choice for this question",
-      },
-    ],
-  },
-];
 //stub for the notes
 const notes = [
   {
@@ -123,6 +31,7 @@ const notes = [
     timestamp: "12:52",
   },
 ];
+
 const CourseViewPage = () => {
   //will give the backend the id of the clicked course , then will fetch all the details about that course
   //to fill the subtitle accordion and create an onClick function to change the link of the video playing.
@@ -133,9 +42,6 @@ const CourseViewPage = () => {
   const location = useLocation();
   const [receivedData, setReceivedData] = useState({});
   const [currentSource, setCurrentSource] = useState("");
-  const [receivedExam, setReceivedExam] = useState(exam);
-  const [receivedStudentSolution, setReceivedStudentSolution] = useState([]);
-  const [receivedGrade, setReceivedGrade] = useState(7);
 
   //useEffect at the start to receive the data
   useEffect(() => {
@@ -151,7 +57,6 @@ const CourseViewPage = () => {
     setCurrentSource(source);
   };
 
-  console.log(receivedData);
   const onSolveExamHandler = (receivedSolution) => {
     //should mark this as visited in the back and store the data
     //send the sourceId , examId ,userid and courseId
@@ -184,19 +89,6 @@ const CourseViewPage = () => {
       .then((res) => {});
   };
 
-  //useEffect to handle the quiz trigger
-  useEffect(() => {
-    //give the exam id using source.quiz , courseId,userId
-    var endPoint = "asdasdasdsadasdsadasdasdasd";
-    if (currentSource.sourceType === "Quiz") {
-      axios.get(endPoint).then((res) => {
-        setReceivedExam(res.data.exam);
-        setReceivedStudentSolution(res.data.studentSolution);
-        setReceivedGrade(res.data.grade);
-      });
-    }
-  }, [currentSource]);
-
   if (currentSource !== "") {
     var subtitle;
     for (var i = 0; i < receivedData.subtitles.length; i++) {
@@ -210,28 +102,29 @@ const CourseViewPage = () => {
 
   //we will have an array of viewed sources
   var displayedSource;
-  if (currentSource.sourceType === "Video") {
-    displayedSource = (
-      <NotesManager
-        source={currentSource.description}
-        subtitle={subtitle}
-        notes={notes}
-        isVisible={true}
-        link={currentSource.link}
-        onWatch={onWatchHandler}
-      ></NotesManager>
-    );
-  } else {
-    displayedSource = (
-      <ExamManager
-        exam={receivedExam}
-        studentAnswers={receivedStudentSolution}
-        grade={receivedGrade}
-        onSolveExamHandler={onSolveExamHandler}
-      ></ExamManager>
-    );
+  if (currentSource !== "") {
+    if (currentSource.sourceType === "Video") {
+      displayedSource = (
+        <NotesManager
+          source={currentSource.description}
+          subtitle={subtitle}
+          notes={notes}
+          isVisible={true}
+          link={currentSource.link}
+          onWatch={onWatchHandler}
+        ></NotesManager>
+      );
+    } else {
+      displayedSource = (
+        <ExamManager
+          exam={currentSource.quiz.exercises}
+          studentAnswers={studentAnswers}
+          grade={7}
+          onSolveExamHandler={onSolveExamHandler}
+        ></ExamManager>
+      );
+    }
   }
-
   return (
     <Fragment>
       <NavBar></NavBar>

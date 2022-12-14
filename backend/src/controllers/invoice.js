@@ -68,6 +68,7 @@ exports.issueInvoice = async (req, res) => {
             if (!data) {
               res.status(500).send({
                 message: "Error in payment",
+                invoiceId: newInvoice._id,
               });
               return;
             }

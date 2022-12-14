@@ -9,7 +9,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 
 //stub for the studentAnswers
-const studentAnswers = ["4", "3", "2", "1"];
+const studentAnswers = ["4", "3"];
 //stub for the notes
 const notes = [
   {
@@ -47,12 +47,12 @@ const CourseViewPage = () => {
   useEffect(() => {
     const courseId = location.state;
     //shouldnt we send the userId ??
-    axios.get(`http://localhost:3000/course/${courseId}`).then((res) => {
+    axios.get(`http://localhost:3000/course/${courseId}/638a07cdbc3508481a2d7da9`).then((res) => {
       setReceivedData(res.data.course);
       setCurrentSource(res.data.course.subtitles[0].sources[0]);
     });
   }, [location.state]);
-
+  console.log(receivedData);
   const onSourceChangeHandler = (source) => {
     setCurrentSource(source);
   };
@@ -115,6 +115,7 @@ const CourseViewPage = () => {
         ></NotesManager>
       );
     } else {
+     console.log(currentSource)
       displayedSource = (
         <ExamManager
           exam={currentSource.quiz.exercises}

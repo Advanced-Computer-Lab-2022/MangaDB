@@ -34,7 +34,7 @@ const AddToCartCard = (props) => {
       </div>
       <Divider variant="middle" />
       <div className="py-4">
-        <Video isVisible={true} playing={false} link={"https://www.youtube.com/watch?v=GZvSYJDk-us"}></Video>
+        <Video isVisible={true} playing={false} link={props.courseOverview}></Video>
       </div>
     </Fragment>
   );

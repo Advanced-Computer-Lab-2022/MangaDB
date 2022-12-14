@@ -51,6 +51,8 @@ const CourseViewPage = () => {
       console.log(res)
       setUserReceivedData(res.data.userData)
       setCurrentSource(res.data.course.subtitles[0].sources[0]);
+      console.log("moataz trash");
+      console.log(res);
     });
   }, [location.state]);
   const onSourceChangeHandler = (source) => {

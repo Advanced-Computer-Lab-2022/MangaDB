@@ -68,7 +68,6 @@ const CourseViewPage = () => {
       courseid: receivedData._id,
       examid: currentSource.quiz._id,
     };
-    console.log(sentData)
     axios
       .post(endPoint, sentData, {
         headers: {

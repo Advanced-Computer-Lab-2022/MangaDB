@@ -11,9 +11,7 @@ import InstructorCoursesPage from "./pages/InstructorCoursesPage";
 import AddCoursePage from "./pages/AddCoursePage";
 import SignUp from "./pages/SignUp";
 import ResetPassword from "./pages/ResetPassword";
-import { Fragment } from "react";
-import NavBar from "./components/UI/NavBar/NavBar";
-import NavBarSearch from "./components/UI/NavBar/NavBarSearch";
+
 function App() {
   return (
    // navbar should be here

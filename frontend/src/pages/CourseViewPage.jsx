@@ -50,6 +50,8 @@ const CourseViewPage = () => {
     axios.get(`http://localhost:3000/course/${courseId}/638a07cdbc3508481a2d7da9`).then((res) => {
       setReceivedData(res.data.course);
       setCurrentSource(res.data.course.subtitles[0].sources[0]);
+      console.log("moataz trash");
+      console.log(res);
     });
   }, [location.state]);
   console.log(receivedData);

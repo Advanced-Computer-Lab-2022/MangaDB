@@ -368,7 +368,7 @@ exports.openSource = async (req, res) => {
           sourceIndex: sourceIndex,
         });
         let percentage =
-          userData.courseDetails[courseIndex].viewedSources.length /
+          (userData.courseDetails[courseIndex].viewedSources.length+  userData.courseDetails[courseIndex].exams.length)/
           userData.courseDetails[courseIndex].totalSources;
         percentage = percentage.toFixed(2);
         userData.courseDetails[courseIndex].percentageCompleted = percentage;

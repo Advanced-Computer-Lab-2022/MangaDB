@@ -114,6 +114,7 @@ const NavBar = (props) => {
         </ul>
       </div>
     </div>
+    //navBar done without navigation
   );
 };
 

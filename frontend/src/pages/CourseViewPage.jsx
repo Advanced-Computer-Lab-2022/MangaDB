@@ -1,5 +1,4 @@
 import { useState, useEffect, Fragment } from "react";
-import Video from "../components/Video/Video";
 import ProgressManager from "../components/Progress/ProgressManager";
 import CourseContent from "../components/CourseDetailsComp/CourseContent";
 import NavBar from "../components/UI/NavBar/NavBar";
@@ -8,8 +7,6 @@ import NotesManager from "../components/Notes/NotesManager";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 
-//stub for the studentAnswers
-const studentAnswers = ["4", "3"];
 //stub for the notes
 const notes = [
   {
@@ -42,6 +39,7 @@ const CourseViewPage = () => {
   const location = useLocation();
   const [receivedData, setReceivedData] = useState({});
   const [currentSource, setCurrentSource] = useState("");
+  const [receivedUserData,setUserReceivedData] = useState({});
 
   //useEffect at the start to receive the data
   useEffect(() => {
@@ -49,10 +47,12 @@ const CourseViewPage = () => {
     //shouldnt we send the userId ??
     axios.get(`http://localhost:3000/course/${courseId}/638a07cdbc3508481a2d7da9`).then((res) => {
       setReceivedData(res.data.course);
+      console.log("here")
+      console.log(res)
+      setUserReceivedData(res.data.userData)
       setCurrentSource(res.data.course.subtitles[0].sources[0]);
     });
   }, [location.state]);
-  console.log(receivedData);
   const onSourceChangeHandler = (source) => {
     setCurrentSource(source);
   };
@@ -115,12 +115,20 @@ const CourseViewPage = () => {
         ></NotesManager>
       );
     } else {
-     console.log(currentSource)
+      var studentAnswers ;
+      var grade;
+      for(var k=0; k<receivedData.userData.exams.length; k++) { 
+        if(receivedUserData.userData.exams[k].examId === currentSource.quiz._id){
+          studentAnswers = receivedData.userData.exams[k].answers;
+          grade = receivedData.userData.exams[k].score;
+        }
+      }
+      console.log(studentAnswers)
       displayedSource = (
         <ExamManager
           exam={currentSource.quiz.exercises}
           studentAnswers={studentAnswers}
-          grade={7}
+          grade={grade}
           onSolveExamHandler={onSolveExamHandler}
         ></ExamManager>
       );

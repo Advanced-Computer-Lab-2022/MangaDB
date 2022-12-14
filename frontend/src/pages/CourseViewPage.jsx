@@ -39,21 +39,19 @@ const CourseViewPage = () => {
   const location = useLocation();
   const [receivedData, setReceivedData] = useState({});
   const [currentSource, setCurrentSource] = useState("");
-  const [receivedUserData,setUserReceivedData] = useState({});
+  const [receivedUserData, setUserReceivedData] = useState({});
 
   //useEffect at the start to receive the data
   useEffect(() => {
     const courseId = location.state;
     //shouldnt we send the userId ??
-    axios.get(`http://localhost:3000/course/${courseId}/638a07cdbc3508481a2d7da9`).then((res) => {
-      setReceivedData(res.data.course);
-      console.log("here")
-      console.log(res)
-      setUserReceivedData(res.data.userData)
-      setCurrentSource(res.data.course.subtitles[0].sources[0]);
-      console.log("moataz trash");
-      console.log(res);
-    });
+    axios
+      .get(`http://localhost:3000/course/${courseId}/638a07cdbc3508481a2d7da9`)
+      .then((res) => {
+        setReceivedData(res.data.course);
+        setUserReceivedData(res.data.userData);
+        setCurrentSource(res.data.course.subtitles[0].sources[0]);
+      });
   }, [location.state]);
   const onSourceChangeHandler = (source) => {
     setCurrentSource(source);
@@ -62,15 +60,23 @@ const CourseViewPage = () => {
   const onSolveExamHandler = (receivedSolution) => {
     //should mark this as visited in the back and store the data
     //send the sourceId , examId ,userid and courseId
-    var endPoint = "asdasdasdsadasdsadasdasdasd";
-    console.log(receivedSolution);
+    var endPoint = `http://localhost:3000/user/solveexam/`;
+  
+    var sentData = {
+      studentAnswers: receivedSolution,
+      userid: "638a07cdbc3508481a2d7da9",
+      courseid: receivedData._id,
+      examid: currentSource.quiz._id,
+    };
+    console.log(sentData)
     axios
-      .post(endPoint, receivedSolution, {
+      .post(endPoint, sentData, {
         headers: {
           "Access-Control-Allow-Origin": "*",
         },
       })
-      .then((res) => {});
+      .then((res) => {})
+      .catch((err) => {});
   };
 
   const onWatchHandler = () => {
@@ -101,7 +107,6 @@ const CourseViewPage = () => {
       }
     }
   }
-
   //we will have an array of viewed sources
   var displayedSource;
   if (currentSource !== "") {
@@ -117,15 +122,14 @@ const CourseViewPage = () => {
         ></NotesManager>
       );
     } else {
-      var studentAnswers ;
+      var studentAnswers;
       var grade;
-      for(var k=0; k<receivedData.userData.exams.length; k++) { 
-        if(receivedUserData.userData.exams[k].examId === currentSource.quiz._id){
-          studentAnswers = receivedData.userData.exams[k].answers;
-          grade = receivedData.userData.exams[k].score;
+      for (var k = 0; k < receivedUserData.exams.length; k++) {
+        if (receivedUserData.exams[k].examId === currentSource.quiz._id) {
+          studentAnswers = receivedUserData.exams[k].answers;
+          grade = receivedUserData.exams[k].score;
         }
       }
-      console.log(studentAnswers)
       displayedSource = (
         <ExamManager
           exam={currentSource.quiz.exercises}

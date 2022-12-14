@@ -2,10 +2,9 @@ import Exam from "./Exam";
 
 const ExamManager = (props) => {
   const examQuestionsWithAnswers = props.exam;
-
   const studentAnswers = props.studentAnswers;
   var solvedBefore = true;
-  if (studentAnswers.length === 0) {
+  if (!studentAnswers) {
     solvedBefore = false;
   }
   return (

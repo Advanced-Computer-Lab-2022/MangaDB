@@ -137,7 +137,7 @@ exports.login = async (req, res) => {
             httpOnly: true,
           });
           res.status(200).send({ message: "login successfully", token: token ,
-        id: data._id });
+        role: data.role });
         }
       }
     });
@@ -342,8 +342,30 @@ exports.openSource = async (req, res) => {
             return;
           }
         }
+        const courseData = await course.findById(courseId);
+
+        let sourceDescription="";
+        let sourceIndex=-1;
+        let subtitleDescription="";
+        let subtitleIndex=-1;
+        for(let i=0;i<courseData.subtitles.length;i++){
+          for(let j=0;j<courseData.subtitles[i].sources.length;j++){
+            if(courseData.subtitles[i].sources[j]._id==sourceId){
+              sourceDescription=courseData.subtitles[i].sources[j].description;
+              sourceIndex=j;
+              subtitleDescription=courseData.subtitles[i].description;
+              subtitleIndex=i;
+              break;
+            }
+          }
+        }
+
         userData.courseDetails[courseIndex].viewedSources.push({
           sourceId: sourceId,
+          sourceDescription: sourceDescription,
+          subtitleDescription: subtitleDescription,
+          subtitleIndex: subtitleIndex,
+          sourceIndex: sourceIndex,
         });
         let percentage =
           userData.courseDetails[courseIndex].viewedSources.length /
@@ -352,7 +374,6 @@ exports.openSource = async (req, res) => {
         userData.courseDetails[courseIndex].percentageCompleted = percentage;
         await userData.save();
         res.status(200).send({ message: "source opened successfully" });
-        console.log(`source ${sourceId} opened successfully`);
       }
     }
   } catch (err) {
@@ -466,20 +487,16 @@ exports.addNotes = async (req, res) => {
 };
 };
 
-exports.getSourceNotes = async (req, res) => {
-  const sourceId = req.query.sourceId;
-  const courseId=req.params.id;
-  const userId=req.query.userId;
-
-  try{
-    const courseData=await course.findById(courseId);
-    const userData = await user.findById(userId);
+exports.getCourseNotes = async (req, res) => {
+  const id = req.params.id;
+  const { courseId } = req.body;
+  try {
+    const userData = await user.findById(id);
     if (!userData) {
       res.status(404).send({
         message: `User was not found!`,
       });
-    }
-    else{
+    } else {
       let courseIndex = -1;
       let courseFound = false;
       for (let i = 0; i < userData.courseDetails.length; i++) {
@@ -495,53 +512,124 @@ exports.getSourceNotes = async (req, res) => {
           message: `User not registered in course`,
         });
       } else {
-        let sourceIndex = -1;
-        let sourceFound = false;
-        for (
-          let j = 0;
-          j < userData.courseDetails[courseIndex].viewedSources.length;
-          j++
-        ) {
-          if (
-            userData.courseDetails[courseIndex].viewedSources[j].sourceId ==
-            sourceId
-          ) {
-            sourceIndex = j;
-            sourceFound = true;
-            break;
-          }
-        }
-        if (!sourceFound) {
-          res.status(400).send({
-            message: `User not opened source`,
-          });
-        } else {
-          let sourceIndex = -1;
-          let subtitleIndex = -1;
-          for(let i=0;i<courseData.subtitles.length;i++){
-            for(let j=0;j<courseData.subtitles[i].sources.length;j++){
-              if(courseData.subtitles[i].sources[j]._id==sourceId){
-                sourceIndex=i;
-                subtitleIndex=j;
-                break;
-              }
-            }
-          }
-          res.status(200).send({
-            notes: userData.courseDetails[courseIndex].viewedSources[sourceIndex].notes,
-            sourceIndex:sourceIndex,
-            subtitleIndex:subtitleIndex
-          });
-        }
+        res.status(200).send({
+          noteData: userData.courseDetails[courseIndex].viewedSources,
+        });
+          
       }
     }
-  }
-  catch(err){
+  } catch (err) {
     res.status(500).send({
       message: "Error in getting notes",
     });
   }
 };
+
+exports.getSubtitleNotes = async (req, res) => {
+  const id = req.params.id;
+  const { courseId, subtitleId } = req.body;
+  try {
+    const userData = await user.findById(id);
+    if (!userData) {
+      res.status(404).send({
+        message: `User was not found!`,
+      });
+    } else {
+      let courseIndex = -1;
+      let courseFound = false;
+      for (let i = 0; i < userData.courseDetails.length; i++) {
+        if (userData.courseDetails[i].course == courseId) {
+          courseIndex = i;
+          courseFound = true;
+          break;
+        }
+      }
+
+      if (!courseFound) {
+        res.status(400).send({
+          message: `User not registered in course`,
+        });
+      } else {
+        const courseData=await course.findById(courseId);
+        let subtitleIndex=-1;
+        for(let i =0;i<courseData.subtitles.length;i++){
+          if(courseData.subtitles[i]._id==subtitleId){
+            subtitleIndex=i;
+            break;
+          }
+        }
+        if(subtitleIndex==-1){
+          res.status(400).send({
+            message: `Subtitle not found`,
+          });
+        }
+        else{
+          const subtitleNotes=[];
+          for(let i=0;i<userData.courseDetails[courseIndex].viewedSources.length;i++){
+            if(userData.courseDetails[courseIndex].viewedSources[i].subtitleIndex==subtitleIndex){
+              subtitleNotes.push(userData.courseDetails[courseIndex].viewedSources[i]);
+            }
+          }
+          res.status(200).send({
+            noteData: subtitleNotes,
+          });
+        }
+      }
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: "Error in getting notes",
+    });
+  }
+};
+
+exports.getSourceNotes=async (req, res) => {
+  const id = req.params.id;
+  const { courseId, sourceId } = req.body;
+  try {
+    const userData = await user.findById(id);
+    if (!userData) {
+      res.status(404).send({
+        message: `User was not found!`,
+      });
+    } else {
+      let courseIndex = -1;
+      let courseFound = false;
+      for (let i = 0; i < userData.courseDetails.length; i++) {
+        if (userData.courseDetails[i].course == courseId) {
+          courseIndex = i;
+          courseFound = true;
+          break;
+        }
+      }
+
+      if (!courseFound) {
+        res.status(400).send({
+          message: `User not registered in course`,
+        });
+      } else {
+        for(let i=0;i<userData.courseDetails[courseIndex].viewedSources.length;i++){
+          if(userData.courseDetails[courseIndex].viewedSources[i].sourceId==sourceId){
+            res.status(200).send({
+              noteData: userData.courseDetails[courseIndex].viewedSources[i],
+            });
+            return;
+          }
+        }
+        res.status(400).send({
+          message: `Source not found`,
+        });
+      }
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: "Error in getting notes",
+    });
+  }
+};
+
+
+
 
 
 

@@ -24,6 +24,12 @@ router.get('/progress/:id',userController.getProgress);
 
 router.patch('/notes/:id',userController.addNotes);
 
+router.get('/sourcenotes/:id',userController.getSourceNotes);
+
+router.get('/subtitlenotes/:id',userController.getSubtitleNotes);
+
+router.get('/coursenotes/:id',userController.getCourseNotes);
+
 router.post('/solveexam',userController.solveExam);
 
 router.get('/mycourses/:id',userController.getRegisteredCourses);

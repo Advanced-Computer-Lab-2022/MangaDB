@@ -99,20 +99,20 @@ exports.getCourse = async (req, res, next) => {
       message: "Fetching user failed!",
     });
   });
-  let found=false;
+  let found=true; // to  be changed to false and uncomment for loop when token added
   let userCourseData=null;
-  for(let i=0;i<foundUser.courseDetails.length;i++){
-    if(foundUser.courseDetails[i].course==courseId){
-      userCourseData=foundUser.courseDetails[i];
-      found=true;
-      break;
-    }
-  }
-  if(!found){
-    res.status(400).json({
-      message: "You do ot have access to this course",
-      });
-  }
+  // for(let i=0;i<foundUser.courseDetails.length;i++){
+  //   if(foundUser.courseDetails[i].course==courseId){
+  //     userCourseData=foundUser.courseDetails[i];
+  //     found=true;
+  //     break;
+  //   }
+  // }
+  // if(!found){
+  //   res.status(400).json({
+  //     message: "You do ot have access to this course",
+  //     });
+  // }
 
   const countryCode = req.query.CC || "US";
   let countryDetails = await currencyConverter.convertCurrency(

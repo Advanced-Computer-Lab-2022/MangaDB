@@ -1,119 +1,120 @@
+import React, { useState } from "react";
 import logo from "../../../Assets/Images/Logo.svg";
 import CountryManager from "./CountryManager";
 import PrimaryButton from "../PrimaryButton";
 import SecondaryButton from "../SecondaryButton";
+import { Divider } from "@mui/material";
+import avatar from "../../../Assets/Images/blueAvatar.png";
+import HomeNavBar from "./HomeNavBar";
+import MyCoursesNavBar from "./MyCoursesNavBar";
+import FAQsNavBar from "./FAQsNavBar";
+import CartNavBar from "./CartNavBar";
+import ProfileNavBar from "./ProfileNavBar";
+import RequestCourseNavBar from "./RequestCourseNavBar";
+import SignInNavBar from "./SignInNavBar";
+import DashboardNavBar from "./DashboardNavBar";
+import AddCourseNavBar from "./AddCourseNavBar";
+import AddUserNavBar from "./AddUserNavBar";
+import RequestedCoursesNavBar from "./RequestedCoursesNavBar";
+
+var navButtons = [{name: "Home", active: true},{name: "My Courses", active: false},{name: "FAQs", active: false},{name: "Cart", active: false},{name: "Profile", active: false}]
 
 const NavBar = (props) => {
+  const [open, setOpen] = useState(false);
+
+  const openToggleHandler = () => {
+    setOpen(!open);
+  };
+
   return (
-    <nav className="bg-white mb-6 border-gray-200 px-2 sm:px-4 py-2.5 rounded shadow-md items-center justify-center">
-      <div className="container flex flex-wrap justify-between items-center mx-auto">
-        <a href="https://flowbite.com/" className="flex items-center">
-          <img
-            src={logo}
-            className=" md:mb-3 md:h-12 h-10 mb-1"
-            alt="Flowbite Logo"
-          />
-          <span className="self-center text-2xl font-semibold whitespace-nowrap mt-4">
-            evamp
+    <div
+      className={`w-full sticky z-[100] bg-white top-0 left-0 md:${"shadow-md"} ${
+        !open ? "shadow-md" : "shadow-none"
+      }`}
+    >
+      <div className="md:flex py-2 px-8 items-center justify-between relative z-10">
+        <div className="cursor-pointer flex items-center font-semibold text-2xl md:mb-0 bg-white">
+          <span>
+            <img className="h-10" src={logo} alt="logo" />
           </span>
-        </a>
-        <div className="flex items-center md:order-2">
-          <div
-            className="hidden z-50 my-4 text-base list-none bg-white rounded divide-y divide-gray-100 shadow :bg-gray-700 :divide-gray-600"
-            id="user-dropdown"
-            data-popper-reference-hidden=""
-            data-popper-escaped=""
-            data-popper-placement="bottom"
-            style={{
-              position: "absolute",
-              inset: "0px auto auto 0px",
-              margin: "0px",
-              transform: "translate3d(0px, 15283.2px, 0px)",
-            }}
-          >
-            <ul className="py-1" aria-labelledby="user-menu-button">
-              <li>
-                <a
-                  href="#"
-                  className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 :hover:bg-gray-600 :text-gray-200 :hover:text-white"
-                >
-                  Dashboard
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 :hover:bg-gray-600 :text-gray-200 :hover:text-white"
-                >
-                  Settings
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 :hover:bg-gray-600 :text-gray-200 :hover:text-white"
-                >
-                  Earnings
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 :hover:bg-gray-600 :text-gray-200 :hover:text-white"
-                >
-                  Sign out
-                </a>
-              </li>
-            </ul>
-          </div>
-          <button
-            data-collapse-toggle="mobile-menu-2"
-            type="button"
-            className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 :text-gray-400 :hover:bg-gray-700 :focus:ring-gray-600"
-            aria-controls="mobile-menu-2"
-            aria-expanded="false"
-          >
-            <span className="sr-only">Open main menu</span>
-            <svg
-              className="w-6 h-6"
-              aria-hidden="true"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-          </button>
+          <span className="mt-5">evamp</span>
         </div>
-        <div
-          className="hidden justify-between items-center w-full md:flex md:w-auto md:order-1"
-          id="mobile-menu-2"
+        {open && (
+          <div className="mt-2">
+            <Divider />
+          </div>
+        )}
+        <div>
+          <PrimaryButton
+            className="md:hidden absolute top-5 right-8"
+            onClick={openToggleHandler}
+          >
+            {open ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="30"
+                height="30"
+                fill="currentColor"
+                class="bi bi-x-lg"
+                viewBox="0 0 16 16"
+              >
+                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="30"
+                height="30"
+                fill="currentColor"
+                class="bi bi-list"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
+                />
+              </svg>
+            )}
+          </PrimaryButton>
+        </div>
+        <ul
+          className={`md:flex pb-4 md:pb-0 md:items-center pt-4 md:pt-0 space-y-8 md:space-y-0 md:space-x-12 my-4 md:my-0 absolute bg-white md:static md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-300 ease-in-out md:shadow-none shadow-md ${
+            open ? "top-14" : "top-[-490px]"
+          }`}
         >
-          <ul className="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white absolute right-72">
-            <li>
-              <PrimaryButton text="Home" />
-            </li>
-            <li>
-              <PrimaryButton text="My Courses" />
-            </li>
-            <li>
-              <PrimaryButton text="About Us" />
-            </li>
-            <li>
-              <PrimaryButton text="FAQs" />
-            </li>
-          </ul>
-          <div className="flex gap-12 absolute right-6">
-            <SecondaryButton text="Sign in" />
+          {/* Profile will not appear active */}
+          {navButtons.map((navButton) => {
+            if (navButton.name === "Home") {
+              return <HomeNavBar active={navButton.active} />;
+            } else if (navButton.name === "My Courses") {
+              return <MyCoursesNavBar active={navButton.active} />;
+            } else if (navButton.name === "FAQs") {
+              return <FAQsNavBar active={navButton.active} />;
+            } else if (navButton.name === "Cart") {
+              return <CartNavBar active={navButton.active} />;
+            } else if (navButton.name === "Profile") {
+              return <ProfileNavBar active={navButton.active} />;
+            } else if (navButton.name === "Request Course") {
+              return <RequestCourseNavBar active={navButton.active} />;
+            } else if (navButton.name === "Sign In") {
+              return <SignInNavBar active={navButton.active} />;
+            } else if (navButton.name === "Dashboard") {
+              return <DashboardNavBar active={navButton.active} />;
+            } else if (navButton.name === "Add Course") {
+              return <AddCourseNavBar active={navButton.active} />;
+            } else if (navButton.name === "Add User") {
+              return <AddUserNavBar active={navButton.active} />;
+            } else if (navButton.name === "Requested Courses") {
+              return <RequestedCoursesNavBar active={navButton.active} />;
+            }
+          })}
+          <li className="cursor-pointer">
             <CountryManager onChange={props.onChange} />
-          </div>
-        </div>
+          </li>
+        </ul>
       </div>
-    </nav>
+    </div>
   );
 };
+
 export default NavBar;

@@ -21,7 +21,7 @@ const SearchResultsPage = () => {
   const location = useLocation();
   const defaultState = {
     displayedCourses: [],
-    search: location.state?location.state:"",
+    search: location.state ? location.state : "",
     filters: {
       price: null,
       subjects: [],
@@ -143,7 +143,7 @@ const SearchResultsPage = () => {
   return (
     <Fragment>
       <NavBar />
-      <div className="flex justify-center space-x-4 mb-3 items-center">
+      <div className="mt-4 flex justify-center space-x-4 mb-3 items-center">
         <Search
           searchState={searchState.search}
           onChange={searchBarChangeHandler}

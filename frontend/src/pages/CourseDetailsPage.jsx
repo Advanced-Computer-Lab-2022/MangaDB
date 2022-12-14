@@ -38,15 +38,15 @@ const CourseDetailsPage = () => {
   useEffect(() => {
     const courseId = location.state.courseId;
 
-    axios.get("http://localhost:3000/course/".concat(courseId)).then((res) => {
+    axios.get("http://localhost:3000/course/".concat(courseId).concat("/638a07cdbc3508481a2d7da9")).then((res) => {
       setCourseDetails(res.data.course);
       console.log(res.data.course);
       setLoaded(true);
     });
     const userId = "638a07cdbc3508481a2d7da9";
     axios
-      .patch(`http://localhost:3000/user/enroll/${userId}`, {
-        courseId: location.state.courseId,
+      .post(`http://localhost:3000/invoice/${location.state.courseId}`, {
+        userId:userId,
       })
       .then((res) => {})
       .catch((error) => {

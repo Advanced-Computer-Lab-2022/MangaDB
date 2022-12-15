@@ -4,6 +4,7 @@ import Table from "../components/Table/Table";
 import NavBar from "../components/UI/NavBar/NavBar";
 import InstructorControls from "../components/Table/InstructorControls";
 import Filters from "../components/Filters/Filters";
+import TableListViewCard from "../components/Table/TableListViewCard";
 const options = [
   { id: 1, name: "Web Development" },
   { id: 2, name: "Machine Learning" },
@@ -119,6 +120,23 @@ const IntructorCoursePage = (props) => {
       discount: course.discount,
     };
   });
+
+  var cards = rows.map((row) => {
+    return (
+      <TableListViewCard
+        title={row.courseTitle}
+        instructor={row.instructorName}
+        subject={row.subject}
+        totalHours={Math.round(+row.totalMins / 60)}
+        rating={row.rating}
+        level={row.level}
+        price={row.price}
+        discount={row.discount}
+        discountedPrice={row.discountedPrice}
+      />
+    );
+  });
+
   return (
     <Fragment>
       <NavBar />
@@ -138,7 +156,10 @@ const IntructorCoursePage = (props) => {
         prevmyCoursesState={searchState.myCourses}
         prevSearchState={searchState.search}
       />
-      <Table rows={rows} />
+      <div className="hidden xl:block">
+        <Table rows={rows} />
+      </div>
+      <div className="flex justify-around flex-wrap xl:hidden">{cards}</div>
     </Fragment>
   );
 };

@@ -637,6 +637,8 @@ exports.solveExam=async (req, res) => {
 
   const myUser=await user.findOne({_id:req.body.userid});
   const courseId = req.body.courseid;
+  console.log(myUser);
+  console.log(courseId);
   try {
   if(!myUser){
     res.status(404).json({message:"User Not Found"});

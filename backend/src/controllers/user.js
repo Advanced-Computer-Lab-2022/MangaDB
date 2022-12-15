@@ -226,7 +226,7 @@ exports.changePassword = async (req, res) => {
                         subject: 'Reset Password',
                         html: `<h1>Reset Password</h1>
                         <p>Click on the link to reset your password</p>
-                        <a href="http://localhost:3000/user/resetpassword/${data._id}">Reset Password</a>`,
+                        <a href="http://localhost:3456/resetpassword">Reset Password</a>`,
           };
           mailer.sendEmail(mailOptions);
           res.send({ message: "email has been sent" });

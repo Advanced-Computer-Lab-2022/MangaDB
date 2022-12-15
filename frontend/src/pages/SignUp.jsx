@@ -136,8 +136,8 @@ export default function SignUp() {
           </div>
           <p class="text-center pt-3">
             Already Have An Account?{" "}
-            <a
-              href="#"
+            <button
+              onClick={() => {navigate('/')}}
               class="text-primaryBlue hover:opacity-70 ease-in-out duration-300 font-medium inline-flex space-x-1 items-center"
             >
               <span>Sign In Now </span>
@@ -157,7 +157,7 @@ export default function SignUp() {
                   />
                 </svg>
               </span>
-            </a>
+            </button>
           </p>
           <hr className=" mt-3"></hr>
 

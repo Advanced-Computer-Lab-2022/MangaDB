@@ -95,9 +95,14 @@ const IntructorCoursePage = (props) => {
         dispatchSearch({ type: "COURSES", value: res.data.courses });
       });
     } else {
-      axios.get("http://localhost:3000/instructor/searchcourses/636011143c6ccb49e4e446b4"+ param ).then((res) => {
-        dispatchSearch({ type: "COURSES", value: res.data.courses });
-      });
+      axios
+        .get(
+          "http://localhost:3000/instructor/searchcourses/636011143c6ccb49e4e446b4" +
+            param
+        )
+        .then((res) => {
+          dispatchSearch({ type: "COURSES", value: res.data.courses });
+        });
     }
   }, [searchState.search, searchState.filters, searchState.myCourses]);
   var rows = searchState.displayedCourses.map((course) => {
@@ -106,9 +111,12 @@ const IntructorCoursePage = (props) => {
       courseTitle: course.courseTitle,
       instructorName: course.instructorName,
       subject: course.subject,
-      price: course.discountedPrice,
       rating: course.rating,
-      totalHours: course.totalHours,
+      level: course.level,
+      price: course.coursePrice,
+      discountedPrice: course.discountedPrice,
+      totalMins: course.totalMins,
+      discount: course.discount,
     };
   });
   return (

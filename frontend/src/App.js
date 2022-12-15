@@ -56,9 +56,11 @@ function App() {
     // </Routes>
     // <Fragment>
     //   <NavBarSearch />
-    <SearchResultsPage />
+    // <SearchResultsPage />
     //   <SearchResultsPage />
     // </Fragment>
+    <InstructorCoursesPage />
+    //<HomePage />
   );
 }
 export default App;

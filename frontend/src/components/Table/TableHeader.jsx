@@ -1,46 +1,37 @@
-const TableHeader = (props) => {
+import React from "react";
+
+const TableHeader = () => {
   return (
-    <tr>
-      <th
-        scope="col"
-        className="px-6 py-3 text-left text-md font-semibold text-gray-600 uppercase tracking-wider"
-      >
+    <tr className="w-full">
+      <th scope="col" className="py-4 font-semibold text-gray-700 text-sm uppercase tracking-wide">
         Course Title
       </th>
-      <th
-        scope="col"
-        className="px-6 py-3 text-left text-md font-semibold text-gray-600 uppercase tracking-wider"
-      >
-        Instructor Name
+      <th scope="col" className="py-4 font-semibold text-gray-700 text-sm uppercase tracking-wide">
+        Instructor
       </th>
-      <th
-        scope="col"
-        className="px-6 py-3 text-left text-md font-semibold text-gray-600 uppercase tracking-wider"
-      >
+      <th scope="col" className="py-4 font-semibold text-gray-700 text-sm uppercase tracking-wide">
         Subject
       </th>
-      <th
-        scope="col"
-        className="px-6 py-3 text-left text-md font-semibold text-gray-600 uppercase tracking-wider"
-      >
-        Price
-      </th>
-      <th
-        scope="col"
-        className="px-6 py-3 text-left text-md font-semibold text-gray-600 uppercase tracking-wider"
-      >
+      <th scope="col" className="py-4 font-semibold text-gray-700 text-sm uppercase tracking-wide">
         Rating
       </th>
-      <th
-        scope="col"
-        className="px-6 py-3 text-left text-md font-semibold text-gray-600 uppercase tracking-wider"
-      >
+      <th scope="col" className="py-4 font-semibold text-gray-700 text-sm uppercase tracking-wide">
+        Level
+      </th>
+      <th scope="col" className="py-4 font-semibold text-gray-700 text-sm uppercase tracking-wide">
+        Price
+      </th>
+      <th scope="col" className="py-4 font-semibold text-gray-700 text-sm uppercase tracking-wide">
+        Discounted Price
+      </th>
+      <th scope="col" className="py-4 font-semibold text-gray-700 text-sm uppercase tracking-wide">
         Total Hours
       </th>
-      <th scope="col" className="relative px-6 py-3">
-        <span className="sr-only">Edit</span>
+      <th scope="col" className="py-4 font-semibold text-gray-700 text-sm uppercase tracking-wide">
+        Actions
       </th>
     </tr>
   );
 };
+
 export default TableHeader;

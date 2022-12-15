@@ -77,6 +77,7 @@ const AddCoursePage = (props) => {
         console.log(res);
       });
   };
+  
   return (
     <Fragment>
       <NavBar></NavBar>

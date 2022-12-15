@@ -43,6 +43,19 @@ const userSchema = new mongoose.Schema({
         type:[{ sourceId: {
             type: String,
           },
+          sourceIndex: {
+            type: Number,
+          },
+          sourceDescription: {
+            type: String,
+          },
+          subtitleIndex: {
+            type: Number,
+          },
+          subtitleDescription: {
+            type: String,
+          }
+          ,
           notes: {
             type: [
               {

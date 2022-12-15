@@ -3,15 +3,8 @@ import React from "react";
 
 const SubtitleBody = (props) => {
  
-
   const clickHandler = () =>{
-    var source = {
-      _id:props.id,
-      link:props.link,
-      sourceType:props.type,
-      description:props.description
-    }
-    props.onClick(source);
+    props.onClick(props.source);
   }
 
   var sourceIcon;

@@ -1,4 +1,4 @@
-import { useState, Fragment, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Pagination from "@mui/material/Pagination";
 import ExamChoices from "./ExamChoices";
 import SecondaryButton from "../UI/SecondaryButton";
@@ -124,7 +124,7 @@ const Exam = (props) => {
         <ThemeProvider theme={theme}>
           <Pagination
             className="ml-2 mr-2"
-            count={4}
+            count={props.exam.length}
             color="primary"
             page={selectedQuestion}
             onChange={onChangeQuestionHandler}

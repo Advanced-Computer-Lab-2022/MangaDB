@@ -9,6 +9,9 @@ const courseSchema = new mongoose.Schema({
   courseDescription: {
     type: String,
   },
+  courseOverview: {
+    type: String,
+  },
   totalMins: {
     type: Number,
   },

@@ -32,6 +32,7 @@ const SubtitleAccordion = (props) => {
         type={source.sourceType}
         link = {source.link}
         id={source._id}
+        source={source}
       />
     );
   });

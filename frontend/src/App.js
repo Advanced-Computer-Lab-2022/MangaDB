@@ -17,52 +17,42 @@ import NavBarSearch from "./components/UI/NavBar/NavBarSearch";
 import TableListViewCard from "./components/Table/TableListViewCard";
 function App() {
   return (
-    //navbar should be here
-    // <Routes>
-    //   <Route path="/" element={<Login></Login>}></Route>
-    //   <Route path="/signup" element={<SignUp></SignUp>}></Route>
-    //   <Route
-    //     path="/resetpassword"
-    //     element={<ResetPassword></ResetPassword>}
-    //   ></Route>
-    //   <Route path="/home/:id" element={<HomePage></HomePage>}></Route>
-    //   <Route
-    //     path="/searchresults/:id"
-    //     element={<SearchResultsPage></SearchResultsPage>}
-    //   ></Route>
-    //   <Route
-    //     path="/coursedetails/:id"
-    //     element={<CourseDetailsPage></CourseDetailsPage>}
-    //   ></Route>
-    //   <Route
-    //     path="/courseview/:id"
-    //     element={<CourseViewPage></CourseViewPage>}
-    //   ></Route>
-    //   <Route
-    //     path="/profile/:id"
-    //     element={<InstructorProfilePage></InstructorProfilePage>}
-    //   ></Route>
-    //   <Route
-    //     path="/admin/:id"
-    //     element={<AdminAddNewUser></AdminAddNewUser>}
-    //   ></Route>
-    //   <Route
-    //     path="courses/:id"
-    //     element={<InstructorCoursesPage></InstructorCoursesPage>}
-    //   ></Route>
-    //   <Route
-    //     path="addcourse/:id"
-    //     element={<AddCoursePage></AddCoursePage>}
-    //   ></Route>
-    // </Routes>
-    // <Fragment>
-    //   <NavBarSearch />
-    // <SearchResultsPage />
-    //   <SearchResultsPage />
-    // </Fragment>
-     <InstructorCoursesPage />
-    //<TableListViewCard />
-    //<HomePage />
+   // navbar should be here
+    <Routes>
+      <Route path="/" element={<Login></Login>}></Route>
+      <Route path="/signup" element = {<SignUp></SignUp>}></Route>
+      <Route path="/resetpassword" element={<ResetPassword></ResetPassword>}></Route>
+      <Route path="/home/:id" element={<HomePage></HomePage>}></Route>
+      <Route
+        path="/searchresults/:id"
+        element={<SearchResultsPage></SearchResultsPage>}
+      ></Route>
+      <Route
+        path="/coursedetails/:id"
+        element={<CourseDetailsPage></CourseDetailsPage>}
+      ></Route>
+      <Route
+        path="/courseview/:id"
+        element={<CourseViewPage></CourseViewPage>}
+      ></Route>
+      <Route
+        path="/profile/:id"
+        element={<InstructorProfilePage></InstructorProfilePage>}
+      ></Route>
+      <Route
+        path="/admin/:id"
+        element={<AdminAddNewUser></AdminAddNewUser>}
+      ></Route>
+      <Route
+        path="courses/:id"
+        element={<InstructorCoursesPage></InstructorCoursesPage>}
+      ></Route>
+      <Route
+        path="addcourse/:id"
+        element={<AddCoursePage></AddCoursePage>}
+      ></Route>
+    </Routes>
+   
   );
 }
 export default App;

@@ -7,6 +7,7 @@ import NotesManager from "../components/Notes/NotesManager";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import WarningAlert from "../components/UI/WarningAlert";
+
 //stub for the notes
 const notes = [
   {
@@ -42,6 +43,7 @@ const CourseViewPage = () => {
   const [receivedUserData, setUserReceivedData] = useState({});
   const [showNextLessonAlert, setShowNextLessonAlert] = useState(false);
 
+
   //useEffect at the start to receive the data
   useEffect(() => {
     const courseId = location.state;
@@ -51,6 +53,7 @@ const CourseViewPage = () => {
       .then((res) => {
         setReceivedData(res.data.course);
         setUserReceivedData(res.data.userData);
+        console.log(res.data.userData)
         setCurrentSource(res.data.course.subtitles[0].sources[0]);
       });
   }, [location.state]);

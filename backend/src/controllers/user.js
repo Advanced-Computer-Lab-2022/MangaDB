@@ -636,6 +636,8 @@ exports.getSourceNotes=async (req, res) => {
 exports.solveExam=async (req, res) => {
   const myUser=await user.findOne({_id:req.body.userid});
   const courseId = req.body.courseid;
+  console.log(myUser);
+  console.log(courseId);
   try {
   if(!myUser){
     res.status(404).json({message:"User Not Found"});
@@ -645,7 +647,7 @@ exports.solveExam=async (req, res) => {
   let courseIndex=-1;
   let courseFound=false;
   for(let i=0;i<myUser.courseDetails.length;i++){
-    if(myUser.courseDetails[i].course[0]==courseId){
+    if(myUser.courseDetails[i].course==courseId){
       courseIndex=i;
       courseFound=true;
       break;

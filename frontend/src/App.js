@@ -14,6 +14,7 @@ import ResetPassword from "./pages/ResetPassword";
 import { Fragment } from "react";
 import NavBar from "./components/UI/NavBar/NavBar";
 import NavBarSearch from "./components/UI/NavBar/NavBarSearch";
+import TableListViewCard from "./components/Table/TableListViewCard";
 function App() {
   return (
    // navbar should be here

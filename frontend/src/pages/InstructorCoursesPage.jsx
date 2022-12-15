@@ -4,6 +4,7 @@ import Table from "../components/Table/Table";
 import NavBar from "../components/UI/NavBar/NavBar";
 import InstructorControls from "../components/Table/InstructorControls";
 import Filters from "../components/Filters/Filters";
+import TableListViewCard from "../components/Table/TableListViewCard";
 const options = [
   { id: 1, name: "Web Development" },
   { id: 2, name: "Machine Learning" },
@@ -95,9 +96,14 @@ const IntructorCoursePage = (props) => {
         dispatchSearch({ type: "COURSES", value: res.data.courses });
       });
     } else {
-      axios.get("http://localhost:3000/instructor/searchcourses/636011143c6ccb49e4e446b4"+ param ).then((res) => {
-        dispatchSearch({ type: "COURSES", value: res.data.courses });
-      });
+      axios
+        .get(
+          "http://localhost:3000/instructor/searchcourses/636011143c6ccb49e4e446b4" +
+            param
+        )
+        .then((res) => {
+          dispatchSearch({ type: "COURSES", value: res.data.courses });
+        });
     }
   }, [searchState.search, searchState.filters, searchState.myCourses]);
   var rows = searchState.displayedCourses.map((course) => {
@@ -106,11 +112,31 @@ const IntructorCoursePage = (props) => {
       courseTitle: course.courseTitle,
       instructorName: course.instructorName,
       subject: course.subject,
-      price: course.discountedPrice,
       rating: course.rating,
-      totalHours: course.totalHours,
+      level: course.level,
+      price: course.coursePrice,
+      discountedPrice: course.discountedPrice,
+      totalMins: course.totalMins,
+      discount: course.discount,
     };
   });
+
+  var cards = rows.map((row) => {
+    return (
+      <TableListViewCard
+        title={row.courseTitle}
+        instructor={row.instructorName}
+        subject={row.subject}
+        totalHours={Math.round(+row.totalMins / 60)}
+        rating={row.rating}
+        level={row.level}
+        price={row.price}
+        discount={row.discount}
+        discountedPrice={row.discountedPrice}
+      />
+    );
+  });
+
   return (
     <Fragment>
       <NavBar />
@@ -130,7 +156,10 @@ const IntructorCoursePage = (props) => {
         prevmyCoursesState={searchState.myCourses}
         prevSearchState={searchState.search}
       />
-      <Table rows={rows} />
+      <div className="hidden xl:block">
+        <Table rows={rows} />
+      </div>
+      <div className="flex justify-around flex-wrap xl:hidden">{cards}</div>
     </Fragment>
   );
 };

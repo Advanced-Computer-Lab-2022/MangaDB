@@ -3,7 +3,7 @@ import Alert from "../UI/Alert";
 import { useState, Fragment } from "react";
 import { CheckCircleIcon } from "@heroicons/react/solid";
 import { XCircleIcon } from "@heroicons/react/solid";
-import PrimaryButton from "../UI/PrimaryButton";
+import SecondaryButton from "../UI/SecondaryButton";
 const ExamManager = (props) => {
   const [checkResults, setCheckResults] = useState(false);
   const checkResultsClickHandler = () => {
@@ -22,14 +22,21 @@ const ExamManager = (props) => {
 
   if (solvedBefore) {
     if (props.grade / examQuestionsWithAnswers.length < 0.5) {
-      message = `You can always do better , you got ${props.grade} out of ${examQuestionsWithAnswers.length}, review the course content to broaden your knowledge`;
+      message = <p>You can always do better , you got <strong>{props.grade} out of {examQuestionsWithAnswers.length}</strong>, review the course content to broaden your knowledge</p> ;
     } else if (
       props.grade / examQuestionsWithAnswers.length >= 0.5 &&
       props.grade / examQuestionsWithAnswers.length <= 0.8
     ) {
-      message = `You Passed, but there is always better , you got ${props.grade} out of ${examQuestionsWithAnswers.length}`;
+      message = (
+        <p>
+          You Passed, but there is always better , you got{" "}
+          <strong>
+            {props.grade} out of {examQuestionsWithAnswers.length}
+          </strong>
+        </p>
+      );
     } else {
-      message = `Good Job, you got ${props.grade} out of ${examQuestionsWithAnswers.length}`;
+      message = <p>Good Job, you got <strong>{props.grade} out of {examQuestionsWithAnswers.length}</strong></p>;
     }
     for (var i = 0; i < examQuestionsWithAnswers.length; i++) {
       if (examQuestionsWithAnswers[i].solution === studentAnswers[i]) {
@@ -42,10 +49,10 @@ const ExamManager = (props) => {
   return (
     <Fragment>
       {solvedBefore && !checkResults && (
-        <div className="overflow-scroll">
-          <Alert message={message}></Alert>
+        <div className="overflow-y-scroll relative">
+          <Alert>{message}</Alert>
           {correct.length !== 0 && (
-            <div className="rounded-md bg-green-50 p-4">
+            <div className="rounded-md bg-green-50 p-4 mt-2">
               <div className="flex">
                 <div className="flex-shrink-0">
                   <CheckCircleIcon
@@ -69,7 +76,7 @@ const ExamManager = (props) => {
             </div>
           )}
           {wrong.length !== 0 && (
-            <div className="rounded-md bg-red-50 p-4">
+            <div className="rounded-md bg-red-50 p-4 mt-2">
               <div className="flex">
                 <div className="flex-shrink-0">
                   <XCircleIcon
@@ -79,7 +86,7 @@ const ExamManager = (props) => {
                 </div>
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-red-800">
-                    There were 2 errors with your submission
+                    What you Got wrong
                   </h3>
                   <div className="mt-2 text-sm text-red-700">
                     <ul className="list-disc pl-5 space-y-1">
@@ -92,10 +99,18 @@ const ExamManager = (props) => {
               </div>
             </div>
           )}
+          <SecondaryButton
+            className="absolute right-2 bottom-2"
+            onClick={checkResultsClickHandler}
+          >
+            {" "}
+            Check Results
+          </SecondaryButton>
         </div>
       )}
-      {!solvedBefore && checkResults && (
+      { checkResults && (
         <Exam
+          next ={props.next}
           exam={examQuestionsWithAnswers}
           studentAnswers={studentAnswers}
           solvedBefore={solvedBefore}

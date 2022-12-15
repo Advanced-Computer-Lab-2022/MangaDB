@@ -6,7 +6,7 @@ import ExamManager from "../components/Exam/ExamManager";
 import NotesManager from "../components/Notes/NotesManager";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-
+import WarningAlert from "../components/UI/WarningAlert";
 //stub for the notes
 const notes = [
   {
@@ -40,6 +40,7 @@ const CourseViewPage = () => {
   const [receivedData, setReceivedData] = useState({});
   const [currentSource, setCurrentSource] = useState("");
   const [receivedUserData, setUserReceivedData] = useState({});
+  const [showNextLessonAlert, setShowNextLessonAlert] = useState(false);
 
   //useEffect at the start to receive the data
   useEffect(() => {
@@ -61,7 +62,7 @@ const CourseViewPage = () => {
     //should mark this as visited in the back and store the data
     //send the sourceId , examId ,userid and courseId
     var endPoint = `http://localhost:3000/user/solveexam/`;
-  
+
     var sentData = {
       studentAnswers: receivedSolution,
       userid: "638a07cdbc3508481a2d7da9",
@@ -78,6 +79,26 @@ const CourseViewPage = () => {
       .catch((err) => {});
   };
 
+  const nextSource = () => {
+    for (var i = 0; i < receivedData.subtitles.length; i++) {
+      for (var j = 0; j < receivedData.subtitles[i].sources.length; j++) {
+        if (receivedData.subtitles[i].sources[j]._id === currentSource._id) {
+          if (j === receivedData.subtitles[i].sources.length - 1) {
+            if (i === receivedData.subtitles.length - 1) {
+              setShowNextLessonAlert(true);
+            } else {
+              setCurrentSource(receivedData.subtitles[i + 1].sources[0]);
+            }
+          } else {
+            setCurrentSource(receivedData.subtitles[i].sources[j + 1]);
+          }
+        }
+      }
+    }
+  };
+  const hideWarningAlert = () => {
+    setShowNextLessonAlert(false);
+  };
   const onWatchHandler = () => {
     //will need the userID , sourceId, courseId
     //the userID and courseid are given from the navigation
@@ -130,15 +151,27 @@ const CourseViewPage = () => {
         }
       }
       displayedSource = (
-        <ExamManager
-          exam={currentSource.quiz.exercises}
-          studentAnswers={studentAnswers}
-          grade={grade}
-          onSolveExamHandler={onSolveExamHandler}
-        ></ExamManager>
+        <Fragment>
+          {showNextLessonAlert && (
+            <WarningAlert
+              hide={hideWarningAlert}
+              message={
+                "This was the last course lesson,solve the exam to get your certificate"
+              }
+            ></WarningAlert>
+          )}
+          <ExamManager
+            next={nextSource}
+            exam={currentSource.quiz.exercises}
+            studentAnswers={studentAnswers}
+            grade={grade}
+            onSolveExamHandler={onSolveExamHandler}
+          ></ExamManager>
+        </Fragment>
       );
     }
   }
+
   return (
     <Fragment>
       <NavBar></NavBar>

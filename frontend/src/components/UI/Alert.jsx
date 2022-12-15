@@ -10,6 +10,7 @@ const Alert = (props) => {
       }}
     >
       {props.message}
+      {props.children}
     </AlertUI>
   );
 };

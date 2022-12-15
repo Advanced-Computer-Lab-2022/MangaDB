@@ -3,7 +3,6 @@ import React from "react";
 
 const SubtitleBody = (props) => {
  
-
   const clickHandler = () =>{
     props.onClick(props.source);
   }

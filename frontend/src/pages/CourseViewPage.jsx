@@ -102,7 +102,7 @@ const CourseViewPage = () => {
       .get(`http://localhost:3000/user/sourcenotes/${userid}?cid=${courseId}&sid=${currentSource._id}`)
       .then((res) => {
         var notesSet = [];
-        for (var i = 0; i <= res.data.noteData.length; i++) {
+        for (var i = 0; i < res.data.noteData.length; i++) {
           if (res.data.noteData[i].notes.length !== 0) {
             for (var j = 0; j < res.data.noteData[i].notes.length; j++) {
               var temp = {

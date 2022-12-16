@@ -46,7 +46,7 @@ exports.requestRefund = async (req, res) => {
         message: `User not registered in course`,
       });
     }
-    if(foundUser.courseDetails[courseIndex].percentageCompleted>0.5){
+    if(foundUser.courseDetails[courseIndex].percentageCompleted/foundUser.courseDetails[courseIndex].totalSources>0.5){
       return res.status(400).send({
         message: `Cannot request refund after 50% completion`,
       });

@@ -26,13 +26,10 @@ const problemSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["pending", "resolved"],
-        default: "pending",
+        enum: ["unseen","pending", "resolved"],
+        default: "unseen",
     },
-    seen: {
-        type: Boolean,
-        default: false,
-    },
+    
     date: {
         type: Date,
         default: Date.now,

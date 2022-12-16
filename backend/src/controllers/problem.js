@@ -30,22 +30,18 @@ exports.createProblem = async (req, res) => {
 
 exports.getProblems = async (req, res) => {
   const status=req.query.status;
-  const seen=req.query.seen;
   const type=req.query.type;
 
   let query1 = {};
   let query2 = {};
-  let query3 = {};
   if (status) {
     query1 = { status: { $regex: status, $options: "i" } };
   }
-  if (seen) {
-    query2 = { seen: seen };
-  }
+
   if (type) {
-    query3 = { type: { $regex: type, $options: "i" } };
+    query2 = { type: { $regex: type, $options: "i" } };
   }
-  const query = { $and: [query1, query2, query3] };
+  const query = { $and: [query1, query2] };
   try {
     const problems = await problem.find(query).sort({ date: -1 });
     res.send(problems);
@@ -131,22 +127,17 @@ exports.followUpProblem = async (req, res) => {
 exports.getUserProblems = async (req, res) => {
     const _id = req.params.id;
     const status=req.query.status;
-  const seen=req.query.seen;
   const type=req.query.type;
 
   let query1 = {};
   let query2 = {};
-  let query3 = {};
   if (status) {
     query1 = { status: { $regex: status, $options: "i" } };
   }
-  if (seen) {
-    query2 = { seen: seen };
-  }
   if (type) {
-    query3 = { type: { $regex: type, $options: "i" } };
+    query2 = { type: { $regex: type, $options: "i" } };
   }
-  const query = { $and: [query1, query2, query3,{ user: _id }] };
+  const query = { $and: [query1, query2,{ user: _id }] };
     try {
         const problems = await problem.find(query).sort({ date: -1 });
         res.send(problems);

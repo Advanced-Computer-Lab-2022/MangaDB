@@ -305,6 +305,7 @@ exports.getRegisteredCourses = async (req, res) => {
 exports.openSource = async (req, res) => {
   const courseId = req.params.id;
   const { userId, sourceId } = req.body;
+  console.log("Mr Reda");
   try {
     const userData = await user.findById(userId);
     if (!userData) {

@@ -258,3 +258,24 @@ exports.requestRefund = async (req, res) => {
       }
     };
     
+
+    exports.getRequest= async (req, res) => {
+      const requestId = req.params.id;
+      try {
+       const foundRequest= await request.findById(requestId);
+       if(foundRequest)
+       res.status(200).json({
+        message: "Request found successfully!",
+        request: foundRequest
+      });
+      else{
+        res.status(404).json({
+          message: "Request not found",
+        });
+      }
+    } catch (err) {
+      res.status(500).json({
+        message: "Error getting request",
+      });
+    }
+  };

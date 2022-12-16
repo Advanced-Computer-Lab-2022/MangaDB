@@ -9,28 +9,6 @@ import { useLocation } from "react-router-dom";
 import WarningAlert from "../components/UI/WarningAlert";
 import ContentCourseView from "../components/CourseView/ContentCourseView";
 
-//stub for the notes
-const notes = [
-  {
-    note: "test1 ",
-    sourceDescription: "226.redux VS Context",
-    subtitleDescription: "18.Diving Into Redux",
-    timestamp: "0:52",
-  },
-  {
-    note: "test2 ",
-    sourceDescription: "225.redux VS Context",
-    subtitleDescription: "18.Diving Into Redux",
-    timestamp: "10:33",
-  },
-  {
-    note: "test3 ",
-    sourceDescription: "225.redux VS Context",
-    subtitleDescription: "18.Diving Into Redux",
-    timestamp: "12:52",
-  },
-];
-
 const CourseViewPage = () => {
   //will give the backend the id of the clicked course , then will fetch all the details about that course
   //to fill the subtitle accordion and create an onClick function to change the link of the video playing.
@@ -43,20 +21,24 @@ const CourseViewPage = () => {
   const [currentSource, setCurrentSource] = useState("");
   const [receivedUserData, setUserReceivedData] = useState({});
   const [showNextLessonAlert, setShowNextLessonAlert] = useState(false);
-
+  const [notes , setNotes] = useState([]);
 
   //useEffect at the start to receive the data
   useEffect(() => {
     const courseId = location.state;
+    const userid= "638a07cdbc3508481a2d7da9"
     //shouldnt we send the userId ??
     axios
-      .get(`http://localhost:3000/course/${courseId}/638a07cdbc3508481a2d7da9`)
+      .get(`http://localhost:3000/course/${courseId}?uid=638a07cdbc3508481a2d7da9`)
       .then((res) => {
         setReceivedData(res.data.course);
         setUserReceivedData(res.data.userData);
-        console.log(res.data.userData)
         setCurrentSource(res.data.course.subtitles[0].sources[0]);
       });
+      axios.get(`http://localhost:3000/user/coursenotes/${userid}?cid=${courseId}`).then((res) => {
+        console.log(res.data)
+      })
+  
   }, [location.state]);
   const onSourceChangeHandler = (source) => {
     setCurrentSource(source);
@@ -106,10 +88,9 @@ const CourseViewPage = () => {
   const onWatchHandler = () => {
     //will need the userID , sourceId, courseId
     //the userID and courseid are given from the navigation
-    var endPoint = "asdasdasdsadasdsadasdasdasd";
+    var endPoint = `http://localhost:3000/user/opensource/${receivedData._id}`;
     const submittedData = {
-      userId: 1,
-      courseId: 1,
+      userId: "638a07cdbc3508481a2d7da9",
       sourceId: currentSource._id,
     };
     axios
@@ -134,9 +115,13 @@ const CourseViewPage = () => {
   //we will have an array of viewed sources
   var displayedSource;
   if (currentSource !== "") {
+  
     if (currentSource.sourceType === "Video") {
       displayedSource = (
         <NotesManager
+          studentId= "638a07cdbc3508481a2d7da9"
+          courseId = {receivedData._id}
+          currentSourceId={currentSource._id}
           source={currentSource.description}
           subtitle={subtitle}
           notes={notes}

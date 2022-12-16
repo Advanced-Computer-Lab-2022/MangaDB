@@ -7,6 +7,7 @@ import NotesManager from "../components/Notes/NotesManager";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import WarningAlert from "../components/UI/WarningAlert";
+import ContentCourseView from "../components/CourseView/ContentCourseView";
 
 //stub for the notes
 const notes = [
@@ -177,19 +178,18 @@ const CourseViewPage = () => {
 
   return (
     <Fragment>
-      <NavBar></NavBar>
-      <div className="flex justify-center items-center ">
+      <NavBar />
+      <div className="flex justify-center items-center">
         <div className="font-semibold text-2xl w-2/3">
           {receivedData.courseTitle}
         </div>
-        <ProgressManager></ProgressManager>
+        <ProgressManager />
       </div>
-
-      <div className="md:flex">
+      <div className="md:flex md:justify-between">
         <div className="video/exam md:w-7/12 w-full mb-4 md:mb-0">
           {displayedSource}
         </div>
-        <CourseContent
+        <ContentCourseView
           courseDuration="35"
           content={receivedData.subtitles}
           onClick={onSourceChangeHandler}

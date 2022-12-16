@@ -632,8 +632,66 @@ exports.getSourceNotes=async (req, res) => {
   }
 };
 
+exports.deleteNote=async (req, res) => {
+  const noteId = req.body.noteId;
+  const courseId  = req.body.courseId;
+  const sourceId  = req.body.sourceId;
+  const userId=req.body.userId;
+  try{
+    const userData=await user.findById(userId);
+    if(!userData){
+      res.status(404).send({
+        message: `User was not found!`,
+      });
+    }
+    else{
 
+      let courseIndex = -1;
+      let courseFound = false;
+      for (let i = 0; i < userData.courseDetails.length; i++) {
+        if (userData.courseDetails[i].course == courseId) {
+          courseIndex = i;
+          courseFound = true;
+          break;
+        }
+      }
 
+      if (!courseFound) {
+        res.status(400).send({
+          message: `User not registered in course`,
+        });
+      } else {
+        for(let i=0;i<userData.courseDetails[courseIndex].viewedSources.length;i++){
+          if(userData.courseDetails[courseIndex].viewedSources[i].sourceId==sourceId){
+            for(let j=0;j<userData.courseDetails[courseIndex].viewedSources[i].notes.length;j++){
+              if(userData.courseDetails[courseIndex].viewedSources[i].notes[j]._id==noteId){
+                userData.courseDetails[courseIndex].viewedSources[i].notes.splice(j,1);
+                await userData.save();
+                res.status(200).send({
+                  message: `Note deleted`,
+                });
+                return;
+              }
+            }
+            res.status(400).send({
+              message: `Note not found`,
+            });
+            return;
+          }
+        }
+        res.status(400).send({
+          message: `Source not found`,
+        });
+      }
+    }
+  }
+
+  catch(err){
+    res.status(500).send({
+      message: "Error in deleting note",
+    });
+  }
+};
 
 
 

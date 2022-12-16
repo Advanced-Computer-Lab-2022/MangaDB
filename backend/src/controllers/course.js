@@ -83,7 +83,6 @@ exports.getAllCourses = async (req, res, next) => {
 exports.getCourse = async (req, res, next) => {
   const courseId = req.params.id;
   const userId = req.query.uid;
-  console.log(userId);
   let foundCourse = await course.findById(courseId).catch((error) => {
     res.status(500).json({
       message: "Fetching course failed!",
@@ -96,25 +95,23 @@ exports.getCourse = async (req, res, next) => {
 
   foundCourse=await foundCourse.populate("subtitles.sources.quiz");
 
-  const foundUser = await user.findById(userId).catch((error) => {
+  const foundUser = await user.findOne({_id:userId}).catch((error) => {
     res.status(500).json({
       message: "Fetching user failed!",
     });
   });
-  let found=true; // to  be changed to false and uncomment for loop when token added
+
+  // to  be changed to false and uncomment for loop when token added
   let userCourseData=null;
-  for(let i=0;i<foundUser.courseDetails.length;i++){
-    if(foundUser.courseDetails[i].course==courseId){
-      userCourseData=foundUser.courseDetails[i];
-      found=true;
-      break;
+ 
+    for(let i=0;i<foundUser.courseDetails.length;i++){
+      if(foundUser.courseDetails[i].course==courseId){
+        userCourseData=foundUser.courseDetails[i];
+        break;
+      }
     }
-  }
-  if(!found){
-    res.status(400).json({
-      message: "You do ot have access to this course",
-      });
-  }
+
+  
 
   const countryCode = req.query.CC || "US";
   let countryDetails = await currencyConverter.convertCurrency(
@@ -123,7 +120,6 @@ exports.getCourse = async (req, res, next) => {
   );
   let exchangeRate = countryDetails.rate;
   let symbol = countryDetails.symbol;
-  console.log(userId);
   if (foundCourse) {
     foundCourse.coursePrice = (foundCourse.coursePrice * exchangeRate).toFixed(
       2

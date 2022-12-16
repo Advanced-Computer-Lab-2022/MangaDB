@@ -9,7 +9,7 @@ const icon = <TuneOutlinedIcon className="ml-2" />;
 const InstructorControls = (props) => {
   return (
     <Fragment>
-      <div className="flex md:justify-between justify-center mb-4">
+      <div className="flex md:justify-between justify-center my-4">
         <div className="flex space-x-4 md:ml-4">
           <div className="">
             <Search

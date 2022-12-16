@@ -4,7 +4,7 @@ const auth = require("../middleware/auth");
 
 router.get("/", courseController.getAllCourses);
 
-router.get("/:id", courseController.getCourse);
+router.get("/:id/:userId", courseController.getCourse);
 
 router.patch("/:id", courseController.updateCourse);
 
@@ -20,10 +20,6 @@ router.get("/mostrated", courseController.getMostRatedCourses);
 
 router.post("/addsubtitle/:id", courseController.addSubtitle);
 
-router.get("/rate/:id", courseController.getRating);
-
-
-
-
+router.get("/:id", courseController.getCourseRating);
 
 module.exports = router;

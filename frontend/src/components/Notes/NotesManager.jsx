@@ -9,7 +9,7 @@ const NotesManager = (props) => {
   const [currentTab, setCurrentTab] = useState("");
   const [timestamp, setTimeStamp] = useState(0);
   const [playing, setPlaying] = useState(true);
-  const [selected, setSelected] = useState({ id: 1, name: "All Lessons" });
+
 
   // add delete edit notes
   const addNote = (note) => {
@@ -132,7 +132,7 @@ const NotesManager = (props) => {
   };
 
   const selectedChangeHandler = (newSelected) => {
-    setSelected(newSelected);
+    props.changeNotesFilter(newSelected);
   };
 
   return (
@@ -150,7 +150,7 @@ const NotesManager = (props) => {
       ></ToolbarTabs>
       {showNotes && (
         <Notes
-          selected={selected}
+          selected={props.currentNotesFilter}
           selectedChangeHandler={selectedChangeHandler}
           timestamp={timestamp}
           stopVideo={stopVideo}

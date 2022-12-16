@@ -21,26 +21,55 @@ const CourseViewPage = () => {
   const [receivedUserData, setUserReceivedData] = useState({});
   const [showNextLessonAlert, setShowNextLessonAlert] = useState(false);
   const [notes, setNotes] = useState([]);
-  console.log(notes)
-  //useEffect at the start to receive the data
+  const [currentNotesFilter, setCurrentNotesFilter] = useState({
+    id: 1,
+    name: "All Lessons",
+  });
+
   useEffect(() => {
     const courseId = location.state;
     const userid = "638a07cdbc3508481a2d7da9";
-    //shouldnt we send the userId ??
-    axios
-      .get(
-        `http://localhost:3000/course/${courseId}?uid=638a07cdbc3508481a2d7da9`
-      )
-      .then((res) => {
-        setReceivedData(res.data.course);
-        setUserReceivedData(res.data.userData);
-        setCurrentSource(res.data.course.subtitles[0].sources[0]);
-      });
+    if (currentNotesFilter.name === "All Lessons") {
+      axios
+        .get(`http://localhost:3000/user/coursenotes/${userid}?cid=${courseId}`)
+        .then((res) => {
+          var notesSet = [];
+          for (var i = 0; i < res.data.noteData.length; i++) {
+            if (res.data.noteData[i].notes.length !== 0) {
+              for (var j = 0; j < res.data.noteData[i].notes.length; j++) {
+                var temp = {
+                  sourceId: res.data.noteData[i].sourceId,
+                  note: res.data.noteData[i].notes[j].note,
+                  timestamp: res.data.noteData[i].notes[j].timestamp,
+                  sourceDescription: `${
+                    res.data.noteData[i].sourceIndex + 1
+                  }. ${res.data.noteData[i].sourceDescription}`,
+                  subtitleDescription: `${
+                    res.data.noteData[i].subtitleIndex + 1
+                  }. ${res.data.noteData[i].subtitleDescription}`,
+               
+                };
+                notesSet.push(temp);
+              }
+            } else {
+              continue;
+            }
+          }
 
-    axios
-      .get(
-        `http://localhost:3000/user/coursenotes/${userid}?cid=${courseId}`
-      )
+          setNotes(notesSet);
+        });
+    }
+    else if( currentNotesFilter.name === "Current Section") {
+      var subtitleId
+      for (var i = 0; i < receivedData.subtitles.length; i++) {
+        for (var j = 0; j < receivedData.subtitles[i].sources.length; j++) {
+          if (currentSource._id === receivedData.subtitles[i].sources[j]._id) {
+            subtitleId = receivedData.subtitles[i]._id;
+          }
+        }
+      }
+      axios
+      .get(`http://localhost:3000/user/subtitlenotes/${userid}?cid=${courseId}&sid=${subtitleId}`)
       .then((res) => {
         var notesSet = [];
         for (var i = 0; i < res.data.noteData.length; i++) {
@@ -50,13 +79,13 @@ const CourseViewPage = () => {
                 sourceId: res.data.noteData[i].sourceId,
                 note: res.data.noteData[i].notes[j].note,
                 timestamp: res.data.noteData[i].notes[j].timestamp,
-                sourceDescription: `${res.data.noteData[i].sourceIndex + 1}. ${
-                  res.data.noteData[i].sourceDescription
-                }`,
+                sourceDescription: `${
+                  res.data.noteData[i].sourceIndex + 1
+                }. ${res.data.noteData[i].sourceDescription}`,
                 subtitleDescription: `${
                   res.data.noteData[i].subtitleIndex + 1
                 }. ${res.data.noteData[i].subtitleDescription}`,
-                _id: res.data.noteData[i]._id,
+             
               };
               notesSet.push(temp);
             }
@@ -67,9 +96,59 @@ const CourseViewPage = () => {
 
         setNotes(notesSet);
       });
+    }
+    else{
+      axios
+      .get(`http://localhost:3000/user/sourcenotes/${userid}?cid=${courseId}&sid=${currentSource._id}`)
+      .then((res) => {
+        var notesSet = [];
+        for (var i = 0; i <= res.data.noteData.length; i++) {
+          if (res.data.noteData[i].notes.length !== 0) {
+            for (var j = 0; j < res.data.noteData[i].notes.length; j++) {
+              var temp = {
+                sourceId: res.data.noteData[i].sourceId,
+                note: res.data.noteData[i].notes[j].note,
+                timestamp: res.data.noteData[i].notes[j].timestamp,
+                sourceDescription: `${
+                  res.data.noteData[i].sourceIndex + 1
+                }. ${res.data.noteData[i].sourceDescription}`,
+                subtitleDescription: `${
+                  res.data.noteData[i].subtitleIndex + 1
+                }. ${res.data.noteData[i].subtitleDescription}`,
+             
+              };
+              notesSet.push(temp);
+            }
+          } else {
+            continue;
+          }
+        }
+
+        setNotes(notesSet);
+      });
+    }
+  }, [currentNotesFilter, location.state , receivedData,currentSource]);
+
+  //useEffect at the start to receive the data
+  useEffect(() => {
+    const courseId = location.state;
+
+    //shouldnt we send the userId ??
+    axios
+      .get(
+        `http://localhost:3000/course/${courseId}?uid=638a07cdbc3508481a2d7da9`
+      )
+      .then((res) => {
+        setReceivedData(res.data.course);
+        setUserReceivedData(res.data.userData);
+        setCurrentSource(res.data.course.subtitles[0].sources[0]);
+      });
   }, [location.state]);
   const onSourceChangeHandler = (source) => {
     setCurrentSource(source);
+  };
+  const changeNotesFilter = (data) => {
+    setCurrentNotesFilter(data);
   };
 
   const onSolveExamHandler = (receivedSolution) => {
@@ -149,6 +228,8 @@ const CourseViewPage = () => {
     if (currentSource.sourceType === "Video") {
       displayedSource = (
         <NotesManager
+          currentNotesFilter={currentNotesFilter}
+          changeNotesFilter={changeNotesFilter}
           studentId="638a07cdbc3508481a2d7da9"
           courseId={receivedData._id}
           currentSourceId={currentSource._id}

@@ -12,14 +12,6 @@ const NotesManager = (props) => {
   const [playing, setPlaying] = useState(true);
   const [selected, setSelected] = useState({ id: 1, name: "All Lessons" });
 
-  //send to the backend the new notes
-  useEffect(() => {
-    //change the endpoint el variable esmo notes ya reda
-    axios.post("/api/notes", notes).then((res) => {
-      console.log(res);
-    });
-  }, [notes]);
-
   // add delete edit notes
   const addNote = (note) => {
     var obj = {
@@ -28,7 +20,13 @@ const NotesManager = (props) => {
       subtitleDescription: props.subtitle,
       timestamp: timestamp,
     };
+    var sentData ={
+      courseId : props.courseId,
+      sourceId : props.currentSourceId,
+      notes:[]
+    }
     var newNotes = [...notes, obj];
+    //axios.post(`http://localhost:3000/user/notes/${props.studentId}`)
     setNotes(newNotes);
   };
   const editNote = (noteIndex, newNote) => {

@@ -20,29 +20,51 @@ const CourseViewPage = () => {
   const [currentSource, setCurrentSource] = useState("");
   const [receivedUserData, setUserReceivedData] = useState({});
   const [showNextLessonAlert, setShowNextLessonAlert] = useState(false);
-  const [notes , setNotes] = useState([]);
-
+  const [notes, setNotes] = useState([]);
+ 
   //useEffect at the start to receive the data
   useEffect(() => {
     const courseId = location.state;
-    const userid= "638a07cdbc3508481a2d7da9"
+    const userid = "638a07cdbc3508481a2d7da9";
     //shouldnt we send the userId ??
     axios
-      .get(`http://localhost:3000/course/${courseId}?uid=638a07cdbc3508481a2d7da9`)
+      .get(
+        `http://localhost:3000/course/${courseId}?uid=638a07cdbc3508481a2d7da9`
+      )
       .then((res) => {
         setReceivedData(res.data.course);
         setUserReceivedData(res.data.userData);
         setCurrentSource(res.data.course.subtitles[0].sources[0]);
       });
-      axios.get(`http://localhost:3000/user/coursenotes/${userid}?cid=${courseId}`).then((res) => {
-        console.log(res.data)
-      })
-  
+    axios
+      .get(`http://localhost:3000/user/coursenotes/${userid}?cid=${courseId}`)
+      .then((res) => {
+        console.log(res.data.noteData);
+        var notesSet = [];
+        for (var i = 0; i < res.data.noteData.length; i++) {
+          if (res.data.noteData[i].notes.length!==0) {
+            console.log(res.data.noteData[i].notes)
+            for (var j = 0; j < res.data.noteData[i].notes.length; j++) {
+              var temp = {
+                sourceId: res.data.noteData[i].sourceId,
+                note: res.data.noteData[i].notes[j].note,
+                timestamp: res.data.noteData[i].notes[j].timestamp,
+                sourceDescription: `${res.data.noteData[i].sourceIndex +1}. ${res.data.noteData[i].sourceDescription}`,
+                subtitleDescription: `${res.data.noteData[i].subtitleIndex +1}. ${res.data.noteData[i].subtitleDescription}`,
+              };
+              notesSet.push(temp);
+            }
+          } else {
+            continue;
+          }
+        }
+        setNotes(notesSet);
+      });
   }, [location.state]);
   const onSourceChangeHandler = (source) => {
     setCurrentSource(source);
   };
-
+  
   const onSolveExamHandler = (receivedSolution) => {
     //should mark this as visited in the back and store the data
     //send the sourceId , examId ,userid and courseId
@@ -93,7 +115,7 @@ const CourseViewPage = () => {
       sourceId: currentSource._id,
     };
     axios
-      .post(endPoint, submittedData, {
+      .patch(endPoint, submittedData, {
         headers: {
           "Access-Control-Allow-Origin": "*",
         },
@@ -114,12 +136,11 @@ const CourseViewPage = () => {
   //we will have an array of viewed sources
   var displayedSource;
   if (currentSource !== "") {
-  
     if (currentSource.sourceType === "Video") {
       displayedSource = (
         <NotesManager
-          studentId= "638a07cdbc3508481a2d7da9"
-          courseId = {receivedData._id}
+          studentId="638a07cdbc3508481a2d7da9"
+          courseId={receivedData._id}
           currentSourceId={currentSource._id}
           source={currentSource.description}
           subtitle={subtitle}

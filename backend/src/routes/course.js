@@ -20,7 +20,7 @@ router.get("/mostrated", courseController.getMostRatedCourses);
 
 router.post("/addsubtitle/:id", courseController.addSubtitle);
 
-router.get("/rate/:id", courseController.getRating);
+router.get('/rate/:id', courseController.getCourseRating);
 
 
 

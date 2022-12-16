@@ -123,7 +123,7 @@ exports.getCourse = async (req, res, next) => {
   );
   let exchangeRate = countryDetails.rate;
   let symbol = countryDetails.symbol;
-  console.log(userCourseData);
+  console.log(userId);
   if (foundCourse) {
     foundCourse.coursePrice = (foundCourse.coursePrice * exchangeRate).toFixed(
       2

@@ -149,7 +149,7 @@ exports.login = async (req, res) => {
 };
 
 exports.getUserByRole = async (req, res) => {
-  const role = req.params.role;
+  const role = req.query.role;
   try {
     await user.find({ role }).then((data) => {
       if (!data)
@@ -385,7 +385,7 @@ exports.openSource = async (req, res) => {
 //probably useless
 exports.getProgress = async (req, res) => {
   const courseId = req.params.id;
-  const { id } = req.body;
+  const  id  = req.query.uid;
   try {
     const userData = await user.findById(id);
     if (!userData) {
@@ -489,7 +489,7 @@ exports.addNotes = async (req, res) => {
 
 exports.getCourseNotes = async (req, res) => {
   const id = req.params.id;
-  const { courseId } = req.body;
+  const  courseId  = req.query.cid;
   try {
     const userData = await user.findById(id);
     if (!userData) {
@@ -527,7 +527,9 @@ exports.getCourseNotes = async (req, res) => {
 
 exports.getSubtitleNotes = async (req, res) => {
   const id = req.params.id;
-  const { courseId, subtitleId } = req.body;
+  const  courseId  = req.query.cid;
+  const  subtitleId  = req.query.sid;
+  
   try {
     const userData = await user.findById(id);
     if (!userData) {
@@ -585,7 +587,9 @@ exports.getSubtitleNotes = async (req, res) => {
 
 exports.getSourceNotes=async (req, res) => {
   const id = req.params.id;
-  const { courseId, sourceId } = req.body;
+  const  courseId  = req.query.cid;
+  const  sourceId  = req.query.sid;
+
   try {
     const userData = await user.findById(id);
     if (!userData) {

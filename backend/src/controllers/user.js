@@ -527,10 +527,11 @@ exports.getCourseNotes = async (req, res) => {
 };
 
 exports.getSubtitleNotes = async (req, res) => {
+
   const id = req.params.id;
   const  courseId  = req.query.cid;
   const  subtitleId  = req.query.sid;
-  
+  console.log( id, courseId, subtitleId );
   try {
     const userData = await user.findById(id);
     if (!userData) {
@@ -590,7 +591,7 @@ exports.getSourceNotes=async (req, res) => {
   const id = req.params.id;
   const  courseId  = req.query.cid;
   const  sourceId  = req.query.sid;
-
+  console.log(id,courseId,sourceId);
   try {
     const userData = await user.findById(id);
     if (!userData) {

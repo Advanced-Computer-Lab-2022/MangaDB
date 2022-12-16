@@ -21,7 +21,7 @@ const CourseViewPage = () => {
   const [receivedUserData, setUserReceivedData] = useState({});
   const [showNextLessonAlert, setShowNextLessonAlert] = useState(false);
   const [notes, setNotes] = useState([]);
- 
+  console.log(notes)
   //useEffect at the start to receive the data
   useEffect(() => {
     const courseId = location.state;
@@ -36,21 +36,27 @@ const CourseViewPage = () => {
         setUserReceivedData(res.data.userData);
         setCurrentSource(res.data.course.subtitles[0].sources[0]);
       });
+
     axios
-      .get(`http://localhost:3000/user/coursenotes/${userid}?cid=${courseId}`)
+      .get(
+        `http://localhost:3000/user/coursenotes/${userid}?cid=${courseId}`
+      )
       .then((res) => {
-        console.log(res.data.noteData);
         var notesSet = [];
         for (var i = 0; i < res.data.noteData.length; i++) {
-          if (res.data.noteData[i].notes.length!==0) {
-            console.log(res.data.noteData[i].notes)
+          if (res.data.noteData[i].notes.length !== 0) {
             for (var j = 0; j < res.data.noteData[i].notes.length; j++) {
               var temp = {
                 sourceId: res.data.noteData[i].sourceId,
                 note: res.data.noteData[i].notes[j].note,
                 timestamp: res.data.noteData[i].notes[j].timestamp,
-                sourceDescription: `${res.data.noteData[i].sourceIndex +1}. ${res.data.noteData[i].sourceDescription}`,
-                subtitleDescription: `${res.data.noteData[i].subtitleIndex +1}. ${res.data.noteData[i].subtitleDescription}`,
+                sourceDescription: `${res.data.noteData[i].sourceIndex + 1}. ${
+                  res.data.noteData[i].sourceDescription
+                }`,
+                subtitleDescription: `${
+                  res.data.noteData[i].subtitleIndex + 1
+                }. ${res.data.noteData[i].subtitleDescription}`,
+                _id: res.data.noteData[i]._id,
               };
               notesSet.push(temp);
             }
@@ -58,13 +64,14 @@ const CourseViewPage = () => {
             continue;
           }
         }
+
         setNotes(notesSet);
       });
   }, [location.state]);
   const onSourceChangeHandler = (source) => {
     setCurrentSource(source);
   };
-  
+
   const onSolveExamHandler = (receivedSolution) => {
     //should mark this as visited in the back and store the data
     //send the sourceId , examId ,userid and courseId
@@ -106,6 +113,9 @@ const CourseViewPage = () => {
   const hideWarningAlert = () => {
     setShowNextLessonAlert(false);
   };
+  const notesChangeHandler = (newNotes) => {
+    setNotes(newNotes);
+  };
   const onWatchHandler = () => {
     //will need the userID , sourceId, courseId
     //the userID and courseid are given from the navigation
@@ -143,8 +153,9 @@ const CourseViewPage = () => {
           courseId={receivedData._id}
           currentSourceId={currentSource._id}
           source={currentSource.description}
-          subtitle={subtitle}
           notes={notes}
+          setNotes={notesChangeHandler}
+          subtitle={subtitle}
           isVisible={true}
           link={currentSource.link}
           onWatch={onWatchHandler}

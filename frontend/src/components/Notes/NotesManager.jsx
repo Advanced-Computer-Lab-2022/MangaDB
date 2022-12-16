@@ -5,7 +5,6 @@ import Video from "../Video/Video";
 import ToolbarTabs from "./ToolbarTabs";
 
 const NotesManager = (props) => {
-  const [notes, setNotes] = useState(props.notes);
   const [showNotes, setShowNotes] = useState(false);
   const [currentTab, setCurrentTab] = useState("");
   const [timestamp, setTimeStamp] = useState(0);
@@ -23,9 +22,9 @@ const NotesManager = (props) => {
     };
     var temp = [];
     var flag = false;
-    for (var i = 0; i < notes.length; i++) {
-      if (notes[i].sourceId === props.currentSourceId) {
-        temp.push(notes[i]);
+    for (var i = 0; i < props.notes.length; i++) {
+      if (props.notes[i].sourceId === props.currentSourceId) {
+        temp.push(props.notes[i]);
         flag = true;
       } else {
         if (flag) {
@@ -36,36 +35,80 @@ const NotesManager = (props) => {
     var sentData = {
       courseId: props.courseId,
       sourceId: props.currentSourceId,
-      notes: temp,
+      notes: [...temp, obj],
     };
-    var newNotes = [...notes, obj];
-    axios.patch(`http://localhost:3000/user/notes/${props.studentId}` , sentData)
-    setNotes(newNotes);
+    var newNotes = [...props.notes, obj];
+    axios.patch(
+      `http://localhost:3000/user/notes/${props.studentId}`,
+      sentData
+    );
+    props.setNotes(newNotes);
   };
+
   const editNote = (noteIndex, newNote) => {
     var newNotes = [];
-    for (var i = 0; i < notes.length; i++) {
+    var sourceId;
+    for (var i = 0; i < props.notes.length; i++) {
       if (noteIndex === i) {
+        sourceId = props.notes[i].sourceId;
         var obj = {
-          ...notes[i],
+          ...props.notes[i],
           note: newNote,
         };
         newNotes.push(obj);
       } else {
-        newNotes.push(notes[i]);
+        newNotes.push(props.notes[i]);
       }
     }
-    setNotes(newNotes);
+
+    var temp = [];
+
+    for (var j = 0; j < newNotes.length; j++) {
+      if (newNotes[j].sourceId === sourceId) {
+        temp.push(newNotes[j]);
+      }
+    }
+
+    var sentData = {
+      courseId: props.courseId,
+      sourceId: sourceId,
+      notes: temp,
+    };
+    axios.patch(
+      `http://localhost:3000/user/notes/${props.studentId}`,
+      sentData
+    );
+    props.setNotes(newNotes);
   };
 
   const deleteNote = (noteIndex) => {
     var newNotes = [];
-    for (var i = 0; i < notes.length; i++) {
+    var sourceId;
+    for (var i = 0; i < props.notes.length; i++) {
       if (noteIndex !== i) {
-        newNotes.push(notes[i]);
+        newNotes.push(props.notes[i]);
+      } else {
+        sourceId = props.notes[i].sourceId;
       }
     }
-    setNotes(newNotes);
+
+    var temp = [];
+
+    for (var j = 0; j < newNotes.length; j++) {
+      if (newNotes[j].sourceId === sourceId) {
+        temp.push(newNotes[j]);
+      }
+    }
+    var sentData = {
+      courseId: props.courseId,
+      sourceId: sourceId,
+      notes: temp,
+    };
+    axios.patch(
+      `http://localhost:3000/user/notes/${props.studentId}`,
+      sentData
+    );
+    props.setNotes(newNotes);
   };
 
   //controls
@@ -111,7 +154,7 @@ const NotesManager = (props) => {
           selectedChangeHandler={selectedChangeHandler}
           timestamp={timestamp}
           stopVideo={stopVideo}
-          notes={notes}
+          notes={props.notes}
           resumeVideo={resumeVideo}
           addNote={addNote}
           editNote={editNote}

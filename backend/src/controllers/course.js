@@ -609,17 +609,21 @@ exports.openCourse = async (req, res, next) => {
   });
 };
 
-exports.getCourseRating = async (req, res, next) => {
+exports.getCourseRating = async (req, res) => {
   const courseId = req.params.id;
-  const foundCourse = await course.findById(courseId).catch((error) => {
-    res.status(500).json({
-      message: "Fetching course failed!",
-    });
-  });
-  res.status(200).json({
+  try{
+  const foundCourse = await course.findById(courseId);
+    
+  return res.status(200).json({
     message: "Rating fetched successfully!",
     review: foundCourse.reviews,
   });
+  }catch(error){
+    return res.status(500).json({
+      message: "Fetching course failed!",
+    });
+  }
+
 };
 
 exports.getRating = async (req, res, next) => {

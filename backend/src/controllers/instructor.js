@@ -182,7 +182,7 @@ exports.deleteRating = async (req, res) => {
 
 exports.getRating = async (req, res) => {
     const instructorId = req.params.id;
-    const userId = req.body.userId;
+    const userId = req.query.userId;
     try {
         let foundInstructor=await user
         .findById(instructorId)

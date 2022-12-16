@@ -9,6 +9,8 @@ router.post("/access", requestController.requestCourseAccess);
 
 router.get("/",requestController.getRequests);
 
+router.get("/:id",requestController.getRequest);
+
 router.patch("/refund/:id", requestController.approveRefund);
 
 router.patch("/access/:id", requestController.grantAccess);

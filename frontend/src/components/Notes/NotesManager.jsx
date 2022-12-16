@@ -10,6 +10,7 @@ const NotesManager = (props) => {
   const [currentTab, setCurrentTab] = useState("");
   const [timestamp, setTimeStamp] = useState(0);
   const [playing, setPlaying] = useState(true);
+  const [selected, setSelected] = useState({ id: 1, name: "All Lessons" });
 
   //send to the backend the new notes
   useEffect(() => {
@@ -19,7 +20,6 @@ const NotesManager = (props) => {
     });
   }, [notes]);
 
- 
   // add delete edit notes
   const addNote = (note) => {
     var obj = {
@@ -28,7 +28,7 @@ const NotesManager = (props) => {
       subtitleDescription: props.subtitle,
       timestamp: timestamp,
     };
-    var newNotes =[...notes,obj]
+    var newNotes = [...notes, obj];
     setNotes(newNotes);
   };
   const editNote = (noteIndex, newNote) => {
@@ -69,13 +69,20 @@ const NotesManager = (props) => {
   };
 
   const onTabChangeHandler = (tab) => {
+    console.log(tab)
     setCurrentTab(tab);
     if (tab === "Notes") {
       setShowNotes(true);
     } else {
       setShowNotes(false);
+     
     }
   };
+
+  const selectedChangeHandler = (newSelected) => {
+    setSelected(newSelected);
+  };
+
   return (
     <Fragment>
       <Video
@@ -91,6 +98,8 @@ const NotesManager = (props) => {
       ></ToolbarTabs>
       {showNotes && (
         <Notes
+          selected={selected}
+          selectedChangeHandler={selectedChangeHandler}
           timestamp={timestamp}
           stopVideo={stopVideo}
           notes={notes}

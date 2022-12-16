@@ -36,7 +36,7 @@ const CourseReviews = (props) => {
     return (
       <ReviewItem
         rating={review.rating}
-        username={review.user}
+        username={review.userName}
         review={review.review}
         date={fullDate}
       />

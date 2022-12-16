@@ -2,15 +2,22 @@ import React from "react";
 import SubtitleAccordion from "./SubtitleAccordion";
 
 const CourseContent = (props) => {
-  var subtitles 
+  var subtitles;
+  var description;
+  var sourceIndex = 0;
+  var lastIndex = 0;
   if (props.content) {
-     subtitles = props.content.map((subtitle) => {
+    subtitles = props.content.map((subtitle, index) => {
+      description = `${index + 1}. `.concat(subtitle.description);
+      sourceIndex = sourceIndex + lastIndex;
+      lastIndex = subtitle.sources.length;
       return (
         <SubtitleAccordion
           onClick={props.onClick}
-          title={subtitle.description}
+          title={description}
           duration={subtitle.subtitleDuration}
           sources={subtitle.sources}
+          sourceIndex={sourceIndex}
         />
       );
     });

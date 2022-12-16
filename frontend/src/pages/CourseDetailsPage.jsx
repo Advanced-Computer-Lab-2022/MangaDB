@@ -8,57 +8,76 @@ import CourseContent from "../components/CourseDetailsComp/CourseContent";
 import CourseReviews from "../components/CourseDetailsComp/CourseReviews";
 import { useLocation } from "react-router-dom";
 
-const rev = [
-  {
-    rating: 1,
-    username: "Misho",
-    review:
-      "lorem Ipsum is simply  dummy. Lorem Ipsum is simply Lorem Ipsum. Lorem Ips    incorrectly reports that Lorem Ips is simply Lorem Ipsum. Lorem Ips incorrectly reports that Lorem Ips incorrectly reports that Lore      mips Lorem Ips incorrectly reports that Lore ",
-    date: "July 23, 2021",
-  },
-  {
-    rating: 2,
-    username: "Misho",
-    review: "This is review 2",
-    date: "July 23, 2021",
-  },
-  {
-    rating: 4.5,
-    username: "Misho",
-    review: "This is review 3",
-    date: "July 23, 2021",
-  },
-];
-
 const CourseDetailsPage = () => {
   const location = useLocation();
   const [courseDetails, setCourseDetails] = useState({});
   const [loaded, setLoaded] = useState(false);
   const [userRegistered, setUserRegistered] = useState(false);
+  const [courseReviews, setCourseReviews] = useState([]);
   useEffect(() => {
     const courseId = location.state.courseId;
-
-    axios.get("http://localhost:3000/course/".concat(courseId).concat("/638a07cdbc3508481a2d7da9")).then((res) => {
-      setCourseDetails(res.data.course);
-      console.log(res.data.course);
-      setLoaded(true);
-    });
-    const userId = "638a07cdbc3508481a2d7da9";
     axios
-      .post(`http://localhost:3000/invoice/${location.state.courseId}`, {
-        userId:userId,
-      })
-      .then((res) => {})
-      .catch((error) => {
+      .get(
+        "http://localhost:3000/course/"
+          .concat(courseId)
+          .concat("?uid=638a07cdbc3508481a2d7da9")
+      )
+      .then((res) => {
+        setCourseDetails(res.data.course);
+        console.log(res.data.course);
+        setLoaded(true);
         if (
-          +error.message.split(" ")[error.message.split(" ").length - 1] === 400
-        ) {
-          setUserRegistered(true);
-        } else {
-          setUserRegistered(false);
-        }
+          res.data.userData!==null
+        
+              ) {
+                setUserRegistered(true);
+              } else {
+                setUserRegistered(false);
+              }
       });
-  }, [location.state]);
+    const userId = "638a07cdbc3508481a2d7da9";
+   
+    // axios
+    //   .post(`http://localhost:3000/invoice/${location.state.courseId}`, {
+    //     userId: userId,
+    //   })
+    //   .then((res) => {})
+    //   .catch((error) => {
+    //     if (
+    //       +error.message.split(" ")[error.message.split(" ").length - 1] === 400
+    //     ) {
+    //       setUserRegistered(true);
+    //     } else {
+    //       setUserRegistered(false);
+    //     }
+    //   });
+
+    axios.get("http://localhost:3000/course/rate/".concat(courseId)).then((res) => {
+      // setCourseDetails(res.data.course);
+      // console.log(res.data.course);
+      // setLoaded(true);
+      setCourseReviews(res.data.review);
+    });
+
+    // axios
+    //   .get("http://localhost:3000/course/rate/".concat(courseId).concat("/"))
+    //   .then((res) => {
+    //     console.log(res);
+    //   });
+  }, []);
+
+  const submitReviewHandler = (data) => {
+    console.log(data);
+    const courseId = location.state.courseId;
+    axios
+      .post(
+        "http://localhost:3000/course/rate/".concat(courseId).concat("/"),
+        data
+      )
+      .then((res) => {
+        console.log(res);
+      });
+  };
 
   return (
     <Fragment>
@@ -85,10 +104,10 @@ const CourseDetailsPage = () => {
       />
       <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
         <div className="mb-3">Course Summary</div>
-        {/* <div className="ml-10 align-middle">{props.courseSummary}</div> */}
-        <div className="ml-10 align-middle font-normal">
-          {courseDetails.summary}
-        </div>
+        <div
+          className="ml-10 align-middle font-normal"
+          dangerouslySetInnerHTML={{ __html: courseDetails.summary }}
+        ></div>
       </div>
       {loaded && (
         <CourseContent
@@ -103,10 +122,11 @@ const CourseDetailsPage = () => {
           dangerouslySetInnerHTML={{ __html: courseDetails.requirements }}
         ></div>
       </div>
-      {!loaded && (
+      {loaded && (
         <CourseReviews
-          //reviews={courseDetails.reviews}
-          reviews={rev}
+          reviews={courseReviews}
+          onSubmit={submitReviewHandler}
+          userRegister={userRegistered}
         />
       )}
     </Fragment>

@@ -1,4 +1,4 @@
-import { useState, Fragment, useEffect } from "react";
+import { useState, Fragment } from "react";
 import axios from "axios";
 import Notes from "./Notes";
 import Video from "../Video/Video";
@@ -15,18 +15,31 @@ const NotesManager = (props) => {
   // add delete edit notes
   const addNote = (note) => {
     var obj = {
+      sourceId: props.currentSourceId,
       note: note,
       sourceDescription: props.source,
       subtitleDescription: props.subtitle,
       timestamp: timestamp,
     };
-    var sentData ={
-      courseId : props.courseId,
-      sourceId : props.currentSourceId,
-      notes:[]
+    var temp = [];
+    var flag = false;
+    for (var i = 0; i < notes.length; i++) {
+      if (notes[i].sourceId === props.currentSourceId) {
+        temp.push(notes[i]);
+        flag = true;
+      } else {
+        if (flag) {
+          break;
+        }
+      }
     }
+    var sentData = {
+      courseId: props.courseId,
+      sourceId: props.currentSourceId,
+      notes: temp,
+    };
     var newNotes = [...notes, obj];
-    //axios.post(`http://localhost:3000/user/notes/${props.studentId}`)
+    axios.patch(`http://localhost:3000/user/notes/${props.studentId}` , sentData)
     setNotes(newNotes);
   };
   const editNote = (noteIndex, newNote) => {
@@ -67,13 +80,11 @@ const NotesManager = (props) => {
   };
 
   const onTabChangeHandler = (tab) => {
-    console.log(tab)
     setCurrentTab(tab);
     if (tab === "Notes") {
       setShowNotes(true);
     } else {
       setShowNotes(false);
-     
     }
   };
 
@@ -87,7 +98,7 @@ const NotesManager = (props) => {
         playing={playing}
         isVisible={props.isVisible}
         link={props.link}
-        onWatch={props.onWatchHandler}
+        onWatch={props.onWatch}
         getTime={timeChangeHandler}
       ></Video>
       <ToolbarTabs

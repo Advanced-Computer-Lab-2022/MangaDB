@@ -11,9 +11,10 @@ import InstructorCoursesPage from "./pages/InstructorCoursesPage";
 import AddCoursePage from "./pages/AddCoursePage";
 import SignUp from "./pages/SignUp";
 import ResetPassword from "./pages/ResetPassword";
+
 function App() {
   return (
-    //navbar should be here
+   // navbar should be here
     <Routes>
       <Route path="/" element={<Login></Login>}></Route>
       <Route path="/signup" element = {<SignUp></SignUp>}></Route>
@@ -48,6 +49,7 @@ function App() {
         element={<AddCoursePage></AddCoursePage>}
       ></Route>
     </Routes>
+   
   );
 }
 export default App;

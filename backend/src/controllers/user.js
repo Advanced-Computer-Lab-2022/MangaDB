@@ -368,7 +368,7 @@ exports.openSource = async (req, res) => {
           sourceIndex: sourceIndex,
         });
         let percentage =
-          userData.courseDetails[courseIndex].viewedSources.length /
+          (userData.courseDetails[courseIndex].viewedSources.length+  userData.courseDetails[courseIndex].exams.length)/
           userData.courseDetails[courseIndex].totalSources;
         percentage = percentage.toFixed(2);
         userData.courseDetails[courseIndex].percentageCompleted = percentage;
@@ -638,18 +638,20 @@ exports.getSourceNotes=async (req, res) => {
 
 
 exports.solveExam=async (req, res) => {
+
   const myUser=await user.findOne({_id:req.body.userid});
   const courseId = req.body.courseid;
+  console.log(myUser);
+  console.log(courseId);
   try {
   if(!myUser){
     res.status(404).json({message:"User Not Found"});
     return;
   }
-  console.log(myUser.userName);
   let courseIndex=-1;
   let courseFound=false;
   for(let i=0;i<myUser.courseDetails.length;i++){
-    if(myUser.courseDetails[i].course[0]==courseId){
+    if(myUser.courseDetails[i].course==courseId){
       courseIndex=i;
       courseFound=true;
       break;

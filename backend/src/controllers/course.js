@@ -82,7 +82,8 @@ exports.getAllCourses = async (req, res, next) => {
 
 exports.getCourse = async (req, res, next) => {
   const courseId = req.params.id;
-  const userId = req.body.userId;
+  const userId = req.params.userId;
+  console.log(userId);
   let foundCourse = await course.findById(courseId).catch((error) => {
     res.status(500).json({
       message: "Fetching course failed!",
@@ -94,12 +95,13 @@ exports.getCourse = async (req, res, next) => {
     });
 
   foundCourse=await foundCourse.populate("subtitles.sources.quiz");
+
   const foundUser = await user.findById(userId).catch((error) => {
     res.status(500).json({
       message: "Fetching user failed!",
     });
   });
-  let found=false;
+  let found=true; // to  be changed to false and uncomment for loop when token added
   let userCourseData=null;
   for(let i=0;i<foundUser.courseDetails.length;i++){
     if(foundUser.courseDetails[i].course==courseId){
@@ -121,6 +123,7 @@ exports.getCourse = async (req, res, next) => {
   );
   let exchangeRate = countryDetails.rate;
   let symbol = countryDetails.symbol;
+  console.log(userId);
   if (foundCourse) {
     foundCourse.coursePrice = (foundCourse.coursePrice * exchangeRate).toFixed(
       2
@@ -373,7 +376,7 @@ exports.rateCourse = async (req, res, next) => {
     newRating = newRating.toFixed(2);
     foundCourse.rating = newRating;
     foundCourse.reviews.push({ user: userId,userName: foundUser.firstName + " "+foundUser.lastName , review: review, rating: rating });
-    foundCourse.save();
+    await foundCourse.save();
     res.status(200).json({
       message: "Course rated successfully!",
     });

@@ -248,6 +248,7 @@ exports.createCourse = async (req, res, next) => {
    
     courseDuration+=subDuration;
     subtitles[i].subtitleDuration=subDuration;
+    subDuration=0;
   }
   newCourse.subtitles=subtitles;
   newCourse.totalMins=courseDuration;

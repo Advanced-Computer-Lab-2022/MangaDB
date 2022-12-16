@@ -425,7 +425,6 @@ exports.getProgress = async (req, res) => {
 
 exports.addNotes = async (req, res) => {
   const id = req.params.id;
-  
   const { courseId, sourceId, notes } = req.body;
   try {
     const userData = await user.findById(id);

@@ -305,6 +305,7 @@ exports.getRegisteredCourses = async (req, res) => {
 exports.openSource = async (req, res) => {
   const courseId = req.params.id;
   const { userId, sourceId } = req.body;
+  console.log("Mr Reda");
   try {
     const userData = await user.findById(userId);
     if (!userData) {
@@ -367,10 +368,7 @@ exports.openSource = async (req, res) => {
           subtitleIndex: subtitleIndex,
           sourceIndex: sourceIndex,
         });
-        let percentage =
-          (userData.courseDetails[courseIndex].viewedSources.length+  userData.courseDetails[courseIndex].exams.length)/
-          userData.courseDetails[courseIndex].totalSources;
-        percentage = percentage.toFixed(2);
+        let percentage =userData.courseDetails[courseIndex].percentageCompleted+1;
         userData.courseDetails[courseIndex].percentageCompleted = percentage;
         await userData.save();
         res.status(200).send({ message: "source opened successfully" });
@@ -424,7 +422,6 @@ exports.getProgress = async (req, res) => {
 
 exports.addNotes = async (req, res) => {
   const id = req.params.id;
-  
   const { courseId, sourceId, notes } = req.body;
   try {
     const userData = await user.findById(id);
@@ -617,7 +614,7 @@ exports.getSourceNotes=async (req, res) => {
         for(let i=0;i<userData.courseDetails[courseIndex].viewedSources.length;i++){
           if(userData.courseDetails[courseIndex].viewedSources[i].sourceId==sourceId){
             res.status(200).send({
-              noteData: userData.courseDetails[courseIndex].viewedSources[i],
+              noteData: [userData.courseDetails[courseIndex].viewedSources[i]]
             });
             return;
           }
@@ -750,6 +747,7 @@ exports.solveExam=async (req, res) => {
       studentAnswers.push(studentAnswer);
     }
     myUser.courseDetails[courseIndex].exams.push({examId:req.body.examid,score:studentGrade,answers:studentAnswers});
+    myUser.courseDetails[courseIndex].percentageCompleted=myUser.courseDetails[courseIndex].percentageCompleted+1;;
     await myUser.save();
     res.status(200).json({score:studentGrade});
 

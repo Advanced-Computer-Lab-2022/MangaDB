@@ -102,7 +102,7 @@ const CourseViewPage = () => {
       .get(`http://localhost:3000/user/sourcenotes/${userid}?cid=${courseId}&sid=${currentSource._id}`)
       .then((res) => {
         var notesSet = [];
-        for (var i = 0; i <= res.data.noteData.length; i++) {
+        for (var i = 0; i < res.data.noteData.length; i++) {
           if (res.data.noteData[i].notes.length !== 0) {
             for (var j = 0; j < res.data.noteData[i].notes.length; j++) {
               var temp = {
@@ -198,6 +198,7 @@ const CourseViewPage = () => {
   const onWatchHandler = () => {
     //will need the userID , sourceId, courseId
     //the userID and courseid are given from the navigation
+    console.log("Mr Moataz");
     var endPoint = `http://localhost:3000/user/opensource/${receivedData._id}`;
     const submittedData = {
       userId: "638a07cdbc3508481a2d7da9",

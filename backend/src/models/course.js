@@ -41,9 +41,8 @@ const courseSchema = new mongoose.Schema({
   finalExam: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Exam",
-    required:false,
-  }
-  ,
+    required: false,
+  },
   reviews: {
     type: [
       {
@@ -57,9 +56,10 @@ const courseSchema = new mongoose.Schema({
         rating: {
           type: Number,
         },
-        date:{
-          type: Date,default:new Date(Date.now)
-        }
+        date: {
+          type: Date,
+          default: Date.now,
+        },
       },
     ],
   },
@@ -89,8 +89,7 @@ const courseSchema = new mongoose.Schema({
   },
   summary: {
     type: String,
-  }
-  ,
+  },
   level: {
     type: String,
     enum: ["Beginner", "Intermediate", "Advanced"],
@@ -100,7 +99,6 @@ const courseSchema = new mongoose.Schema({
   subtitles: {
     type: [
       {
-       
         subtitleDuration: {
           type: Number,
         },

@@ -9,8 +9,8 @@ const ReviewItem = (props) => {
   return (
     <div className="mt-2">
       <div className="text-lg font-medium flex space-x-4 items-center relative">
-        <div className="w-7 h-7 opacity-60">
-          <img src={User} />
+        <div className="w-7 h-7 rounded-full">
+          <Avatar round={true} size={30} textSizeRatio={2} name={props.username} />
         </div>
         <div>{props.username}</div>
         <Stars rating={props.rating} size={size} />

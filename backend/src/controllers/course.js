@@ -376,7 +376,7 @@ exports.rateCourse = async (req, res, next) => {
     newRating = newRating.toFixed(2);
     foundCourse.rating = newRating;
     foundCourse.reviews.push({ user: userId,userName: foundUser.firstName + " "+foundUser.lastName , review: review, rating: rating });
-    foundCourse.save();
+    await foundCourse.save();
     res.status(200).json({
       message: "Course rated successfully!",
     });

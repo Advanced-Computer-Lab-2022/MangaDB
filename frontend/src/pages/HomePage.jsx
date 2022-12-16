@@ -29,6 +29,8 @@ const HomePage = () => {
         setDisplayedCourses(res.data.courses);
         setCurrencySymbol(res.data.symbol);
       });
+
+      
   }, [countryCode]);
 
   //should handle the catch with error state

@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import { React, useState } from "react";
 import {
   Accordion,
   AccordionHeader,
@@ -23,11 +23,14 @@ const SubtitleAccordion = (props) => {
   ) : (
     <KeyboardArrowDownRoundedIcon />
   );
-  const sources = props.sources.map((source) => {
+  var description
+  var sourceIndex = 1;
+  const sources = props.sources.map((source ,index ) => {
+    description=`${index +1 + props.sourceIndex}. `.concat(source.description)
     return (
       <SubtitleBody
         onClick ={props.onClick}
-        description={source.description}
+        description={description}
         duration={source.sourceDuration}
         type={source.sourceType}
         link = {source.link}

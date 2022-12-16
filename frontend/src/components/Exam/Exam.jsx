@@ -135,12 +135,16 @@ const Exam = (props) => {
           //disabled={nextButtonState}
           onClick={
             selectedQuestion === props.exam.length
-              ? onSubmitHandler
+              ? props.solvedBefore
+                ? props.next
+                : onSubmitHandler
               : nextOnClickHandler
           }
           text={
             selectedQuestion === props.exam.length
-              ? "Submit Your answers"
+              ? props.solvedBefore
+                ? "Next Lesson"
+                : "Submit Your answers"
               : "Next Question"
           }
         ></SecondaryButton>

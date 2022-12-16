@@ -92,6 +92,7 @@ const HomePage = () => {
           autoPlay={true}
           rewindWithAnimation={true}
           itemClass="ml-2"
+          draggable={false}
           responsive={{
             desktop: {
               breakpoint: {

@@ -24,6 +24,8 @@ router.get('/progress/:id',userController.getProgress);
 
 router.patch('/notes/:id',userController.addNotes);
 
+router.delete('/notes',userController.deleteNote);
+
 router.get('/sourcenotes/:id',userController.getSourceNotes);
 
 router.get('/subtitlenotes/:id',userController.getSubtitleNotes);
@@ -56,6 +58,8 @@ router.get('/mycourses/:id',userController.getRegisteredCourses);
 // router.get('/progress/:id',auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]),userController.getProgress);
 
 // router.patch('/notes/:id',auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]),userController.addNotes);
+
+//router.delete('/notes',auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]),userController.deleteNote);
 
 // router.get('/sourcenotes/:id',auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]),userController.getSourceNotes);
 

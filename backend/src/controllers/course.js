@@ -628,7 +628,7 @@ exports.getCourseRating = async (req, res) => {
 
 exports.getRating = async (req, res, next) => {
   const courseId = req.params.id;
-  const userId = req.body.userId;
+  const userId = req.query.uid;
   const foundCourse = await course.findById(courseId).catch((error) => {
     res.status(500).json({
       message: "Fetching course failed!",

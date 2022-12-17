@@ -21,24 +21,27 @@ const CourseViewPage = () => {
   const [currentSource, setCurrentSource] = useState("");
   const [receivedUserData, setUserReceivedData] = useState({});
   const [showNextLessonAlert, setShowNextLessonAlert] = useState(false);
-  const [notes , setNotes] = useState([]);
+  const [notes, setNotes] = useState([]);
 
   //useEffect at the start to receive the data
   useEffect(() => {
     const courseId = location.state;
-    const userid= "638a07cdbc3508481a2d7da9"
+    const userid = "638a07cdbc3508481a2d7da9";
     //shouldnt we send the userId ??
     axios
-      .get(`http://localhost:3000/course/${courseId}?uid=638a07cdbc3508481a2d7da9`)
+      .get(
+        `http://localhost:3000/course/${courseId}?uid=638a07cdbc3508481a2d7da9`
+      )
       .then((res) => {
         setReceivedData(res.data.course);
         setUserReceivedData(res.data.userData);
         setCurrentSource(res.data.course.subtitles[0].sources[0]);
       });
-      axios.get(`http://localhost:3000/user/coursenotes/${userid}?cid=${courseId}`).then((res) => {
-        console.log(res.data)
-      })
-  
+    axios
+      .get(`http://localhost:3000/user/coursenotes/${userid}?cid=${courseId}`)
+      .then((res) => {
+        console.log(res.data);
+      });
   }, [location.state]);
   const onSourceChangeHandler = (source) => {
     setCurrentSource(source);
@@ -112,15 +115,15 @@ const CourseViewPage = () => {
       }
     }
   }
+  console.log(receivedData);
   //we will have an array of viewed sources
   var displayedSource;
   if (currentSource !== "") {
-  
     if (currentSource.sourceType === "Video") {
       displayedSource = (
         <NotesManager
-          studentId= "638a07cdbc3508481a2d7da9"
-          courseId = {receivedData._id}
+          studentId="638a07cdbc3508481a2d7da9"
+          courseId={receivedData._id}
           currentSourceId={currentSource._id}
           source={currentSource.description}
           subtitle={subtitle}
@@ -162,23 +165,38 @@ const CourseViewPage = () => {
   }
 
   return (
+    // <Fragment>
+    //   <NavBar />
+    //   <div className="flex justify-center items-center">
+    //     {/* <div className="font-semibold text-2xl w-2/3">
+    //       {receivedData.courseTitle}
+    //     </div> */}
+    //     {/* <ProgressManager /> */}
+    //   </div>
+    //   <div className="md:flex md:justify-between">
+    //     <div className="video/exam md:w-7/12 w-full mb-4 md:mb-0">
+    //       {displayedSource}
+    //     </div>
+    //     <ContentCourseView
+    //       courseDuration={receivedData.totalMins}
+    //       content={receivedData.subtitles}
+    //       onClick={onSourceChangeHandler}
+    //     />
+    //   </div>
+    // </Fragment>
     <Fragment>
       <NavBar />
-      <div className="flex justify-center items-center">
-        <div className="font-semibold text-2xl w-2/3">
-          {receivedData.courseTitle}
-        </div>
-        <ProgressManager />
-      </div>
-      <div className="md:flex md:justify-between">
-        <div className="video/exam md:w-7/12 w-full mb-4 md:mb-0">
+      <div className="flex">
+        <div className="video/exam md:w-[70%] w-full mb-4 md:mb-0">
           {displayedSource}
         </div>
-        <ContentCourseView
-          courseDuration="35"
-          content={receivedData.subtitles}
-          onClick={onSourceChangeHandler}
-        />
+        <div className="md:w-[30%]">
+          <ContentCourseView
+            courseDuration={receivedData.totalMins}
+            content={receivedData.subtitles}
+            onClick={onSourceChangeHandler}
+          />
+        </div>
       </div>
     </Fragment>
   );

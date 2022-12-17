@@ -1,5 +1,5 @@
 import React from "react";
-import SubtitleAccordion from "../CourseDetailsComp/SubtitleAccordion";
+import SubtitleAccordionCourseView from "./SubtitleAccordionCourseView";
 
 const ContentCourseView = (props) => {
   var subtitles;
@@ -12,7 +12,7 @@ const ContentCourseView = (props) => {
       sourceIndex = sourceIndex + lastIndex;
       lastIndex = subtitle.sources.length;
       return (
-        <SubtitleAccordion
+        <SubtitleAccordionCourseView
           onClick={props.onClick}
           title={description}
           duration={subtitle.subtitleDuration}
@@ -24,8 +24,8 @@ const ContentCourseView = (props) => {
   }
   const durationInHours = Math.round(+props.courseDuration / 60);
   return (
-    <div className="md:w-1/5 shadow-lg">
-      <div className="bg-gray-100 px-4 py-4 text-xl font-semibold rounded-t-md flex justify-between ">
+    <div className="md:h-[91.5vh] border-2 overflow-y-auto">
+      <div className="bg-gray-100 px-4 py-4 text-xl font-semibold flex justify-between ">
         <div>Course Content</div>
         <div className="bg-gray-200 px-4 rounded-full shadow-md font-medium mr-2">
           {durationInHours} hrs

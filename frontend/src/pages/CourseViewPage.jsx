@@ -25,7 +25,8 @@ const CourseViewPage = () => {
     id: 1,
     name: "All Lessons",
   });
-
+  const [progress, setProgress] = useState(0);
+  const [totalSources, setTotalSources] = useState(0);
   useEffect(() => {
     const courseId = location.state;
     const userid = "638a07cdbc3508481a2d7da9";
@@ -47,7 +48,74 @@ const CourseViewPage = () => {
                   subtitleDescription: `${
                     res.data.noteData[i].subtitleIndex + 1
                   }. ${res.data.noteData[i].subtitleDescription}`,
-               
+                };
+                notesSet.push(temp);
+              }
+            } else {
+              continue;
+            }
+          }
+
+          setNotes(notesSet);
+        });
+    } else if (currentNotesFilter.name === "Current Section") {
+      var subtitleId;
+      for (var i = 0; i < receivedData.subtitles.length; i++) {
+        for (var j = 0; j < receivedData.subtitles[i].sources.length; j++) {
+          if (currentSource._id === receivedData.subtitles[i].sources[j]._id) {
+            subtitleId = receivedData.subtitles[i]._id;
+          }
+        }
+      }
+      axios
+        .get(
+          `http://localhost:3000/user/subtitlenotes/${userid}?cid=${courseId}&sid=${subtitleId}`
+        )
+        .then((res) => {
+          var notesSet = [];
+          for (var i = 0; i < res.data.noteData.length; i++) {
+            if (res.data.noteData[i].notes.length !== 0) {
+              for (var j = 0; j < res.data.noteData[i].notes.length; j++) {
+                var temp = {
+                  sourceId: res.data.noteData[i].sourceId,
+                  note: res.data.noteData[i].notes[j].note,
+                  timestamp: res.data.noteData[i].notes[j].timestamp,
+                  sourceDescription: `${
+                    res.data.noteData[i].sourceIndex + 1
+                  }. ${res.data.noteData[i].sourceDescription}`,
+                  subtitleDescription: `${
+                    res.data.noteData[i].subtitleIndex + 1
+                  }. ${res.data.noteData[i].subtitleDescription}`,
+                };
+                notesSet.push(temp);
+              }
+            } else {
+              continue;
+            }
+          }
+
+          setNotes(notesSet);
+        });
+    } else {
+      axios
+        .get(
+          `http://localhost:3000/user/sourcenotes/${userid}?cid=${courseId}&sid=${currentSource._id}`
+        )
+        .then((res) => {
+          var notesSet = [];
+          for (var i = 0; i < res.data.noteData.length; i++) {
+            if (res.data.noteData[i].notes.length !== 0) {
+              for (var j = 0; j < res.data.noteData[i].notes.length; j++) {
+                var temp = {
+                  sourceId: res.data.noteData[i].sourceId,
+                  note: res.data.noteData[i].notes[j].note,
+                  timestamp: res.data.noteData[i].notes[j].timestamp,
+                  sourceDescription: `${
+                    res.data.noteData[i].sourceIndex + 1
+                  }. ${res.data.noteData[i].sourceDescription}`,
+                  subtitleDescription: `${
+                    res.data.noteData[i].subtitleIndex + 1
+                  }. ${res.data.noteData[i].subtitleDescription}`,
                 };
                 notesSet.push(temp);
               }
@@ -59,75 +127,7 @@ const CourseViewPage = () => {
           setNotes(notesSet);
         });
     }
-    else if( currentNotesFilter.name === "Current Section") {
-      var subtitleId
-      for (var i = 0; i < receivedData.subtitles.length; i++) {
-        for (var j = 0; j < receivedData.subtitles[i].sources.length; j++) {
-          if (currentSource._id === receivedData.subtitles[i].sources[j]._id) {
-            subtitleId = receivedData.subtitles[i]._id;
-          }
-        }
-      }
-      axios
-      .get(`http://localhost:3000/user/subtitlenotes/${userid}?cid=${courseId}&sid=${subtitleId}`)
-      .then((res) => {
-        var notesSet = [];
-        for (var i = 0; i < res.data.noteData.length; i++) {
-          if (res.data.noteData[i].notes.length !== 0) {
-            for (var j = 0; j < res.data.noteData[i].notes.length; j++) {
-              var temp = {
-                sourceId: res.data.noteData[i].sourceId,
-                note: res.data.noteData[i].notes[j].note,
-                timestamp: res.data.noteData[i].notes[j].timestamp,
-                sourceDescription: `${
-                  res.data.noteData[i].sourceIndex + 1
-                }. ${res.data.noteData[i].sourceDescription}`,
-                subtitleDescription: `${
-                  res.data.noteData[i].subtitleIndex + 1
-                }. ${res.data.noteData[i].subtitleDescription}`,
-             
-              };
-              notesSet.push(temp);
-            }
-          } else {
-            continue;
-          }
-        }
-
-        setNotes(notesSet);
-      });
-    }
-    else{
-      axios
-      .get(`http://localhost:3000/user/sourcenotes/${userid}?cid=${courseId}&sid=${currentSource._id}`)
-      .then((res) => {
-        var notesSet = [];
-        for (var i = 0; i < res.data.noteData.length; i++) {
-          if (res.data.noteData[i].notes.length !== 0) {
-            for (var j = 0; j < res.data.noteData[i].notes.length; j++) {
-              var temp = {
-                sourceId: res.data.noteData[i].sourceId,
-                note: res.data.noteData[i].notes[j].note,
-                timestamp: res.data.noteData[i].notes[j].timestamp,
-                sourceDescription: `${
-                  res.data.noteData[i].sourceIndex + 1
-                }. ${res.data.noteData[i].sourceDescription}`,
-                subtitleDescription: `${
-                  res.data.noteData[i].subtitleIndex + 1
-                }. ${res.data.noteData[i].subtitleDescription}`,
-             
-              };
-              notesSet.push(temp);
-            }
-          } else {
-            continue;
-          }
-        }
-
-        setNotes(notesSet);
-      });
-    }
-  }, [currentNotesFilter, location.state , receivedData,currentSource]);
+  }, [currentNotesFilter, location.state, receivedData, currentSource]);
 
   //useEffect at the start to receive the data
   useEffect(() => {
@@ -139,9 +139,12 @@ const CourseViewPage = () => {
         `http://localhost:3000/course/${courseId}?uid=638a07cdbc3508481a2d7da9`
       )
       .then((res) => {
+        console.log(res);
         setReceivedData(res.data.course);
         setUserReceivedData(res.data.userData);
         setCurrentSource(res.data.course.subtitles[0].sources[0]);
+        setProgress(res.data.userData.percentageCompleted);
+        setTotalSources(res.data.userData.totalSources);
       });
   }, [location.state]);
   const onSourceChangeHandler = (source) => {
@@ -198,10 +201,10 @@ const CourseViewPage = () => {
   const onWatchHandler = () => {
     //will need the userID , sourceId, courseId
     //the userID and courseid are given from the navigation
-    console.log("Mr Moataz");
     var endPoint = `http://localhost:3000/user/opensource/${receivedData._id}`;
+    const userId = "638a07cdbc3508481a2d7da9";
     const submittedData = {
-      userId: "638a07cdbc3508481a2d7da9",
+      userId: userId,
       sourceId: currentSource._id,
     };
     axios
@@ -211,6 +214,14 @@ const CourseViewPage = () => {
         },
       })
       .then((res) => {});
+
+    axios
+      .get(
+        `http://localhost:3000/user/progress/${receivedData._id}?uid=${userId}`
+      )
+      .then((res) => {
+        setProgress(res.data.percentage);
+      });
   };
 
   if (currentSource !== "") {
@@ -281,7 +292,10 @@ const CourseViewPage = () => {
         <div className="font-semibold text-2xl w-2/3">
           {receivedData.courseTitle}
         </div>
-        <ProgressManager></ProgressManager>
+        <ProgressManager
+          progress={progress}
+          totalSources={totalSources}
+        ></ProgressManager>
       </div>
 
       <div className="md:flex">

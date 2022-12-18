@@ -167,7 +167,9 @@ exports.requestRefund = async (req, res) => {
                     message: "Request not found!",
                 });
                 }
-            
+                if(foundRequest.status=="accepted"){
+                  return res.status(400).json({message: "Request already accepted!"});
+              }
             const foundUser = await user.findById(foundRequest.user);
             let courseIndex=-1;
             let courseFound=false;
@@ -217,7 +219,9 @@ exports.requestRefund = async (req, res) => {
                     message: "Request not found!",
                 });
                 }
-            
+            if(foundRequest.status=="accepted"){
+                return res.status(400).json({message: "Request already accepted!"});
+            }
             const foundUser = await user.findById(foundRequest.user);
         
             const foundCourse = await course.findById(foundRequest.course);

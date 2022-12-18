@@ -68,14 +68,15 @@ exports.issueInvoice = async (req, res) => {
             if (!data) {
               res.status(500).send({
                 message: "Error in payment",
-                invoiceId: newInvoice._id,
+               
               });
               return;
             }
   
             res.send({
               message: "user undergoing payment, invoice will be issued",
-              data,
+              link: data,
+              invoiceId: newInvoice._id
             });
           });
         }

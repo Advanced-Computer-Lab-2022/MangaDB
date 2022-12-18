@@ -31,11 +31,11 @@ const NotesForm = (props) => {
     <div className="m-4 w-full">
       <ReactQuill
         modules={{ toolbar: toolbarOptions }}
-        className="bg-white rounded-md"
+        className="bg-white rounded-md h-28"
         value={currentNote}
         onChange={changeHandler}
       />
-      <div className="flex justify-end items-center mt-2">
+      <div className="flex justify-end items-center mt-[3.25rem]">
         <TertiaryButton onClick={cancelHandler} text="Cancel"></TertiaryButton>
         <SecondaryButton
           onClick={onSaveHandler}

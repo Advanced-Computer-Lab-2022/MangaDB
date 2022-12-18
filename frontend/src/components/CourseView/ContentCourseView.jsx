@@ -24,7 +24,7 @@ const ContentCourseView = (props) => {
   }
   const durationInHours = Math.round(+props.courseDuration / 60);
   return (
-    <div className="md:h-[91.5vh] border-2 overflow-y-auto">
+    <div className="md:h-[92vh] border-2 overflow-y-auto sticky top-[4.2rem]">
       <div className="bg-gray-100 px-4 py-4 text-xl font-semibold flex justify-between ">
         <div>Course Content</div>
         <div className="bg-gray-200 px-4 rounded-full shadow-md font-medium mr-2">

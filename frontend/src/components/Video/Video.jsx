@@ -28,7 +28,7 @@ const Video = (props) => {
         playing={props.playing}
         ref={playerRef}
         url={embeddedURL}
-        onPlay={props.onWatch}
+        onStart={props.onWatch }
         onReady={onReadyHandler}
         onProgress={progressHandler}
       />

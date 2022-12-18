@@ -7,6 +7,7 @@ import NotesManager from "../components/Notes/NotesManager";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import WarningAlert from "../components/UI/WarningAlert";
+import ContentCourseView from "../components/CourseView/ContentCourseView";
 
 const CourseViewPage = () => {
   //will give the backend the id of the clicked course , then will fetch all the details about that course
@@ -132,7 +133,6 @@ const CourseViewPage = () => {
   //useEffect at the start to receive the data
   useEffect(() => {
     const courseId = location.state;
-
     //shouldnt we send the userId ??
     axios
       .get(
@@ -234,6 +234,7 @@ const CourseViewPage = () => {
       }
     }
   }
+  console.log(receivedData);
   //we will have an array of viewed sources
   var displayedSource;
   if (currentSource !== "") {
@@ -286,27 +287,38 @@ const CourseViewPage = () => {
   }
 
   return (
+    // <Fragment>
+    //   <NavBar />
+    //   <div className="flex justify-center items-center">
+    //     {/* <div className="font-semibold text-2xl w-2/3">
+    //       {receivedData.courseTitle}
+    //     </div> */}
+    //     {/* <ProgressManager /> */}
+    //   </div>
+    //   <div className="md:flex md:justify-between">
+    //     <div className="video/exam md:w-7/12 w-full mb-4 md:mb-0">
+    //       {displayedSource}
+    //     </div>
+    //     <ContentCourseView
+    //       courseDuration={receivedData.totalMins}
+    //       content={receivedData.subtitles}
+    //       onClick={onSourceChangeHandler}
+    //     />
+    //   </div>
+    // </Fragment>
     <Fragment>
-      <NavBar></NavBar>
-      <div className="flex justify-center items-center ">
-        <div className="font-semibold text-2xl w-2/3">
-          {receivedData.courseTitle}
-        </div>
-        <ProgressManager
-          progress={progress}
-          totalSources={totalSources}
-        ></ProgressManager>
-      </div>
-
-      <div className="md:flex">
-        <div className="video/exam md:w-7/12 w-full mb-4 md:mb-0">
+      <NavBar />
+      <div className="flex">
+        <div className="video/exam md:w-[70%] w-full mb-4 md:mb-0">
           {displayedSource}
         </div>
-        <CourseContent
-          courseDuration="35"
-          content={receivedData.subtitles}
-          onClick={onSourceChangeHandler}
-        />
+        <div className="md:w-[30%]">
+          <ContentCourseView
+            courseDuration={receivedData.totalMins}
+            content={receivedData.subtitles}
+            onClick={onSourceChangeHandler}
+          />
+        </div>
       </div>
     </Fragment>
   );

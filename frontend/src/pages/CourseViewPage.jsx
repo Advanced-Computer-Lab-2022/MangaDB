@@ -308,12 +308,15 @@ const CourseViewPage = () => {
     // </Fragment>
     <Fragment>
       <NavBar />
+      {/* <ProgressManager progress={progress} totalSources={totalSources} /> */}
       <div className="flex">
         <div className="video/exam md:w-[70%] w-full mb-4 md:mb-0">
           {displayedSource}
         </div>
         <div className="md:w-[30%]">
           <ContentCourseView
+            progress={progress}
+            totalSources={totalSources}
             courseDuration={receivedData.totalMins}
             content={receivedData.subtitles}
             onClick={onSourceChangeHandler}

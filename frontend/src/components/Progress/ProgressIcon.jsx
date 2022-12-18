@@ -8,6 +8,7 @@ const ProgressIcon = (props) => {
       styles={{
         root: { width: "54px", height: "54px" },
         text: { fill: "black" },
+        path: { stroke: "#74a0d1" }
       }}
       value={percentage}
       text={`${percentage}% `}

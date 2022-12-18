@@ -29,11 +29,13 @@
     "iso-country-currency": "^0.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.6.6",
+    "node": "^19.2.0",
     "node-schedule": "^2.1.0",
     "nodemailer": "^6.8.0",
     "nodemon": "^2.0.20",
     "react": "^18.2.0",
     "react-avatar": "^5.0.3",
+    "schedule": "^0.5.0",
     "stripe": "^11.1.0",
     "youtube-embed": "^1.0.0"
   },

@@ -29,6 +29,8 @@ const HomePage = () => {
         setDisplayedCourses(res.data.courses);
         setCurrencySymbol(res.data.symbol);
       });
+
+      
   }, [countryCode]);
 
   //should handle the catch with error state
@@ -90,6 +92,7 @@ const HomePage = () => {
           autoPlay={true}
           rewindWithAnimation={true}
           itemClass="ml-2"
+          draggable={false}
           responsive={{
             desktop: {
               breakpoint: {

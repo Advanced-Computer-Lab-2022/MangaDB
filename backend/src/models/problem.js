@@ -7,9 +7,17 @@ const problemSchema = new mongoose.Schema({
         ref: "Course",
         required: true,
     },
+    courseName: {
+        type: String,
+        required: true,
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
+        required: true,
+    },
+    userName: {
+        type: String,
         required: true,
     },
     type: {
@@ -18,13 +26,10 @@ const problemSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["pending", "resolved"],
-        default: "pending",
+        enum: ["unseen","pending", "resolved"],
+        default: "unseen",
     },
-    seen: {
-        type: Boolean,
-        default: false,
-    },
+    
     date: {
         type: Date,
         default: Date.now,

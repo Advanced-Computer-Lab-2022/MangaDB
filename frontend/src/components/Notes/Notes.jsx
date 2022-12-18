@@ -1,6 +1,7 @@
 import { Fragment, useState } from "react";
 import NotesForm from "./NotesForm";
 import NotesCard from "./NotesCard";
+import NotesSelector from "./NotesSelector";
 const Notes = (props) => {
   const [showForm, setShowForm] = useState(false);
   const onShowHandler = () => {
@@ -10,7 +11,7 @@ const Notes = (props) => {
   const onHidehandler = () => {
     setShowForm(false);
   };
-  const displayedNotes = props.notes.map((note ,index) => {
+  const displayedNotes = props.notes.map((note, index) => {
     return (
       <NotesCard
         editNote={props.editNote.bind(null, index)}
@@ -56,6 +57,13 @@ const Notes = (props) => {
           ></NotesForm>
         </div>
       )}
+      <div className=" items-center m-4 w-[50%]">
+        <NotesSelector
+          selected={props.selected}
+          selectedChangeHandler={props.selectedChangeHandler}
+        ></NotesSelector>
+      </div>
+
       <div className="mt-8"> {displayedNotes}</div>
     </Fragment>
   );

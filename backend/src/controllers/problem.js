@@ -14,7 +14,9 @@ exports.createProblem = async (req, res) => {
 
   const newProblem = new problem({
     course: courseId,
+    courseName: foundCourse.courseTitle,
     user: user,
+    userName:"httzabat lma n3ml l token",
     type: type,
     description: description,
   });
@@ -27,8 +29,21 @@ exports.createProblem = async (req, res) => {
 };
 
 exports.getProblems = async (req, res) => {
+  const status=req.query.status;
+  const type=req.query.type;
+
+  let query1 = {};
+  let query2 = {};
+  if (status) {
+    query1 = { status: { $regex: status, $options: "i" } };
+  }
+
+  if (type) {
+    query2 = { type: { $regex: type, $options: "i" } };
+  }
+  const query = { $and: [query1, query2] };
   try {
-    const problems = await problem.find().sort({ date: -1 });
+    const problems = await problem.find(query).sort({ date: -1 });
     res.send(problems);
   } catch (error) {
     res.status(500).send(error);
@@ -111,8 +126,20 @@ exports.followUpProblem = async (req, res) => {
 
 exports.getUserProblems = async (req, res) => {
     const _id = req.params.id;
+    const status=req.query.status;
+  const type=req.query.type;
+
+  let query1 = {};
+  let query2 = {};
+  if (status) {
+    query1 = { status: { $regex: status, $options: "i" } };
+  }
+  if (type) {
+    query2 = { type: { $regex: type, $options: "i" } };
+  }
+  const query = { $and: [query1, query2,{ user: _id }] };
     try {
-        const problems = await problem.find({ user: _id }).sort({ date: -1 });
+        const problems = await problem.find(query).sort({ date: -1 });
         res.send(problems);
     } catch (error) {
         res.status(500).send("Internal server error");
@@ -120,9 +147,26 @@ exports.getUserProblems = async (req, res) => {
 };
 
 exports.getCourseProblems = async (req, res) => {
-    const _id = req.params.id;
+  const _id = req.params.id;
+  const status=req.query.status;
+const seen=req.query.seen;
+const type=req.query.type;
+
+let query1 = {};
+let query2 = {};
+let query3 = {};
+if (status) {
+  query1 = { status: { $regex: status, $options: "i" } };
+}
+if (seen) {  
+    query2 = { seen: seen };
+}
+if (type) {
+  query3 = { type: { $regex: type, $options: "i" } };
+}
+const query = { $and: [query1, query2, query3,{ course: _id }] };
     try {
-        const problems = await problem.find({ course: _id }).sort({ date: -1 });
+        const problems = await problem.find(query).sort({ date: -1 });
         res.send(problems);
     } catch (error) {
         res.status(500).send("Internal server error");

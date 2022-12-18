@@ -149,7 +149,7 @@ exports.login = async (req, res) => {
 };
 
 exports.getUserByRole = async (req, res) => {
-  const role = req.params.role;
+  const role = req.query.role;
   try {
     await user.find({ role }).then((data) => {
       if (!data)
@@ -367,10 +367,7 @@ exports.openSource = async (req, res) => {
           subtitleIndex: subtitleIndex,
           sourceIndex: sourceIndex,
         });
-        let percentage =
-          (userData.courseDetails[courseIndex].viewedSources.length+  userData.courseDetails[courseIndex].exams.length)/
-          userData.courseDetails[courseIndex].totalSources;
-        percentage = percentage.toFixed(2);
+        let percentage =userData.courseDetails[courseIndex].percentageCompleted+1;
         userData.courseDetails[courseIndex].percentageCompleted = percentage;
         await userData.save();
         res.status(200).send({ message: "source opened successfully" });
@@ -385,7 +382,7 @@ exports.openSource = async (req, res) => {
 //probably useless
 exports.getProgress = async (req, res) => {
   const courseId = req.params.id;
-  const { id } = req.body;
+  const  id  = req.query.uid;
   try {
     const userData = await user.findById(id);
     if (!userData) {
@@ -489,7 +486,7 @@ exports.addNotes = async (req, res) => {
 
 exports.getCourseNotes = async (req, res) => {
   const id = req.params.id;
-  const { courseId } = req.body;
+  const  courseId  = req.query.cid;
   try {
     const userData = await user.findById(id);
     if (!userData) {
@@ -526,8 +523,11 @@ exports.getCourseNotes = async (req, res) => {
 };
 
 exports.getSubtitleNotes = async (req, res) => {
+
   const id = req.params.id;
-  const { courseId, subtitleId } = req.body;
+  const  courseId  = req.query.cid;
+  const  subtitleId  = req.query.sid;
+  console.log( id, courseId, subtitleId );
   try {
     const userData = await user.findById(id);
     if (!userData) {
@@ -585,7 +585,9 @@ exports.getSubtitleNotes = async (req, res) => {
 
 exports.getSourceNotes=async (req, res) => {
   const id = req.params.id;
-  const { courseId, sourceId } = req.body;
+  const  courseId  = req.query.cid;
+  const  sourceId  = req.query.sid;
+  console.log(id,courseId,sourceId);
   try {
     const userData = await user.findById(id);
     if (!userData) {
@@ -611,7 +613,7 @@ exports.getSourceNotes=async (req, res) => {
         for(let i=0;i<userData.courseDetails[courseIndex].viewedSources.length;i++){
           if(userData.courseDetails[courseIndex].viewedSources[i].sourceId==sourceId){
             res.status(200).send({
-              noteData: userData.courseDetails[courseIndex].viewedSources[i],
+              noteData: [userData.courseDetails[courseIndex].viewedSources[i]]
             });
             return;
           }
@@ -628,8 +630,66 @@ exports.getSourceNotes=async (req, res) => {
   }
 };
 
+exports.deleteNote=async (req, res) => {
+  const noteId = req.body.noteId;
+  const courseId  = req.body.courseId;
+  const sourceId  = req.body.sourceId;
+  const userId=req.body.userId;
+  try{
+    const userData=await user.findById(userId);
+    if(!userData){
+      res.status(404).send({
+        message: `User was not found!`,
+      });
+    }
+    else{
 
+      let courseIndex = -1;
+      let courseFound = false;
+      for (let i = 0; i < userData.courseDetails.length; i++) {
+        if (userData.courseDetails[i].course == courseId) {
+          courseIndex = i;
+          courseFound = true;
+          break;
+        }
+      }
 
+      if (!courseFound) {
+        res.status(400).send({
+          message: `User not registered in course`,
+        });
+      } else {
+        for(let i=0;i<userData.courseDetails[courseIndex].viewedSources.length;i++){
+          if(userData.courseDetails[courseIndex].viewedSources[i].sourceId==sourceId){
+            for(let j=0;j<userData.courseDetails[courseIndex].viewedSources[i].notes.length;j++){
+              if(userData.courseDetails[courseIndex].viewedSources[i].notes[j]._id==noteId){
+                userData.courseDetails[courseIndex].viewedSources[i].notes.splice(j,1);
+                await userData.save();
+                res.status(200).send({
+                  message: `Note deleted`,
+                });
+                return;
+              }
+            }
+            res.status(400).send({
+              message: `Note not found`,
+            });
+            return;
+          }
+        }
+        res.status(400).send({
+          message: `Source not found`,
+        });
+      }
+    }
+  }
+
+  catch(err){
+    res.status(500).send({
+      message: "Error in deleting note",
+    });
+  }
+};
 
 
 
@@ -637,6 +697,8 @@ exports.solveExam=async (req, res) => {
 
   const myUser=await user.findOne({_id:req.body.userid});
   const courseId = req.body.courseid;
+  console.log(myUser);
+  console.log(courseId);
   try {
   if(!myUser){
     res.status(404).json({message:"User Not Found"});
@@ -684,6 +746,7 @@ exports.solveExam=async (req, res) => {
       studentAnswers.push(studentAnswer);
     }
     myUser.courseDetails[courseIndex].exams.push({examId:req.body.examid,score:studentGrade,answers:studentAnswers});
+    myUser.courseDetails[courseIndex].percentageCompleted=myUser.courseDetails[courseIndex].percentageCompleted+1;;
     await myUser.save();
     res.status(200).json({score:studentGrade});
 

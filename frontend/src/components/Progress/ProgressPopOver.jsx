@@ -16,8 +16,8 @@ const ProgressPopOver =(props) => {
         }}
       >
         <PopoverHandler>
-          <Button className="bg-blue-300 border-transparent" variant="gradient">
-            Your Progress{" "}
+          <Button className="bg-primaryBlue border-transparent" variant="gradient">
+            Progress{" "}
           </Button>
         </PopoverHandler>
         <PopoverContent>

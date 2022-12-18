@@ -1,5 +1,6 @@
 import React from "react";
 import SubtitleAccordionCourseView from "./SubtitleAccordionCourseView";
+import ProgressManager from "../Progress/ProgressManager";
 
 const ContentCourseView = (props) => {
   var subtitles;
@@ -25,10 +26,18 @@ const ContentCourseView = (props) => {
   const durationInHours = Math.round(+props.courseDuration / 60);
   return (
     <div className="md:h-[92vh] border-2 overflow-y-auto sticky top-[4.2rem]">
-      <div className="bg-gray-100 px-4 py-4 text-xl font-semibold flex justify-between ">
-        <div>Course Content</div>
-        <div className="bg-gray-200 px-4 rounded-full shadow-md font-medium mr-2">
-          {durationInHours} hrs
+      <div className="bg-gray-100 px-4 py-4 text-xl font-semibold flex justify-between">
+        <div>
+          <div>Course Content</div>
+          <div className="font-normal text-base text-gray-600">
+            Course Duration: {durationInHours} hrs
+          </div>
+        </div>
+        <div>
+          <ProgressManager
+            progress={props.progress}
+            totalSources={props.totalSources}
+          />
         </div>
       </div>
       <div className="py-2 px-8">{subtitles}</div>

@@ -20,9 +20,12 @@ export default function ReportsRequestsManager(props) {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleClickVariant = (variant) => {
-    console.log("here");
+    //console.log("here");
     // variant could be success, error, warning, info, or default
-    enqueueSnackbar("Status has been updated successfuly  ", { variant });
+    if(variant === "success")
+      enqueueSnackbar("Status has been updated successfuly", { variant });
+      else
+      enqueueSnackbar("This user already has access to this course", { variant });
   };
 
   const [value1, setValue1] = useState(0);
@@ -127,6 +130,13 @@ export default function ReportsRequestsManager(props) {
         .then((res) => {
           getData();
           handleClickVariant("success");
+        })
+        .catch((error) => {
+          if (
+            +error.message.split(" ")[error.message.split(" ").length - 1] ===400
+          ) {
+            handleClickVariant("error");
+          }
         });
     }
   };
@@ -175,6 +185,9 @@ export default function ReportsRequestsManager(props) {
           handleClickVariant("success");
         });
     }
+  }
+
+  function thirdAction(problemId) {
   }
 
   useEffect(() => {
@@ -287,6 +300,7 @@ export default function ReportsRequestsManager(props) {
               description={problem.description}
               firstActionClickHandler={firstAction.bind(null, problem._id)}
               secondActionClickHandler={secondAction.bind(null, problem._id)}
+              thirdActionClickHandler={thirdAction.bind(null, problem._id)}
             ></ReportsRequestsCard>
           ) : null
         )}

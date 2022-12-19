@@ -101,6 +101,18 @@ export default function ReportsRequestsCard(props) {
                     {props.description ? "Mark as resolved" : "Reject Request"}
                   </button>
                 </div>
+                {!props.description ? (
+                  <div className="hover:bg-slate-200 rounded-lg">
+                    <button
+                      onClick={props.thirdActionClickHandler}
+                      className=" mx-10 whitespace-nowrap pb-1"
+                    >
+                      Mark as pending
+                    </button>
+                  </div>
+                ) : (
+                  ""
+                )}
               </Typography>
             </Popover>
           </div>

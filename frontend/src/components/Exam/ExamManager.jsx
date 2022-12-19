@@ -4,10 +4,16 @@ import { useState, Fragment } from "react";
 import { CheckCircleIcon } from "@heroicons/react/solid";
 import { XCircleIcon } from "@heroicons/react/solid";
 import SecondaryButton from "../UI/SecondaryButton";
+import { Typography } from "@material-tailwind/react";
+
 const ExamManager = (props) => {
   const [checkResults, setCheckResults] = useState(false);
+  const [startExam, setStartExam] = useState(false);
   const checkResultsClickHandler = () => {
     setCheckResults(true);
+  };
+  const startExamClickHandler = () => {
+    setStartExam(true);
   };
 
   const examQuestionsWithAnswers = props.exam;
@@ -22,21 +28,36 @@ const ExamManager = (props) => {
 
   if (solvedBefore) {
     if (props.grade / examQuestionsWithAnswers.length < 0.5) {
-      message = <p>You can always do better , you got <strong>{props.grade} out of {examQuestionsWithAnswers.length}</strong>, review the course content to broaden your knowledge</p> ;
+      message = (
+        <p>
+          You can always do better , you got{" "}
+          <strong>
+            {props.grade} out of {examQuestionsWithAnswers.length}
+          </strong>
+          , review the course content to broaden your knowledge
+        </p>
+      );
     } else if (
       props.grade / examQuestionsWithAnswers.length >= 0.5 &&
       props.grade / examQuestionsWithAnswers.length <= 0.8
     ) {
       message = (
         <p>
-          You Passed, but there is always better , you got{" "}
+          You Passed, but there is always better , you got
           <strong>
             {props.grade} out of {examQuestionsWithAnswers.length}
           </strong>
         </p>
       );
     } else {
-      message = <p>Good Job, you got <strong>{props.grade} out of {examQuestionsWithAnswers.length}</strong></p>;
+      message = (
+        <p>
+          Good Job, you got{" "}
+          <strong>
+            {props.grade} out of {examQuestionsWithAnswers.length}
+          </strong>
+        </p>
+      );
     }
     for (var i = 0; i < examQuestionsWithAnswers.length; i++) {
       if (examQuestionsWithAnswers[i].solution === studentAnswers[i]) {
@@ -46,6 +67,7 @@ const ExamManager = (props) => {
       }
     }
   }
+
   return (
     <Fragment>
       {solvedBefore && !checkResults && (
@@ -103,19 +125,61 @@ const ExamManager = (props) => {
             className="absolute right-2 bottom-2"
             onClick={checkResultsClickHandler}
           >
-            {" "}
             Check Results
           </SecondaryButton>
         </div>
       )}
-      { checkResults && (
+      {(checkResults || startExam) && (
         <Exam
-          next ={props.next}
+          next={props.next}
           exam={examQuestionsWithAnswers}
           studentAnswers={studentAnswers}
           solvedBefore={solvedBefore}
           onSolveExamHandler={props.onSolveExamHandler}
         ></Exam>
+      )}
+      {!solvedBefore && !startExam && (
+        <Fragment>
+          <Alert>
+            <Typography variant="h5">{`This exam consists of ${examQuestionsWithAnswers.length} Multiple Choice Questions, Each Question Has 4 Choices`}</Typography>
+          </Alert>
+          <div className="rounded-md bg-gray-100 p-4 mt-2">
+            <div className="flex">
+              <div className="ml-3">
+                <h3 className="text-sm  font-semibold text-black-800">
+                  Hints befort You Start The Exam
+                </h3>
+                <div className="mt-2 text-sm text-black-700">
+                  <ol className="list-decimal pl-5 space-y-1">
+                    <li> Read The Choices Before Reading The Question. </li>
+                    <li>
+                      Read The Question Thoughly, Before Deciding What To
+                      Choose.
+                    </li>
+                    <li>
+                      If You Aren't Sure About That Question Now, You Can Skip
+                      That Question And Visit It Later.
+                    </li>
+                    <li>
+                      Before Submitting, Revisit The Questions To Make Sure You
+                      Are Correct.
+                    </li>
+                    <li>
+                      If You Are Completely Unsure About The Answer, Solve By
+                      Elimination Of Choices.
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-4">
+            <SecondaryButton
+              text="Start Exam"
+              onClick={startExamClickHandler}
+            ></SecondaryButton>
+          </div>
+        </Fragment>
       )}
     </Fragment>
   );

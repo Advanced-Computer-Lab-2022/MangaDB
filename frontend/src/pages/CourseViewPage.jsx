@@ -19,6 +19,7 @@ const CourseViewPage = () => {
   const location = useLocation();
   const [receivedData, setReceivedData] = useState({});
   const [currentSource, setCurrentSource] = useState("");
+  const [studentSolutions,setStudentSolutions] = useState([])
   const [receivedUserData, setUserReceivedData] = useState({});
   const [showNextLessonAlert, setShowNextLessonAlert] = useState(false);
   const [notes, setNotes] = useState([]);
@@ -234,7 +235,6 @@ const CourseViewPage = () => {
       }
     }
   }
-  console.log(receivedData);
   //we will have an array of viewed sources
   var displayedSource;
   if (currentSource !== "") {

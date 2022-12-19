@@ -53,6 +53,8 @@ exports.requestRefund = async (req, res) => {
     }
 
     const newRefundRequest = new request({
+      courseName:foundCourse.courseTitle,
+      userName:foundUser.firstName+" "+foundUser.lastName,
       course: courseId,
       user: userId,
       reason: reason,

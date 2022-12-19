@@ -366,9 +366,9 @@ exports.openSource = async (req, res) => {
         let subtitleIndex=-1;
         for(let i=0;i<courseData.subtitles.length;i++){
           for(let j=0;j<courseData.subtitles[i].sources.length;j++){
+            sourceIndex++;
             if(courseData.subtitles[i].sources[j]._id==sourceId){
               sourceDescription=courseData.subtitles[i].sources[j].description;
-              sourceIndex=j;
               subtitleDescription=courseData.subtitles[i].description;
               subtitleIndex=i;
               break;

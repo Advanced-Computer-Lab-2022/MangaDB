@@ -38,7 +38,7 @@ const CourseViewPage = () => {
     const userid = "638a07cdbc3508481a2d7da9";
     if (currentNotesFilter.name === "All Lessons") {
       axios
-        .get(`http://localhost:3000/user/coursenotes?cid=${courseId}` ,{
+        .get(`http://localhost:3000/user/courseNotes?cid=${courseId}` ,{
           headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('token'),
             'content-type': 'text/json'
@@ -79,7 +79,7 @@ const CourseViewPage = () => {
       }
       axios
         .get(
-          `http://localhost:3000/user/subtitlenotes?cid=${courseId}&sid=${subtitleId}`
+          `http://localhost:3000/user/subtitleNotes?cid=${courseId}&sid=${subtitleId}`
           ,{
             headers: {
               'Authorization': 'Bearer ' + localStorage.getItem('token'),
@@ -113,7 +113,7 @@ const CourseViewPage = () => {
     } else {
       axios
         .get(
-          `http://localhost:3000/user/sourcenotes?cid=${courseId}&sid=${currentSource._id}`
+          `http://localhost:3000/user/sourceNotes?cid=${courseId}&sid=${currentSource._id}`
           ,{
             headers: {
               'Authorization': 'Bearer ' + localStorage.getItem('token'),
@@ -184,7 +184,7 @@ const CourseViewPage = () => {
   const onSolveExamHandler = (receivedSolution) => {
     //should mark this as visited in the back and store the data
     //send the sourceId , examId ,userid and courseId
-    var endPoint = `http://localhost:3000/user/solveexam/`;
+    var endPoint = `http://localhost:3000/user/solveExam/`;
 
     var sentData = {
       studentAnswers: receivedSolution,
@@ -239,7 +239,7 @@ const CourseViewPage = () => {
   const onWatchHandler = () => {
     //will need the userID , sourceId, courseId
     //the userID and courseid are given from the navigation
-    var endPoint = `http://localhost:3000/user/opensource/${receivedData._id}`;
+    var endPoint = `http://localhost:3000/user/openSource/${receivedData._id}`;
     const userId = "638a07cdbc3508481a2d7da9";
     const submittedData = {
       userId: userId,

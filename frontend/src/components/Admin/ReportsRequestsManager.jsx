@@ -116,7 +116,11 @@ export default function ReportsRequestsManager(props) {
         .patch(`http://localhost:3000/problem/${problemId}`, {
           status: "pending",
           seen: "true",
-        })
+        },{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}})
         .then((res) => {
           handleClickVariant("success");
           getData();
@@ -126,7 +130,11 @@ export default function ReportsRequestsManager(props) {
         .patch(`http://localhost:3000/request/access/${problemId}`, {
           status: "accepted",
           //seen: "true",
-        })
+        },{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}})
         .then((res) => {
           getData();
           handleClickVariant("success");
@@ -144,7 +152,11 @@ export default function ReportsRequestsManager(props) {
   function getData() {
     if (props.type === "problem") {
       axios
-        .get("http://localhost:3000/problem")
+        .get("http://localhost:3000/problem",{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}})
         .then((res) => {
           setData(res.data);
         })
@@ -153,7 +165,11 @@ export default function ReportsRequestsManager(props) {
         });
     } else {
       axios
-        .get("http://localhost:3000/request")
+        .get("http://localhost:3000/request",{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}})
         .then((res) => {
           setData(res.data);
         })
@@ -169,7 +185,11 @@ export default function ReportsRequestsManager(props) {
         .patch(`http://localhost:3000/problem/${problemId}`, {
           status: "resolved",
           seen: "true",
-        })
+        },{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}})
         .then((res) => {
           getData();
           handleClickVariant("success");
@@ -179,7 +199,11 @@ export default function ReportsRequestsManager(props) {
         .patch(`http://localhost:3000/request/${problemId}`, {
           status: "rejected",
           seen: "true",
-        })
+        },{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}})
         .then((res) => {
           getData();
           handleClickVariant("success");

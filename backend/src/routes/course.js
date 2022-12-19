@@ -16,15 +16,15 @@ router.post("/rate/:id",auth.validateToken,auth.authenticateRole(["TRAINEE","COR
 
 router.patch("/rate/:id",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]), courseController.editRating);
 
-router.get("/mostviewed", courseController.getMostViewedCourses);
+router.get("/mostViewed", courseController.getMostViewedCourses);
 
-router.get("/mostrated", courseController.getMostRatedCourses);
+router.get("/mostRated", courseController.getMostRatedCourses);
 
-router.post("/addsubtitle/:id", courseController.addSubtitle);
+router.post("/addSubtitle/:id", courseController.addSubtitle);
 
-router.post("/askquestion/:id", courseController.askQuestion);
+router.post("/askQuestion/:id",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]), courseController.askQuestion);
 
-router.get("/courseQuesions/:id",courseController.getCourseQuestions);
+router.get("/courseQuestions/:id",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]),courseController.getCourseQuestions);
 
 
 module.exports = router;

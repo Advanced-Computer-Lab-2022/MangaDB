@@ -717,7 +717,7 @@ exports.updateDiscountedPrice= async()=>{
 };
 exports.askQuestion=async (req,res,next)=>{
   let cId=req.params.id;
-  let uId=req.body.userId;
+  let uId=req.user.id;
   let currentCourse=await course.findById(cId);
   let currentUser= await user.findById(uId);
   let currentQuestion=req.body.question;
@@ -768,7 +768,7 @@ exports.answerQuestion=async (req,res,next)=>{
 };
 exports.getInstructorQuestions=async (req,res,next)=>{
 
-let questions=await question.find({instructorId:req.params.id,answer: { $exists: false }},{courseName:0,instructorId:0,userId:0});
+let questions=await question.find({instructorId:req.user.id,answer: { $exists: false }},{courseName:0,instructorId:0,userId:0});
 if(!questions){
   res.status(400).json({message:"Please Enter Valid Instructor ID"});
   return;
@@ -778,7 +778,7 @@ res.status(200).send(questions);
 };
 exports.getCourseQuestions=async (req,res,next)=>{
 
-  let questions=await question.find({courseId:req.params.id,userId:req.body.userId},{courseName:0,instructorId:0,courseName:0,userName:0,userId:0});
+  let questions=await question.find({courseId:req.params.id,userId:req.user.id},{courseName:0,instructorId:0,courseName:0,userName:0,userId:0});
   if(!questions){
     res.status(400).json({message:"Error in Fetching"});
     return;

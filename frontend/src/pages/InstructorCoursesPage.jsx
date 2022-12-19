@@ -102,7 +102,7 @@ const IntructorCoursePage = (props) => {
     } else {
       axios
         .get(
-          "http://localhost:3000/instructor/searchcourses" +
+          "http://localhost:3000/instructor/searchCourses" +
             param ,{
               headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token'),

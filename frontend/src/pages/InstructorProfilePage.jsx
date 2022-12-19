@@ -91,7 +91,7 @@ const InstructorProfilePage = () => {
   const personalInfoSaveHandler = (data) => {
     console.log(data);
     axios
-      .patch("http://localhost:3000/user/updateuser", data, {
+      .patch("http://localhost:3000/user/updateUser", data, {
         headers: {
           "Access-Control-Allow-Origin": "*",
               'Authorization': 'Bearer ' + localStorage.getItem('token'),
@@ -105,7 +105,7 @@ const InstructorProfilePage = () => {
   //function to handle the change of password or privacy
   const securityChangeHandler = (data) => {
     axios
-      .patch("http://localhost:3000/user/updateuser", data, {
+      .patch("http://localhost:3000/user/updateUser", data, {
         headers: {
           "Access-Control-Allow-Origin": "*",
           'Authorization': 'Bearer ' + localStorage.getItem('token'),

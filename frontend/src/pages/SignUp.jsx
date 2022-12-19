@@ -126,7 +126,11 @@ export default function SignUp() {
       };
       //console.log(sentData);
       axios
-        .post("http://localhost:3000/user/register", sentData)
+        .post("http://localhost:3000/user/register", sentData,{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}})
         .then((res) => {
           //console.log(res);
           navigate(`/home/1`, { state: res.data._id });

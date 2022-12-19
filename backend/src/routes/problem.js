@@ -9,7 +9,7 @@ router.post("/",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]
 
 router.get("/",auth.validateToken,auth.authenticateRole(["ADMIN"]), problemController.getProblems);
 
-router.get("/usercourseproblems/:id",problemController.getUserCourseProblems);
+router.get("/userCourseProblems/:id",auth.validateToken,auth.authenticateRole(["ADMIN","TRAINEE","CORPORATE"]),problemController.getUserCourseProblems);
 
 router.get("/:id",auth.validateToken,auth.authenticateRole(["ADMIN","TRAINEE","CORPORATE"]), problemController.getProblem);
 

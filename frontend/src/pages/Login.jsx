@@ -84,7 +84,7 @@ export default function Login() {
       setWarning("please fill the following fields");
     } else {
       axios
-        .post("http://localhost:3000/user/forgetpassword", {
+        .post("http://localhost:3000/user/forgetPassword", {
           userName: UserNameRef.current.value,
         })
         .then((res) => {

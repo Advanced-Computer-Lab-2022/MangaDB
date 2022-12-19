@@ -176,7 +176,7 @@ const query = { $and: [query1, query2, query3,{ course: _id }] };
 
 exports.getUserCourseProblems = async (req, res) => {
 const cId = req.params.id;
-const uId=req.query.uId;
+const uId=req.user.id;
 
     try {
         const problems = await problem.find({ course: cId,user: uId}).sort({ date: -1 });

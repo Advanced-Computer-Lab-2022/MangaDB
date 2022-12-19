@@ -19,7 +19,7 @@ export default function TextField(props) {
       </label>
       <div class="absolute bottom-3  flex items-center ">
         {props.icon ? (
-          <img src={props.icon} className="h-7 w-7 ml-3 text-gray-400 "></img>
+          <img src={props.icon} className={" ml-3 text-gray-400 ".concat(props.admin?"h-5 w-5 mb-1":"h-7 w-7")}></img>
         ) : null}
         {props.icon2}
       </div>

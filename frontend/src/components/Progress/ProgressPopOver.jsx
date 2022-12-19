@@ -5,7 +5,7 @@ import {
   Button,
 } from "@material-tailwind/react";
 
-function ProgressPopOver() {
+const ProgressPopOver =(props) => {
   return (
     
       <Popover
@@ -16,17 +16,17 @@ function ProgressPopOver() {
         }}
       >
         <PopoverHandler>
-          <Button className="bg-blue-300 border-transparent" variant="gradient">
-            Your Progress{" "}
+          <Button className="bg-primaryBlue border-transparent" variant="gradient">
+            Progress{" "}
           </Button>
         </PopoverHandler>
         <PopoverContent>
           <div className="flex-col space-y-3">
-            <div className="font-semibold">226 of 498 complete.</div>
+            <div className="font-semibold">{`${props.progress} of ${props.totalSources} completed.`}</div>
             <div className="flex justify-center items-center">
               <p className="font-medium text-gray-500">
                 Finish the Course Content and pass the Exam to earn your
-                certicate
+                certificate
               </p>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -19,7 +19,7 @@ const NotesSelector = (props) => {
       {({ open }) => (
         <>
           <div className="mt-1 relative ">
-            <Listbox.Button className="bg-white relative w-full border border-black  text-gray-500 hover:bg-gray-200 shadow-sm pl-3 p-4 py-4 text-left cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            <Listbox.Button className="bg-white relative w-full border border-black  text-gray-500 hover:bg-gray-200 shadow-sm pl-3 p-4 py-4 text-left cursor-pointer focus:outline-none focus:ring-1 focus:ring-primaryBlue focus:border-primaryBlue sm:text-sm">
               <span className="block truncate">{props.selected.name}</span>
               <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                 <SelectorIcon
@@ -42,7 +42,7 @@ const NotesSelector = (props) => {
                     key={options.id}
                     className={({ active }) =>
                       classNames(
-                        active ? "text-white bg-blue-600" : "text-gray-900",
+                        active ? "text-white bg-primaryBlue" : "text-gray-900",
                         "cursor-pointer select-none relative py-2 pl-3 pr-9"
                       )
                     }
@@ -62,7 +62,7 @@ const NotesSelector = (props) => {
                         {selected ? (
                           <span
                             className={classNames(
-                              active ? "text-white" : "text-blue-600",
+                              active ? "text-white" : "text-primaryBlue",
                               "absolute inset-y-0 right-0 flex items-center pr-4"
                             )}
                           >

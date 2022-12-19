@@ -4,6 +4,7 @@ import PasswordAndPrivacy from "../components/Profile/PasswordAndPrivacy";
 import Billing from "../components/Profile/Billing";
 import Reviews from "../components/Profile/Reviews/Reviews";
 import axios from "axios";
+import { SnackbarProvider, useSnackbar } from "notistack";
 //stub for the userPersonal Info Received
 const user = {
   email: "test@example.com",
@@ -70,6 +71,12 @@ const InstructorProfilePage = () => {
   const [receivedUserInfo, setReceivedUserInfo] = useState(user);
   const [selectedStage, setSelectedStage] = useState(1);
   //gather the userInfo
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant) => {
+    //console.log("here");
+    enqueueSnackbar("User has been added successfuly  ", { variant });
+  };
+
   useEffect(() => {
     axios.get("http://localhost:3000/instructor/editProfile").then((res) => {
       setReceivedUserInfo(res.data);
@@ -80,22 +87,32 @@ const InstructorProfilePage = () => {
   const personalInfoSaveHandler = (data) => {
     console.log(data);
     axios
-      .patch("http://localhost:3000/user/updateuser/638a07cdbc3508481a2d7da9", data, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-      })
-      .then((res) => {});
+      .patch(
+        "http://localhost:3000/user/updateuser/638a07cdbc3508481a2d7da9",
+        data,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      )
+      .then((res) => {
+        //handleClickVariant("success");
+      });
   };
 
   //function to handle the change of password or privacy
   const securityChangeHandler = (data) => {
     axios
-      .patch("http://localhost:3000/user/updateuser/638a07cdbc3508481a2d7da9", data, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-      })
+      .patch(
+        "http://localhost:3000/user/updateuser/638a07cdbc3508481a2d7da9",
+        data,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      )
       .then((res) => {});
   };
 
@@ -164,6 +181,10 @@ const InstructorProfilePage = () => {
       ></Reviews>
     );
   }
-  return <div> {displayedStep}</div>;
+  return (
+    <SnackbarProvider maxSnack={3}>
+      <div>{displayedStep}</div>
+    </SnackbarProvider>
+  );
 };
 export default InstructorProfilePage;

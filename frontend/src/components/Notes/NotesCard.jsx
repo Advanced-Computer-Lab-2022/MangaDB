@@ -16,27 +16,40 @@ const NotesCard = (props) => {
   const onHideForm = () => {
     setShowForm(false);
   };
-
   var displayedData;
+  var minutes = Math.floor(+props.timestamp / 60);
+  var seconds = +props.timestamp % 60;
+  var zeroS = seconds < 10 ? "0" : "";
   if (showForm) {
     displayedData = (
-      <NotesInfo
-        editNote={props.editNote}
-        onHidehandler={onHideForm}
-        currentNote={props.note}
-      ></NotesInfo>
+      <div className="w-[97%]">
+        <NotesInfo
+          editNote={props.editNote}
+          onHidehandler={onHideForm}
+          currentNote={props.note}
+        />
+      </div>
     );
   } else {
     displayedData = (
       <Fragment>
-        <div className="flex items-center space-x-4 m-4 mb-8">
-          <div className="bg-black text-white rounded-full px-2 font-semibold  ">
-            {props.timestamp}
+        <div className="flex items-center justify-between space-x-4 m-4">
+          <div className="flex">
+            <div className="flex items-center">
+              <div className="bg-veryLightBlue text-gray-900 text-sm py-[2px] px-2 rounded-lg">
+                {minutes + ":" + zeroS + seconds}
+              </div>
+            </div>
+            <div className="ml-4">
+              <div className="font-semibold flex-1">
+                {props.subtitleDescription}
+              </div>
+              <div className="text-sm text-gray-500 ml-1">
+                {props.sourceDescription}
+              </div>
+            </div>
           </div>
-          <div className="ml-2 font-semibold flex-1">
-            {props.subtitleDescription}
-          </div>
-          <div className="text-sm text-gray-500">{props.sourceDescription}</div>
+
           <div className="flex space-x-2">
             <svg
               onClick={onShowForm}
@@ -64,7 +77,11 @@ const NotesCard = (props) => {
             </svg>
           </div>
         </div>
-        <div className="bg-gray-100 ml-4 h-20">{props.note}</div>
+        <div
+          className="bg-gray-100 mx-4 p-6"
+          dangerouslySetInnerHTML={{ __html: props.note }}
+        ></div>
+      
       </Fragment>
     );
   }

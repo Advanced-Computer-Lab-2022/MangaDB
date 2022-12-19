@@ -5,32 +5,29 @@ function classNames(...classes) {
 const ToolbarTabs = (props) => {
   const tabs = [
     { name: "Notes", current: props.currentTab === "Notes" ? true : false },
-    {
-      name: "Download Notes",
-      current: props.currentTab === "Download Notes" ? true : false,
-    },
-    { name: "Q&A", current: props.currentTab === "Q&A" ? true : false },
+    { name: "Q&As", current: props.currentTab === "Q&As" ? true : false },
     { name: "Reviews", current: props.currentTab === "Reviews" ? true : false },
+    { name: "Reports", current: props.currentTab === "Reports" ? true : false },
   ];
   const onClickHandler = (event) => {
     if (event.target.innerHTML === "Notes") {
       props.onTabChangeHandler("Notes");
-    } else if (event.target.innerHTML === "Download Notes") {
-      props.onTabChangeHandler("Download Notes");
-    } else if (event.target.innerHTML === "Q&amp;A") {
-      props.onTabChangeHandler("Q&A");
-    } else {
+    } else if (event.target.innerHTML === "Q&amp;As") {
+      props.onTabChangeHandler("Q&As");
+    } else if (event.target.innerHTML === "Reviews") {
       props.onTabChangeHandler("Reviews");
+    } else {
+      props.onTabChangeHandler("Reports");
     }
   };
 
   return (
-    <div className="ml-2">
+    <div className="ml-4">
       <div className="sm:hidden">
         <select
           id="tabs"
           name="tabs"
-          className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+          className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primaryBlue focus:border-primaryBlue sm:text-sm rounded-md"
         >
           {tabs.map((tab) => (
             <option key={tab.name}>{tab.name}</option>
@@ -46,7 +43,7 @@ const ToolbarTabs = (props) => {
                 onClick={onClickHandler}
                 className={classNames(
                   tab.current
-                    ? "border-blue-500 text-blue-600"
+                    ? "border-primaryBlue text-primaryBlue"
                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 cursor-pointer",
                   "whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm "
                 )}

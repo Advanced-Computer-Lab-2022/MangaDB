@@ -11,7 +11,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 function emailRegex(email) {
   const re =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -35,6 +35,7 @@ export default function SignUp() {
   const [warning, setWarning] = useState();
   const [passwordMatch, setPasswordMatch] = useState(true);
   const [emailValid, setEmailValid] = useState(true);
+  const [userNameValid, setUserNameValid] = useState(true);
   const navigate = useNavigate();
 
   const genderChangeHandler = (e) => {
@@ -46,75 +47,99 @@ export default function SignUp() {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-     
-      if (UserNameRef.current.value === "") {
-        setEmptyUserName(true);
-        setWarning("please fill the following fields");
-      } else {
-        setEmptyUserName(false);
-      }
-      if (PasswordRef.current.value === "") {
-        setEmptyPassword(true);
-        setWarning("please fill the following fields");
-      } else {
-        setEmptyPassword(false);
-      }
-      if (ConfirmPasswordRef.current.value === "") {
-        setEmptyConfirmPassword(true);
-        setWarning("please fill the following fields");
-      } else {
-        setEmptyConfirmPassword(false);
-      }
-      if (EmailRef.current.value === "") {
-        setEmptyEmail(true);
-        setWarning("please fill the following fields");
-      } else {
-        setEmptyEmail(false);
-      }
-      if (FirstNameRef.current.value === "") {
-        setEmptyFirstName(true);
-        setWarning("please fill the following fields");
-      } else {
-        setEmptyFirstName(false);
-      }
-      if (LastNameRef.current.value === "") {
-        setEmptyLastName(true);
-        setWarning("please fill the following fields");
-      } else {
-        setEmptyLastName(false);
-      }
-      if (emailRegex(EmailRef.current.value) === false) {
-        setEmailValid(false);
-        setWarning("please enter a valid email");
-        } else {
-        setEmailValid(true);
-        }
-        if (PasswordRef.current.value !== ConfirmPasswordRef.current.value) {
-        setPasswordMatch(false);
-        setWarning("passwords do not match");
-        } else {
-        setPasswordMatch(true);
-        }
-        
 
-      if(!warning){
-        const sentData = {
-          userName : UserNameRef.current.value,
-          password : PasswordRef.current.value,
-          email : EmailRef.current.value,
-          firstName: FirstNameRef.current.value,
-          lastName : LastNameRef.current.value,
-          gender : gender === "male" ? "Male" : "Female",
-          role:"TRAINEE"
-        }
-        console.log(sentData)
-        axios.post('http://localhost:3000/user/register', sentData).then(res => {
-          navigate(`/home/1`, {state: res.data._id});
-        }) 
-      }
-      return;
+    if (UserNameRef.current.value === "") {
+      setEmptyUserName(true);
+      setWarning("please fill the following fields");
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    } else {
+      setEmptyUserName(false);
+    }
+    if (PasswordRef.current.value === "") {
+      setEmptyPassword(true);
+      setWarning("please fill the following fields");
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    } else {
+      setEmptyPassword(false);
+    }
+    if (ConfirmPasswordRef.current.value === "") {
+      setEmptyConfirmPassword(true);
+      setWarning("please fill the following fields");
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    } else {
+      setEmptyConfirmPassword(false);
+    }
+    if (EmailRef.current.value === "") {
+      setEmptyEmail(true);
+      setWarning("please fill the following fields");
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    } else {
+      setEmptyEmail(false);
+    }
+    if (FirstNameRef.current.value === "") {
+      setEmptyFirstName(true);
+      setWarning("please fill the following fields");
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    } else {
+      setEmptyFirstName(false);
+    }
+    if (LastNameRef.current.value === "") {
+      setEmptyLastName(true);
+      setWarning("please fill the following fields");
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    } else {
+      setEmptyLastName(false);
+    }
+
+    if (PasswordRef.current.value !== ConfirmPasswordRef.current.value) {
+      setPasswordMatch(false);
+      setWarning("passwords do not match");
+      window.scrollTo(0, 0, "smooth");
+    } else {
+      setPasswordMatch(true);
+    }
+    if (emailRegex(EmailRef.current.value) === false) {
+      setEmailValid(false);
+      setWarning("please enter a valid email");
+      window.scrollTo(0, 0, "smooth");
+    } else {
+      setEmailValid(true);
+    }
+    if(userNameValid === false){
+      setWarning("username already exists");
+      window.scrollTo(0, 0, "smooth");
+    }
+    else{
+      setUserNameValid(true);
+      
+    }
+
+    if (!warning) {
+      const sentData = {
+        userName: UserNameRef.current.value,
+        password: PasswordRef.current.value,
+        email: EmailRef.current.value,
+        firstName: FirstNameRef.current.value,
+        lastName: LastNameRef.current.value,
+        gender: gender === "male" ? "Male" : "Female",
+        role: "TRAINEE",
+      };
+      //console.log(sentData);
+      axios
+        .post("http://localhost:3000/user/register", sentData)
+        .then((res) => {
+          //console.log(res);
+          navigate(`/home/1`, { state: res.data._id });
+        })
+        .catch((err) => {
+          if(err.message.split(" ")[(err.message.split(" ").length) - 1] ==="400" && UserNameRef.current.value !== ""){
+          setUserNameValid(false);
+          }
+        });
+    }
     
-    
+
+    return;
 
     //handle patch request
   };
@@ -136,8 +161,10 @@ export default function SignUp() {
           </div>
           <p class="text-center pt-3">
             Already Have An Account?{" "}
-            <a
-              href="#"
+            <button
+              onClick={() => {
+                navigate("/");
+              }}
               class="text-primaryBlue hover:opacity-70 ease-in-out duration-300 font-medium inline-flex space-x-1 items-center"
             >
               <span>Sign In Now </span>
@@ -157,13 +184,21 @@ export default function SignUp() {
                   />
                 </svg>
               </span>
-            </a>
+            </button>
           </p>
           <hr className=" mt-3"></hr>
 
           <div
             class={
-               (emptyUserName || emptyPassword || emptyConfirmPassword || emptyEmail || emptyFirstName || emptyLastName || passwordMatch === false || emailValid === false)
+              emptyUserName ||
+              emptyPassword ||
+              emptyConfirmPassword ||
+              emptyEmail ||
+              emptyFirstName ||
+              emptyLastName ||
+              passwordMatch === false ||
+              emailValid === false ||
+              userNameValid === false
                 ? "p-4 mt-3 text-red-900 bg-red-50 border rounded-md"
                 : "hidden"
             }
@@ -236,7 +271,11 @@ export default function SignUp() {
               <TextField
                 required="true"
                 label="Email"
-                placeholder={!emailValid ? "Enter a valid Email, eg. example@example.com" : ""}
+                placeholder={
+                  !emailValid
+                    ? "Enter a valid Email, eg. example@example.com"
+                    : ""
+                }
                 FieldRef={EmailRef}
                 warning={emptyEmail || !emailValid}
                 className={!emailValid ? " placeholder:text-red-600" : ""}
@@ -255,13 +294,13 @@ export default function SignUp() {
 
               <div className="relative">
                 <label for="UserName">
-                  <p class="font-medium text-slate-700 pb-2">UserName *</p>
+                  <p class="font-medium text-slate-700 pb-2">Username *</p>
                   <div className="relative">
                     <input
                       ref={UserNameRef}
                       type="text"
                       class={"w-full py-3 border pl-12 border-slate-200 rounded-lg px-3 focus:outline-none focus:border-primaryBlue hover:shadow".concat(
-                        emptyUserName ? " border-red-200" : ""
+                        emptyUserName || !userNameValid ? " border-red-200" : ""
                       )}
                       placeholder="Username"
                     />
@@ -282,7 +321,7 @@ export default function SignUp() {
                 label="Confirm Password"
                 warning={emptyConfirmPassword || passwordMatch === false}
               />
-              
+
               <SecondaryButton
                 type="submit"
                 className="flex space-x-2 items-center justify-center py-3 font-semibold hover: "

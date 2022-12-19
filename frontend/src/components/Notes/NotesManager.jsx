@@ -10,7 +10,6 @@ const NotesManager = (props) => {
   const [timestamp, setTimeStamp] = useState(0);
   const [playing, setPlaying] = useState(true);
 
-
   // add delete edit notes
   const addNote = (note) => {
     var obj = {
@@ -143,24 +142,26 @@ const NotesManager = (props) => {
         link={props.link}
         onWatch={props.onWatch}
         getTime={timeChangeHandler}
-      ></Video>
-      <ToolbarTabs
-        currentTab={currentTab}
-        onTabChangeHandler={onTabChangeHandler}
-      ></ToolbarTabs>
-      {showNotes && (
-        <Notes
-          selected={props.currentNotesFilter}
-          selectedChangeHandler={selectedChangeHandler}
-          timestamp={timestamp}
-          stopVideo={stopVideo}
-          notes={props.notes}
-          resumeVideo={resumeVideo}
-          addNote={addNote}
-          editNote={editNote}
-          deleteNote={deleteNote}
-        ></Notes>
-      )}
+      />
+      <div className="">
+        <ToolbarTabs
+          currentTab={currentTab}
+          onTabChangeHandler={onTabChangeHandler}
+        />
+        {showNotes && (
+          <Notes
+            selected={props.currentNotesFilter}
+            selectedChangeHandler={selectedChangeHandler}
+            timestamp={timestamp}
+            stopVideo={stopVideo}
+            notes={props.notes}
+            resumeVideo={resumeVideo}
+            addNote={addNote}
+            editNote={editNote}
+            deleteNote={deleteNote}
+          />
+        )}
+      </div>
     </Fragment>
   );
 };

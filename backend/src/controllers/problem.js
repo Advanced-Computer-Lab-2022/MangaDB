@@ -21,7 +21,7 @@ exports.createProblem = async (req, res) => {
   });
   try {
     await newProblem.save();
-    res.status(200).send("Problem created successfully");
+    res.status(200).send(newProblem);
   } catch (error) {
     res.status(500).send(error);
   }

@@ -21,4 +21,10 @@ router.get("/amountowed",auth.validateToken,auth.authenticateRole(["INSTRUCTOR"]
 
 router.patch("/creatediscount/:id",auth.validateToken,auth.authenticateRole(["INSTRUCTOR"]),instructorController.setDiscount);
 
+router.get("/Questions/:id",courseController.getInstructorQuestions);
+
+router.patch("/answerQuestion",courseController.answerQuestion);
+
+
+
 module.exports = router;

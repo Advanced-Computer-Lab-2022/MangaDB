@@ -18,8 +18,10 @@ export default function PasswordField(props) {
           <input
             ref={props.PasswordRef}
             type={showPassword ? "text" : "password"}
-            className={"w-full py-3 border border-slate-200 pl-12 rounded-lg px-3 focus:outline-none focus:border-primaryBlue hover:shadow".concat(
-              props.warning ? " border-red-200" : ""
+            className={" py-3 border border-slate-200 pl-12 rounded-lg px-3 focus:outline-none focus:border-primaryBlue hover:shadow ".concat(
+              (props.warning ? " border-red-200 " : "").concat(props.admin?"w-[371px]":"w-full")
+              
+
             )}
             placeholder={props.label}
           />

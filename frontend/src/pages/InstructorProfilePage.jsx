@@ -4,6 +4,7 @@ import PasswordAndPrivacy from "../components/Profile/PasswordAndPrivacy";
 import Billing from "../components/Profile/Billing";
 import Reviews from "../components/Profile/Reviews/Reviews";
 import axios from "axios";
+import { SnackbarProvider, useSnackbar } from "notistack";
 //stub for the userPersonal Info Received
 const user = {
   email: "test@example.com",
@@ -70,6 +71,12 @@ const InstructorProfilePage = () => {
   const [receivedUserInfo, setReceivedUserInfo] = useState(user);
   const [selectedStage, setSelectedStage] = useState(1);
   //gather the userInfo
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant) => {
+    //console.log("here");
+    enqueueSnackbar("User has been added successfuly  ", { variant });
+  };
+
   useEffect(() => {
     axios.get("http://localhost:3000/instructor/editProfile" ,{
       headers: {
@@ -175,6 +182,10 @@ const InstructorProfilePage = () => {
       ></Reviews>
     );
   }
-  return <div> {displayedStep}</div>;
+  return (
+    <SnackbarProvider maxSnack={3}>
+      <div>{displayedStep}</div>
+    </SnackbarProvider>
+  );
 };
 export default InstructorProfilePage;

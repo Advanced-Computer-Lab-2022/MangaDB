@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment , useRef } from "react";
 import ProgressManager from "../components/Progress/ProgressManager";
 import CourseContent from "../components/CourseDetailsComp/CourseContent";
 import NavBar from "../components/UI/NavBar/NavBar";
@@ -20,7 +20,6 @@ const CourseViewPage = () => {
   const [receivedData, setReceivedData] = useState({});
   const [currentSource, setCurrentSource] = useState("");
   const [studentSolutions,setStudentSolutions] = useState([])
-  const [receivedUserData, setUserReceivedData] = useState({});
   const [showNextLessonAlert, setShowNextLessonAlert] = useState(false);
   const [notes, setNotes] = useState([]);
   const [currentNotesFilter, setCurrentNotesFilter] = useState({
@@ -29,6 +28,7 @@ const CourseViewPage = () => {
   });
   const [progress, setProgress] = useState(0);
   const [totalSources, setTotalSources] = useState(0);
+  const managerRef = useRef(null);
   useEffect(() => {
     const courseId = location.state;
     const userid = "638a07cdbc3508481a2d7da9";
@@ -140,15 +140,17 @@ const CourseViewPage = () => {
         `http://localhost:3000/course/${courseId}?uid=638a07cdbc3508481a2d7da9`
       )
       .then((res) => {
-        console.log(res);
         setReceivedData(res.data.course);
-        setUserReceivedData(res.data.userData);
+        setStudentSolutions(res.data.userData.exams);
         setCurrentSource(res.data.course.subtitles[0].sources[0]);
         setProgress(res.data.userData.percentageCompleted);
         setTotalSources(res.data.userData.totalSources);
       });
   }, [location.state]);
   const onSourceChangeHandler = (source) => {
+    if(source.sourceType === 'Quiz' && currentSource.sourceType === 'Quiz' ){
+      managerRef.current.refreshManager();
+    }
     setCurrentSource(source);
   };
   const changeNotesFilter = (data) => {
@@ -172,10 +174,17 @@ const CourseViewPage = () => {
           "Access-Control-Allow-Origin": "*",
         },
       })
-      .then((res) => {})
+      .then((res) => {
+        var temp = {
+          score: res.data.score,
+          answers: res.answers,
+          examId:currentSource.quiz._id,
+          _id:receivedData._id,
+        }
+        setStudentSolutions([...studentSolutions,temp]);
+      })
       .catch((err) => {});
   };
-
   const nextSource = () => {
     for (var i = 0; i < receivedData.subtitles.length; i++) {
       for (var j = 0; j < receivedData.subtitles[i].sources.length; j++) {
@@ -225,6 +234,7 @@ const CourseViewPage = () => {
       });
   };
 
+
   if (currentSource !== "") {
     var subtitle;
     for (var i = 0; i < receivedData.subtitles.length; i++) {
@@ -258,10 +268,10 @@ const CourseViewPage = () => {
     } else {
       var studentAnswers;
       var grade;
-      for (var k = 0; k < receivedUserData.exams.length; k++) {
-        if (receivedUserData.exams[k].examId === currentSource.quiz._id) {
-          studentAnswers = receivedUserData.exams[k].answers;
-          grade = receivedUserData.exams[k].score;
+      for (var k = 0; k < studentSolutions.length; k++) {
+        if (studentSolutions[k].examId === currentSource.quiz._id) {
+          studentAnswers = studentSolutions[k].answers;
+          grade = studentSolutions[k].score;
         }
       }
       displayedSource = (
@@ -275,6 +285,7 @@ const CourseViewPage = () => {
             ></WarningAlert>
           )}
           <ExamManager
+            ref={managerRef}
             next={nextSource}
             exam={currentSource.quiz.exercises}
             studentAnswers={studentAnswers}
@@ -285,27 +296,7 @@ const CourseViewPage = () => {
       );
     }
   }
-
   return (
-    // <Fragment>
-    //   <NavBar />
-    //   <div className="flex justify-center items-center">
-    //     {/* <div className="font-semibold text-2xl w-2/3">
-    //       {receivedData.courseTitle}
-    //     </div> */}
-    //     {/* <ProgressManager /> */}
-    //   </div>
-    //   <div className="md:flex md:justify-between">
-    //     <div className="video/exam md:w-7/12 w-full mb-4 md:mb-0">
-    //       {displayedSource}
-    //     </div>
-    //     <ContentCourseView
-    //       courseDuration={receivedData.totalMins}
-    //       content={receivedData.subtitles}
-    //       onClick={onSourceChangeHandler}
-    //     />
-    //   </div>
-    // </Fragment>
     <Fragment>
       <NavBar />
       {/* <ProgressManager progress={progress} totalSources={totalSources} /> */}

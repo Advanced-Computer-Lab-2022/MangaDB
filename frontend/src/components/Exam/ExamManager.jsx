@@ -1,12 +1,12 @@
 import Exam from "./Exam";
 import Alert from "../UI/Alert";
-import { useState, Fragment } from "react";
+import { useState, Fragment , forwardRef , useImperativeHandle} from "react";
 import { CheckCircleIcon } from "@heroicons/react/solid";
 import { XCircleIcon } from "@heroicons/react/solid";
 import SecondaryButton from "../UI/SecondaryButton";
 import { Typography } from "@material-tailwind/react";
 
-const ExamManager = (props) => {
+const ExamManager = forwardRef((props, ref) => {
   const [checkResults, setCheckResults] = useState(false);
   const [startExam, setStartExam] = useState(false);
   const checkResultsClickHandler = () => {
@@ -15,6 +15,17 @@ const ExamManager = (props) => {
   const startExamClickHandler = () => {
     setStartExam(true);
   };
+  const onSolveExamHandler =(exam) => {
+    props.onSolveExamHandler(exam);
+    setStartExam(false)
+  }
+
+  useImperativeHandle(ref, () => ({
+    refreshManager() {
+      setStartExam(false);
+      setCheckResults(false);
+    },
+  }));
 
   const examQuestionsWithAnswers = props.exam;
   const studentAnswers = props.studentAnswers;
@@ -135,7 +146,7 @@ const ExamManager = (props) => {
           exam={examQuestionsWithAnswers}
           studentAnswers={studentAnswers}
           solvedBefore={solvedBefore}
-          onSolveExamHandler={props.onSolveExamHandler}
+          onSolveExamHandler={onSolveExamHandler}
         ></Exam>
       )}
       {!solvedBefore && !startExam && (
@@ -183,5 +194,5 @@ const ExamManager = (props) => {
       )}
     </Fragment>
   );
-};
+});
 export default ExamManager;

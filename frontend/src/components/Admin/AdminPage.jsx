@@ -7,6 +7,7 @@ import { SnackbarProvider, useSnackbar } from "notistack";
 import PsychologyAltOutlinedIcon from '@mui/icons-material/PsychologyAltOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import UsersManager from "./UsersManager";
+import AdminAddNewUser from "../../pages/AdminAddNewUser";
 
 export default function AdminPage() {
   const [isClickedUsers, setIsClickedUsers] = useState(true);
@@ -61,7 +62,7 @@ export default function AdminPage() {
                   <span class="inline-flex items-center justify-center h-12 w-12 text-lg ">
                     <AccountCircleOutlinedIcon className="cursor-pointer" />
                   </span>
-                  <span class="text-sm font-medium">Users</span>
+                  <span class="text-sm font-medium">Add Users</span>
                 </a>
               </button>
 
@@ -163,7 +164,7 @@ export default function AdminPage() {
         ) : (
           ""
         )}
-        {isClickedUsers ? <UsersManager /> : ""}
+        {isClickedUsers ? <div className="flex justify-center"><AdminAddNewUser /></div> : ""}
       </div>
     </SnackbarProvider>
   );

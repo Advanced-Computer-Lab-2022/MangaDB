@@ -31,6 +31,7 @@ exports.getProblems = async (req, res) => {
   const status=req.query.status;
   const type=req.query.type;
 
+
   let query1 = {};
   let query2 = {};
   if (status) {
@@ -173,3 +174,14 @@ const query = { $and: [query1, query2, query3,{ course: _id }] };
 };
 
 
+exports.getUserCourseProblems = async (req, res) => {
+const cId = req.params.id;
+const uId=req.query.uId;
+
+    try {
+        const problems = await problem.find({ course: cId,user: uId}).sort({ date: -1 });
+        res.status(200).send(problems);
+    } catch (error) {
+        res.status(500).send("Internal server error");
+    }
+};

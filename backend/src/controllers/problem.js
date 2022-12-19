@@ -6,7 +6,6 @@ exports.createProblem = async (req, res) => {
   const user = req.body.userId;
   const type = req.body.type;
   const description = req.body.description;
-
   const foundCourse = await course.findById(courseId);
   if (!foundCourse) {
     return res.status(404).send({ message: "Course not found" });
@@ -22,7 +21,7 @@ exports.createProblem = async (req, res) => {
   });
   try {
     await newProblem.save();
-    res.status(201).send("Problem created successfully");
+    res.status(200).send(newProblem);
   } catch (error) {
     res.status(500).send(error);
   }
@@ -31,6 +30,7 @@ exports.createProblem = async (req, res) => {
 exports.getProblems = async (req, res) => {
   const status=req.query.status;
   const type=req.query.type;
+
 
   let query1 = {};
   let query2 = {};
@@ -174,3 +174,14 @@ const query = { $and: [query1, query2, query3,{ course: _id }] };
 };
 
 
+exports.getUserCourseProblems = async (req, res) => {
+const cId = req.params.id;
+const uId=req.query.uId;
+
+    try {
+        const problems = await problem.find({ course: cId,user: uId}).sort({ date: -1 });
+        res.status(200).send(problems);
+    } catch (error) {
+        res.status(500).send("Internal server error");
+    }
+};

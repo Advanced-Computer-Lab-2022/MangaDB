@@ -224,7 +224,7 @@ exports.changePassword = async (req, res) => {
                         subject: 'Reset Password',
                         html: `<h1>Reset Password</h1>
                         <p>Click on the link to reset your password</p>
-                        <a href="http://localhost:3000/user/resetpassword/${data._id}">Reset Password</a>`,
+                        <a href="http://localhost:3456/resetpassword">Reset Password</a>`,
           };
           
           mailer.sendEmail(mailOptions);
@@ -753,7 +753,7 @@ exports.solveExam=async (req, res) => {
     myUser.courseDetails[courseIndex].exams.push({examId:req.body.examid,score:studentGrade,answers:studentAnswers});
     myUser.courseDetails[courseIndex].percentageCompleted=myUser.courseDetails[courseIndex].percentageCompleted+1;;
     await myUser.save();
-    res.status(200).json({score:studentGrade});
+    res.status(200).json({answers:studentAnswers,score:studentGrade});
 
 
 

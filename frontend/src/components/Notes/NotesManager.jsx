@@ -3,10 +3,14 @@ import axios from "axios";
 import Notes from "./Notes";
 import Video from "../Video/Video";
 import ToolbarTabs from "./ToolbarTabs";
+import Reports from "../CourseView/Reports";
 
 const NotesManager = (props) => {
-  const [showNotes, setShowNotes] = useState(false);
-  const [currentTab, setCurrentTab] = useState("");
+  const [showNotes, setShowNotes] = useState(true);
+  const [showQA, setShowQA] = useState(false);
+  const [showReviews, setShowReviews] = useState(false);
+  const [showReports, setShowReports] = useState(false);
+  const [currentTab, setCurrentTab] = useState("Notes");
   const [timestamp, setTimeStamp] = useState(0);
   const [playing, setPlaying] = useState(true);
 
@@ -125,13 +129,39 @@ const NotesManager = (props) => {
     setCurrentTab(tab);
     if (tab === "Notes") {
       setShowNotes(true);
-    } else {
+      setShowQA(false);
+      setShowReviews(false);
+      setShowReports(false);
+    } else if (tab === "Q&A") {
       setShowNotes(false);
+      setShowQA(true);
+      setShowReviews(false);
+      setShowReports(false);
+    } else if (tab === "Reviews") {
+      setShowNotes(false);
+      setShowQA(false);
+      setShowReviews(true);
+      setShowReports(false);
+    } else if (tab === "Reports") {
+      setShowNotes(false);
+      setShowQA(false);
+      setShowReviews(false);
+      setShowReports(true);
     }
   };
 
-  const selectedChangeHandler = (newSelected) => {
+  const selectedNotesChangeHandler = (newSelected) => {
     props.changeNotesFilter(newSelected);
+  };
+
+  const selectedReportsChangeHandler = (newSelected) => {
+    props.changeReportsFilter(newSelected);
+  };
+
+  const submitReportHandler = (data) => {
+    axios.post("http://localhost:3000/problem/", data).then((res) => {
+      console.log(res);
+    });
   };
 
   return (
@@ -151,7 +181,7 @@ const NotesManager = (props) => {
         {showNotes && (
           <Notes
             selected={props.currentNotesFilter}
-            selectedChangeHandler={selectedChangeHandler}
+            selectedChangeHandler={selectedNotesChangeHandler}
             timestamp={timestamp}
             stopVideo={stopVideo}
             notes={props.notes}
@@ -159,6 +189,16 @@ const NotesManager = (props) => {
             addNote={addNote}
             editNote={editNote}
             deleteNote={deleteNote}
+          />
+        )}
+        {showQA && <></>}
+        {showReviews && <></>}
+        {showReports && (
+          <Reports
+            onSubmit={submitReportHandler}
+            selected={props.currentReportsFilter}
+            selectedChangeHandler={selectedReportsChangeHandler}
+            courseId={props.courseId}
           />
         )}
       </div>

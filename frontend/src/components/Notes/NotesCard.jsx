@@ -16,7 +16,6 @@ const NotesCard = (props) => {
   const onHideForm = () => {
     setShowForm(false);
   };
-
   var displayedData;
   var minutes = Math.floor(+props.timestamp / 60);
   var seconds = +props.timestamp % 60;
@@ -82,6 +81,7 @@ const NotesCard = (props) => {
           className="bg-gray-100 mx-4 p-6"
           dangerouslySetInnerHTML={{ __html: props.note }}
         ></div>
+      
       </Fragment>
     );
   }

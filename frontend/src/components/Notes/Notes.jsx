@@ -2,6 +2,8 @@ import { Fragment, useState } from "react";
 import NotesForm from "./NotesForm";
 import NotesCard from "./NotesCard";
 import NotesSelector from "./NotesSelector";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 const Notes = (props) => {
   const [showForm, setShowForm] = useState(false);
   const onShowHandler = () => {
@@ -11,6 +13,16 @@ const Notes = (props) => {
   const onHidehandler = () => {
     setShowForm(false);
   };
+
+  const downloadNotesHandler = (notes) => {
+    html2canvas(document.querySelector("#content")).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "px", "a4");
+      pdf.addImage(imgData, "PNG", 0, 0);
+      pdf.save("Notes.pdf");
+    });
+  };
+
   const displayedNotes = props.notes.map((note, index) => {
     return (
       <NotesCard
@@ -26,6 +38,7 @@ const Notes = (props) => {
   var minutes = Math.floor(+props.timestamp / 60);
   var seconds = +props.timestamp % 60;
   var zeroS = seconds < 10 ? "0" : "";
+
   return (
     <Fragment>
       {!showForm && (
@@ -34,7 +47,7 @@ const Notes = (props) => {
           className="relative bg-white text-gray-500 border border-gray-500 p-4 m-4 cursor-pointer hover:bg-gray-200"
         >
           Create a new note at {minutes + ":" + zeroS + seconds}
-          <div className="absolute right-2 bottom-5 text-gray-500">
+          <div className="absolute right-2 bottom-5 text-black">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -60,14 +73,37 @@ const Notes = (props) => {
           ></NotesForm>
         </div>
       )}
-      <div className=" items-center m-4 w-[50%]">
-        <NotesSelector
-          selected={props.selected}
-          selectedChangeHandler={props.selectedChangeHandler}
-        ></NotesSelector>
+      <div className="flex mt-[-20px] items-center justify-between">
+        <div className="items-center w-[30vw] justify-center m-4">
+          <NotesSelector
+            selected={props.selected}
+            selectedChangeHandler={props.selectedChangeHandler}
+          ></NotesSelector>
+        </div>
+        <div className="mr-4">
+          <button
+            onClick={downloadNotesHandler}
+            className=" text-gray-400 flex w-[25vw] items-center justify-between border border-black p-3 hover:bg-gray-200"
+          >
+            Download Notes
+            <svg
+              className="ml-2 text-black"
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-arrow-down-circle-fill"
+              viewBox="0 0 16 16"
+            >
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z" />
+            </svg>
+          </button>
+        </div>
       </div>
 
-      <div className="mt-8"> {displayedNotes}</div>
+      <div id="content" className="mt-8">
+        {displayedNotes}
+      </div>
     </Fragment>
   );
 };

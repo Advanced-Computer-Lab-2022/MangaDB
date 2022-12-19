@@ -20,6 +20,10 @@ router.get("/amountowed/:id", instructorController.getMoneyOwed);
 
 router.patch("/creatediscount/:id",instructorController.setDiscount);
 
+router.get("/Questions/:id",courseController.getInstructorQuestions);
+
+router.patch("/answerQuestion",courseController.answerQuestion);
+
 
 // router.post("/addcourse/:id",auth.validateToken,auth.authenticateRole(["INSTRUCTOR"]), courseController.createCourse);
 

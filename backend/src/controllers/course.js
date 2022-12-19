@@ -356,7 +356,6 @@ exports.rateCourse = async (req, res, next) => {
   const userId = req.body.userId;
   const rating = req.body.rating;
   const review = req.body.review;
-  console.log(req.body);
   const foundUser = await user.findById(userId);
   if (foundUser.courseDetails.find((courses) => courses.course == courseId)) {
     const foundCourse = await course.findById(courseId);

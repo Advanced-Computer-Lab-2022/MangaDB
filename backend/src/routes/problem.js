@@ -8,6 +8,8 @@ router.get("/", problemController.getProblems);
 
 router.get("/:id", problemController.getProblem);
 
+router.get("/usercourseproblems/:id",problemController.getUserCourseProblems);
+
 router.delete("/:id", problemController.deleteProblem); 
 
 router.patch("/:id", problemController.updateProblem);

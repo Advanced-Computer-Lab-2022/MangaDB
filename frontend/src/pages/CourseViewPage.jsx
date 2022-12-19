@@ -267,6 +267,7 @@ const CourseViewPage = () => {
   const submitReportHandler = (data) => {
     axios.post("http://localhost:3000/problem/", data).then((res) => {
       //setReports([...reports, data])
+      console.log(res.data);
     });
   };
 

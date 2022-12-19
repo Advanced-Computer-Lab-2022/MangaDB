@@ -3,10 +3,14 @@ import axios from "axios";
 import Notes from "./Notes";
 import Video from "../Video/Video";
 import ToolbarTabs from "./ToolbarTabs";
+import Reports from "../CourseView/Reports";
 
 const NotesManager = (props) => {
-  const [showNotes, setShowNotes] = useState(false);
-  const [currentTab, setCurrentTab] = useState("");
+  const [showNotes, setShowNotes] = useState(true);
+  const [showQAs, setShowQAs] = useState(false);
+  const [showReviews, setShowReviews] = useState(false);
+  const [showReports, setShowReports] = useState(false);
+  const [currentTab, setCurrentTab] = useState("Notes");
   const [timestamp, setTimeStamp] = useState(0);
   const [playing, setPlaying] = useState(true);
 
@@ -125,14 +129,35 @@ const NotesManager = (props) => {
     setCurrentTab(tab);
     if (tab === "Notes") {
       setShowNotes(true);
-    } else {
+      setShowQAs(false);
+      setShowReviews(false);
+      setShowReports(false);
+    } else if (tab === "Q&As") {
       setShowNotes(false);
+      setShowQAs(true);
+      setShowReviews(false);
+      setShowReports(false);
+    } else if (tab === "Reviews") {
+      setShowNotes(false);
+      setShowQAs(false);
+      setShowReviews(true);
+      setShowReports(false);
+    } else if (tab === "Reports") {
+      setShowNotes(false);
+      setShowQAs(false);
+      setShowReviews(false);
+      setShowReports(true);
     }
   };
 
   const selectedChangeHandler = (newSelected) => {
     props.changeNotesFilter(newSelected);
   };
+
+  const submitReportHandler = (data) => {
+    //axios post data
+    console.log(data);
+  }
 
   return (
     <Fragment>
@@ -160,6 +185,15 @@ const NotesManager = (props) => {
             editNote={editNote}
             deleteNote={deleteNote}
           />
+        )}
+        {showQAs && (
+          <></>
+        )}
+        {showReviews && (
+          <></>
+        )} 
+        {showReports && (
+          <Reports onSubmit={submitReportHandler} />
         )}
       </div>
     </Fragment>

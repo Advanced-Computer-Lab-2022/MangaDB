@@ -253,7 +253,7 @@ const CourseViewPage = () => {
           isVisible={true}
           link={currentSource.link}
           onWatch={onWatchHandler}
-        ></NotesManager>
+        />
       );
     } else {
       var studentAnswers;
@@ -309,6 +309,9 @@ const CourseViewPage = () => {
     <Fragment>
       <NavBar />
       {/* <ProgressManager progress={progress} totalSources={totalSources} /> */}
+      <div className="py-4 flex justify-center font-medium text-xl bg-gray-50">
+        {receivedData.courseTitle}: {currentSource.description}
+      </div>
       <div className="flex">
         <div className="video/exam md:w-[70%] w-full mb-4 md:mb-0">
           {displayedSource}

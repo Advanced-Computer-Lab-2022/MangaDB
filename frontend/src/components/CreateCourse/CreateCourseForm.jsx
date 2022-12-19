@@ -20,6 +20,12 @@ var toolbarOptions = [
   ["clean"],
 ];
 
+function isYoutubeURL(str) {
+  var p =
+    /^(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+  return str.match(p);
+}
+
 const CreateCourseForm = (props) => {
   const [enteredCourseTitle, setEnteredCourseTitle] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("Beginner");
@@ -30,6 +36,14 @@ const CreateCourseForm = (props) => {
   const [enteredCourseDescription, setEnteredCourseDescription] = useState("");
   const [summaryValue, setSummaryValue] = useState("");
   const [requirementsValue, setRequirementsValue] = useState("");
+
+  const [warning, setWarning] = useState("");
+  const [emptyCourseTitle, setEmptyCourseTitle] = useState(false);
+  const [emptyCourseSubject, setEmptyCourseSubject] = useState(false);
+  const [emptyCoursePrice, setEmptyCoursePrice] = useState(false);
+  const [emptyCourseDescription, setEmptyCourseDescription] = useState(false);
+  const [emptyOverviewURL, setEmptyOverviewURL] = useState(false);
+  const [validOverviewURL, setValidOverviewURL] = useState(true);
 
   const courseTitleChangeHandler = (event) => {
     setEnteredCourseTitle(event.target.value);
@@ -67,145 +81,247 @@ const CreateCourseForm = (props) => {
     setEnteredCourseDescription(event.target.value);
   };
 
+  const handleFormValidation = () => {
+    var isValidForm = true;
+    if (enteredCourseTitle === "") {
+      setEmptyCourseTitle(true);
+      console.log("empty");
+      setWarning("Please fill in all the required fields");
+      isValidForm = false;
+    } else {
+      setEmptyCourseTitle(false);
+    }
+
+    if (enteredSubject === "") {
+      setEmptyCourseSubject(true);
+      setWarning("Please fill in all the required fields");
+      isValidForm = false;
+    } else {
+      setEmptyCourseSubject(false);
+    }
+
+    if (enteredCoursePrice === "") {
+      setEmptyCoursePrice(true);
+      setWarning("Please fill in all the required fields");
+      isValidForm = false;
+    } else {
+      setEmptyCoursePrice(false);
+    }
+
+    if (enteredCourseDescription === "") {
+      setEmptyCourseDescription(true);
+      setWarning("Please fill in all the required fields");
+      isValidForm = false;
+    } else {
+      setEmptyCourseDescription(false);
+    }
+    if (enteredOverviewURL === "") {
+      setEmptyOverviewURL(true);
+      setWarning("Please fill in all the required fields");
+      isValidForm = false;
+    } else {
+      setEmptyOverviewURL(false);
+    }
+    if (!isYoutubeURL(enteredOverviewURL)) {
+      setValidOverviewURL(false);
+      setWarning("Please enter a valid YouTube video URL");
+      isValidForm = false;
+    } else {
+      setValidOverviewURL(true);
+    }
+
+    return isValidForm;
+  };
+
   const submitHandler = (event) => {
     event.preventDefault();
+    //handleFormValidation();
     var data = {
       courseTitle: enteredCourseTitle,
       level: selectedLevel,
       courseImage: enteredImageURL,
-      courseOverview : enteredOverviewURL,
+      courseOverview: enteredOverviewURL,
       subject: enteredSubject,
       coursePrice: enteredCoursePrice,
       courseDescription: enteredCourseDescription,
       summary: summaryValue,
       requirements: requirementsValue,
     };
-    props.onSave(data);
+    if (handleFormValidation()) {
+      props.onSave(data);
+    }
+    else{
+      window.scrollTo(0, 0,"smooth");
+    }
   };
 
   return (
-    <div className="bg-gray-100 mx-8 my-4 rounded-md p-6">
-      <form onSubmit={submitHandler}>
-        <label className="text-lg font-medium">Basic Information:</label>
-        <div className="md:grid grid-cols-2 space-y-4">
-          <div className="flex justify-center items-center">
-            <label className="w-32">Course Title</label>
-            <input
-              className="w-[60vw] md:w-[27vw] px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
-            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
-              onChange={courseTitleChangeHandler}
-              type="text"
-              required
-            />
-          </div>
-          <div className="flex justify-center items-center">
-            <label className="w-32">Level</label>
-            <div className="w-[60vw] md:w-[27vw] flex justify-between">
-              <TertiaryButton
-                type="button"
-                state={selectedLevel}
-                onClick={beginnerClickHandler}
-                text="Beginner"
-                className="md:w-[8.8vw] w-[19vw] text-xs px-1"
-              />
-              <TertiaryButton
-                type="button"
-                state={selectedLevel}
-                onClick={intermediateClickHandler}
-                text="Intermediate"
-                className="md:w-[8.8vw] w-[19vw] text-xs px-1"
-              />
-              <TertiaryButton
-                type="button"
-                state={selectedLevel}
-                onClick={advancedClickHandler}
-                text="Advanced"
-                className="md:w-[8.8vw] w-[19vw] text-xs px-1"
-              />
+    <div>
+      <div
+        class={
+          emptyCourseDescription ||
+          emptyCoursePrice ||
+          emptyCourseSubject ||
+          emptyCourseTitle ||
+          emptyOverviewURL ||
+          !validOverviewURL
+            ? "p-4 mt-3 text-red-900 bg-red-50 border rounded-md mx-8"
+            : "hidden"
+        }
+      >
+        <div class="flex justify-between flex-wrap">
+          <div class="w-0 flex-1 flex">
+            <div class="mr-3 pt-1">
+              <svg
+                width="26"
+                height="26"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+              >
+                <path d="M13.6086 3.247l8.1916 15.8c.0999.2.1998.5.1998.8 0 1-.7992 1.8-1.7982 1.8H3.7188c-.2997 0-.4995-.1-.7992-.2-.7992-.5-1.1988-1.5-.6993-2.4 5.3067-10.1184 8.0706-15.385 8.2915-15.8.3314-.6222.8681-.8886 1.4817-.897.6135-.008 1.273.2807 1.6151.897zM12 18.95c.718 0 1.3-.582 1.3-1.3 0-.718-.582-1.3-1.3-1.3-.718 0-1.3.582-1.3 1.3 0 .718.582 1.3 1.3 1.3zm-.8895-10.203v5.4c0 .5.4.9.9.9s.9-.4.9-.9v-5.3c0-.5-.4-.9-.9-.9s-.9.4-.9.8z"></path>
+              </svg>
             </div>
-          </div>
-          <div className="flex justify-center items-center">
-            <label className="w-32">Image URL</label>
-            <input
-              className="w-[60vw] md:w-[27vw] px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
-            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
-              onChange={imageURLChangeHandler}
-              type="text"
-              required
-            />
-          </div>
-          <div className="flex justify-center items-center">
-            <label className="w-32">Overview URL</label>
-            <input
-              className="w-[60vw] md:w-[27vw] px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
-            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
-              onChange={overviewURLChangeHandler}
-              type="text"
-              required
-            />
-          </div>
-          <div className="flex justify-center items-center">
-            <label className="w-32">Subject</label>
-            <input
-              className="w-[60vw] md:w-[27vw] px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
-            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
-              onChange={subjectChangeHandler}
-              type="text"
-              required
-            />
-          </div>
-          <div className="flex justify-center items-center">
-            <label className="w-32">Price</label>
-            <input
-              className="w-[55vw] md:w-[25vw] px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
-            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
-              onChange={coursePriceChangeHandler}
-              type="number"
-              required
-              min="0"
-            />
-            <div className="w-[5vw] md:w-[2vw] flex justify-center text-gray-500">
-              $
+            <div>
+              <h4 class="text-md mt-[5px] leading-6 font-medium">{warning}</h4>
             </div>
           </div>
         </div>
-        <div className="mt-4">
-          <label className="text-lg font-medium">Course Description:</label>
-          <div>
-            <textarea
-              className="w-full px-3 py-1 mt-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm
+      </div>
+      <div className="bg-gray-100 mx-8 my-4 rounded-md p-6">
+        <form onSubmit={submitHandler}>
+          <label className="text-lg font-medium">Basic Information:</label>
+          <div className="md:grid grid-cols-2 space-y-4">
+            <div className={"flex justify-center items-center border-red-200"}>
+              <label className="w-32">
+                Course Title <span className="text-red-600"> *</span>
+              </label>
+              <input
+                className={"w-[60vw] md:w-[27vw] px-3 py-1 bg-white border  rounded-md text-sm shadow-sm focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue ".concat(
+                  emptyCourseTitle ? "border-red-200" : "border-slate-300"
+                )}
+                onChange={courseTitleChangeHandler}
+                type="text"
+              />
+            </div>
+            <div className="flex justify-center items-center">
+              <label className="w-32">Level</label>
+              <div className="w-[60vw] md:w-[27vw] flex justify-between">
+                <TertiaryButton
+                  type="button"
+                  state={selectedLevel}
+                  onClick={beginnerClickHandler}
+                  text="Beginner"
+                  className="md:w-[8.8vw] w-[19vw] text-xs px-1"
+                />
+                <TertiaryButton
+                  type="button"
+                  state={selectedLevel}
+                  onClick={intermediateClickHandler}
+                  text="Intermediate"
+                  className="md:w-[8.8vw] w-[19vw] text-xs px-1"
+                />
+                <TertiaryButton
+                  type="button"
+                  state={selectedLevel}
+                  onClick={advancedClickHandler}
+                  text="Advanced"
+                  className="md:w-[8.8vw] w-[19vw] text-xs px-1"
+                />
+              </div>
+            </div>
+            <div className="flex justify-center items-center">
+              <label className="w-32">Image URL</label>
+              <input
+                className="w-[60vw] md:w-[27vw] px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
             focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
-              onChange={courseDescriptionChangeHandler}
-              required
-            ></textarea>
+                onChange={imageURLChangeHandler}
+                type="text"
+              />
+            </div>
+            <div className="flex justify-center items-center">
+              <label className="w-32">
+                Overview URL <span className="text-red-600"> *</span>
+              </label>
+              <input
+                className={"w-[60vw] md:w-[27vw] px-3 py-1 bg-white border  rounded-md text-sm shadow-sm focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue ".concat(
+                  emptyOverviewURL || !validOverviewURL
+                    ? "border-red-200"
+                    : "border-slate-300"
+                )}
+                onChange={overviewURLChangeHandler}
+                type="text"
+              />
+            </div>
+            <div className="flex justify-center items-center">
+              <label className="w-32">
+                Subject <span className="text-red-600"> *</span>
+              </label>
+              <input
+                className={"w-[60vw] md:w-[27vw] px-3 py-1 bg-white border rounded-md text-sm shadow-sm focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue ".concat(
+                  emptyCourseSubject ? "border-red-200" : "border-slate-300"
+                )}
+                onChange={subjectChangeHandler}
+                type="text"
+              />
+            </div>
+            <div className="flex justify-center items-center">
+              <label className="w-32">
+                Price <span className="text-red-600"> *</span>
+              </label>
+              <input
+                className={"w-[55vw] md:w-[25vw] px-3 py-1 bg-white border rounded-md text-sm shadow-sm focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue ".concat(
+                  emptyCoursePrice ? "border-red-200" : "border-slate-300"
+                )}
+                onChange={coursePriceChangeHandler}
+                type="number"
+                min="0"
+              />
+              <div className="w-[5vw] md:w-[2vw] flex justify-center text-gray-500">
+                $
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="mt-4">
-          <label className="text-lg font-medium">Course Summary:</label>
-          <div className="mt-1">
-            <ReactQuill
-              modules={{ toolbar: toolbarOptions }}
-              className="bg-white rounded-md"
-              value={summaryValue}
-              onChange={setSummaryValue}
-            />
+          <div className="mt-4">
+            <label className="text-lg font-medium">
+              Course Description: <span className="text-red-600"> *</span>
+            </label>
+            <div>
+              <textarea
+                className={"w-full px-3 py-1 mt-2 bg-white border rounded-md text-sm shadow-sm focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue ".concat(
+                  emptyCourseDescription ? "border-red-200" : "border-slate-300"
+                )}
+                onChange={courseDescriptionChangeHandler}
+              ></textarea>
+            </div>
           </div>
-        </div>
-        <div className="mt-4">
-          <label className="text-lg font-medium">Course Requirements:</label>
-          <div className="mt-1">
-            <ReactQuill
-              modules={{ toolbar: toolbarOptions }}
-              className="bg-white rounded-md"
-              value={requirementsValue}
-              onChange={setRequirementsValue}
-            />
+          <div className="mt-4">
+            <label className="text-lg font-medium">Course Summary:</label>
+            <div className="mt-1">
+              <ReactQuill
+                modules={{ toolbar: toolbarOptions }}
+                className="bg-white rounded-md"
+                value={summaryValue}
+                onChange={setSummaryValue}
+              />
+            </div>
           </div>
-        </div>
-        <div className="w-full flex justify-end mt-2">
-          <SecondaryButton className="w-20" type="submit" text="Next" />
-        </div>
-      </form>
+          <div className="mt-4">
+            <label className="text-lg font-medium">Course Requirements:</label>
+            <div className="mt-1">
+              <ReactQuill
+                modules={{ toolbar: toolbarOptions }}
+                className="bg-white rounded-md"
+                value={requirementsValue}
+                onChange={setRequirementsValue}
+              />
+            </div>
+          </div>
+          <div className="w-full flex justify-end mt-2">
+            <SecondaryButton className="w-20" type="submit" text="Next" />
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

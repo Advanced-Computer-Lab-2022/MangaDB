@@ -57,6 +57,7 @@ const CourseDetailsPage = () => {
       // console.log(res.data.course);
       // setLoaded(true);
       console.log(res.data.review);
+      setCourseReviews(res.data.review);
     });
 
     // axios
@@ -71,7 +72,7 @@ const CourseDetailsPage = () => {
     const courseId = location.state.courseId;
     axios
       .post(
-        "http://localhost:3000/course/rate/".concat(courseId).concat("/"),
+        "http://localhost:3000/course/rate/".concat(courseId),
         data
       )
       .then((res) => {

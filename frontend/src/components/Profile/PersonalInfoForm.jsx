@@ -7,6 +7,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import SecondaryButton from "../UI/SecondaryButton";
 import { Disclosure } from "@headlessui/react";
+import { useSnackbar } from "notistack";
 import {
   CreditCardIcon,
   KeyIcon,
@@ -89,6 +90,13 @@ const PersonalInfoForm = (props) => {
 
     }
     props.onSaveHandler(saveData);
+    //handleClickVariant("success");
+  };
+
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant) => {
+    //console.log("here");
+    enqueueSnackbar("User has been added successfuly  ", { variant });
   };
   return (
     <div>

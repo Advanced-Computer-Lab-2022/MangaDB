@@ -26,6 +26,10 @@ const CourseViewPage = () => {
     id: 1,
     name: "All Lessons",
   });
+  const [currentReportsFilter, setCurrentReportsFilter] = useState({
+    id: 1,
+    name: "Technical"
+  });
   const [progress, setProgress] = useState(0);
   const [totalSources, setTotalSources] = useState(0);
   const managerRef = useRef(null);
@@ -157,6 +161,10 @@ const CourseViewPage = () => {
     setCurrentNotesFilter(data);
   };
 
+  const changeReportsFilter = (data) => {
+    setCurrentReportsFilter(data);
+  };
+
   const onSolveExamHandler = (receivedSolution) => {
     //should mark this as visited in the back and store the data
     //send the sourceId , examId ,userid and courseId
@@ -255,6 +263,8 @@ const CourseViewPage = () => {
         <NotesManager
           currentNotesFilter={currentNotesFilter}
           changeNotesFilter={changeNotesFilter}
+          currentReportsFilter={currentReportsFilter}
+          changeReportsFilter={changeReportsFilter}
           studentId="638a07cdbc3508481a2d7da9"
           courseId={receivedData._id}
           currentSourceId={currentSource._id}
@@ -265,7 +275,7 @@ const CourseViewPage = () => {
           isVisible={true}
           link={currentSource.link}
           onWatch={onWatchHandler}
-        ></NotesManager>
+        />
       );
     } else {
       var studentAnswers;
@@ -302,6 +312,9 @@ const CourseViewPage = () => {
     <Fragment>
       <NavBar />
       {/* <ProgressManager progress={progress} totalSources={totalSources} /> */}
+      <div className="py-4 flex justify-center font-medium text-xl bg-gray-50">
+        {receivedData.courseTitle}: {currentSource.description}
+      </div>
       <div className="flex">
         <div className="video/exam md:w-[70%] w-full mb-4 md:mb-0">
           {displayedSource}

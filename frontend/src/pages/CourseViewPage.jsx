@@ -174,13 +174,15 @@ const CourseViewPage = () => {
           "Access-Control-Allow-Origin": "*",
         },
       })
-      .then((res) => {
+      .then((res) => { 
+        console.log(res)
         var temp = {
           score: res.data.score,
-          answers: res.answers,
+          answers: res.data.answers,
           examId:currentSource.quiz._id,
           _id:receivedData._id,
         }
+        console.log([...studentSolutions,temp])
         setStudentSolutions([...studentSolutions,temp]);
       })
       .catch((err) => {});

@@ -11,15 +11,21 @@ import InstructorCoursesPage from "./pages/InstructorCoursesPage";
 import AddCoursePage from "./pages/AddCoursePage";
 import SignUp from "./pages/SignUp";
 import ResetPassword from "./pages/ResetPassword";
+import AdminPage from "./components/Admin/AdminPage";
+import SuccessfulPayment from "./components/Payment/SuccessfulPayment";
+import UnsuccessfulPayment from "./components/Payment/UnsuccessfulPayment";
 
 function App() {
   return (
    // navbar should be here
     <Routes>
+      <Route path="successfulpayment" element={<SuccessfulPayment></SuccessfulPayment>}></Route>
+      <Route path="unsuccessfulpayment" element={<UnsuccessfulPayment></UnsuccessfulPayment>}></Route>
       <Route path="/" element={<Login></Login>}></Route>
       <Route path="/signup" element = {<SignUp></SignUp>}></Route>
       <Route path="/resetpassword" element={<ResetPassword></ResetPassword>}></Route>
       <Route path="/home/:id" element={<HomePage></HomePage>}></Route>
+      <Route path="/admin" element={<AdminPage></AdminPage>}></Route>
       <Route
         path="/searchresults/:id"
         element={<SearchResultsPage></SearchResultsPage>}

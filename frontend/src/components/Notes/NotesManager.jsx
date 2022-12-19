@@ -158,12 +158,6 @@ const NotesManager = (props) => {
     props.changeReportsFilter(newSelected);
   };
 
-  const submitReportHandler = (data) => {
-    axios.post("http://localhost:3000/problem/", data).then((res) => {
-      console.log(res);
-    });
-  };
-
   return (
     <Fragment>
       <Video
@@ -195,10 +189,11 @@ const NotesManager = (props) => {
         {showReviews && <></>}
         {showReports && (
           <Reports
-            onSubmit={submitReportHandler}
+            onSubmit={props.submitReportHandler}
             selected={props.currentReportsFilter}
             selectedChangeHandler={selectedReportsChangeHandler}
             courseId={props.courseId}
+            reports={props.reports}
           />
         )}
       </div>

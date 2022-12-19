@@ -26,8 +26,8 @@ const problemSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["unseen","pending", "resolved"],
-        default: "unseen",
+        enum: ["Unseen","Pending", "Resolved"],
+        default: "Unseen",
     },
     
     date: {

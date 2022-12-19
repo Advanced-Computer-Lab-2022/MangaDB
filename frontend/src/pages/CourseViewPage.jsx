@@ -22,13 +22,14 @@ const CourseViewPage = () => {
   const [receivedUserData, setUserReceivedData] = useState({});
   const [showNextLessonAlert, setShowNextLessonAlert] = useState(false);
   const [notes, setNotes] = useState([]);
+  const [reports, setReports] = useState([]);
   const [currentNotesFilter, setCurrentNotesFilter] = useState({
     id: 1,
     name: "All Lessons",
   });
   const [currentReportsFilter, setCurrentReportsFilter] = useState({
     id: 1,
-    name: "Technical"
+    name: "Technical",
   });
   const [progress, setProgress] = useState(0);
   const [totalSources, setTotalSources] = useState(0);
@@ -132,6 +133,13 @@ const CourseViewPage = () => {
           setNotes(notesSet);
         });
     }
+    axios
+      .get(
+        `http://localhost:3000/problem/usercourseproblems/${courseId}?uId=${userid}`
+      )
+      .then((res) => {
+        setReports(res.data);
+      });
   }, [currentNotesFilter, location.state, receivedData, currentSource]);
 
   //useEffect at the start to receive the data
@@ -242,6 +250,13 @@ const CourseViewPage = () => {
       }
     }
   }
+
+  const submitReportHandler = (data) => {
+    axios.post("http://localhost:3000/problem/", data).then((res) => {
+      //setReports([...reports, data])
+    });
+  };
+
   console.log(receivedData);
   //we will have an array of viewed sources
   var displayedSource;
@@ -258,11 +273,13 @@ const CourseViewPage = () => {
           currentSourceId={currentSource._id}
           source={currentSource.description}
           notes={notes}
+          reports={reports}
           setNotes={notesChangeHandler}
           subtitle={subtitle}
           isVisible={true}
           link={currentSource.link}
           onWatch={onWatchHandler}
+          submitReportHandler={submitReportHandler}
         />
       );
     } else {

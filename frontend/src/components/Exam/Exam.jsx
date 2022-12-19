@@ -92,6 +92,7 @@ const Exam = (props) => {
   }
   var displayedExam;
   if (props.solvedBefore) {
+    console.log(selectedQuestion)
     displayedExam = (
       <SolvedExamChoices
         correct={props.exam[selectedQuestion - 1].solution}
@@ -112,7 +113,7 @@ const Exam = (props) => {
     <div className="px-2">
       <p className="tracking-wide text-gray-500 md:text-lg dark:text-gray-400 m-4">
         {"Question " + selectedQuestion + ": "}
-        {props.exam[selectedQuestion - 1].description}
+        {props.exam[selectedQuestion - 1].question}
       </p>
       {displayedExam}
       <div className="mt-2 flex items-center justify-center">

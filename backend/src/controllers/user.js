@@ -753,7 +753,7 @@ exports.solveExam=async (req, res) => {
     myUser.courseDetails[courseIndex].exams.push({examId:req.body.examid,score:studentGrade,answers:studentAnswers});
     myUser.courseDetails[courseIndex].percentageCompleted=myUser.courseDetails[courseIndex].percentageCompleted+1;;
     await myUser.save();
-    res.status(200).json({score:studentGrade});
+    res.status(200).json({answers:studentAnswers,score:studentGrade});
 
 
 

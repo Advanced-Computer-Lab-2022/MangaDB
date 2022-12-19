@@ -2,9 +2,17 @@ const mongoose = require("mongoose");
 const connection = require("../config/database");
 
 const requestSchema = new mongoose.Schema({
+    courseName: {
+        type: String,
+        required: true,
+    },
     course: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Course",
+        required: true,
+    },
+    userName: {
+        type: String,
         required: true,
     },
     user: {
@@ -18,7 +26,7 @@ const requestSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["pending", "accepted", "rejected"],
+        enum: ["pending", "accepted", "rejected","unseen"],
         default: "pending",
     },
     date: {

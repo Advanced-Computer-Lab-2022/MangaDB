@@ -6,7 +6,6 @@ exports.createProblem = async (req, res) => {
   const user = req.body.userId;
   const type = req.body.type;
   const description = req.body.description;
-
   const foundCourse = await course.findById(courseId);
   if (!foundCourse) {
     return res.status(404).send({ message: "Course not found" });
@@ -22,7 +21,7 @@ exports.createProblem = async (req, res) => {
   });
   try {
     await newProblem.save();
-    res.status(201).send("Problem created successfully");
+    res.status(200).send("Problem created successfully");
   } catch (error) {
     res.status(500).send(error);
   }

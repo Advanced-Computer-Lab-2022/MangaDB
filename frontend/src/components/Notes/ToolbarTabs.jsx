@@ -5,22 +5,20 @@ function classNames(...classes) {
 const ToolbarTabs = (props) => {
   const tabs = [
     { name: "Notes", current: props.currentTab === "Notes" ? true : false },
-    {
-      name: "Download Notes",
-      current: props.currentTab === "Download Notes" ? true : false,
-    },
     { name: "Q&A", current: props.currentTab === "Q&A" ? true : false },
     { name: "Reviews", current: props.currentTab === "Reviews" ? true : false },
+    { name: "Reports", current: props.currentTab === "Reports" ? true : false },
+
   ];
   const onClickHandler = (event) => {
     if (event.target.innerHTML === "Notes") {
       props.onTabChangeHandler("Notes");
-    } else if (event.target.innerHTML === "Download Notes") {
-      props.onTabChangeHandler("Download Notes");
     } else if (event.target.innerHTML === "Q&amp;A") {
       props.onTabChangeHandler("Q&A");
-    } else {
+    } else if (event.target.innerHTML === "Reviews") {
       props.onTabChangeHandler("Reviews");
+    } else {
+      props.onTabChangeHandler("Reports");
     }
   };
 

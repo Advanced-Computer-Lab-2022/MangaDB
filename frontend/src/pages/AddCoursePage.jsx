@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState } from "react";
 import axios from "axios";
 import NavBar from "../components/UI/NavBar/NavBar";
 import CreateCourseForm from "../components/CreateCourse/CreateCourseForm";

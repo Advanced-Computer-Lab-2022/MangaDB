@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment , useRef } from "react";
+import { useState, useEffect, Fragment, useRef } from "react";
 import ProgressManager from "../components/Progress/ProgressManager";
 import CourseContent from "../components/CourseDetailsComp/CourseContent";
 import NavBar from "../components/UI/NavBar/NavBar";
@@ -19,7 +19,7 @@ const CourseViewPage = () => {
   const location = useLocation();
   const [receivedData, setReceivedData] = useState({});
   const [currentSource, setCurrentSource] = useState("");
-  const [studentSolutions,setStudentSolutions] = useState([])
+  const [studentSolutions, setStudentSolutions] = useState([]);
   const [showNextLessonAlert, setShowNextLessonAlert] = useState(false);
   const [notes, setNotes] = useState([]);
   const [currentNotesFilter, setCurrentNotesFilter] = useState({
@@ -29,6 +29,7 @@ const CourseViewPage = () => {
   const [progress, setProgress] = useState(0);
   const [totalSources, setTotalSources] = useState(0);
   const managerRef = useRef(null);
+  console.log(receivedData);
   useEffect(() => {
     const courseId = location.state;
     const userid = "638a07cdbc3508481a2d7da9";
@@ -148,7 +149,7 @@ const CourseViewPage = () => {
       });
   }, [location.state]);
   const onSourceChangeHandler = (source) => {
-    if(source.sourceType === 'Quiz' && currentSource.sourceType === 'Quiz' ){
+    if (source.sourceType === "Quiz" && currentSource.sourceType === "Quiz") {
       managerRef.current.refreshManager();
     }
     setCurrentSource(source);
@@ -174,16 +175,18 @@ const CourseViewPage = () => {
           "Access-Control-Allow-Origin": "*",
         },
       })
-      .then((res) => { 
-        console.log(res)
+      .then((res) => {
+        console.log(res);
         var temp = {
           score: res.data.score,
           answers: res.data.answers,
-          examId:currentSource.quiz._id,
-          _id:receivedData._id,
-        }
-        console.log([...studentSolutions,temp])
-        setStudentSolutions([...studentSolutions,temp]);
+          examId: currentSource.quiz._id,
+          _id: receivedData._id,
+        };
+        setStudentSolutions([...studentSolutions, temp]);
+        setProgress((prevProg) => {
+          return prevProg + 1;
+        });
       })
       .catch((err) => {});
   };
@@ -225,17 +228,16 @@ const CourseViewPage = () => {
           "Access-Control-Allow-Origin": "*",
         },
       })
-      .then((res) => {});
-
-    axios
-      .get(
-        `http://localhost:3000/user/progress/${receivedData._id}?uid=${userId}`
-      )
       .then((res) => {
-        setProgress(res.data.percentage);
+        axios
+          .get(
+            `http://localhost:3000/user/progress/${receivedData._id}?uid=${userId}`
+          )
+          .then((res) => {
+            setProgress(res.data.percentage);
+          });
       });
   };
-
 
   if (currentSource !== "") {
     var subtitle;

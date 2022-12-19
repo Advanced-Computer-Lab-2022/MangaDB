@@ -5,7 +5,6 @@ import logo from "../Assets/Images/Logo.svg";
 import userIcon from "../Assets/Images/userIcon.svg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
 
@@ -32,15 +31,13 @@ export default function Login() {
         setEmptyUserName(true);
         setWarning("please fill the following fields");
       } else {
-        setEmptyPassword(false);
-        setWarning("");
+        setEmptyUserName(false);
       }
       if (PasswordRef.current.value === "") {
         setEmptyPassword(true);
         setWarning("please fill the following fields");
       } else {
         setEmptyPassword(false);
-        setWarning("");
       }
       return;
     } else {
@@ -55,7 +52,8 @@ export default function Login() {
             window.location.href = "/home";
             */
           const instructorId = "6386427487d3f94e4cb7a28d";
-          navigate(`/home/${instructorId}`, { state: res.data.split(".")[0] });
+          console.log(res.data.token);
+          navigate(`/home/1`, { state: res.data.token });
         })
         .catch((error) => {
           if (
@@ -97,7 +95,7 @@ export default function Login() {
   const onSuccess = (res) => {
     setProfile(res.profileObj);
     console.log("success", res.profileObj);
-    navigate("/home/1");
+    //navigate("/home/1");
   };
 
   const onFailure = (err) => {
@@ -213,7 +211,6 @@ export default function Login() {
                 cookiePolicy={"single_host_origin"}
                 isSignedIn={true}
               />
-              
             </div>
           </form>
           <p class="text-center">

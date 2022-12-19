@@ -52,8 +52,9 @@ export default function Login() {
             localStorage.setItem("token", res.data.token);
             window.location.href = "/home";
             */
+          localStorage.setItem("token", res.data.token);
           const instructorId = "6386427487d3f94e4cb7a28d";
-          navigate(`/home/${instructorId}`, {state: res.data.split(".")[0]});
+          navigate(`/home/${instructorId}`, {state: res.data.token});
         })
         .catch((error) => {
           if (

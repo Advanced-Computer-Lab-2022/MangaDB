@@ -229,9 +229,6 @@ exports.changePassword = async (req, res) => {
                     { id: data._id, userName: data.userName, role: data.role },
                     process.env.TOKEN_SECRET
                   );
-                  res.cookie("token", token, {
-                    httpOnly: true,
-                  });
                     const mailOptions = {
                         email: data.email,
                         subject: 'Reset Password',

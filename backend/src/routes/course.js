@@ -4,7 +4,7 @@ const auth = require("../middleware/auth");
 
 router.get("/", courseController.getAllCourses);
 
-router.get("/:id", courseController.getCourse);
+router.get("/:id",auth.validateToken, courseController.getCourse);
 
 router.patch("/:id",auth.validateToken,auth.authenticateRole(["INSTRUCTOR"]), courseController.updateCourse);
 

@@ -70,8 +70,12 @@ const AddCoursePage = (props) => {
     console.log(submitData);
     axios
       .post(
-        "http://localhost:3000/instructor/addcourse/6386427487d3f94e4cb7a28d",
-        submitData
+        "http://localhost:3000/instructor/addcourse",
+        submitData ,{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}}
       )
       .then((res) => {
         console.log(res);

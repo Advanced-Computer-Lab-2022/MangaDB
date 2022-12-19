@@ -90,7 +90,11 @@ const SearchResultsPage = () => {
         "maxPrice=" +
         searchState.filters.price.maxValue;
     }
-    axios.get("http://localhost:3000/course/" + param).then((res) => {
+    axios.get("http://localhost:3000/course/" + param,{
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        'content-type': 'text/json'
+}}).then((res) => {
       dispatchSearch({ type: "COURSES", value: res.data.courses });
     });
   }, [searchState.search, searchState.filters]);

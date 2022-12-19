@@ -71,7 +71,11 @@ const InstructorProfilePage = () => {
   const [selectedStage, setSelectedStage] = useState(1);
   //gather the userInfo
   useEffect(() => {
-    axios.get("http://localhost:3000/instructor/editProfile").then((res) => {
+    axios.get("http://localhost:3000/instructor/editProfile" ,{
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        'content-type': 'text/json'
+}}).then((res) => {
       setReceivedUserInfo(res.data);
     });
   }, []);
@@ -80,9 +84,12 @@ const InstructorProfilePage = () => {
   const personalInfoSaveHandler = (data) => {
     console.log(data);
     axios
-      .patch("http://localhost:3000/user/updateuser/638a07cdbc3508481a2d7da9", data, {
+      .patch("http://localhost:3000/user/updateuser", data, {
         headers: {
           "Access-Control-Allow-Origin": "*",
+              'Authorization': 'Bearer ' + localStorage.getItem('token'),
+              'content-type': 'text/json'
+  
         },
       })
       .then((res) => {});
@@ -91,9 +98,11 @@ const InstructorProfilePage = () => {
   //function to handle the change of password or privacy
   const securityChangeHandler = (data) => {
     axios
-      .patch("http://localhost:3000/user/updateuser/638a07cdbc3508481a2d7da9", data, {
+      .patch("http://localhost:3000/user/updateuser", data, {
         headers: {
           "Access-Control-Allow-Origin": "*",
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          'content-type': 'text/json'
         },
       })
       .then((res) => {});
@@ -105,6 +114,8 @@ const InstructorProfilePage = () => {
       .post("http://localhost:3000/instructor/", data, {
         headers: {
           "Access-Control-Allow-Origin": "*",
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          'content-type': 'text/json'
         },
       })
       .then((res) => {});

@@ -20,7 +20,11 @@ const CourseDetailsPage = () => {
       .get(
         "http://localhost:3000/course/"
           .concat(courseId)
-          .concat("?uid=638a07cdbc3508481a2d7da9")
+          ,{
+            headers: {
+              'Authorization': 'Bearer ' + localStorage.getItem('token'),
+              'content-type': 'text/json'
+  }}
       )
       .then((res) => {
         setCourseDetails(res.data.course);
@@ -52,7 +56,11 @@ const CourseDetailsPage = () => {
     //     }
     //   });
 
-    axios.get("http://localhost:3000/course/rate/".concat(courseId)).then((res) => {
+    axios.get("http://localhost:3000/course/rate/".concat(courseId) ,{
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        'content-type': 'text/json'
+}}).then((res) => {
       // setCourseDetails(res.data.course);
       // console.log(res.data.course);
       // setLoaded(true);
@@ -73,7 +81,11 @@ const CourseDetailsPage = () => {
     axios
       .post(
         "http://localhost:3000/course/rate/".concat(courseId),
-        data
+        data ,{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}}
       )
       .then((res) => {
         console.log(res);

@@ -33,7 +33,11 @@ const CourseViewPage = () => {
     const userid = "638a07cdbc3508481a2d7da9";
     if (currentNotesFilter.name === "All Lessons") {
       axios
-        .get(`http://localhost:3000/user/coursenotes/${userid}?cid=${courseId}`)
+        .get(`http://localhost:3000/user/coursenotes?cid=${courseId}` ,{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}})
         .then((res) => {
           var notesSet = [];
           for (var i = 0; i < res.data.noteData.length; i++) {
@@ -70,8 +74,12 @@ const CourseViewPage = () => {
       }
       axios
         .get(
-          `http://localhost:3000/user/subtitlenotes/${userid}?cid=${courseId}&sid=${subtitleId}`
-        )
+          `http://localhost:3000/user/subtitlenotes?cid=${courseId}&sid=${subtitleId}`
+          ,{
+            headers: {
+              'Authorization': 'Bearer ' + localStorage.getItem('token'),
+              'content-type': 'text/json'
+  }})
         .then((res) => {
           var notesSet = [];
           for (var i = 0; i < res.data.noteData.length; i++) {
@@ -100,8 +108,12 @@ const CourseViewPage = () => {
     } else {
       axios
         .get(
-          `http://localhost:3000/user/sourcenotes/${userid}?cid=${courseId}&sid=${currentSource._id}`
-        )
+          `http://localhost:3000/user/sourcenotes?cid=${courseId}&sid=${currentSource._id}`
+          ,{
+            headers: {
+              'Authorization': 'Bearer ' + localStorage.getItem('token'),
+              'content-type': 'text/json'
+  }})
         .then((res) => {
           var notesSet = [];
           for (var i = 0; i < res.data.noteData.length; i++) {
@@ -136,8 +148,12 @@ const CourseViewPage = () => {
     //shouldnt we send the userId ??
     axios
       .get(
-        `http://localhost:3000/course/${courseId}?uid=638a07cdbc3508481a2d7da9`
-      )
+        `http://localhost:3000/course/${courseId}`
+        ,{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}})
       .then((res) => {
         console.log(res);
         setReceivedData(res.data.course);
@@ -169,6 +185,8 @@ const CourseViewPage = () => {
       .post(endPoint, sentData, {
         headers: {
           "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("token")
         },
       })
       .then((res) => {})
@@ -211,13 +229,20 @@ const CourseViewPage = () => {
       .patch(endPoint, submittedData, {
         headers: {
           "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("token")
         },
       })
       .then((res) => {});
 
     axios
       .get(
-        `http://localhost:3000/user/progress/${receivedData._id}?uid=${userId}`
+        `http://localhost:3000/user/progress/${receivedData._id}`
+        ,{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}}
       )
       .then((res) => {
         setProgress(res.data.percentage);

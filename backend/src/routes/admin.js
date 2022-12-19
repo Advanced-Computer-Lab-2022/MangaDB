@@ -6,7 +6,6 @@ router.post('/adduser',auth.validateToken,auth.authenticateRole(["ADMIN"]), user
 
 router.get('/getusers',auth.validateToken,auth.authenticateRole(["ADMIN"]),userController.getAllUsers);
 
-
 router.delete('/deleteuser/:id',auth.validateToken,auth.authenticateRole(["ADMIN"]), userController.deleteUser);
 
 router.get('/getuser/:id',auth.validateToken,auth.authenticateRole(["ADMIN"]), userController.getUserById);

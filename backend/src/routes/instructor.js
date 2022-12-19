@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const instructorController = require("../controllers/instructor");
 const courseController = require("../controllers/course");
+const auth = require("../middleware/auth");
 
 router.post("/addcourse",auth.validateToken,auth.authenticateRole(["INSTRUCTOR"]), courseController.createCourse);
 

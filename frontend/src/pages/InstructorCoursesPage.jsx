@@ -92,14 +92,22 @@ const IntructorCoursePage = (props) => {
         searchState.filters.price.maxValue;
     }
     if (!searchState.myCourses) {
-      axios.get("http://localhost:3000/course/" + param).then((res) => {
+      axios.get("http://localhost:3000/course/" + param ,{
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          'content-type': 'text/json'
+}}).then((res) => {
         dispatchSearch({ type: "COURSES", value: res.data.courses });
       });
     } else {
       axios
         .get(
-          "http://localhost:3000/instructor/searchcourses/636011143c6ccb49e4e446b4" +
-            param
+          "http://localhost:3000/instructor/searchcourses" +
+            param ,{
+              headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'content-type': 'text/json'
+    }}
         )
         .then((res) => {
           dispatchSearch({ type: "COURSES", value: res.data.courses });

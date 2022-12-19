@@ -7,7 +7,7 @@ const invoice=require("../models/invoice");
 exports.requestRefund = async (req, res) => {
 
     const courseId = req.body.courseId;
-    const userId = req.body.userId;
+    const userId = req.user.id;
     const reason = req.body.reason;
 
     const foundRequest=await request.findOne({course:courseId,user:userId,type:"refund"})
@@ -54,6 +54,8 @@ exports.requestRefund = async (req, res) => {
 
     const newRefundRequest = new request({
       course: courseId,
+      courseName:foundCourse.courseTitle,
+      userName:foundUser.firstName+" "+foundUser.lastName,
       user: userId,
       reason: reason,
       type:"refund",
@@ -67,7 +69,7 @@ exports.requestRefund = async (req, res) => {
   exports.requestCourseAccess = async (req, res) => {
       
       const courseId = req.body.courseId;
-      const userId = req.body.userId;
+      const userId =req.user.id;
       const reason = req.body.reason;
       const foundRequest=await request.findOne({course:courseId,user:userId,type:"access"})
   

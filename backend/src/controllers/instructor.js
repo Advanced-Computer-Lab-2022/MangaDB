@@ -3,7 +3,7 @@ const user = require('../models/user');
 const invoice = require('../models/invoice');
 
 exports.updateUser = (req, res) => {
-    const id = req.params.id;
+    const id = req.user.id;;
     user.findByIdAndUpdate(id, req.body
     , { useFindAndModify: false ,new: true})
     .then(data => {
@@ -23,7 +23,7 @@ exports.updateUser = (req, res) => {
 
 exports.rateInstructor = async (req, res) => {
     const instructorId = req.params.id;
-    const userId = req.body.userId;
+    const userId = req.user.id;;
     const rating = req.body.rating;
     const review = req.body.review;
     try {
@@ -101,7 +101,7 @@ exports.rateInstructor = async (req, res) => {
 
 exports.editRating = async (req, res) => {
     const instructorId = req.params.id;
-    const userId = req.body.userId;
+    const userId = req.user.id;
     const rating = req.body.rating;
     const review = req.body.review;
     try {
@@ -145,7 +145,7 @@ exports.editRating = async (req, res) => {
 
 exports.deleteRating = async (req, res) => {
     const instructorId = req.params.id;
-    const userId = req.body.userId;
+    const userId = req.user.id;
     try {
         let foundInstructor=await user
         .findById(instructorId)
@@ -182,7 +182,7 @@ exports.deleteRating = async (req, res) => {
 
 exports.getRating = async (req, res) => {
     const instructorId = req.params.id;
-    const userId = req.query.userId;
+    const userId = req.user.id;
     try {
         let foundInstructor=await user
         .findById(instructorId)
@@ -233,7 +233,7 @@ exports.setDiscount= async (req, res) => {
 
 
 exports.getMoneyOwed = async (req, res) => {
-    const instructorId=req.params.id;
+    const instructorId=req.user.id;
     let date=new Date(Date.now());
     let startOfMonth=new Date(date.getFullYear(),date.getMonth(),1);
     date=date.toISOString();

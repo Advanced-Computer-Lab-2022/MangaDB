@@ -73,19 +73,19 @@ const Notes = (props) => {
           ></NotesForm>
         </div>
       )}
-      <div className="flex mt-[-20px] items-center">
-        <div className="items-center justify-center m-4 w-[50%]">
+      <div className="flex mt-[-20px] items-center justify-between">
+        <div className="items-center w-[30vw] justify-center m-4">
           <NotesSelector
             selected={props.selected}
             selectedChangeHandler={props.selectedChangeHandler}
           ></NotesSelector>
         </div>
-        <div className="flex justify-end w-[40%] ">
+        <div className="mr-4">
           <button
             onClick={downloadNotesHandler}
-            className=" text-gray-400 flex items-center justify-center border border-black p-3 hover:bg-gray-200"
+            className=" text-gray-400 flex w-[25vw] items-center justify-between border border-black p-3 hover:bg-gray-200"
           >
-            Download Notes{" "}
+            Download Notes
             <svg
               className="ml-2 text-black"
               xmlns="http://www.w3.org/2000/svg"
@@ -101,7 +101,7 @@ const Notes = (props) => {
         </div>
       </div>
 
-      <div id="content" className="mt-8 ">
+      <div id="content" className="mt-8">
         {displayedNotes}
       </div>
     </Fragment>

@@ -6,7 +6,6 @@ exports.createProblem = async (req, res) => {
   const user = req.body.userId;
   const type = req.body.type;
   const description = req.body.description;
-
   const foundCourse = await course.findById(courseId);
   if (!foundCourse) {
     return res.status(404).send({ message: "Course not found" });

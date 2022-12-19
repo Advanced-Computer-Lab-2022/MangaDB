@@ -23,6 +23,9 @@ const Notes = (props) => {
       ></NotesCard>
     );
   });
+  var minutes = Math.floor(+props.timestamp / 60);
+  var seconds = +props.timestamp % 60;
+  var zeroS = seconds < 10 ? "0" : "";
   return (
     <Fragment>
       {!showForm && (
@@ -30,8 +33,8 @@ const Notes = (props) => {
           onClick={onShowHandler}
           className="relative bg-white text-gray-500 border border-gray-500 p-4 m-4 cursor-pointer hover:bg-gray-200"
         >
-          Create a new note at {props.timestamp}
-          <div className="absolute right-2 bottom-5 text-black">
+          Create a new note at {minutes + ":" + zeroS + seconds}
+          <div className="absolute right-2 bottom-5 text-gray-500">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -46,9 +49,9 @@ const Notes = (props) => {
         </div>
       )}
       {showForm && (
-        <div className="flex items-center space-x-2 ">
-          <div className="bg-black text-white rounded-full px-2 font-semibold  ">
-            {props.timestamp}
+        <div className="flex items-center space-x-2 px-4">
+          <div className="bg-veryLightBlue text-gray-900 text-sm py-[2px] px-2 rounded-lg">
+            {minutes + ":" + zeroS + seconds}
           </div>
           <NotesForm
             addNote={props.addNote}

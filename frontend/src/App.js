@@ -1,5 +1,6 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
+import { Fragment } from "react";
 import Login from "./pages/Login";
 import HomePage from "./pages/HomePage";
 import SearchResultsPage from "./pages/SearchResultsPage";
@@ -11,51 +12,52 @@ import InstructorCoursesPage from "./pages/InstructorCoursesPage";
 import AddCoursePage from "./pages/AddCoursePage";
 import SignUp from "./pages/SignUp";
 import ResetPassword from "./pages/ResetPassword";
-import AdminPage from "./components/Admin/AdminPage";
-import SuccessfulPayment from "./components/Payment/SuccessfulPayment";
-import UnsuccessfulPayment from "./components/Payment/UnsuccessfulPayment";
-
+import Footer from "./components/UI/Footer/Footer";
+import FAQS from "./pages/FAQS";
 function App() {
   return (
-   // navbar should be here
-    <Routes>
-      <Route path="successfulpayment" element={<SuccessfulPayment></SuccessfulPayment>}></Route>
-      <Route path="unsuccessfulpayment" element={<UnsuccessfulPayment></UnsuccessfulPayment>}></Route>
-      <Route path="/" element={<Login></Login>}></Route>
-      <Route path="/signup" element = {<SignUp></SignUp>}></Route>
-      <Route path="/resetpassword" element={<ResetPassword></ResetPassword>}></Route>
-      <Route path="/home/:id" element={<HomePage></HomePage>}></Route>
-      <Route path="/admin" element={<AdminPage></AdminPage>}></Route>
-      <Route
-        path="/searchresults/:id"
-        element={<SearchResultsPage></SearchResultsPage>}
-      ></Route>
-      <Route
-        path="/coursedetails/:id"
-        element={<CourseDetailsPage></CourseDetailsPage>}
-      ></Route>
-      <Route
-        path="/courseview/:id"
-        element={<CourseViewPage></CourseViewPage>}
-      ></Route>
-      <Route
-        path="/profile/:id"
-        element={<InstructorProfilePage></InstructorProfilePage>}
-      ></Route>
-      <Route
-        path="/admin/:id"
-        element={<AdminAddNewUser></AdminAddNewUser>}
-      ></Route>
-      <Route
-        path="courses/:id"
-        element={<InstructorCoursesPage></InstructorCoursesPage>}
-      ></Route>
-      <Route
-        path="addcourse/:id"
-        element={<AddCoursePage></AddCoursePage>}
-      ></Route>
-    </Routes>
-   
+    // navbar should be here
+    <Fragment>
+      <Routes>
+        <Route path="/" element={<Login></Login>}></Route>
+        <Route path="/signup" element={<SignUp></SignUp>}></Route>
+        <Route
+          path="/resetpassword"
+          element={<ResetPassword></ResetPassword>}
+        ></Route>
+        <Route path="/home/:id" element={<HomePage></HomePage>}></Route>
+        <Route
+          path="/searchresults/:id"
+          element={<SearchResultsPage></SearchResultsPage>}
+        ></Route>
+        <Route
+          path="/coursedetails/:id"
+          element={<CourseDetailsPage></CourseDetailsPage>}
+        ></Route>
+        <Route
+          path="/courseview/:id"
+          element={<CourseViewPage></CourseViewPage>}
+        ></Route>
+        <Route
+          path="/profile/:id"
+          element={<InstructorProfilePage></InstructorProfilePage>}
+        ></Route>
+        <Route
+          path="/admin/:id"
+          element={<AdminAddNewUser></AdminAddNewUser>}
+        ></Route>
+        <Route
+          path="courses/:id"
+          element={<InstructorCoursesPage></InstructorCoursesPage>}
+        ></Route>
+        <Route
+          path="addcourse/:id"
+          element={<AddCoursePage></AddCoursePage>}
+        ></Route>
+        <Route path="FAQS" element={<FAQS></FAQS>}></Route>
+      </Routes>
+      <Footer></Footer>
+    </Fragment>
   );
 }
 export default App;

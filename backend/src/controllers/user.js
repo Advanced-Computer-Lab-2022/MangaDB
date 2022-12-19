@@ -228,10 +228,15 @@ exports.changePassword = async (req, res) => {
                         <p>Click on the link to reset your password</p>
                         <a href="http://localhost:3456/resetpassword">Reset Password</a>`,
           };
+          res.cookie("token", token, {
+            httpOnly: true,
+          });
           mailer.sendEmail(mailOptions);
-          res.send({ message: "email has been sent" });
+          res.send({ message: "email has been sent"
+        , token: token });
         }
       });
+      
   } catch (err) {
     res.status(500).send({
       message: "Error retrieving user with userName=" + userName,

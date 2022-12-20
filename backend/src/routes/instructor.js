@@ -15,7 +15,7 @@ router.post("/rate/:id",auth.validateToken,auth.authenticateRole(["TRAINEE","COR
 
 router.patch("/rate/:id",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]), instructorController.editRating);
 
-router.get("/rate/:id",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]), instructorController.getRating);
+router.get("/rate/:id",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]), instructorController.getInstructorRating);
 
 router.get("/amountOwed",auth.validateToken,auth.authenticateRole(["INSTRUCTOR"]), instructorController.getMoneyOwed);
 

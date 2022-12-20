@@ -256,4 +256,25 @@ exports.getMoneyOwed = async (req, res) => {
     }
 };
 
+exports.getInstructorRating = async (req, res) => {
+    const instructorId=req.params.id;
+    try {
+        const instructorData=await user.findById(instructorId);
+        if(instructorData.role!=="INSTRUCTOR"){
+            res.status(404).send({
+                message: `Cannot get rating of instructor with id=${instructorId}. Maybe instructor was not found!`,
+                });
+        }else{
+            res.status(200).send({
+                message: "Instructor rating was found successfully.",
+                review : instructorData.reviews
+            });
+        }
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Some error occurred while getting instructor rating.",
+        });
+    }
+}
+
 

@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment , useRef } from "react";
+import { useState, useEffect, Fragment, useRef } from "react";
 import ProgressManager from "../components/Progress/ProgressManager";
 import CourseContent from "../components/CourseDetailsComp/CourseContent";
 import NavBar from "../components/UI/NavBar/NavBar";
@@ -19,15 +19,16 @@ const CourseViewPage = () => {
   const location = useLocation();
   const [receivedData, setReceivedData] = useState({});
   const [currentSource, setCurrentSource] = useState("");
-  const [studentSolutions,setStudentSolutions] = useState([])
+  const [studentSolutions, setStudentSolutions] = useState([]);
   const [showNextLessonAlert, setShowNextLessonAlert] = useState(false);
   const [notes, setNotes] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [reports, setReports] = useState([]);
   const [currentNotesFilter, setCurrentNotesFilter] = useState({
     id: 1,
     name: "All Lessons",
   });
-  const [currentReportsFilter, setCurrentReportsFilter] = useState({
+  const [currentReportsSelector, setCurrentReportsSelector] = useState({
     id: 1,
     name: "Technical",
   });
@@ -160,7 +161,7 @@ const CourseViewPage = () => {
       });
   }, [location.state]);
   const onSourceChangeHandler = (source) => {
-    if(source.sourceType === 'Quiz' && currentSource.sourceType === 'Quiz' ){
+    if (source.sourceType === "Quiz" && currentSource.sourceType === "Quiz") {
       managerRef.current.refreshManager();
     }
     setCurrentSource(source);
@@ -169,8 +170,8 @@ const CourseViewPage = () => {
     setCurrentNotesFilter(data);
   };
 
-  const changeReportsFilter = (data) => {
-    setCurrentReportsFilter(data);
+  const changeReportsSelector = (data) => {
+    setCurrentReportsSelector(data);
   };
 
   const onSolveExamHandler = (receivedSolution) => {
@@ -190,16 +191,16 @@ const CourseViewPage = () => {
           "Access-Control-Allow-Origin": "*",
         },
       })
-      .then((res) => { 
-        console.log(res)
+      .then((res) => {
+        console.log(res);
         var temp = {
           score: res.data.score,
           answers: res.data.answers,
-          examId:currentSource.quiz._id,
-          _id:receivedData._id,
-        }
-        console.log([...studentSolutions,temp])
-        setStudentSolutions([...studentSolutions,temp]);
+          examId: currentSource.quiz._id,
+          _id: receivedData._id,
+        };
+        console.log([...studentSolutions, temp]);
+        setStudentSolutions([...studentSolutions, temp]);
       })
       .catch((err) => {});
   };
@@ -252,7 +253,6 @@ const CourseViewPage = () => {
       });
   };
 
-
   if (currentSource !== "") {
     var subtitle;
     for (var i = 0; i < receivedData.subtitles.length; i++) {
@@ -266,9 +266,22 @@ const CourseViewPage = () => {
 
   const submitReportHandler = (data) => {
     axios.post("http://localhost:3000/problem/", data).then((res) => {
-      //setReports([...reports, data])
-      console.log(res.data);
+      setReports([...reports, res.data]);
     });
+  };
+
+  const submitReviewHandler = (data) => {
+    axios
+      .post(
+        "http://localhost:3000/course/rate/"
+          .concat(receivedData._id)
+          .concat("/"),
+        data
+      )
+      .then((res) => {
+        console.log(res);
+        //setReviews([...reviews, res.data]);
+      });
   };
 
   console.log(receivedData);
@@ -280,13 +293,14 @@ const CourseViewPage = () => {
         <NotesManager
           currentNotesFilter={currentNotesFilter}
           changeNotesFilter={changeNotesFilter}
-          currentReportsFilter={currentReportsFilter}
-          changeReportsFilter={changeReportsFilter}
+          currentReportsSelector={currentReportsSelector}
+          changeReportsSelector={changeReportsSelector}
           studentId="638a07cdbc3508481a2d7da9"
           courseId={receivedData._id}
           currentSourceId={currentSource._id}
           source={currentSource.description}
           notes={notes}
+          reviews={reviews}
           reports={reports}
           setNotes={notesChangeHandler}
           subtitle={subtitle}
@@ -294,6 +308,7 @@ const CourseViewPage = () => {
           link={currentSource.link}
           onWatch={onWatchHandler}
           submitReportHandler={submitReportHandler}
+          submitReviewHandler={submitReviewHandler}
         />
       );
     } else {
@@ -313,7 +328,7 @@ const CourseViewPage = () => {
               message={
                 "This was the last course lesson,solve the exam to get your certificate"
               }
-            ></WarningAlert>
+            />
           )}
           <ExamManager
             ref={managerRef}
@@ -322,7 +337,7 @@ const CourseViewPage = () => {
             studentAnswers={studentAnswers}
             grade={grade}
             onSolveExamHandler={onSolveExamHandler}
-          ></ExamManager>
+          />
         </Fragment>
       );
     }
@@ -330,7 +345,6 @@ const CourseViewPage = () => {
   return (
     <Fragment>
       <NavBar />
-      {/* <ProgressManager progress={progress} totalSources={totalSources} /> */}
       <div className="py-4 flex justify-center font-medium text-xl bg-gray-50">
         {receivedData.courseTitle}: {currentSource.description}
       </div>

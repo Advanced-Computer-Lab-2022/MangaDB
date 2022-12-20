@@ -4,6 +4,7 @@ import Notes from "./Notes";
 import Video from "../Video/Video";
 import ToolbarTabs from "./ToolbarTabs";
 import Reports from "../CourseView/Reports";
+import ReviewsCourseView from "../CourseView/ReviewsCourseView";
 
 const NotesManager = (props) => {
   const [showNotes, setShowNotes] = useState(true);
@@ -155,7 +156,7 @@ const NotesManager = (props) => {
   };
 
   const selectedReportsChangeHandler = (newSelected) => {
-    props.changeReportsFilter(newSelected);
+    props.changeReportsSelector(newSelected);
   };
 
   return (
@@ -186,11 +187,17 @@ const NotesManager = (props) => {
           />
         )}
         {showQA && <></>}
-        {showReviews && <></>}
+        {showReviews && (
+          <ReviewsCourseView
+            onSubmit={props.submitReviewHandler}
+            courseId={props.courseId}
+            reviews={props.reviews}
+          />
+        )}
         {showReports && (
           <Reports
             onSubmit={props.submitReportHandler}
-            selected={props.currentReportsFilter}
+            selected={props.currentReportsSelector}
             selectedChangeHandler={selectedReportsChangeHandler}
             courseId={props.courseId}
             reports={props.reports}

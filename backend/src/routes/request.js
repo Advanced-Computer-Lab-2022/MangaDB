@@ -19,6 +19,8 @@ router.patch("/reject/:id", requestController.declineRequest);
 
 router.delete("/:id", requestController.deleteRequest);
 
+router.patch("/pend/:id", requestController.pendRequest);
+
 // router.post("/refund",auth.validateToken,auth.authenticateRole(["TRAINEE"]), requestController.requestRefund);
 
 // router.post("/access",auth.validateToken,auth.authenticateRole(["CORPORATE"]), requestController.requestCourseAccess);

@@ -15,8 +15,8 @@ exports.createPaymentIntent = async(info) => {
               },
               quantity: 1}]
             ,
-            success_url: `http://localhost:3000/success`,//to be changed
-            cancel_url: `http://localhost:3000/cancel`, 
+            success_url: process.env.SUCCESS_URL,//to be changed
+            cancel_url: process.env.CANCEL_URL, 
 
 
         });

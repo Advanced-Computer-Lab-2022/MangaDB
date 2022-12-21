@@ -6,6 +6,7 @@ const course=require('../models/course');
 const exam=require('../models/exam');
 const blackList=require('../models/token');
 const invoice=require('../models/invoice');
+const currencyConverter = require("../helper/currencyconverter");
 
 exports.createUser = async (req, res) => {
   if (!req.body.userName || !req.body.password || !req.body.role) {
@@ -829,6 +830,11 @@ exports.setDiscount= async (req, res) => {
 
   exports.getWallet=async (req, res) => {
     const userId = req.params.id;
+    const countryCode = req.query.CC || "US";
+    const countryDetails = await currencyConverter.convertCurrency("US", countryCode);
+    let exchangeRate = countryDetails.rate;
+    let symbol = countryDetails.symbol;
+  
     const userData = await
     user.findById
     (userId);
@@ -836,6 +842,9 @@ exports.setDiscount= async (req, res) => {
       res.status(404).json({ message: "User Not Found" });
       return;
     }
-    res.status(200).json({ wallet: userData.wallet });
+    let amount = userData.wallet * exchangeRate;
+    amount = amount.toFixed(2);
+    res.status(200).json({ wallet: amount,
+    symbol:symbol });
   };
   

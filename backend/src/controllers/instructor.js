@@ -248,15 +248,15 @@ exports.getMoneyOwed = async (req, res) => {
          month = date[1];
         if(month!=prevMonth&&prevMonth!=0)
         {
-            history.push({month:prevMonth,year:prevYear,amount:total});
+            history.push({month:prevMonth,year:prevYear,amount:total.toFixed(2)});
             total=0;
             
         }
-        total+=invoiceData[i].totalAmount;
+        total+=(invoiceData[i].totalAmount)*0.90;
         prevMonth=month;
         prevYear=year;
     }
-    history.push({month:month,year:year,amount:total});
+    history.push({month:month,year:year,amount:total.toFixed(2)});
         res.status(200).send({
             message: "Instructor money owed was found successfully.",
             history : history

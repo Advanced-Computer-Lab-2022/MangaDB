@@ -107,6 +107,8 @@ exports.requestRefund = async (req, res) => {
         }
 
       const newAccessRequest = new request({
+        courseName:foundCourse.courseTitle,
+        userName:foundUser.firstName+" "+foundUser.lastName,
         course: courseId,
         user: userId,
         reason: reason,
@@ -188,7 +190,7 @@ exports.requestRefund = async (req, res) => {
                 });
             }
 
-            const refundAmount = await invoice.findOne({course:foundRequest.course,user:foundRequest.user}).then((invoice)=>{
+            const refundAmount = await invoice.findOneAndDelete({course:foundRequest.course,user:foundRequest.user}).then((invoice)=>{
                 return invoice.totalAmount;
             }).catch((err)=>{
                 console.log(err);

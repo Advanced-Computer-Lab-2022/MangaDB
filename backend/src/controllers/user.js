@@ -826,3 +826,16 @@ exports.setDiscount= async (req, res) => {
   }
   res.status(200).json({message:"All Discounts Set Successfully"});
   };
+
+  exports.getWallet=async (req, res) => {
+    const userId = req.params.id;
+    const userData = await
+    user.findById
+    (userId);
+    if (!userData) {
+      res.status(404).json({ message: "User Not Found" });
+      return;
+    }
+    res.status(200).json({ wallet: userData.wallet });
+  };
+  

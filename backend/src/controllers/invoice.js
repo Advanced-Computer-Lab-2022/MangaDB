@@ -53,6 +53,7 @@ exports.issueInvoice = async (req, res) => {
           const newInvoice = new invoice({
             user: userId,
             course: courseId,
+            courseName: courseData.courseTitle,
             instructor: courseData.instructor,
             totalAmount: amount,
           });

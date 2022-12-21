@@ -234,20 +234,32 @@ exports.setDiscount= async (req, res) => {
 
 exports.getMoneyOwed = async (req, res) => {
     const instructorId=req.params.id;
-    let date=new Date(Date.now());
-    let startOfMonth=new Date(date.getFullYear(),date.getMonth(),1);
-    date=date.toISOString();
-    startOfMonth=startOfMonth.toISOString();
     try {
-        const invoiceData=await invoice.find({$and: [{instructor:instructorId},{invoiceDate:{$gte:startOfMonth}},{invoiceDate:{$lte:date}}]});
+        const invoiceData=await invoice.find({instructor:instructorId}).sort({invoiceDate:1});
+        let history=[];
         let total=0;
-        invoiceData.forEach((element) => {
-            total+=element.totalAmount*0.8;
+        let prevMonth=0;
+        let prevYear=0;
+        let year = 0;
+        let month = 0;
+        for(let i=0;i<invoiceData.length;i++){    
+        let date =invoiceData[i].invoiceDate.toISOString().split('-');
+         year = date[0];
+         month = date[1];
+        if(month!=prevMonth&&prevMonth!=0)
+        {
+            history.push({month:prevMonth,year:prevYear,amount:total.toFixed(2)});
+            total=0;
+            
         }
-        );
+        total+=(invoiceData[i].totalAmount)*0.90;
+        prevMonth=month;
+        prevYear=year;
+    }
+    history.push({month:month,year:year,amount:total.toFixed(2)});
         res.status(200).send({
             message: "Instructor money owed was found successfully.",
-            moneyOwed : total
+            history : history
         });
     } catch (err) {
         res.status(500).send({
@@ -255,5 +267,26 @@ exports.getMoneyOwed = async (req, res) => {
         });
     }
 };
+
+exports.getInstructorRating = async (req, res) => {
+    const instructorId=req.params.id;
+    try {
+        const instructorData=await user.findById(instructorId);
+        if(instructorData.role!=="INSTRUCTOR"){
+            res.status(404).send({
+                message: `Cannot get rating of instructor with id=${instructorId}. Maybe instructor was not found!`,
+                });
+        }else{
+            res.status(200).send({
+                message: "Instructor rating was found successfully.",
+                review : instructorData.reviews
+            });
+        }
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Some error occurred while getting instructor rating.",
+        });
+    }
+}
 
 

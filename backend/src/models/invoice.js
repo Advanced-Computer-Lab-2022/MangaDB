@@ -12,6 +12,10 @@ const invoiceSchema = new mongoose.Schema({
         ref: "Course",
         required: true,
     },
+    courseName: {
+        type: String,
+        required: true,
+    },
     instructor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

@@ -285,3 +285,28 @@ exports.requestRefund = async (req, res) => {
       });
     }
   };
+
+  exports.pendRequest= async (req, res) => {
+    const requestId = req.params.id;
+    try {
+     const foundRequest= await request
+      .findById
+      (requestId);
+      if(foundRequest){
+      foundRequest.status="pending";
+      await foundRequest.save();
+      res.status(200).json({
+        message: "Request pended successfully!",
+      });
+    }
+    else{
+      res.status(404).json({
+        message: "Request not found",
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      message: "Error pending request",
+    });
+  }
+};

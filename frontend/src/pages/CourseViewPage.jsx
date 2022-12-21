@@ -1,6 +1,4 @@
 import { useState, useEffect, Fragment, useRef } from "react";
-import ProgressManager from "../components/Progress/ProgressManager";
-import CourseContent from "../components/CourseDetailsComp/CourseContent";
 import NavBar from "../components/UI/NavBar/NavBar";
 import ExamManager from "../components/Exam/ExamManager";
 import NotesManager from "../components/Notes/NotesManager";

@@ -14,9 +14,9 @@ import SignUp from "./pages/SignUp";
 import ResetPassword from "./pages/ResetPassword";
 import Footer from "./components/UI/Footer/Footer";
 import FAQS from "./pages/FAQS";
+import InstructorWallet from "./pages/IntructorWallet";
 function App() {
   return (
-    // navbar should be here
     <Fragment>
       <Routes>
         <Route path="/" element={<Login></Login>}></Route>
@@ -54,8 +54,13 @@ function App() {
           path="addcourse/:id"
           element={<AddCoursePage></AddCoursePage>}
         ></Route>
+        <Route
+          path="myWallet/:id"
+          element={<InstructorWallet></InstructorWallet>}
+        ></Route>
         <Route path="FAQS" element={<FAQS></FAQS>}></Route>
       </Routes>
+
       <Footer></Footer>
     </Fragment>
   );

@@ -1,6 +1,4 @@
-import { TableRow } from "@mui/material";
 import PrimaryButton from "../UI/PrimaryButton";
-import SecondaryButton from "../UI/SecondaryButton";
 import Stars from "../UI/Stars";
 const TableListViewCard = (props) => {
   return (

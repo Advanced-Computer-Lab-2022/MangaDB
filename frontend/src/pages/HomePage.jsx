@@ -9,6 +9,8 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import CourseCard from "../components/Course/CourseCard";
 import SearchBar from "../components/UI/Search/SearchBar";
+import Cloud from "../components/HomeComponents/Cloud";
+import Testomonial from "../components/HomeComponents/Testomonial";
 import { useLocation } from "react-router-dom";
 const HomePage = () => {
   const [displayedCourses, setDisplayedCourses] = useState([]);
@@ -29,8 +31,6 @@ const HomePage = () => {
         setDisplayedCourses(res.data.courses);
         setCurrencySymbol(res.data.symbol);
       });
-
-      
   }, [countryCode]);
 
   //should handle the catch with error state
@@ -81,6 +81,10 @@ const HomePage = () => {
         <div className="flex justify-center">
           <SearchBar />
         </div>
+        <div className="mt-12">
+          <Cloud></Cloud>
+        </div>
+        <Testomonial></Testomonial>
         <div className="font-bold text-2xl mt-8 mb-4 flex justify-start mx-12 w-max">
           Most Popular:
         </div>

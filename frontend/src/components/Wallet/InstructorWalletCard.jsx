@@ -39,16 +39,30 @@ const InstructorWalletCard = (props) => {
       amount: row.amount,
     };
   });
-  const count = Math.floor(props.data.length / 8);
+  const count = Math.ceil(props.data.length / 8);
 
-  var start = selectedPage*8;
-  var end
-  if(selectedPage*8>rows.length){
-    end = rows.length-1;
+  var start;
+  var end;
+  if(selectedPage === 1){
+    start=0;
+    if(rows.length< 8){
+      end = rows.length-1;
+    }
+    else{
+      end = 7
+  }
   }
   else{
-    end =  8*(selectedPage+1) -1 
+    start = (selectedPage-1)*8;
+    if((selectedPage-1)*8>rows.length){
+      end = rows.length-1;
+    }
+    else{
+      end =  8*(selectedPage) -1 
+    }
+
   }
+  
   var displayedRows = rows.slice(start, end+1);
   return (
     <div className="border border-r-8  bg-white m-4 border-white p-4 space-x-14 flex-col items-center justify-center ">

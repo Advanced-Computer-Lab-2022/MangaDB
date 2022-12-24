@@ -14,6 +14,7 @@ const NotesManager = (props) => {
   const [timestamp, setTimeStamp] = useState(0);
   const [playing, setPlaying] = useState(true);
 
+
   // add delete edit notes
   const addNote = (note) => {
     var obj = {
@@ -180,6 +181,7 @@ const NotesManager = (props) => {
         />
         {showNotes && (
           <Notes
+            courseDescription={props.courseDescription}
             selected={props.currentNotesFilter}
             selectedChangeHandler={selectedNotesChangeHandler}
             timestamp={timestamp}

@@ -54,7 +54,7 @@ const InstructorWallet = () => {
   });
   const [data2, setData2] = useState([{ x: 1, y: 2, label: "Jan" }]);
   const received = useState([]);
-  
+
   const data = [
     { quarter: 1, earnings: 13000, label: "Years Revenue" },
     { quarter: 2, earnings: 16500, label: "Years Revenue" },
@@ -179,7 +179,6 @@ const InstructorWallet = () => {
   useEffect(() => {
     //axios to get the data..
 
-    
     setTimeout(() => {
       setData2([
         { x: 1, y: 2, label: "Jan" },

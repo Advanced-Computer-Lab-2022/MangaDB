@@ -15,6 +15,8 @@ import ResetPassword from "./pages/ResetPassword";
 import Footer from "./components/UI/Footer/Footer";
 import FAQS from "./pages/FAQS";
 import InstructorWallet from "./pages/IntructorWallet";
+import PageNotFound from "./pages/PageNotFound";
+import UnAuthorizedPage from "./pages/UnAuthorizedPage";
 function App() {
   return (
     <Fragment>
@@ -59,6 +61,11 @@ function App() {
           element={<InstructorWallet></InstructorWallet>}
         ></Route>
         <Route path="FAQS" element={<FAQS></FAQS>}></Route>
+        <Route path="404" element={<PageNotFound></PageNotFound>}></Route>
+        <Route
+          path="403"
+          element={<UnAuthorizedPage></UnAuthorizedPage>}
+        ></Route>
       </Routes>
 
       <Footer></Footer>

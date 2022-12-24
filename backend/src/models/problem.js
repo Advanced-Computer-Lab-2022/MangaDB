@@ -22,7 +22,7 @@ const problemSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ["technical","financial","other"],
+        enum: ["Technical","Financial","Other"],
     },
     status: {
         type: String,

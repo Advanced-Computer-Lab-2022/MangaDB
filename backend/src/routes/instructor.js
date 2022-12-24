@@ -14,7 +14,7 @@ router.post("/rate/:id", instructorController.rateInstructor);
 
 router.patch("/rate/:id", instructorController.editRating);
 
-router.get("/rate/:id", instructorController.getRating);
+router.get("/rate/:id", instructorController.getInstructorRating);
 
 router.get("/amountowed/:id", instructorController.getMoneyOwed);
 

@@ -6,6 +6,7 @@ const course=require('../models/course');
 const exam=require('../models/exam');
 const blackList=require('../models/token');
 const invoice=require('../models/invoice');
+const currencyConverter = require("../helper/currencyconverter");
 
 exports.createUser = async (req, res) => {
   if (!req.body.userName || !req.body.password || !req.body.role) {
@@ -133,9 +134,7 @@ exports.login = async (req, res) => {
             { id: data._id, userName: data.userName, role: data.role },
             process.env.TOKEN_SECRET
           );
-          res.cookie("token", token, {
-            httpOnly: true,
-          });
+      
           res.status(200).send({ message: "login successfully", token: token ,
         role: data.role });
         }
@@ -228,9 +227,7 @@ exports.changePassword = async (req, res) => {
                         <p>Click on the link to reset your password</p>
                         <a href="http://localhost:3456/resetpassword">Reset Password</a>`,
           };
-          res.cookie("token", token, {
-            httpOnly: true,
-          });
+          
           mailer.sendEmail(mailOptions);
           res.send({ message: "email has been sent"
         , token: token });
@@ -249,7 +246,11 @@ exports.resetPassword = async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const newPassword = await bcrypt.hash(password, salt);
   const id = req.user.id;
-  res.clearCookie("token");
+  const authHeader = req.header('Authorization');
+  const token = authHeader && authHeader.split(" ")[1];
+  const invalidToken=new blackList({token});
+  await invalidToken.save();
+  // res.clearCookie("token");
   try {
     await user
       .findByIdAndUpdate(
@@ -274,12 +275,12 @@ exports.resetPassword = async (req, res) => {
 
 
     exports.logout = async (req, res) => {
-      // const authHeader = req.header('Authorization');
-      // const token = authHeader && authHeader.split(" ")[1];
+      const authHeader = req.header('Authorization');
+      const token = authHeader && authHeader.split(" ")[1];
       try { 
-        // const invalidToken=new blackList({token});
-        // await invalidToken.save();
-        res.clearCookie("token");
+        const invalidToken=new blackList({token});
+        await invalidToken.save();
+        // res.clearCookie("token");
         res.send({message: "logout successfully"});
       } catch (err) {
         res.status(500).send({
@@ -826,3 +827,24 @@ exports.setDiscount= async (req, res) => {
   }
   res.status(200).json({message:"All Discounts Set Successfully"});
   };
+
+  exports.getWallet=async (req, res) => {
+    const userId = req.params.id;
+    const countryCode = req.query.CC || "US";
+    const countryDetails = await currencyConverter.convertCurrency("US", countryCode);
+    let exchangeRate = countryDetails.rate;
+    let symbol = countryDetails.symbol;
+  
+    const userData = await
+    user.findById
+    (userId);
+    if (!userData) {
+      res.status(404).json({ message: "User Not Found" });
+      return;
+    }
+    let amount = userData.wallet * exchangeRate;
+    amount = amount.toFixed(2);
+    res.status(200).json({ wallet: amount,
+    symbol:symbol });
+  };
+  

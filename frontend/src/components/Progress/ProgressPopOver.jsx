@@ -23,7 +23,7 @@ const ProgressPopOver =(props) => {
         <PopoverContent>
           <div className="flex-col space-y-3">
             <div className="font-semibold">{`${props.progress} of ${props.totalSources} completed.`}</div>
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center space-x-2">
               <p className="font-medium text-gray-500">
                 Finish the Course Content and pass the Exam to earn your
                 certificate
@@ -32,7 +32,7 @@ const ProgressPopOver =(props) => {
                 xmlns="http://www.w3.org/2000/svg"
                 width="36"
                 height="36"
-                fill="currentColor"
+                fill="#374151"
                 class="bi bi-award"
                 viewBox="0 0 16 16"
               >

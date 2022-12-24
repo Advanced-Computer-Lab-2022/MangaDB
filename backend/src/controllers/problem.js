@@ -6,7 +6,6 @@ exports.createProblem = async (req, res) => {
   const user = req.body.userId;
   const type = req.body.type;
   const description = req.body.description;
-
   const foundCourse = await course.findById(courseId);
   if (!foundCourse) {
     return res.status(404).send({ message: "Course not found" });
@@ -22,7 +21,7 @@ exports.createProblem = async (req, res) => {
   });
   try {
     await newProblem.save();
-    res.status(200).send("Problem created successfully");
+    res.status(200).send(newProblem);
   } catch (error) {
     res.status(500).send(error);
   }
@@ -58,9 +57,9 @@ exports.getProblem = async (req, res) => {
     if (!foundProblem) {
       return res.status(404).send();
     }
-     if (foundProblem.seen === false) {
+     if (foundProblem.status === "unseen") {
       //if(req.user.role === "ADMIN"){
-     //  foundProblem.seen = true;
+     //  foundProblem.status = "pending";
       await foundProblem.save();
       //}
     }
@@ -85,14 +84,12 @@ exports.deleteProblem = async (req, res) => {
 
 exports.updateProblem = async (req, res) => {
   const status = req.body.status;
-  const seen = req.body.seen;
   const _id = req.params.id;
   try {
     const foundProblem = await problem.findByIdAndUpdate(
       _id,
       {
-        status,
-        seen,
+        status: status,
       },
       { new: true }
     );
@@ -150,22 +147,17 @@ exports.getUserProblems = async (req, res) => {
 exports.getCourseProblems = async (req, res) => {
   const _id = req.params.id;
   const status=req.query.status;
-const seen=req.query.seen;
 const type=req.query.type;
 
 let query1 = {};
 let query2 = {};
-let query3 = {};
 if (status) {
   query1 = { status: { $regex: status, $options: "i" } };
 }
-if (seen) {  
-    query2 = { seen: seen };
-}
 if (type) {
-  query3 = { type: { $regex: type, $options: "i" } };
+  query2 = { type: { $regex: type, $options: "i" } };
 }
-const query = { $and: [query1, query2, query3,{ course: _id }] };
+const query = { $and: [query1, query2,{ course: _id }] };
     try {
         const problems = await problem.find(query).sort({ date: -1 });
         res.send(problems);

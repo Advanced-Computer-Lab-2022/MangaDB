@@ -14,6 +14,7 @@ import SignUp from "./pages/SignUp";
 import ResetPassword from "./pages/ResetPassword";
 import Footer from "./components/UI/Footer/Footer";
 import FAQS from "./pages/FAQS";
+import MyCourses from "./pages/MyCourses";
 function App() {
   return (
     // navbar should be here
@@ -55,6 +56,7 @@ function App() {
           element={<AddCoursePage></AddCoursePage>}
         ></Route>
         <Route path="FAQS" element={<FAQS></FAQS>}></Route>
+        <Route path ="myCourses" element={<MyCourses></MyCourses>}></Route>
       </Routes>
       <Footer></Footer>
     </Fragment>

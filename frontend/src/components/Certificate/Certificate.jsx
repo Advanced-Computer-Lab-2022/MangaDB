@@ -16,7 +16,7 @@ const Certificate = (props) => {
       <div className="p-4" id="content">
         <div className=" m-16 border border-black">
           <div className="flex items-center justify-center mt-8">
-            <span>
+            <span className="relative">
               <svg
                 className="fill-[#74a0d1] h-8 w-8"
                 xmlns="http://www.w3.org/2000/svg"
@@ -32,23 +32,22 @@ const Certificate = (props) => {
             <span className="self-center text-2xl font-semibold whitespace-nowrap mt-4">
               evamp
             </span>
-          </div>
-
-          <svg
-            version="1.0"
-            xmlns="http://www.w3.org/2000/svg"
-            width="200px"
-            height="150px"
-            viewBox="0 0 1280.000000 1041.000000"
-            preserveAspectRatio="xMidYMid meet"
-          >
-            <g
-              transform="translate(0.000000,1041.000000) scale(0.100000,-0.100000)"
-              fill="#000000"
-              stroke="none"
+            <svg
+              className="z-40 right-[40%] absolute "
+              version="1.0"
+              xmlns="http://www.w3.org/2000/svg"
+              width="300px"
+              height="200px"
+              viewBox="0 0 1280.000000 1041.000000"
+              preserveAspectRatio="xMidYMid meet"
             >
-              <path
-                d="M2580 10308 c-271 -310 -349 -530 -381 -1073 -11 -186 -14 -204 -39
+              <g
+                transform="translate(0.000000,1041.000000) scale(0.100000,-0.100000)"
+                fill="#000000"
+                stroke="none"
+              >
+                <path
+                  d="M2580 10308 c-271 -310 -349 -530 -381 -1073 -11 -186 -14 -204 -39
 -255 l-28 -55 4 140 c2 77 6 235 8 350 6 273 38 517 96 744 30 117 15 125 -50
 25 -116 -181 -236 -467 -271 -649 -10 -48 -14 -145 -13 -315 0 -206 5 -277 28
 -450 l27 -205 -62 -140 c-33 -77 -62 -141 -62 -142 -1 -1 -1 71 1 160 3 109
@@ -259,10 +258,10 @@ c202 160 427 377 526 510 140 187 253 455 332 790 13 55 43 147 68 205 65 156
 -150 l117 -67 6 -62 c3 -34 8 -127 12 -207 l6 -145 -45 90 c-66 134 -155 252
 -317 419 -149 155 -270 289 -270 300 0 3 28 -17 63 -45 34 -28 118 -88 187
 -133z"
-              />
-            </g>
-          </svg>
-
+                />
+              </g>
+            </svg>
+          </div>
           <div className="flex">
             <div className=" flex-col items-center m-16">
               <p className="text-3xl font-semibold">Omar Moataz</p>
@@ -275,9 +274,10 @@ c202 160 427 377 526 510 140 187 253 455 332 790 13 55 43 147 68 205 65 156
               <p className="text-sm text-gray-700 mt-4 font-medium">
                 Offered By
               </p>
-              <div className="flex space-x-4">
+              <div className="relative space-x-4">
                 <p className="mt-4 text-lg font-medium">Haytham Osman</p>
                 <svg
+                  className="absolute z-20"
                   version="1.0"
                   xmlns="http://www.w3.org/2000/svg"
                   width="300px"

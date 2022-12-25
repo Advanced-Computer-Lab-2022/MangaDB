@@ -21,7 +21,7 @@ import Certificate from "../src/components/Certificate/Certificate"
 function App() {
   return (
     <Fragment>
-      {/* <Routes>
+      <Routes>
         <Route path="/" element={<Login></Login>}></Route>
         <Route path="/signup" element={<SignUp></SignUp>}></Route>
         <Route
@@ -67,10 +67,9 @@ function App() {
           path="403"
           element={<UnAuthorizedPage></UnAuthorizedPage>}
         ></Route>
-      </Routes> 
+      </Routes>
 
-      <Footer></Footer>*/}
-      <Certificate></Certificate>
+      <Footer></Footer>
     </Fragment>
   );
 }

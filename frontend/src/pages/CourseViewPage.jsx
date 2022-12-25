@@ -6,6 +6,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import WarningAlert from "../components/UI/WarningAlert";
 import ContentCourseView from "../components/CourseView/ContentCourseView";
+import ExamToolManager from "../components/ExamToolBar/ExamToolManager";
 
 const CourseViewPage = () => {
   //will give the backend the id of the clicked course , then will fetch all the details about that course
@@ -26,7 +27,7 @@ const CourseViewPage = () => {
   });
   const [currentReportsFilter, setCurrentReportsFilter] = useState({
     id: 1,
-    name: "Technical"
+    name: "Technical",
   });
   const [progress, setProgress] = useState(0);
   const [totalSources, setTotalSources] = useState(0);
@@ -257,12 +258,12 @@ const CourseViewPage = () => {
   }
   //we will have an array of viewed sources
   var displayedSource;
-  console.log(receivedData)
+  console.log(receivedData);
   if (currentSource !== "") {
     if (currentSource.sourceType === "Video") {
       displayedSource = (
         <NotesManager
-        courseDescription = {receivedData.courseTitle}
+          courseDescription={receivedData.courseTitle}
           currentNotesFilter={currentNotesFilter}
           changeNotesFilter={changeNotesFilter}
           currentReportsFilter={currentReportsFilter}
@@ -306,6 +307,23 @@ const CourseViewPage = () => {
             grade={grade}
             onSolveExamHandler={onSolveExamHandler}
           ></ExamManager>
+          <ExamToolManager
+            courseDescription={receivedData.courseTitle}
+            currentNotesFilter={currentNotesFilter}
+            changeNotesFilter={changeNotesFilter}
+            currentReportsFilter={currentReportsFilter}
+            changeReportsFilter={changeReportsFilter}
+            studentId="63a37e9688311fa832f43336"
+            courseId={receivedData._id}
+            currentSourceId={currentSource._id}
+            source={currentSource.description}
+            notes={notes}
+            setNotes={notesChangeHandler}
+            subtitle={subtitle}
+            isVisible={true}
+            link={currentSource.link}
+            onWatch={onWatchHandler}
+          ></ExamToolManager>
         </Fragment>
       );
     }

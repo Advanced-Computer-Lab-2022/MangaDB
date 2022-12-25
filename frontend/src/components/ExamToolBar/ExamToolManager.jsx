@@ -1,54 +1,18 @@
 import { useState, Fragment } from "react";
 import axios from "axios";
-import Notes from "./Notes";
-import Video from "../Video/Video";
-import ToolbarTabs from "./ToolbarTabs";
+import Notes from "./ExamNotes";
+import ToolbarTabs from "./ExamToolbarTabs";
 import Reports from "../CourseView/Reports";
 import QA from "../QA/QA";
-const NotesManager = (props) => {
+const ExamToolManager = (props) => {
   const [showNotes, setShowNotes] = useState(true);
   const [showQA, setShowQA] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
   const [showReports, setShowReports] = useState(false);
   const [currentTab, setCurrentTab] = useState("Notes");
-  const [timestamp, setTimeStamp] = useState(0);
-  const [playing, setPlaying] = useState(true);
-
-
-  // add delete edit notes
-  const addNote = (note) => {
-    var obj = {
-      sourceId: props.currentSourceId,
-      note: note,
-      sourceDescription: props.source,
-      subtitleDescription: props.subtitle,
-      timestamp: timestamp,
-    };
-    var temp = [];
-    var flag = false;
-    for (var i = 0; i < props.notes.length; i++) {
-      if (props.notes[i].sourceId === props.currentSourceId) {
-        temp.push(props.notes[i]);
-        flag = true;
-      } else {
-        if (flag) {
-          break;
-        }
-      }
-    }
-    var sentData = {
-      courseId: props.courseId,
-      sourceId: props.currentSourceId,
-      notes: [...temp, obj],
-    };
-    var newNotes = [...props.notes, obj];
-    axios.patch(
-      `http://localhost:3000/user/notes/${props.studentId}`,
-      sentData
-    );
-    props.setNotes(newNotes);
-  };
-
+  
+  const timestamp=0;
+  //delete edit notes
   const editNote = (noteIndex, newNote) => {
     var newNotes = [];
     var sourceId;
@@ -116,16 +80,6 @@ const NotesManager = (props) => {
   };
 
   //controls
-  const timeChangeHandler = (time) => {
-    setTimeStamp(time);
-  };
-  const stopVideo = () => {
-    setPlaying(false);
-  };
-  const resumeVideo = () => {
-    setPlaying(true);
-  };
-
   const onTabChangeHandler = (tab) => {
     setCurrentTab(tab);
     if (tab === "Notes") {
@@ -167,13 +121,7 @@ const NotesManager = (props) => {
 
   return (
     <Fragment>
-      <Video
-        playing={playing}
-        isVisible={props.isVisible}
-        link={props.link}
-        onWatch={props.onWatch}
-        getTime={timeChangeHandler}
-      />
+   
       <div className="">
         <ToolbarTabs
           currentTab={currentTab}
@@ -185,10 +133,7 @@ const NotesManager = (props) => {
             selected={props.currentNotesFilter}
             selectedChangeHandler={selectedNotesChangeHandler}
             timestamp={timestamp}
-            stopVideo={stopVideo}
             notes={props.notes}
-            resumeVideo={resumeVideo}
-            addNote={addNote}
             editNote={editNote}
             deleteNote={deleteNote}
           />
@@ -207,4 +152,4 @@ const NotesManager = (props) => {
     </Fragment>
   );
 };
-export default NotesManager;
+export default ExamToolManager;

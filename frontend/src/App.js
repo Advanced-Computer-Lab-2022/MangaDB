@@ -17,10 +17,11 @@ import FAQS from "./pages/FAQS";
 import InstructorWallet from "./pages/IntructorWallet";
 import PageNotFound from "./pages/PageNotFound";
 import UnAuthorizedPage from "./pages/UnAuthorizedPage";
+import Certificate from "../src/components/Certificate/Certificate"
 function App() {
   return (
     <Fragment>
-      <Routes>
+      {/* <Routes>
         <Route path="/" element={<Login></Login>}></Route>
         <Route path="/signup" element={<SignUp></SignUp>}></Route>
         <Route
@@ -66,9 +67,10 @@ function App() {
           path="403"
           element={<UnAuthorizedPage></UnAuthorizedPage>}
         ></Route>
-      </Routes>
+      </Routes> 
 
-      <Footer></Footer>
+      <Footer></Footer>*/}
+      <Certificate></Certificate>
     </Fragment>
   );
 }

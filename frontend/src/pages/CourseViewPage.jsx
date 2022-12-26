@@ -35,7 +35,7 @@ const CourseViewPage = () => {
   const managerRef = useRef(null);
   useEffect(() => {
     const courseId = location.state;
-    const userid = "638a07cdbc3508481a2d7da9";
+    const userid = "63a37e9688311fa832f43336";
     if (currentNotesFilter.name === "All Lessons") {
       axios
         .get(`http://localhost:3000/user/coursenotes/${userid}?cid=${courseId}`)
@@ -148,7 +148,7 @@ const CourseViewPage = () => {
     //shouldnt we send the userId ??
     axios
       .get(
-        `http://localhost:3000/course/${courseId}?uid=638a07cdbc3508481a2d7da9`
+        `http://localhost:3000/course/${courseId}?uid=63a37e9688311fa832f43336`
       )
       .then((res) => {
         setReceivedData(res.data.course);
@@ -179,7 +179,7 @@ const CourseViewPage = () => {
 
     var sentData = {
       studentAnswers: receivedSolution,
-      userid: "638a07cdbc3508481a2d7da9",
+      userid: "63a37e9688311fa832f43336",
       courseid: receivedData._id,
       examid: currentSource.quiz._id,
     };
@@ -229,7 +229,7 @@ const CourseViewPage = () => {
     //will need the userID , sourceId, courseId
     //the userID and courseid are given from the navigation
     var endPoint = `http://localhost:3000/user/opensource/${receivedData._id}`;
-    const userId = "638a07cdbc3508481a2d7da9";
+    const userId = "63a37e9688311fa832f43336";
     const submittedData = {
       userId: userId,
       sourceId: currentSource._id,
@@ -293,7 +293,7 @@ const CourseViewPage = () => {
           changeNotesFilter={changeNotesFilter}
           currentReportsSelector={currentReportsSelector}
           changeReportsSelector={changeReportsSelector}
-          studentId="638a07cdbc3508481a2d7da9"
+          studentId="63a37e9688311fa832f43336"
           courseId={receivedData._id}
           currentSourceId={currentSource._id}
           source={currentSource.description}

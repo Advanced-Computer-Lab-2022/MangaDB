@@ -27,7 +27,7 @@ const HomePage = () => {
   };
   useEffect(() => {
     axios
-      .get("http://localhost:3000/course/?CC=".concat(countryCode))
+      .get("http://localhost:3000/course/mostviewed/?CC=".concat(countryCode))
       .then((res) => {
         setDisplayedCourses(res.data.courses);
         setCurrencySymbol(res.data.symbol);

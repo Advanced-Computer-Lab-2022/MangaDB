@@ -5,7 +5,7 @@ import ReportItem from "./ReportItem";
 import ReportTypeSelector from "./ReportTypeSelector";
 
 const Reports = (props) => {
-  const [eneteredReport, setEnteredReport] = useState("");
+  const [enteredReport, setEnteredReport] = useState("");
 
   const reportChangeHandler = (event) => {
     setEnteredReport(event.target.value);
@@ -16,7 +16,7 @@ const Reports = (props) => {
       userId: "63a37e9688311fa832f43336",
       courseId: props.courseId,
       type: props.selected.name,
-      description: eneteredReport,
+      description: enteredReport,
     };
     props.onSubmit(reportData);
   };

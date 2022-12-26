@@ -92,7 +92,7 @@ const ReviewsCourseView = (props) => {
       <div>
         <div className=" font-semibold text-xl mb-4">Course Reviews:</div>
         <div className=" mb-6 mx-12">
-          <AverageSummary />
+          <AverageSummary count={props.reviewsCount} />
         </div>
         <div className=" mx-8">{reviews}</div>
       </div>

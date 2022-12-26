@@ -22,6 +22,7 @@ const CourseViewPage = () => {
     name: "All",
   });
   const [reviews, setReviews] = useState([]);
+  const [reviewsCount, setReviewsCount] = useState([]);
   const [reports, setReports] = useState([]);
   const [currentNotesFilter, setCurrentNotesFilter] = useState({
     id: 1,
@@ -155,6 +156,7 @@ const CourseViewPage = () => {
       )
       .then((res) => {
         setReviews(res.data.review);
+        setReviewsCount(res.data.count);
       })
   }, [currentNotesFilter, location.state, receivedData, currentSource]);
 
@@ -377,6 +379,7 @@ const CourseViewPage = () => {
           source={currentSource.description}
           notes={notes}
           reviews={reviews}
+          reviewsCount={reviewsCount}
           reports={reports}
           setNotes={notesChangeHandler}
           subtitle={subtitle}
@@ -441,6 +444,7 @@ const CourseViewPage = () => {
             source={currentSource.description}
             notes={notes}
             reviews={reviews}
+            reviewsCount={reviewsCount}
             reports={reports}
             setNotes={notesChangeHandler}
             subtitle={subtitle}

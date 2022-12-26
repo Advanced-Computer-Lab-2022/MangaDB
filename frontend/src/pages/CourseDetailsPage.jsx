@@ -128,6 +128,7 @@ const CourseDetailsPage = () => {
       {loaded && (
         <CourseReviews
           reviews={courseReviews}
+          reviewsCount={reviewsCount}
           onSubmit={submitReviewHandler}
           userRegister={userRegistered}
         />

@@ -242,24 +242,39 @@ exports.getMoneyOwed = async (req, res) => {
         let prevYear=0;
         let year = 0;
         let month = 0;
+        let currentYearPurchases=0;
+        let lastYearPurchases=0;
+        const currentYear=new Date().getFullYear();
+        console.log(currentYear);
         for(let i=0;i<invoiceData.length;i++){    
         let date =invoiceData[i].invoiceDate.toISOString().split('-');
-         year = date[0];
+         year = parseInt(date[0] ) ;
          month = date[1];
+         console.log(year);
         if(month!=prevMonth&&prevMonth!=0)
         {
             history.push({month:prevMonth,year:prevYear,amount:total.toFixed(2)});
             total=0;
             
         }
+        if(year==currentYear){
+            currentYearPurchases+=1;
+        }
+        else if(year==currentYear-1){
+            lastYearPurchases+=1;
+        }
+
         total+=(invoiceData[i].totalAmount)*0.90;
         prevMonth=month;
         prevYear=year;
     }
+    
     history.push({month:month,year:year,amount:total.toFixed(2)});
         res.status(200).send({
             message: "Instructor money owed was found successfully.",
-            history : history
+            history : history,
+            currentYearPurchases:currentYearPurchases,
+            lastYearPurchases:lastYearPurchases
         });
     } catch (err) {
         res.status(500).send({

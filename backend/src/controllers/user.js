@@ -292,6 +292,8 @@ exports.resetPassword = async (req, res) => {
 //get courses this user is registered in
 exports.getRegisteredCourses = async (req, res) => {
   const id = req.params.id;
+  const pageSize=+req.query.pagesize||10;
+  const currentPage=req.query.page||1;
   try {
     const userData = await user.findById(id).populate("courseDetails.course");
     if (!userData) {
@@ -299,8 +301,18 @@ exports.getRegisteredCourses = async (req, res) => {
         message: `Cannot update user with id=${id}. Maybe user was not found!`,
       });
     } else {
-      res.send(userData);
+      const courses = [];
+     for(let i=0;i<userData.courseDetails.length;i++){
+       if(i>=pageSize*(currentPage-1) && i<pageSize*currentPage){
+         courses.push(userData.courseDetails[i]);
+     }
     }
+    res.status(200).json({
+      message: "User data fetched successfully!",
+      courses: courses,
+      count: userData.courseDetails.length});
+
+  }
   } catch (err) {
     res.status(500).send({
       message: "Error in getting registered courses"

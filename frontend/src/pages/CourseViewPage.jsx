@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import WarningAlert from "../components/UI/WarningAlert";
 import ContentCourseView from "../components/CourseView/ContentCourseView";
 import ExamToolManager from "../components/ExamToolBar/ExamToolManager";
+import Certificate from "../components/Certificate/Certificate";
 
 const CourseViewPage = () => {
   //will give the backend the id of the clicked course , then will fetch all the details about that course
@@ -32,7 +33,9 @@ const CourseViewPage = () => {
   const [progress, setProgress] = useState(0);
   const [totalSources, setTotalSources] = useState(0);
   const managerRef = useRef(null);
-  console.log(receivedData);
+  const downloadRef = useRef(null);
+ 
+
   useEffect(() => {
     const courseId = location.state;
     const userid = "63a37e9688311fa832f43336";
@@ -220,6 +223,9 @@ const CourseViewPage = () => {
   const notesChangeHandler = (newNotes) => {
     setNotes(newNotes);
   };
+  const downloadCertificateHandler = () => {
+    downloadRef.current.generatePDF2();
+  };
   const onWatchHandler = () => {
     //will need the userID , sourceId, courseId
     //the userID and courseid are given from the navigation
@@ -278,6 +284,10 @@ const CourseViewPage = () => {
           isVisible={true}
           link={currentSource.link}
           onWatch={onWatchHandler}
+          progress={progress}
+          totalSources={totalSources}
+          downloadCertificateHandler={downloadCertificateHandler}
+
         />
       );
     } else {
@@ -308,6 +318,7 @@ const CourseViewPage = () => {
             onSolveExamHandler={onSolveExamHandler}
           ></ExamManager>
           <ExamToolManager
+            downloadCertificateHandler={downloadCertificateHandler}
             courseDescription={receivedData.courseTitle}
             currentNotesFilter={currentNotesFilter}
             changeNotesFilter={changeNotesFilter}
@@ -323,6 +334,8 @@ const CourseViewPage = () => {
             isVisible={true}
             link={currentSource.link}
             onWatch={onWatchHandler}
+            progress={progress}
+            totalSources={totalSources}
           ></ExamToolManager>
         </Fragment>
       );
@@ -331,11 +344,14 @@ const CourseViewPage = () => {
   return (
     <Fragment>
       <NavBar />
+      <div className=" opacity-0 h-0 overflow-hidden">
+        <Certificate ref={downloadRef}></Certificate>
+      </div>
       {/* <ProgressManager progress={progress} totalSources={totalSources} /> */}
-      <div className="py-4 flex justify-center font-medium text-xl bg-gray-50">
+      <div className="py-4 flex justify-center font-medium text-xl bg-gray-50 z-20">
         {receivedData.courseTitle}: {currentSource.description}
       </div>
-      <div className="flex">
+      <div className="flex z-50">
         <div className="video/exam md:w-[70%] w-full mb-4 md:mb-0">
           {displayedSource}
         </div>

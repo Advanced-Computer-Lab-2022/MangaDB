@@ -70,7 +70,7 @@ const AddCoursePage = (props) => {
     console.log(submitData);
     axios
       .post(
-        "http://localhost:3000/instructor/addcourse/6386427487d3f94e4cb7a28d",
+        "http://localhost:3000/instructor/addcourse/63a36fd41bd9f2e6163b0481",
         submitData
       )
       .then((res) => {

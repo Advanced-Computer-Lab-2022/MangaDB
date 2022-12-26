@@ -1,29 +1,51 @@
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import SecondaryButton from "../UI/SecondaryButton";
 import { Fragment } from "react";
 import ribbonn from "../../Assets/Images/ribbonn.png";
-const Certificate = (props) => {
-  const generatePDF2 = () => {
-    html2canvas(document.querySelector("#content"), {
-      logging: true,
-      profile: true,
-      useCORS: true,
-      allowTaint: true,
-    }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("l", "px", "a2");
-      pdf.addImage(imgData, "PNG", 0, 0);
-      pdf.save("Certificate.pdf");
-    });
-  };
+import { forwardRef } from "react";
+import { useImperativeHandle } from "react";
+const Certificate = forwardRef((props, ref) => {
+  useImperativeHandle(ref, () => ({
+    generatePDF2() {
+      html2canvas(document.querySelector("#contentt"), {
+        logging: true,
+        profile: true,
+        onclone: function (doc) {
+          const hiddenDiv = doc.getElementById("contentt");
+          hiddenDiv.style.display = "block";
+
+        },
+        useCORS: true,
+        allowTaint: true,
+      }).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("l", "px", "a2");
+        pdf.addImage(imgData, "PNG", 0, 0);
+        pdf.save("Certificate.pdf");
+      });
+    },
+  }));
+
+  // const generatePDF2 = () => {
+  //   html2canvas(document.querySelector("#content"), {
+  //     logging: true,
+  //     profile: true,
+  //     useCORS: true,
+  //     allowTaint: true,
+  //   }).then((canvas) => {
+  //     const imgData = canvas.toDataURL("image/png");
+  //     const pdf = new jsPDF("l", "px", "a2");
+  //     pdf.addImage(imgData, "PNG", 0, 0);
+  //     pdf.save("Certificate.pdf");
+  //   });
+  //};
   return (
     <Fragment>
-      <div className="p-4" id="content">
-        <div className=" m-16 border-4 border-transparent border-black outline-4 outline-black outline-">
+      <div className="p-4 z-10" id="contentt">
+        <div className=" m-16 border-4 border-transparent border-black outline-4 outline-black ">
           <div className="flex items-center justify-center mt-8">
             <span className="relative">
-              <div className = "mt-6">
+              <div className="mt-6">
                 <svg
                   className="fill-[#74a0d1] h-8 w-8"
                   xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +63,7 @@ const Certificate = (props) => {
               evamp
             </span>
             <img
-              className="w-[300px] h-[200px] z-40 absolute "
+              className="w-[300px] h-[200px] absolute "
               src={ribbonn}
               alt=""
             ></img>
@@ -160,8 +182,8 @@ const Certificate = (props) => {
         </div>
       </div>
 
-      <SecondaryButton onClick={generatePDF2}>Download PDF</SecondaryButton>
+      {/* <SecondaryButton onClick={generatePDF2}>Download PDF</SecondaryButton> */}
     </Fragment>
   );
-};
+});
 export default Certificate;

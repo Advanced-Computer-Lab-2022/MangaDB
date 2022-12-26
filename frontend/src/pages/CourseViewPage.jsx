@@ -156,6 +156,13 @@ const CourseViewPage = () => {
       .then((res) => {
         setReports(res.data);
       });
+    axios
+      .get(
+        `http://localhost:3000/course/rate/${courseId}`
+      )
+      .then((res) => {
+        setReviews(res.data.review);
+      })
   }, [currentNotesFilter, location.state, receivedData, currentSource]);
 
   //useEffect at the start to receive the data
@@ -313,8 +320,6 @@ const CourseViewPage = () => {
         data
       )
       .then((res) => {
-        console.log(res);
-        //setReviews([...reviews, res.data]);
       });
   };
 
@@ -380,7 +385,7 @@ const CourseViewPage = () => {
             grade={grade}
             onSolveExamHandler={onSolveExamHandler}
             QA={QA}
-          ></ExamManager>
+          />
           <ExamToolManager
             downloadCertificateHandler={downloadCertificateHandler}
             courseDescription={receivedData.courseTitle}
@@ -404,7 +409,7 @@ const CourseViewPage = () => {
             addQuestionHandler={addQuestionHandler}
             changeQuestionFilterHandler={changeQuestionFilterHandler}
             QAFilter={QAFilter}
-          ></ExamToolManager>
+          />
         </Fragment>
       );
     }

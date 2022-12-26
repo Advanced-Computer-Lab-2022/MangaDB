@@ -35,7 +35,7 @@ const CourseDetailsPage = () => {
                 setUserRegistered(false);
               }
       });
-    const userId = "638a07cdbc3508481a2d7da9";
+    const userId = "63a37e9688311fa832f43336";
    
     // axios
     //   .post(`http://localhost:3000/invoice/${location.state.courseId}`, {
@@ -56,7 +56,7 @@ const CourseDetailsPage = () => {
       // setCourseDetails(res.data.course);
       // console.log(res.data.course);
       // setLoaded(true);
-      console.log(res.data.review);
+      setCourseReviews(res.data.review);
     });
 
     // axios

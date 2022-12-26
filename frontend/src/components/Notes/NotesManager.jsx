@@ -157,7 +157,6 @@ const NotesManager = (props) => {
       setShowQA(false);
       setShowReviews(true);
       setCertificateAlert(false);
-
       setShowReports(false);
     } else if (tab === "Reports") {
       setShowNotes(false);

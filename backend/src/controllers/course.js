@@ -266,11 +266,11 @@ exports.createCourse = async (req, res, next) => {
     subtitles[i].subtitleDuration = subDuration;
     subDuration = 0;
   }
-  newCourse.subtitles = subtitles;
-  newCourse.totalMins = courseDuration;
-  // let finalExam=req.body.finalExam;
-  //finalExam=await examController.createExam(finalExam);
-  //newCourse.finalExam=finalExam;
+  newCourse.subtitles=subtitles;
+  newCourse.totalMins=courseDuration;
+ let finalExam=req.body.finalExam;
+  finalExam=await examController.createExam(finalExam);
+  newCourse.finalExam=finalExam;
   await newCourse
     .save()
     .then((createdCourse) => {
@@ -410,7 +410,7 @@ exports.editRating = async (req, res, next) => {
   const userId = req.body.userId;
   const rating = req.body.rating;
   const review = req.body.review;
-  let foundCourse = await course.findById(courseId);
+  let myCourse = await course.findById(courseId);
   let oldRating = 0;
   foundCourse.reviews.forEach((element) => {
     oldRating = element.rating;
@@ -629,14 +629,37 @@ exports.openCourse = async (req, res, next) => {
 
 exports.getCourseRating = async (req, res) => {
   const courseId = req.params.id;
-  try {
-    const foundCourse = await course.findById(courseId);
-
-    return res.status(200).json({
-      message: "Rating fetched successfully!",
-      review: foundCourse.reviews,
-    });
-  } catch (error) {
+  try{
+  const foundCourse = await course.findById(courseId);
+  let rating1=0;
+  let rating2=0;
+  let rating3=0;
+  let rating4=0;
+  let rating5=0;
+  for (let i = 0; i < foundCourse.reviews.length; i++) {
+    if (foundCourse.reviews[i].rating == 1) {
+      rating1++;
+    }
+    if (foundCourse.reviews[i].rating == 2) {
+      rating2++;
+    }
+    if (foundCourse.reviews[i].rating == 3) {
+      rating3++;
+    }
+    if (foundCourse.reviews[i].rating == 4) {
+      rating4++;
+    }
+    if (foundCourse.reviews[i].rating == 5) {
+      rating5++;
+    }
+  }
+  let count=[{rating:1,count:rating1},{rating:2,count:rating2},{rating:3,count:rating3},{rating:4,count:rating4},{rating:5,count:rating5}]
+  return res.status(200).json({
+    message: "Rating fetched successfully!",
+    review: foundCourse.reviews,
+    count:count
+  });
+  }catch(error){
     return res.status(500).json({
       message: "Fetching course failed!",
     });

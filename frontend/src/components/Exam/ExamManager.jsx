@@ -1,12 +1,14 @@
 import Exam from "./Exam";
 import Alert from "../UI/Alert";
-import { useState, Fragment , forwardRef , useImperativeHandle} from "react";
+import { useState, Fragment, forwardRef, useImperativeHandle } from "react";
 import { CheckCircleIcon } from "@heroicons/react/solid";
 import { XCircleIcon } from "@heroicons/react/solid";
 import SecondaryButton from "../UI/SecondaryButton";
 import { Typography } from "@material-tailwind/react";
+import { DualRing } from "react-awesome-spinners";
 
 const ExamManager = forwardRef((props, ref) => {
+  const [loading, setLoading] = useState(false);
   const [checkResults, setCheckResults] = useState(false);
   const [startExam, setStartExam] = useState(false);
   const checkResultsClickHandler = () => {
@@ -15,15 +17,17 @@ const ExamManager = forwardRef((props, ref) => {
   const startExamClickHandler = () => {
     setStartExam(true);
   };
-  const onSolveExamHandler =(exam) => {
+  const onSolveExamHandler = (exam) => {
     props.onSolveExamHandler(exam);
-    setStartExam(false)
-  }
+    setStartExam(false);
+    setLoading(true);
+  };
 
   useImperativeHandle(ref, () => ({
     refreshManager() {
       setStartExam(false);
       setCheckResults(false);
+      setLoading(false);
     },
   }));
 
@@ -81,7 +85,12 @@ const ExamManager = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {solvedBefore && !checkResults && (
+      {loading && (
+        <div className="justify-center items-center flex w-2/3 ">
+          <DualRing size="200" />
+        </div>
+      )}
+      {solvedBefore && !checkResults &&!loading && (
         <div className="overflow-y-scroll relative">
           <Alert>{message}</Alert>
           {correct.length !== 0 && (
@@ -108,7 +117,7 @@ const ExamManager = forwardRef((props, ref) => {
               </div>
             </div>
           )}
-          {wrong.length !== 0 && (
+          {wrong.length !== 0 &&!loading && (
             <div className="rounded-md bg-red-50 p-4 mt-2">
               <div className="flex">
                 <div className="flex-shrink-0">
@@ -140,7 +149,7 @@ const ExamManager = forwardRef((props, ref) => {
           </SecondaryButton>
         </div>
       )}
-      {(checkResults || startExam) && (
+      {(checkResults || startExam) &&!loading && (
         <Exam
           next={props.next}
           exam={examQuestionsWithAnswers}
@@ -149,7 +158,7 @@ const ExamManager = forwardRef((props, ref) => {
           onSolveExamHandler={onSolveExamHandler}
         ></Exam>
       )}
-      {!solvedBefore && !startExam && (
+      {!solvedBefore && !startExam &&!loading && (
         <Fragment>
           <Alert>
             <Typography variant="h5">{`This exam consists of ${examQuestionsWithAnswers.length} Multiple Choice Questions, Each Question Has 4 Choices`}</Typography>

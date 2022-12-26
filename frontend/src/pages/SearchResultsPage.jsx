@@ -98,10 +98,37 @@ const SearchResultsPage = () => {
   var coursesCardsView;
   if (searchState.displayedCourses.length === 0) {
     coursesListView = (
-      <div className="text-xl font-semibold mt-16">No Courses Found.</div>
+      // <div className="text-xl font-semibold mt-16">No Courses Found.</div>
+      <div className="bg-gray-100 border-4 p-4 ">
+        <h3 className="text-xl mt-8  font-semibold text-black-800">
+          Sorry, We Couldn't Find Any Matching Results
+        </h3>
+        <h3 className="text-xl  font-semibold text-black-800">
+          Try Altering Your Search , Here Are Some tips:
+        </h3>
+        <div className="mt-2 ml-6 text-md text-black-700">
+          <ol className="list-disc pl-5 space-y-1">
+            <li>Make Sure You Spelled It Right</li>
+            <li>Be More Generic</li>
+          </ol>
+        </div>
+      </div>
     );
     coursesCardsView = (
-      <div className="text-xl font-semibold mt-16">No Courses Found.</div>
+      <div className="bg-gray-100 border-4 p-4 ">
+        <h3 className="text-xl mt-8  font-semibold text-black-800">
+          Sorry, We Couldn't Find Any Matching Results
+        </h3>
+        <h3 className="text-xl  font-semibold text-black-800">
+          Try Altering Your Search , Here Are Some tips:
+        </h3>
+        <div className="mt-2 ml-6 text-md text-black-700">
+          <ol className="list-disc pl-5 space-y-1">
+            <li>Make Sure You Spelled It Right</li>
+            <li>Be More Generic</li>
+          </ol>
+        </div>
+      </div>
     );
   } else {
     coursesListView = searchState.displayedCourses.map((course) => {

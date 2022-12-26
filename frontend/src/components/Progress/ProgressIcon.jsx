@@ -2,7 +2,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 const ProgressIcon = (props) => {
-  const percentage = (+props.progress / +props.totalSources) * 100;
+  const percentage = ((+props.progress / +props.totalSources) * 100).toFixed(1);
   return (
     <CircularProgressbar
       styles={{

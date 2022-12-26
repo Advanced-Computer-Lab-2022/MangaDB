@@ -71,11 +71,11 @@ const InstructorProfilePage = () => {
   const [receivedUserInfo, setReceivedUserInfo] = useState(user);
   const [selectedStage, setSelectedStage] = useState(1);
   //gather the userInfo
-  const { enqueueSnackbar } = useSnackbar();
-  const handleClickVariant = (variant) => {
-    //console.log("here");
-    enqueueSnackbar("User has been added successfuly  ", { variant });
-  };
+// const { enqueueSnackbar } = useSnackbar();
+//   const handleClickVariant = (variant) => {
+//     //console.log("here");
+//     enqueueSnackbar("User has been added successfuly  ", { variant });
+//   };
 
   useEffect(() => {
     axios.get("http://localhost:3000/instructor/editProfile").then((res) => {

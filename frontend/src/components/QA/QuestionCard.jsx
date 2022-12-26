@@ -6,7 +6,7 @@ const QuestionCard = (props) => {
     <div className="m-4">
       <div className="md:flex hidden justify-between">
         <div className="font-medium text-lg">
-           Reported on: {props.date}
+           Asked on: {props.date}
         </div>
         {props.status === "Answered" && (
           <div class="inline-flex items-center py-1 px-2 text-xs font-medium text-center border-2 border-green-400 text-green-500 bg-green-100 rounded-full">

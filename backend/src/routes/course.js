@@ -24,7 +24,7 @@ router.post("/addsubtitle/:id", courseController.addSubtitle);
 
 router.post("/askquestion/:id", courseController.askQuestion);
 
-router.get("/courseQuesions/:id",courseController.getCourseQuestions);
+
 
 
 

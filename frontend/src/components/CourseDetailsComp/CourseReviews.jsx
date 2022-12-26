@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ReviewItem from "./ReviewItem";
 import Rating from "@mui/material/Rating";
 import SecondaryButton from "../UI/SecondaryButton";
+import AverageSummary from "../Profile/Reviews/AverageSummary";
 
 const CourseReviews = (props) => {
   const reviews = props.reviews.map((review) => {
@@ -69,9 +70,8 @@ const CourseReviews = (props) => {
         <div className="bg-gray-100 px-4 py-4 text-xl font-semibold rounded-t-md">
           <div>Course Reviews</div>
         </div>
-        <div className="py-2 px-8">{reviews}</div>
         {props.userRegister && (
-          <div>
+          <div className="mt-4">
             <div className="px-8 font-medium text-lg flex justify-between">
               <div>Write Your Review</div>
               <div className=" font-normal text-base flex space-x-4">
@@ -88,13 +88,17 @@ const CourseReviews = (props) => {
             focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
               />
             </div>
-            <div className="mb-4 flex justify-end px-8">
+            <div className="flex justify-end px-8">
               <SecondaryButton className="mb-4" onClick={onClickHandler}>
                 Submit
               </SecondaryButton>
             </div>
           </div>
         )}
+        <div className="px-8 mb-4">
+          <AverageSummary count={props.reviewsCount} />
+        </div>
+        <div className="py-2 px-8">{reviews}</div>
       </div>
     </div>
   );

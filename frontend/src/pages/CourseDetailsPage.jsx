@@ -14,6 +14,7 @@ const CourseDetailsPage = () => {
   const [loaded, setLoaded] = useState(false);
   const [userRegistered, setUserRegistered] = useState(false);
   const [courseReviews, setCourseReviews] = useState([]);
+  const [reviewsCount, setReviewsCount] = useState([]);
   useEffect(() => {
     const courseId = location.state.courseId;
     axios
@@ -35,7 +36,7 @@ const CourseDetailsPage = () => {
                 setUserRegistered(false);
               }
       });
-    const userId = "638a07cdbc3508481a2d7da9";
+    const userId = "63a37e9688311fa832f43336";
    
     // axios
     //   .post(`http://localhost:3000/invoice/${location.state.courseId}`, {
@@ -56,7 +57,9 @@ const CourseDetailsPage = () => {
       // setCourseDetails(res.data.course);
       // console.log(res.data.course);
       // setLoaded(true);
-      console.log(res.data.review);
+      setCourseReviews(res.data.review);
+      console.log(res.data.count);
+      setReviewsCount(res.data.count);
     });
 
     // axios
@@ -125,6 +128,7 @@ const CourseDetailsPage = () => {
       {loaded && (
         <CourseReviews
           reviews={courseReviews}
+          reviewsCount={reviewsCount}
           onSubmit={submitReviewHandler}
           userRegister={userRegistered}
         />

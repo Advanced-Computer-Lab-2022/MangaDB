@@ -183,6 +183,7 @@ const NotesManager = (props) => {
             onSubmit={props.submitReviewHandler}
             courseId={props.courseId}
             reviews={props.reviews}
+            reviewsCount={props.reviewsCount}
           />
         )}
         {props.showReports && (

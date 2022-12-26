@@ -85,7 +85,6 @@ const Reports = (props) => {
       </div>
       <div>
         <div className=" font-semibold text-xl">Your Previous Reports:</div>
-        {/* <ReportItem status="Resolved" /> */}
         {reports}
       </div>
     </div>

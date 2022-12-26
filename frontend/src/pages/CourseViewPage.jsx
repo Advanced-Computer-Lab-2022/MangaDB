@@ -10,12 +10,6 @@ import ExamToolManager from "../components/ExamToolBar/ExamToolManager";
 import Certificate from "../components/Certificate/Certificate";
 
 const CourseViewPage = () => {
-  //will give the backend the id of the clicked course , then will fetch all the details about that course
-  //to fill the subtitle accordion and create an onClick function to change the link of the video playing.
-  //at the buttom of the video frame will have a notes trigger which will create a text box at the buttom
-  //at the top below the navbar will have a div with the progress and view notes  and some extra controls..
-
-  //this page will handle the viewed sources and solving exams and notes areas..
   const location = useLocation();
   const [receivedData, setReceivedData] = useState({});
   const [currentSource, setCurrentSource] = useState("");
@@ -344,7 +338,7 @@ const CourseViewPage = () => {
   return (
     <Fragment>
       <NavBar />
-      <div className=" opacity-0 h-0 overflow-hidden">
+      <div className=" opacity-0 h-0 overflow-hidden w-full relative ">
         <Certificate ref={downloadRef}></Certificate>
       </div>
       {/* <ProgressManager progress={progress} totalSources={totalSources} /> */}

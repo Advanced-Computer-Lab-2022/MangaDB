@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import ribbonn from "../../Assets/Images/ribbonn.png";
 import { forwardRef } from "react";
 import { useImperativeHandle } from "react";
+
 const Certificate = forwardRef((props, ref) => {
   useImperativeHandle(ref, () => ({
     generatePDF2() {
@@ -13,7 +14,8 @@ const Certificate = forwardRef((props, ref) => {
         onclone: function (doc) {
           const hiddenDiv = doc.getElementById("contentt");
           hiddenDiv.style.display = "block";
-
+          hiddenDiv.style.zIndex="0"
+          hiddenDiv.style.position="fixed"
         },
         useCORS: true,
         allowTaint: true,
@@ -41,8 +43,8 @@ const Certificate = forwardRef((props, ref) => {
   //};
   return (
     <Fragment>
-      <div className="p-4 z-10" id="contentt">
-        <div className=" m-16 border-4 border-transparent border-black outline-4 outline-black ">
+      <div className="p-4 absolute z-0 w-full" id="contentt">
+        <div className=" m-16 border-4 border-transparent border-black outline-4 outline-black z-0 ">
           <div className="flex items-center justify-center mt-8">
             <span className="relative">
               <div className="mt-6">

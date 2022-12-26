@@ -815,3 +815,9 @@ exports.getInstructorQuestions = async (req, res, next) => {
   }
   res.status(200).send(questions);
 };
+exports.getDiscountedCourses=async(req,res,next)=>{
+let courses=await courses.find({discount:{ $gt: 0 }}).limit(9);
+
+res.status(200).send(courses);
+
+}

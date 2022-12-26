@@ -43,7 +43,7 @@ const Certificate = forwardRef((props, ref) => {
   //};
   return (
     <Fragment>
-      <div className="p-4 absolute z-0 w-full" id="contentt">
+      <div className="p-4 absolute -z-50 w-full" id="contentt">
         <div className=" m-16 border-4 border-transparent border-black outline-4 outline-black z-0 ">
           <div className="flex items-center justify-center mt-8">
             <span className="relative">

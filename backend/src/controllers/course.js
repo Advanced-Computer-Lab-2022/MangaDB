@@ -69,6 +69,11 @@ exports.getAllCourses = async (req, res, next) => {
         message: "Fetching courses failed!",
       });
     });
+   let courseCount=await course.find().count().catch((error) => {
+    res.status(500).json({
+      message: "Counting Courses Failed"
+    });
+  });
   countryDetails = await currencyConverter.convertCurrency("US", countryCode);
   exchangeRate = countryDetails.rate;
   allCourses.forEach((course) => {
@@ -79,6 +84,8 @@ exports.getAllCourses = async (req, res, next) => {
     message: "Courses fetched successfully!",
     courses: allCourses,
     symbol: symbol,
+    count:courseCount
+
   });
 };
 

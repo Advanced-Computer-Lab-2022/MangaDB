@@ -1,8 +1,7 @@
 import ProgressPopOver from "./ProgressPopOver";
 import ProgressIcon from "./ProgressIcon";
 const ProgressManager = (props) => {
-  console.log(props.progress)
-  console.log(props.totalSources)
+
   return (
     <div className="flex end items-center justify-center space-x-2">
       <ProgressIcon

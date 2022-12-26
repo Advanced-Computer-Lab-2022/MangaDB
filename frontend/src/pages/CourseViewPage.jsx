@@ -9,19 +9,6 @@ import ContentCourseView from "../components/CourseView/ContentCourseView";
 import ExamToolManager from "../components/ExamToolBar/ExamToolManager";
 import Certificate from "../components/Certificate/Certificate";
 
-//stub for QAS
-const stub = [
-  {
-    date: "11/2/2022",
-    question: "I dont understand what is the purpose of components",
-    answer: "separtion and reusability",
-  },
-  {
-    date: "22/2/2022",
-    question: "I cant figure out how to export a component",
-  },
-];
-
 const CourseViewPage = () => {
   const location = useLocation();
   const [receivedData, setReceivedData] = useState({});
@@ -29,7 +16,7 @@ const CourseViewPage = () => {
   const [studentSolutions, setStudentSolutions] = useState([]);
   const [showNextLessonAlert, setShowNextLessonAlert] = useState(false);
   const [notes, setNotes] = useState([]);
-  const [QA, setQA] = useState(stub);
+  const [QA, setQA] = useState([]);
   const [QAFilter, setQAFilter] = useState({
     id: 1,
     name: "All",
@@ -174,6 +161,7 @@ const CourseViewPage = () => {
       )
       .then((res) => {
         setReceivedData(res.data.course);
+        setQA(res.data.QA);
         setStudentSolutions(res.data.userData.exams);
         setCurrentSource(res.data.course.subtitles[0].sources[0]);
         setProgress(res.data.userData.percentageCompleted);
@@ -212,7 +200,6 @@ const CourseViewPage = () => {
         },
       })
       .then((res) => {
-        console.log(res);
         var temp = {
           score: res.data.score,
           answers: res.data.answers,
@@ -244,8 +231,8 @@ const CourseViewPage = () => {
       }
     }
   };
-   //controls
-   const onTabChangeHandler = (tab) => {
+  //controls
+  const onTabChangeHandler = (tab) => {
     setCurrentTab(tab);
     if (tab === "Notes") {
       setShowNotes(true);
@@ -326,19 +313,27 @@ const CourseViewPage = () => {
     }
   }
   //QAS handlers
-  const addQuestionHandler = (question) => {
-    //axios post
+  const addQuestionHandler = (recQuestion) => {
     const date = new Date();
     let day = date.getDate();
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
     let currentDate = `${day}-${month}-${year}`;
-    setQA([...QA, { question: question, date: currentDate }]);
+    const userId = "63a37e9688311fa832f43336";
+    const sentData = {
+      userId: userId,
+      question: recQuestion,
+      date: currentDate,
+    };
+    axios.post(
+      `http://localhost:3000/course/askquestion/${receivedData._id}`,
+      sentData
+    );
+    setQA([...QA, { question: recQuestion, date: currentDate }]);
   };
   const changeQuestionFilterHandler = (newSelected) => {
     setQAFilter(newSelected);
   };
-
 
   const submitReportHandler = (data) => {
     axios.post("http://localhost:3000/problem/", data).then((res) => {
@@ -355,12 +350,10 @@ const CourseViewPage = () => {
         data
       )
       .then((res) => {
-        console.log(res);
         //setReviews([...reviews, res.data]);
       });
   };
 
-  console.log(receivedData);
   //we will have an array of viewed sources
   var displayedSource;
   if (currentSource !== "") {
@@ -394,7 +387,7 @@ const CourseViewPage = () => {
           submitReportHandler={submitReportHandler}
           submitReviewHandler={submitReviewHandler}
           showNotes={showNotes}
-          showQA ={showQA}
+          showQA={showQA}
           showReviews={showReviews}
           showReports={showReports}
           currentTab={currentTab}
@@ -458,7 +451,7 @@ const CourseViewPage = () => {
             submitReportHandler={submitReportHandler}
             submitReviewHandler={submitReviewHandler}
             showNotes={showNotes}
-            showQA ={showQA}
+            showQA={showQA}
             showReviews={showReviews}
             showReports={showReports}
             currentTab={currentTab}

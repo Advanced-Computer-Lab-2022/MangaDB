@@ -23,6 +23,8 @@ router.get("/mostrated", courseController.getMostRatedCourses);
 router.post("/addsubtitle/:id", courseController.addSubtitle);
 
 router.post("/askquestion/:id", courseController.askQuestion);
+router.get("/discountedcourses", courseController.getDiscountedCourses);
+
 
 
 

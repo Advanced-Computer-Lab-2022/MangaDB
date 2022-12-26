@@ -9,6 +9,19 @@ import ContentCourseView from "../components/CourseView/ContentCourseView";
 import ExamToolManager from "../components/ExamToolBar/ExamToolManager";
 import Certificate from "../components/Certificate/Certificate";
 
+//stub for QAS
+const stub = [
+  {
+    date: "11/2/2022",
+    question: "I dont understand what is the purpose of components",
+    answer: "separtion and reusability",
+  },
+  {
+    date: "22/2/2022",
+    question: "I cant figure out how to export a component",
+  },
+];
+
 const CourseViewPage = () => {
   const location = useLocation();
   const [receivedData, setReceivedData] = useState({});
@@ -16,6 +29,11 @@ const CourseViewPage = () => {
   const [studentSolutions, setStudentSolutions] = useState([]);
   const [showNextLessonAlert, setShowNextLessonAlert] = useState(false);
   const [notes, setNotes] = useState([]);
+  const [QA, setQA] = useState(stub);
+  const [QAFilter, setQAFilter] = useState({
+    id: 1,
+    name: "All",
+  });
   const [currentNotesFilter, setCurrentNotesFilter] = useState({
     id: 1,
     name: "All Lessons",
@@ -28,7 +46,6 @@ const CourseViewPage = () => {
   const [totalSources, setTotalSources] = useState(0);
   const managerRef = useRef(null);
   const downloadRef = useRef(null);
- 
 
   useEffect(() => {
     const courseId = location.state;
@@ -188,6 +205,7 @@ const CourseViewPage = () => {
           _id: receivedData._id,
         };
         setStudentSolutions([...studentSolutions, temp]);
+        managerRef.current.refreshManager();
         setProgress((prevProg) => {
           return prevProg + 1;
         });
@@ -256,9 +274,22 @@ const CourseViewPage = () => {
       }
     }
   }
+  //QAS handlers
+  const addQuestionHandler = (question) => {
+    //axios post
+    const date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let currentDate = `${day}-${month}-${year}`;
+    setQA([...QA, { question: question, date: currentDate }]);
+  };
+  const changeQuestionFilterHandler = (newSelected) => {
+    setQAFilter(newSelected);
+  };
+
   //we will have an array of viewed sources
   var displayedSource;
-  console.log(receivedData);
   if (currentSource !== "") {
     if (currentSource.sourceType === "Video") {
       displayedSource = (
@@ -281,7 +312,10 @@ const CourseViewPage = () => {
           progress={progress}
           totalSources={totalSources}
           downloadCertificateHandler={downloadCertificateHandler}
-
+          QA={QA}
+          addQuestionHandler={addQuestionHandler}
+          changeQuestionFilterHandler={changeQuestionFilterHandler}
+          QAFilter={QAFilter}
         />
       );
     } else {
@@ -310,6 +344,7 @@ const CourseViewPage = () => {
             studentAnswers={studentAnswers}
             grade={grade}
             onSolveExamHandler={onSolveExamHandler}
+            QA={QA}
           ></ExamManager>
           <ExamToolManager
             downloadCertificateHandler={downloadCertificateHandler}
@@ -329,7 +364,11 @@ const CourseViewPage = () => {
             link={currentSource.link}
             onWatch={onWatchHandler}
             progress={progress}
+            QA={QA}
             totalSources={totalSources}
+            addQuestionHandler={addQuestionHandler}
+            changeQuestionFilterHandler={changeQuestionFilterHandler}
+            QAFilter={QAFilter}
           ></ExamToolManager>
         </Fragment>
       );

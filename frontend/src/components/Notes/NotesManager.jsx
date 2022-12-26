@@ -1,4 +1,4 @@
-import { useState, Fragment,  useEffect } from "react";
+import { useState, Fragment, useEffect } from "react";
 import axios from "axios";
 import Notes from "./Notes";
 import Video from "../Video/Video";
@@ -17,16 +17,14 @@ const NotesManager = (props) => {
   const [playing, setPlaying] = useState(true);
   const [certificateAlert, setCertificateAlert] = useState(false);
 
-
   useEffect(() => {
     if (
-      (+props.progress / +props.totalSources === 1) &&
+      +props.progress / +props.totalSources === 1 &&
       currentTab === "Download Certificate"
     ) {
       props.downloadCertificateHandler();
     }
-  }, [currentTab, props.progress,props.totalSources]);
-
+  }, [currentTab, props.progress, props.totalSources]);
 
   // add delete edit notes
   const addNote = (note) => {
@@ -146,19 +144,18 @@ const NotesManager = (props) => {
       setShowQA(false);
       setShowReviews(false);
       setShowReports(false);
-      setCertificateAlert(false)
+      setCertificateAlert(false);
     } else if (tab === "Q&A") {
       setShowNotes(false);
       setShowQA(true);
       setShowReviews(false);
       setShowReports(false);
-      setCertificateAlert(false)
-
+      setCertificateAlert(false);
     } else if (tab === "Reviews") {
       setShowNotes(false);
       setShowQA(false);
       setShowReviews(true);
-      setCertificateAlert(false)
+      setCertificateAlert(false);
 
       setShowReports(false);
     } else if (tab === "Reports") {
@@ -166,15 +163,13 @@ const NotesManager = (props) => {
       setShowQA(false);
       setShowReviews(false);
       setShowReports(true);
-      setCertificateAlert(false)
-
+      setCertificateAlert(false);
     } else if (tab === "Download Certificate") {
       setShowNotes(false);
       setShowQA(false);
       setShowReviews(false);
       setShowReports(false);
-      setCertificateAlert(true)
-
+      setCertificateAlert(true);
     }
   };
 
@@ -220,7 +215,14 @@ const NotesManager = (props) => {
             deleteNote={deleteNote}
           />
         )}
-        {showQA && <QA></QA>}
+        {showQA && (
+          <QA
+            QAFilter={props.QAFilter}
+            QA={props.QA}
+            addQuestionHandler={props.addQuestionHandler}
+            changeQuestionFilterHandler={props.changeQuestionFilterHandler}
+          ></QA>
+        )}
         {showReviews && <></>}
         {showReports && (
           <Reports

@@ -12,15 +12,16 @@ const ExamToolManager = (props) => {
   const [showReports, setShowReports] = useState(false);
   const [currentTab, setCurrentTab] = useState("Notes");
   const [certificateAlert, setCertificateAlert] = useState(false);
+  
   const timestamp = 0;
   useEffect(() => {
     if (
-      (+props.progress / +props.totalSources === 1) &&
+      +props.progress / +props.totalSources === 1 &&
       currentTab === "Download Certificate"
     ) {
       props.downloadCertificateHandler();
     }
-  }, [currentTab, props.progress,props.totalSources]);
+  }, [currentTab, props.progress, props.totalSources]);
   //delete edit notes
   const editNote = (noteIndex, newNote) => {
     var newNotes = [];
@@ -87,7 +88,6 @@ const ExamToolManager = (props) => {
     );
     props.setNotes(newNotes);
   };
-  
 
   //controls
   const onTabChangeHandler = (tab) => {
@@ -157,7 +157,14 @@ const ExamToolManager = (props) => {
             deleteNote={deleteNote}
           />
         )}
-        {showQA && <QA></QA>}
+        {showQA && (
+          <QA
+            QAFilter={props.QAFilter}
+            QA={props.QA}
+            addQuestionHandler={props.addQuestionHandler}
+            changeQuestionFilterHandler={props.changeQuestionFilterHandler}
+          ></QA>
+        )}
         {showReviews && <></>}
         {showReports && (
           <Reports

@@ -5,9 +5,8 @@ import ToolbarTabs from "./ExamToolbarTabs";
 import Reports from "../CourseView/Reports";
 import QA from "../QA/QA";
 import { Alert } from "@material-tailwind/react";
+import ReviewsCourseView from "../CourseView/ReviewsCourseView";
 const ExamToolManager = (props) => {
-
-  
   const timestamp = 0;
   useEffect(() => {
     if (
@@ -84,8 +83,6 @@ const ExamToolManager = (props) => {
     props.setNotes(newNotes);
   };
 
- 
-
   const selectedNotesChangeHandler = (newSelected) => {
     props.changeNotesFilter(newSelected);
   };
@@ -126,14 +123,21 @@ const ExamToolManager = (props) => {
             changeQuestionFilterHandler={props.changeQuestionFilterHandler}
           ></QA>
         )}
-        {props.showReviews && <></>}
+        {props.showReviews && (
+          <ReviewsCourseView
+            onSubmit={props.submitReviewHandler}
+            courseId={props.courseId}
+            reviews={props.reviews}
+            reviewsCount={props.reviewsCount}
+          />
+        )}
         {props.showReports && (
           <Reports
-          onSubmit={props.submitReportHandler}
-          selected={props.currentReportsSelector}
-          selectedChangeHandler={selectedReportsChangeHandler}
-          courseId={props.courseId}
-          reports={props.reports}
+            onSubmit={props.submitReportHandler}
+            selected={props.currentReportsSelector}
+            selectedChangeHandler={selectedReportsChangeHandler}
+            courseId={props.courseId}
+            reports={props.reports}
           />
         )}
         {props.certificateAlert ? (

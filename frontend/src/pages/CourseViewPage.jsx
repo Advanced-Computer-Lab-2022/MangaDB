@@ -22,6 +22,7 @@ const CourseViewPage = () => {
     name: "All",
   });
   const [reviews, setReviews] = useState([]);
+  const [reviewsCount, setReviewsCount] = useState([]);
   const [reports, setReports] = useState([]);
   const [currentNotesFilter, setCurrentNotesFilter] = useState({
     id: 1,
@@ -149,6 +150,14 @@ const CourseViewPage = () => {
       .then((res) => {
         setReports(res.data);
       });
+    axios
+      .get(
+        `http://localhost:3000/course/rate/${courseId}`
+      )
+      .then((res) => {
+        setReviews(res.data.review);
+        setReviewsCount(res.data.count);
+      })
   }, [currentNotesFilter, location.state, receivedData, currentSource]);
 
   //useEffect at the start to receive the data
@@ -350,7 +359,6 @@ const CourseViewPage = () => {
         data
       )
       .then((res) => {
-        //setReviews([...reviews, res.data]);
       });
   };
 
@@ -365,12 +373,13 @@ const CourseViewPage = () => {
           changeNotesFilter={changeNotesFilter}
           currentReportsSelector={currentReportsSelector}
           changeReportsSelector={changeReportsSelector}
-          studentId="638a07cdbc3508481a2d7da9"
+          studentId="63a37e9688311fa832f43336"
           courseId={receivedData._id}
           currentSourceId={currentSource._id}
           source={currentSource.description}
           notes={notes}
           reviews={reviews}
+          reviewsCount={reviewsCount}
           reports={reports}
           setNotes={notesChangeHandler}
           subtitle={subtitle}
@@ -422,7 +431,7 @@ const CourseViewPage = () => {
             grade={grade}
             onSolveExamHandler={onSolveExamHandler}
             QA={QA}
-          ></ExamManager>
+          />
           <ExamToolManager
             courseDescription={receivedData.courseTitle}
             currentNotesFilter={currentNotesFilter}
@@ -435,6 +444,7 @@ const CourseViewPage = () => {
             source={currentSource.description}
             notes={notes}
             reviews={reviews}
+            reviewsCount={reviewsCount}
             reports={reports}
             setNotes={notesChangeHandler}
             subtitle={subtitle}

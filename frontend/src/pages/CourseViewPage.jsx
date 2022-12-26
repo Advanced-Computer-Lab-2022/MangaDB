@@ -34,11 +34,13 @@ const CourseViewPage = () => {
     id: 1,
     name: "All",
   });
+  const [reviews, setReviews] = useState([]);
+  const [reports, setReports] = useState([]);
   const [currentNotesFilter, setCurrentNotesFilter] = useState({
     id: 1,
     name: "All Lessons",
   });
-  const [currentReportsFilter, setCurrentReportsFilter] = useState({
+  const [currentReportsSelector, setCurrentReportsSelector] = useState({
     id: 1,
     name: "Technical",
   });
@@ -147,6 +149,13 @@ const CourseViewPage = () => {
           setNotes(notesSet);
         });
     }
+    axios
+      .get(
+        `http://localhost:3000/problem/usercourseproblems/${courseId}?uId=${userid}`
+      )
+      .then((res) => {
+        setReports(res.data);
+      });
   }, [currentNotesFilter, location.state, receivedData, currentSource]);
 
   //useEffect at the start to receive the data
@@ -175,8 +184,8 @@ const CourseViewPage = () => {
     setCurrentNotesFilter(data);
   };
 
-  const changeReportsFilter = (data) => {
-    setCurrentReportsFilter(data);
+  const changeReportsSelector = (data) => {
+    setCurrentReportsSelector(data);
   };
 
   const onSolveExamHandler = (receivedSolution) => {
@@ -288,6 +297,28 @@ const CourseViewPage = () => {
     setQAFilter(newSelected);
   };
 
+
+  const submitReportHandler = (data) => {
+    axios.post("http://localhost:3000/problem/", data).then((res) => {
+      setReports([...reports, res.data]);
+    });
+  };
+
+  const submitReviewHandler = (data) => {
+    axios
+      .post(
+        "http://localhost:3000/course/rate/"
+          .concat(receivedData._id)
+          .concat("/"),
+        data
+      )
+      .then((res) => {
+        console.log(res);
+        //setReviews([...reviews, res.data]);
+      });
+  };
+
+  console.log(receivedData);
   //we will have an array of viewed sources
   var displayedSource;
   if (currentSource !== "") {
@@ -297,13 +328,15 @@ const CourseViewPage = () => {
           courseDescription={receivedData.courseTitle}
           currentNotesFilter={currentNotesFilter}
           changeNotesFilter={changeNotesFilter}
-          currentReportsFilter={currentReportsFilter}
-          changeReportsFilter={changeReportsFilter}
-          studentId="63a37e9688311fa832f43336"
+          currentReportsSelector={currentReportsSelector}
+          changeReportsSelector={changeReportsSelector}
+          studentId="638a07cdbc3508481a2d7da9"
           courseId={receivedData._id}
           currentSourceId={currentSource._id}
           source={currentSource.description}
           notes={notes}
+          reviews={reviews}
+          reports={reports}
           setNotes={notesChangeHandler}
           subtitle={subtitle}
           isVisible={true}
@@ -316,6 +349,8 @@ const CourseViewPage = () => {
           addQuestionHandler={addQuestionHandler}
           changeQuestionFilterHandler={changeQuestionFilterHandler}
           QAFilter={QAFilter}
+          submitReportHandler={submitReportHandler}
+          submitReviewHandler={submitReviewHandler}
         />
       );
     } else {
@@ -335,7 +370,7 @@ const CourseViewPage = () => {
               message={
                 "This was the last course lesson,solve the exam to get your certificate"
               }
-            ></WarningAlert>
+            />
           )}
           <ExamManager
             ref={managerRef}
@@ -351,8 +386,8 @@ const CourseViewPage = () => {
             courseDescription={receivedData.courseTitle}
             currentNotesFilter={currentNotesFilter}
             changeNotesFilter={changeNotesFilter}
-            currentReportsFilter={currentReportsFilter}
-            changeReportsFilter={changeReportsFilter}
+            currentReportsFilter={currentReportsSelector}
+            changeReportsFilter={changeReportsSelector}
             studentId="63a37e9688311fa832f43336"
             courseId={receivedData._id}
             currentSourceId={currentSource._id}

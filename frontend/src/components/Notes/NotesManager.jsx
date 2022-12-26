@@ -6,6 +6,7 @@ import ToolbarTabs from "./ToolbarTabs";
 import Reports from "../CourseView/Reports";
 import QA from "../QA/QA";
 import { Alert } from "@material-tailwind/react";
+import ReviewsCourseView from "../CourseView/ReviewsCourseView";
 
 const NotesManager = (props) => {
   const [showNotes, setShowNotes] = useState(true);
@@ -178,13 +179,7 @@ const NotesManager = (props) => {
   };
 
   const selectedReportsChangeHandler = (newSelected) => {
-    props.changeReportsFilter(newSelected);
-  };
-
-  const submitReportHandler = (data) => {
-    axios.post("http://localhost:3000/problem/", data).then((res) => {
-      console.log(res);
-    });
+    props.changeReportsSelector(newSelected);
   };
 
   return (
@@ -223,13 +218,20 @@ const NotesManager = (props) => {
             changeQuestionFilterHandler={props.changeQuestionFilterHandler}
           ></QA>
         )}
-        {showReviews && <></>}
+        {showReviews && (
+          <ReviewsCourseView
+            onSubmit={props.submitReviewHandler}
+            courseId={props.courseId}
+            reviews={props.reviews}
+          />
+        )}
         {showReports && (
           <Reports
-            onSubmit={submitReportHandler}
-            selected={props.currentReportsFilter}
+            onSubmit={props.submitReportHandler}
+            selected={props.currentReportsSelector}
             selectedChangeHandler={selectedReportsChangeHandler}
             courseId={props.courseId}
+            reports={props.reports}
           />
         )}
         {certificateAlert ? (

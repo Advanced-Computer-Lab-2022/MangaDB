@@ -17,7 +17,7 @@ import FAQS from "./pages/FAQS";
 import InstructorWallet from "./pages/IntructorWallet";
 import PageNotFound from "./pages/PageNotFound";
 import UnAuthorizedPage from "./pages/UnAuthorizedPage";
-import Certificate from "../src/components/Certificate/Certificate"
+import MyCourses from "./pages/MyCourses";
 function App() {
   return (
     <Fragment>
@@ -67,6 +67,7 @@ function App() {
           path="403"
           element={<UnAuthorizedPage></UnAuthorizedPage>}
         ></Route>
+        <Route path ="myCourses" element={<MyCourses></MyCourses>}></Route>
       </Routes>
 
       <Footer></Footer>

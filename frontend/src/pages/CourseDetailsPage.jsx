@@ -14,6 +14,7 @@ const CourseDetailsPage = () => {
   const [loaded, setLoaded] = useState(false);
   const [userRegistered, setUserRegistered] = useState(false);
   const [courseReviews, setCourseReviews] = useState([]);
+  const [reviewsCount, setReviewsCount] = useState([]);
   useEffect(() => {
     const courseId = location.state.courseId;
     axios
@@ -57,6 +58,8 @@ const CourseDetailsPage = () => {
       // console.log(res.data.course);
       // setLoaded(true);
       setCourseReviews(res.data.review);
+      console.log(res.data.count);
+      setReviewsCount(res.data.count);
     });
 
     // axios

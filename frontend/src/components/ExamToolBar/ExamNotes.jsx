@@ -1,29 +1,10 @@
-import { Fragment, useState } from "react";
-import NotesForm from "./NotesForm";
-import NotesCard from "./NotesCard";
-import NotesSelector from "./NotesSelector";
+import { Fragment } from "react";
+import NotesCard from "./ExamNotesCard";
+import NotesSelector from "./ExamNotesSelector";
 import jsPDF from "jspdf";
-import react from "../../Assets/Images/react.png";
 require("jspdf-autotable");
 
-const Notes = (props) => {
-  const [showForm, setShowForm] = useState(false);
-  const onShowHandler = () => {
-    props.stopVideo();
-    setShowForm(true);
-  };
-  const onHidehandler = () => {
-    setShowForm(false);
-  };
-
-  // const downloadNotesHandler = (notes) => {
-  //   html2canvas(document.querySelector("#content")).then((canvas) => {
-  //     const imgData = canvas.toDataURL("image/png");
-  //     const pdf = new jsPDF("p", "px", "a4");
-  //     pdf.addImage(imgData, "PNG", 0, 0);
-  //     pdf.save("Notes.pdf");
-  //   });
-  // };
+const ExamNotes = (props) => {
 
   const downloadNotesHandler = (notes) => {
     // Create a new PDF document
@@ -98,7 +79,6 @@ const Notes = (props) => {
     for (let i = 0; i < pdf.internal.pages.length; i++) {
       pdf.setPage(i);
       // Set the x and y position for the logo image to the top right corner of the page
-      const xPos = pdf.internal.pageSize.getWidth() - 10;
       // pdf.addImage(react, 'PNG', xPos, 0, 10, 10, 'center');
     }
 
@@ -124,10 +104,8 @@ const Notes = (props) => {
 
   return (
     <Fragment>
-      {!showForm && (
         <div
-          onClick={onShowHandler}
-          className="relative bg-white text-gray-500 border border-gray-500 p-4 m-4 cursor-pointer hover:bg-gray-200"
+          className="relative cursor-not-allowed bg-white text-gray-500 border border-gray-500 p-4 m-4  hover:bg-gray-200"
         >
           Create a new note at {minutes + ":" + zeroS + seconds}
           <div className="absolute right-2 bottom-5 text-black">
@@ -143,19 +121,7 @@ const Notes = (props) => {
             </svg>
           </div>
         </div>
-      )}
-      {showForm && (
-        <div className="flex items-center space-x-2 px-4">
-          <div className="bg-veryLightBlue text-gray-900 text-sm py-[2px] px-2 rounded-lg">
-            {minutes + ":" + zeroS + seconds}
-          </div>
-          <NotesForm
-            addNote={props.addNote}
-            onHidehandler={onHidehandler}
-            resumeVideo={props.resumeVideo}
-          ></NotesForm>
-        </div>
-      )}
+       
       <div className="flex mt-[-20px] items-center justify-between">
         <div className="items-center w-[30vw] justify-center m-4">
           <NotesSelector
@@ -191,4 +157,4 @@ const Notes = (props) => {
     </Fragment>
   );
 };
-export default Notes;
+export default ExamNotes;

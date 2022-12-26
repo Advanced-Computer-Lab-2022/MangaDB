@@ -1,23 +1,19 @@
 import { useState, Fragment, useEffect } from "react";
 import axios from "axios";
-import Notes from "./Notes";
-import Video from "../Video/Video";
-import ToolbarTabs from "./ToolbarTabs";
+import Notes from "./ExamNotes";
+import ToolbarTabs from "./ExamToolbarTabs";
 import Reports from "../CourseView/Reports";
 import QA from "../QA/QA";
 import { Alert } from "@material-tailwind/react";
-import ReviewsCourseView from "../CourseView/ReviewsCourseView";
-
-const NotesManager = (props) => {
+const ExamToolManager = (props) => {
   const [showNotes, setShowNotes] = useState(true);
   const [showQA, setShowQA] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
   const [showReports, setShowReports] = useState(false);
   const [currentTab, setCurrentTab] = useState("Notes");
-  const [timestamp, setTimeStamp] = useState(0);
-  const [playing, setPlaying] = useState(true);
   const [certificateAlert, setCertificateAlert] = useState(false);
-
+  
+  const timestamp = 0;
   useEffect(() => {
     if (
       +props.progress / +props.totalSources === 1 &&
@@ -26,41 +22,7 @@ const NotesManager = (props) => {
       props.downloadCertificateHandler();
     }
   }, [currentTab, props.progress, props.totalSources]);
-
-  // add delete edit notes
-  const addNote = (note) => {
-    var obj = {
-      sourceId: props.currentSourceId,
-      note: note,
-      sourceDescription: props.source,
-      subtitleDescription: props.subtitle,
-      timestamp: timestamp,
-    };
-    var temp = [];
-    var flag = false;
-    for (var i = 0; i < props.notes.length; i++) {
-      if (props.notes[i].sourceId === props.currentSourceId) {
-        temp.push(props.notes[i]);
-        flag = true;
-      } else {
-        if (flag) {
-          break;
-        }
-      }
-    }
-    var sentData = {
-      courseId: props.courseId,
-      sourceId: props.currentSourceId,
-      notes: [...temp, obj],
-    };
-    var newNotes = [...props.notes, obj];
-    axios.patch(
-      `http://localhost:3000/user/notes/${props.studentId}`,
-      sentData
-    );
-    props.setNotes(newNotes);
-  };
-
+  //delete edit notes
   const editNote = (noteIndex, newNote) => {
     var newNotes = [];
     var sourceId;
@@ -128,16 +90,6 @@ const NotesManager = (props) => {
   };
 
   //controls
-  const timeChangeHandler = (time) => {
-    setTimeStamp(time);
-  };
-  const stopVideo = () => {
-    setPlaying(false);
-  };
-  const resumeVideo = () => {
-    setPlaying(true);
-  };
-
   const onTabChangeHandler = (tab) => {
     setCurrentTab(tab);
     if (tab === "Notes") {
@@ -156,9 +108,8 @@ const NotesManager = (props) => {
       setShowNotes(false);
       setShowQA(false);
       setShowReviews(true);
-      setCertificateAlert(false);
-
       setShowReports(false);
+      setCertificateAlert(false);
     } else if (tab === "Reports") {
       setShowNotes(false);
       setShowQA(false);
@@ -179,18 +130,17 @@ const NotesManager = (props) => {
   };
 
   const selectedReportsChangeHandler = (newSelected) => {
-    props.changeReportsSelector(newSelected);
+    props.changeReportsFilter(newSelected);
+  };
+
+  const submitReportHandler = (data) => {
+    axios.post("http://localhost:3000/problem/", data).then((res) => {
+      console.log(res);
+    });
   };
 
   return (
     <Fragment>
-      <Video
-        playing={playing}
-        isVisible={props.isVisible}
-        link={props.link}
-        onWatch={props.onWatch}
-        getTime={timeChangeHandler}
-      />
       <div className="">
         <ToolbarTabs
           currentTab={currentTab}
@@ -202,10 +152,7 @@ const NotesManager = (props) => {
             selected={props.currentNotesFilter}
             selectedChangeHandler={selectedNotesChangeHandler}
             timestamp={timestamp}
-            stopVideo={stopVideo}
             notes={props.notes}
-            resumeVideo={resumeVideo}
-            addNote={addNote}
             editNote={editNote}
             deleteNote={deleteNote}
           />
@@ -218,20 +165,13 @@ const NotesManager = (props) => {
             changeQuestionFilterHandler={props.changeQuestionFilterHandler}
           ></QA>
         )}
-        {showReviews && (
-          <ReviewsCourseView
-            onSubmit={props.submitReviewHandler}
-            courseId={props.courseId}
-            reviews={props.reviews}
-          />
-        )}
+        {showReviews && <></>}
         {showReports && (
           <Reports
-            onSubmit={props.submitReportHandler}
-            selected={props.currentReportsSelector}
+            onSubmit={submitReportHandler}
+            selected={props.currentReportsFilter}
             selectedChangeHandler={selectedReportsChangeHandler}
             courseId={props.courseId}
-            reports={props.reports}
           />
         )}
         {certificateAlert ? (
@@ -272,4 +212,4 @@ const NotesManager = (props) => {
     </Fragment>
   );
 };
-export default NotesManager;
+export default ExamToolManager;

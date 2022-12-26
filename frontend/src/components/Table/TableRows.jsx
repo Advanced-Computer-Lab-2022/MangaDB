@@ -1,8 +1,5 @@
 import React from "react";
 import PrimaryButton from "../UI/PrimaryButton";
-import Stars from "../UI/Stars";
-
-const size = 3;
 
 const TableRows = (props) => {
   const rows = props.rows.map((row, rowIdx) => {

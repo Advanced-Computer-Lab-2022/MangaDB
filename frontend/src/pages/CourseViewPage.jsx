@@ -6,20 +6,34 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import WarningAlert from "../components/UI/WarningAlert";
 import ContentCourseView from "../components/CourseView/ContentCourseView";
+import ExamToolManager from "../components/ExamToolBar/ExamToolManager";
+import Certificate from "../components/Certificate/Certificate";
+
+//stub for QAS
+const stub = [
+  {
+    date: "11/2/2022",
+    question: "I dont understand what is the purpose of components",
+    answer: "separtion and reusability",
+  },
+  {
+    date: "22/2/2022",
+    question: "I cant figure out how to export a component",
+  },
+];
 
 const CourseViewPage = () => {
-  //will give the backend the id of the clicked course , then will fetch all the details about that course
-  //to fill the subtitle accordion and create an onClick function to change the link of the video playing.
-  //at the buttom of the video frame will have a notes trigger which will create a text box at the buttom
-  //at the top below the navbar will have a div with the progress and view notes  and some extra controls..
-
-  //this page will handle the viewed sources and solving exams and notes areas..
   const location = useLocation();
   const [receivedData, setReceivedData] = useState({});
   const [currentSource, setCurrentSource] = useState("");
   const [studentSolutions, setStudentSolutions] = useState([]);
   const [showNextLessonAlert, setShowNextLessonAlert] = useState(false);
   const [notes, setNotes] = useState([]);
+  const [QA, setQA] = useState(stub);
+  const [QAFilter, setQAFilter] = useState({
+    id: 1,
+    name: "All",
+  });
   const [reviews, setReviews] = useState([]);
   const [reports, setReports] = useState([]);
   const [currentNotesFilter, setCurrentNotesFilter] = useState({
@@ -33,9 +47,11 @@ const CourseViewPage = () => {
   const [progress, setProgress] = useState(0);
   const [totalSources, setTotalSources] = useState(0);
   const managerRef = useRef(null);
+  const downloadRef = useRef(null);
+
   useEffect(() => {
     const courseId = location.state;
-    const userid = "638a07cdbc3508481a2d7da9";
+    const userid = "63a37e9688311fa832f43336";
     if (currentNotesFilter.name === "All Lessons") {
       axios
         .get(`http://localhost:3000/user/coursenotes/${userid}?cid=${courseId}`)
@@ -148,7 +164,7 @@ const CourseViewPage = () => {
     //shouldnt we send the userId ??
     axios
       .get(
-        `http://localhost:3000/course/${courseId}?uid=638a07cdbc3508481a2d7da9`
+        `http://localhost:3000/course/${courseId}?uid=63a37e9688311fa832f43336`
       )
       .then((res) => {
         setReceivedData(res.data.course);
@@ -179,7 +195,7 @@ const CourseViewPage = () => {
 
     var sentData = {
       studentAnswers: receivedSolution,
-      userid: "638a07cdbc3508481a2d7da9",
+      userid: "63a37e9688311fa832f43336",
       courseid: receivedData._id,
       examid: currentSource.quiz._id,
     };
@@ -197,8 +213,11 @@ const CourseViewPage = () => {
           examId: currentSource.quiz._id,
           _id: receivedData._id,
         };
-        console.log([...studentSolutions, temp]);
         setStudentSolutions([...studentSolutions, temp]);
+        managerRef.current.refreshManager();
+        setProgress((prevProg) => {
+          return prevProg + 1;
+        });
       })
       .catch((err) => {});
   };
@@ -225,11 +244,14 @@ const CourseViewPage = () => {
   const notesChangeHandler = (newNotes) => {
     setNotes(newNotes);
   };
+  const downloadCertificateHandler = () => {
+    downloadRef.current.generatePDF2();
+  };
   const onWatchHandler = () => {
     //will need the userID , sourceId, courseId
     //the userID and courseid are given from the navigation
     var endPoint = `http://localhost:3000/user/opensource/${receivedData._id}`;
-    const userId = "638a07cdbc3508481a2d7da9";
+    const userId = "63a37e9688311fa832f43336";
     const submittedData = {
       userId: userId,
       sourceId: currentSource._id,
@@ -240,14 +262,14 @@ const CourseViewPage = () => {
           "Access-Control-Allow-Origin": "*",
         },
       })
-      .then((res) => {});
-
-    axios
-      .get(
-        `http://localhost:3000/user/progress/${receivedData._id}?uid=${userId}`
-      )
       .then((res) => {
-        setProgress(res.data.percentage);
+        axios
+          .get(
+            `http://localhost:3000/user/progress/${receivedData._id}?uid=${userId}`
+          )
+          .then((res) => {
+            setProgress(res.data.percentage);
+          });
       });
   };
 
@@ -261,6 +283,20 @@ const CourseViewPage = () => {
       }
     }
   }
+  //QAS handlers
+  const addQuestionHandler = (question) => {
+    //axios post
+    const date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let currentDate = `${day}-${month}-${year}`;
+    setQA([...QA, { question: question, date: currentDate }]);
+  };
+  const changeQuestionFilterHandler = (newSelected) => {
+    setQAFilter(newSelected);
+  };
+
 
   const submitReportHandler = (data) => {
     axios.post("http://localhost:3000/problem/", data).then((res) => {
@@ -289,6 +325,7 @@ const CourseViewPage = () => {
     if (currentSource.sourceType === "Video") {
       displayedSource = (
         <NotesManager
+          courseDescription={receivedData.courseTitle}
           currentNotesFilter={currentNotesFilter}
           changeNotesFilter={changeNotesFilter}
           currentReportsSelector={currentReportsSelector}
@@ -305,6 +342,13 @@ const CourseViewPage = () => {
           isVisible={true}
           link={currentSource.link}
           onWatch={onWatchHandler}
+          progress={progress}
+          totalSources={totalSources}
+          downloadCertificateHandler={downloadCertificateHandler}
+          QA={QA}
+          addQuestionHandler={addQuestionHandler}
+          changeQuestionFilterHandler={changeQuestionFilterHandler}
+          QAFilter={QAFilter}
           submitReportHandler={submitReportHandler}
           submitReviewHandler={submitReviewHandler}
         />
@@ -335,7 +379,32 @@ const CourseViewPage = () => {
             studentAnswers={studentAnswers}
             grade={grade}
             onSolveExamHandler={onSolveExamHandler}
-          />
+            QA={QA}
+          ></ExamManager>
+          <ExamToolManager
+            downloadCertificateHandler={downloadCertificateHandler}
+            courseDescription={receivedData.courseTitle}
+            currentNotesFilter={currentNotesFilter}
+            changeNotesFilter={changeNotesFilter}
+            currentReportsFilter={currentReportsSelector}
+            changeReportsFilter={changeReportsSelector}
+            studentId="63a37e9688311fa832f43336"
+            courseId={receivedData._id}
+            currentSourceId={currentSource._id}
+            source={currentSource.description}
+            notes={notes}
+            setNotes={notesChangeHandler}
+            subtitle={subtitle}
+            isVisible={true}
+            link={currentSource.link}
+            onWatch={onWatchHandler}
+            progress={progress}
+            QA={QA}
+            totalSources={totalSources}
+            addQuestionHandler={addQuestionHandler}
+            changeQuestionFilterHandler={changeQuestionFilterHandler}
+            QAFilter={QAFilter}
+          ></ExamToolManager>
         </Fragment>
       );
     }
@@ -343,10 +412,14 @@ const CourseViewPage = () => {
   return (
     <Fragment>
       <NavBar />
-      <div className="py-4 flex justify-center font-medium text-xl bg-gray-50">
+      <div className=" opacity-0 h-0 overflow-hidden w-full relative ">
+        <Certificate ref={downloadRef}></Certificate>
+      </div>
+      {/* <ProgressManager progress={progress} totalSources={totalSources} /> */}
+      <div className="py-4 flex justify-center font-medium text-xl bg-gray-50 z-20">
         {receivedData.courseTitle}: {currentSource.description}
       </div>
-      <div className="flex">
+      <div className="flex z-50">
         <div className="video/exam md:w-[70%] w-full mb-4 md:mb-0">
           {displayedSource}
         </div>

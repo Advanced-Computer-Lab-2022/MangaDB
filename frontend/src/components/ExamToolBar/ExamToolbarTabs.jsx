@@ -2,7 +2,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const ToolbarTabs = (props) => {
+const ExamToolbarTabs = (props) => {
   const tabs = [
     { name: "Notes", current: props.currentTab === "Notes" ? true : false },
     { name: "Q&A", current: props.currentTab === "Q&A" ? true : false },
@@ -64,4 +64,4 @@ const ToolbarTabs = (props) => {
     </div>
   );
 };
-export default ToolbarTabs;
+export default ExamToolbarTabs;

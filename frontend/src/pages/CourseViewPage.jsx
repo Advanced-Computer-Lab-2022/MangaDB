@@ -46,6 +46,12 @@ const CourseViewPage = () => {
   });
   const [progress, setProgress] = useState(0);
   const [totalSources, setTotalSources] = useState(0);
+  const [showNotes, setShowNotes] = useState(false);
+  const [showQA, setShowQA] = useState(false);
+  const [showReviews, setShowReviews] = useState(true);
+  const [showReports, setShowReports] = useState(false);
+  const [currentTab, setCurrentTab] = useState("Reviews");
+  const [certificateAlert, setCertificateAlert] = useState(false);
   const managerRef = useRef(null);
   const downloadRef = useRef(null);
 
@@ -238,6 +244,42 @@ const CourseViewPage = () => {
       }
     }
   };
+   //controls
+   const onTabChangeHandler = (tab) => {
+    setCurrentTab(tab);
+    if (tab === "Notes") {
+      setShowNotes(true);
+      setShowQA(false);
+      setShowReviews(false);
+      setShowReports(false);
+      setCertificateAlert(false);
+    } else if (tab === "Q&A") {
+      setShowNotes(false);
+      setShowQA(true);
+      setShowReviews(false);
+      setShowReports(false);
+      setCertificateAlert(false);
+    } else if (tab === "Reviews") {
+      setShowNotes(false);
+      setShowQA(false);
+      setShowReviews(true);
+      setShowReports(false);
+      setCertificateAlert(false);
+    } else if (tab === "Reports") {
+      setShowNotes(false);
+      setShowQA(false);
+      setShowReviews(false);
+      setShowReports(true);
+      setCertificateAlert(false);
+    } else if (tab === "Download Certificate") {
+      setShowNotes(false);
+      setShowQA(false);
+      setShowReviews(false);
+      setShowReports(false);
+      setCertificateAlert(true);
+    }
+  };
+
   const hideWarningAlert = () => {
     setShowNextLessonAlert(false);
   };
@@ -351,6 +393,13 @@ const CourseViewPage = () => {
           QAFilter={QAFilter}
           submitReportHandler={submitReportHandler}
           submitReviewHandler={submitReviewHandler}
+          showNotes={showNotes}
+          showQA ={showQA}
+          showReviews={showReviews}
+          showReports={showReports}
+          currentTab={currentTab}
+          certificateAlert={certificateAlert}
+          onTabChangeHandler={onTabChangeHandler}
         />
       );
     } else {
@@ -382,28 +431,39 @@ const CourseViewPage = () => {
             QA={QA}
           ></ExamManager>
           <ExamToolManager
-            downloadCertificateHandler={downloadCertificateHandler}
             courseDescription={receivedData.courseTitle}
             currentNotesFilter={currentNotesFilter}
             changeNotesFilter={changeNotesFilter}
-            currentReportsFilter={currentReportsSelector}
-            changeReportsFilter={changeReportsSelector}
-            studentId="63a37e9688311fa832f43336"
+            currentReportsSelector={currentReportsSelector}
+            changeReportsSelector={changeReportsSelector}
+            studentId="638a07cdbc3508481a2d7da9"
             courseId={receivedData._id}
             currentSourceId={currentSource._id}
             source={currentSource.description}
             notes={notes}
+            reviews={reviews}
+            reports={reports}
             setNotes={notesChangeHandler}
             subtitle={subtitle}
             isVisible={true}
             link={currentSource.link}
             onWatch={onWatchHandler}
             progress={progress}
-            QA={QA}
             totalSources={totalSources}
+            downloadCertificateHandler={downloadCertificateHandler}
+            QA={QA}
             addQuestionHandler={addQuestionHandler}
             changeQuestionFilterHandler={changeQuestionFilterHandler}
             QAFilter={QAFilter}
+            submitReportHandler={submitReportHandler}
+            submitReviewHandler={submitReviewHandler}
+            showNotes={showNotes}
+            showQA ={showQA}
+            showReviews={showReviews}
+            showReports={showReports}
+            currentTab={currentTab}
+            certificateAlert={certificateAlert}
+            onTabChangeHandler={onTabChangeHandler}
           ></ExamToolManager>
         </Fragment>
       );

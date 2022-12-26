@@ -1,8 +1,7 @@
-import { Fragment, useState } from "react";
+import {  useState } from "react";
 import SecondaryButton from "../UI/SecondaryButton";
 import SubtitleForm from "./SubtitleForm";
 import SingleSubtitle from "./SingleSubtitle";
-import Modal from "../UI/Modal";
 const AddSubtitles = (props) => {
   const [subtitles, setSubtitles] = useState([]);
   const [subtitleModalShown, setSubtitleModalShown] = useState(false);
@@ -69,8 +68,8 @@ const AddSubtitles = (props) => {
 
   const displayedSubtitles = subtitles.map((subtitle) => {
     const SubtitleIntroUrl = subtitle.introductionVideo;
-    const description = subtitle.description;
-    const subtitleTitle = subtitle.subtitle;
+    const description = subtitle.introductionVideoDescription;
+    const subtitleTitle = subtitle.description;
     const sources = subtitle.sources;
     return (
       <SingleSubtitle
@@ -96,9 +95,9 @@ const AddSubtitles = (props) => {
   const addSubtitleHandler = (subtitleData) => {
     const newSubtitle = {
       id: subtitles.length,
-      subtitle: subtitleData.title,
+      description: subtitleData.title,
       introductionVideo: subtitleData.videoURL,
-      description: subtitleData.description,
+      introductionVideoDescription: subtitleData.description,
       sources: [],
     };
 

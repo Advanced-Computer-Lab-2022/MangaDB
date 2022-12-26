@@ -20,7 +20,7 @@ const CourseDetailsPage = () => {
       .get(
         "http://localhost:3000/course/"
           .concat(courseId)
-          .concat("?uid=638a07cdbc3508481a2d7da9")
+          .concat("?uid=63a37e9688311fa832f43336")
       )
       .then((res) => {
         setCourseDetails(res.data.course);

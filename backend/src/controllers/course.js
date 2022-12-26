@@ -69,6 +69,11 @@ exports.getAllCourses = async (req, res, next) => {
         message: "Fetching courses failed!",
       });
     });
+   let courseCount=await course.find().count().catch((error) => {
+    res.status(500).json({
+      message: "Counting Courses Failed"
+    });
+  });
   countryDetails = await currencyConverter.convertCurrency("US", countryCode);
   exchangeRate = countryDetails.rate;
   allCourses.forEach((course) => {
@@ -79,6 +84,8 @@ exports.getAllCourses = async (req, res, next) => {
     message: "Courses fetched successfully!",
     courses: allCourses,
     symbol: symbol,
+    count:courseCount
+
   });
 };
 
@@ -129,11 +136,14 @@ exports.getCourse = async (req, res, next) => {
     foundCourse.discountedPrice = (
       course.discountedPrice * exchangeRate
     ).toFixed(2);
+    let questions=getCourseQuestions(courseId,userId);
     res.status(200).json({
       message: "Course fetched successfully!",
       course: foundCourse,
      userData: userCourseData ,
       symbol: symbol,
+      QA:questions
+
     });
   } else {
     res.status(404).json({
@@ -744,11 +754,12 @@ exports.askQuestion=async (req,res,next)=>{
   let courseName= currentCourse.courseTitle;
   let userName=currentUser.firstName+" "+currentUser.lastName;
   let courseInstuctorId=currentCourse.instructor;
+  let questionDate=req.body.date;
   if(!question||question===""){
     res.status(400).json({message:"Please Enter Question"});
     return;
   }
-  let newQuestion=new question({question:currentQuestion,courseId:cId,courseName:courseName,userId:uId,userName:userName,instructorId:courseInstuctorId});
+  let newQuestion=new question({question:currentQuestion,courseId:cId,courseName:courseName,userId:uId,userName:userName,instructorId:courseInstuctorId,date:questionDate});
   await newQuestion
   .save()
   .then((createdQuestion) => {
@@ -796,9 +807,9 @@ if(!questions){
 res.status(200).send(questions);
 
 };
-exports.getCourseQuestions=async (req,res,next)=>{
+exports.getCourseQuestions=async (courseID,userID)=>{
 
-  let questions=await question.find({courseId:req.params.id,userId:req.body.userId},{courseName:0,instructorId:0,courseName:0,userName:0,userId:0});
+  let questions=await question.find({courseId:courseID,userId:userID},{courseName:0,instructorId:0,courseName:0,userName:0,userId:0});
   if(!questions){
     res.status(400).json({message:"Error in Fetching"});
     return;

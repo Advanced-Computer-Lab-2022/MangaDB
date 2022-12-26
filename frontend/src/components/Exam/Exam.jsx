@@ -92,7 +92,6 @@ const Exam = (props) => {
   }
   var displayedExam;
   if (props.solvedBefore) {
-    console.log(selectedQuestion)
     displayedExam = (
       <SolvedExamChoices
         correct={props.exam[selectedQuestion - 1].solution}

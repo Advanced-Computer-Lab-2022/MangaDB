@@ -85,10 +85,41 @@ exports.rateInstructor = async (req, res) => {
         newRating=newRating.toFixed(2);
         foundInstructor.rating=newRating;
         foundInstructor.reviews.push({user:userId,userName: foundUser.firstName + " "+foundUser.lastName,rating:rating,review:review});
-        foundInstructor.save();
-        res.status(200).send({
+        await foundInstructor.save().then((updatedInstructor)=>{
+            let rating1=0;
+            let rating2=0;
+            let rating3=0;
+            let rating4=0;
+            let rating5=0;
+            for (let i = 0; i < updatedInstructor.reviews.length; i++) {
+              if (updatedInstructor.reviews[i].rating == 1) {
+                rating1++;
+              }
+              if (updatedInstructor.reviews[i].rating == 2) {
+                rating2++;
+              }
+              if (updatedInstructor.reviews[i].rating == 3) {
+                rating3++;
+              }
+              if (updatedInstructor.reviews[i].rating == 4) {
+                rating4++;
+              }
+              if (updatedInstructor.reviews[i].rating == 5) {
+                rating5++;
+              }
+            }
+            let count=[{rating:1,count:rating1},{rating:2,count:rating2},{rating:3,count:rating3},{rating:4,count:rating4},{rating:5,count:rating5}];
+             res.status(200).json({
+            review:updatedInstructor.reviews[reviewCount],
             message: "Instructor was rated successfully.",
+            count:count
         });
+        }).catch((err)=>{
+            res.status(500).json({
+                message:"Failed To Save Review Please Try Again later"
+            })
+        });
+       
     }}}
     }}
     catch (err) {   
@@ -245,12 +276,10 @@ exports.getMoneyOwed = async (req, res) => {
         let currentYearPurchases=0;
         let lastYearPurchases=0;
         const currentYear=new Date().getFullYear();
-        console.log(currentYear);
         for(let i=0;i<invoiceData.length;i++){    
         let date =invoiceData[i].invoiceDate.toISOString().split('-');
          year = parseInt(date[0] ) ;
          month = date[1];
-         console.log(year);
         if(month!=prevMonth&&prevMonth!=0)
         {
             history.push({month:prevMonth,year:prevYear,amount:total.toFixed(2)});
@@ -305,3 +334,45 @@ exports.getInstructorRating = async (req, res) => {
 }
 
 
+exports.viewInstructor=async (req, res) => {
+    const instructorId = req.params.id;
+    const instructorData = await
+    user.findById
+    (instructorId).populate("courseDetails.course");
+    if (!instructorData) {
+      res.status(404).json({ message: "Instructor Not Found" });
+      return;
+    }
+    let rating1=0;
+    let rating2=0;
+    let rating3=0;
+    let rating4=0;
+    let rating5=0;
+    for (let i = 0; i < instructorData.reviews.length; i++) {
+      if (instructorData.reviews[i].rating == 1) {
+        rating1++;
+      }
+      if (instructorData.reviews[i].rating == 2) {
+        rating2++;
+      }
+      if (instructorData.reviews[i].rating == 3) {
+        rating3++;
+      }
+      if (instructorData.reviews[i].rating == 4) {
+        rating4++;
+      }
+      if (instructorData.reviews[i].rating == 5) {
+        rating5++;
+      }
+    }
+    let count=[{rating:1,count:rating1},{rating:2,count:rating2},{rating:3,count:rating3},{rating:4,count:rating4},{rating:5,count:rating5}];
+    let totalViews=0;
+    for(let i=0;i<instructorData.courseDetails.length;i++){
+      totalViews+=instructorData.courseDetails[i].course.views;
+    }
+    res.status(200).json({ instructor: instructorData,
+      students:totalViews,
+      count:count
+    });
+
+  }

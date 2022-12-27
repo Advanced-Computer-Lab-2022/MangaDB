@@ -5,7 +5,7 @@ import SecondaryButton from "../UI/SecondaryButton";
 import AverageSummary from "../Profile/Reviews/AverageSummary";
 
 const ReviewsCourseView = (props) => {
-  const [eneteredReview, setEnteredReview] = useState("");
+  const [enteredReview, setEnteredReview] = useState("");
   const [enteredRating, setEnteredRating] = useState("");
 
   const ratingChangeHandler = (event) => {
@@ -20,7 +20,7 @@ const ReviewsCourseView = (props) => {
     const reviewData = {
       userId: "63a37e9688311fa832f43336",
       rating: enteredRating,
-      review: eneteredReview,
+      review: enteredReview,
     };
     props.onSubmit(reviewData);
   };

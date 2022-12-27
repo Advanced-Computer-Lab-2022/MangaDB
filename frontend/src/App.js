@@ -19,6 +19,7 @@ import PageNotFound from "./pages/PageNotFound";
 import UnAuthorizedPage from "./pages/UnAuthorizedPage";
 import MyCourses from "./pages/MyCourses";
 import AdminPage from "./components/Admin/AdminPage";
+import InstructorPage from "./pages/InstructorPage";
 function App() {
   return (
     <Fragment>
@@ -69,6 +70,10 @@ function App() {
           element={<UnAuthorizedPage></UnAuthorizedPage>}
         ></Route>
         <Route path="myCourses" element={<MyCourses></MyCourses>}></Route>
+        <Route
+          path="InstructorPage"
+          element={<InstructorPage></InstructorPage>}
+        ></Route>
       </Routes>
 
       <Footer></Footer>

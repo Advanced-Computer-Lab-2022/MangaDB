@@ -9,19 +9,6 @@ import ContentCourseView from "../components/CourseView/ContentCourseView";
 import ExamToolManager from "../components/ExamToolBar/ExamToolManager";
 import Certificate from "../components/Certificate/Certificate";
 
-//stub for QAS
-const stub = [
-  {
-    date: "11/2/2022",
-    question: "I dont understand what is the purpose of components",
-    answer: "separtion and reusability",
-  },
-  {
-    date: "22/2/2022",
-    question: "I cant figure out how to export a component",
-  },
-];
-
 const CourseViewPage = () => {
   const location = useLocation();
   const [receivedData, setReceivedData] = useState({});
@@ -29,12 +16,13 @@ const CourseViewPage = () => {
   const [studentSolutions, setStudentSolutions] = useState([]);
   const [showNextLessonAlert, setShowNextLessonAlert] = useState(false);
   const [notes, setNotes] = useState([]);
-  const [QA, setQA] = useState(stub);
+  const [QA, setQA] = useState([]);
   const [QAFilter, setQAFilter] = useState({
     id: 1,
     name: "All",
   });
   const [reviews, setReviews] = useState([]);
+  const [reviewsCount, setReviewsCount] = useState([]);
   const [reports, setReports] = useState([]);
   const [currentNotesFilter, setCurrentNotesFilter] = useState({
     id: 1,
@@ -46,6 +34,12 @@ const CourseViewPage = () => {
   });
   const [progress, setProgress] = useState(0);
   const [totalSources, setTotalSources] = useState(0);
+  const [showNotes, setShowNotes] = useState(false);
+  const [showQA, setShowQA] = useState(false);
+  const [showReviews, setShowReviews] = useState(true);
+  const [showReports, setShowReports] = useState(false);
+  const [currentTab, setCurrentTab] = useState("Reviews");
+  const [certificateAlert, setCertificateAlert] = useState(false);
   const managerRef = useRef(null);
   const downloadRef = useRef(null);
 
@@ -156,6 +150,10 @@ const CourseViewPage = () => {
       .then((res) => {
         setReports(res.data);
       });
+    axios.get(`http://localhost:3000/course/rate/${courseId}`).then((res) => {
+      setReviews(res.data.review);
+      setReviewsCount(res.data.count);
+    });
   }, [currentNotesFilter, location.state, receivedData, currentSource]);
 
   //useEffect at the start to receive the data
@@ -168,6 +166,7 @@ const CourseViewPage = () => {
       )
       .then((res) => {
         setReceivedData(res.data.course);
+        setQA(res.data.QA);
         setStudentSolutions(res.data.userData.exams);
         setCurrentSource(res.data.course.subtitles[0].sources[0]);
         setProgress(res.data.userData.percentageCompleted);
@@ -206,7 +205,6 @@ const CourseViewPage = () => {
         },
       })
       .then((res) => {
-        console.log(res);
         var temp = {
           score: res.data.score,
           answers: res.data.answers,
@@ -238,6 +236,42 @@ const CourseViewPage = () => {
       }
     }
   };
+  //controls
+  const onTabChangeHandler = (tab) => {
+    setCurrentTab(tab);
+    if (tab === "Notes") {
+      setShowNotes(true);
+      setShowQA(false);
+      setShowReviews(false);
+      setShowReports(false);
+      setCertificateAlert(false);
+    } else if (tab === "Q&A") {
+      setShowNotes(false);
+      setShowQA(true);
+      setShowReviews(false);
+      setShowReports(false);
+      setCertificateAlert(false);
+    } else if (tab === "Reviews") {
+      setShowNotes(false);
+      setShowQA(false);
+      setShowReviews(true);
+      setShowReports(false);
+      setCertificateAlert(false);
+    } else if (tab === "Reports") {
+      setShowNotes(false);
+      setShowQA(false);
+      setShowReviews(false);
+      setShowReports(true);
+      setCertificateAlert(false);
+    } else if (tab === "Download Certificate") {
+      setShowNotes(false);
+      setShowQA(false);
+      setShowReviews(false);
+      setShowReports(false);
+      setCertificateAlert(true);
+    }
+  };
+
   const hideWarningAlert = () => {
     setShowNextLessonAlert(false);
   };
@@ -275,28 +309,40 @@ const CourseViewPage = () => {
 
   if (currentSource !== "") {
     var subtitle;
+    var subtitleNo;
+    var sourceNo;
     for (var i = 0; i < receivedData.subtitles.length; i++) {
       for (var j = 0; j < receivedData.subtitles[i].sources.length; j++) {
         if (currentSource._id === receivedData.subtitles[i].sources[j]._id) {
           subtitle = receivedData.subtitles[i].description;
+          sourceNo = j + 1;
+          subtitleNo = i + 1;
         }
       }
     }
   }
   //QAS handlers
-  const addQuestionHandler = (question) => {
-    //axios post
+  const addQuestionHandler = (recQuestion) => {
     const date = new Date();
     let day = date.getDate();
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
     let currentDate = `${day}-${month}-${year}`;
-    setQA([...QA, { question: question, date: currentDate }]);
+    const userId = "63a37e9688311fa832f43336";
+    const sentData = {
+      userId: userId,
+      question: recQuestion,
+      date: currentDate,
+    };
+    axios.post(
+      `http://localhost:3000/course/askquestion/${receivedData._id}`,
+      sentData
+    );
+    setQA([...QA, { question: recQuestion, date: currentDate }]);
   };
   const changeQuestionFilterHandler = (newSelected) => {
     setQAFilter(newSelected);
   };
-
 
   const submitReportHandler = (data) => {
     axios.post("http://localhost:3000/problem/", data).then((res) => {
@@ -312,13 +358,9 @@ const CourseViewPage = () => {
           .concat("/"),
         data
       )
-      .then((res) => {
-        console.log(res);
-        //setReviews([...reviews, res.data]);
-      });
+      .then((res) => {});
   };
 
-  console.log(receivedData);
   //we will have an array of viewed sources
   var displayedSource;
   if (currentSource !== "") {
@@ -330,12 +372,13 @@ const CourseViewPage = () => {
           changeNotesFilter={changeNotesFilter}
           currentReportsSelector={currentReportsSelector}
           changeReportsSelector={changeReportsSelector}
-          studentId="638a07cdbc3508481a2d7da9"
+          studentId="63a37e9688311fa832f43336"
           courseId={receivedData._id}
           currentSourceId={currentSource._id}
           source={currentSource.description}
           notes={notes}
           reviews={reviews}
+          reviewsCount={reviewsCount}
           reports={reports}
           setNotes={notesChangeHandler}
           subtitle={subtitle}
@@ -351,6 +394,15 @@ const CourseViewPage = () => {
           QAFilter={QAFilter}
           submitReportHandler={submitReportHandler}
           submitReviewHandler={submitReviewHandler}
+          showNotes={showNotes}
+          showQA={showQA}
+          showReviews={showReviews}
+          showReports={showReports}
+          currentTab={currentTab}
+          certificateAlert={certificateAlert}
+          onTabChangeHandler={onTabChangeHandler}
+          sourceNo={sourceNo}
+          subtitleNo={subtitleNo}
         />
       );
     } else {
@@ -380,30 +432,42 @@ const CourseViewPage = () => {
             grade={grade}
             onSolveExamHandler={onSolveExamHandler}
             QA={QA}
-          ></ExamManager>
+          />
           <ExamToolManager
-            downloadCertificateHandler={downloadCertificateHandler}
             courseDescription={receivedData.courseTitle}
             currentNotesFilter={currentNotesFilter}
             changeNotesFilter={changeNotesFilter}
-            currentReportsFilter={currentReportsSelector}
-            changeReportsFilter={changeReportsSelector}
-            studentId="63a37e9688311fa832f43336"
+            currentReportsSelector={currentReportsSelector}
+            changeReportsSelector={changeReportsSelector}
+            studentId="638a07cdbc3508481a2d7da9"
             courseId={receivedData._id}
             currentSourceId={currentSource._id}
             source={currentSource.description}
             notes={notes}
+            reviews={reviews}
+            reviewsCount={reviewsCount}
+            reports={reports}
             setNotes={notesChangeHandler}
             subtitle={subtitle}
             isVisible={true}
             link={currentSource.link}
             onWatch={onWatchHandler}
             progress={progress}
-            QA={QA}
             totalSources={totalSources}
+            downloadCertificateHandler={downloadCertificateHandler}
+            QA={QA}
             addQuestionHandler={addQuestionHandler}
             changeQuestionFilterHandler={changeQuestionFilterHandler}
             QAFilter={QAFilter}
+            submitReportHandler={submitReportHandler}
+            submitReviewHandler={submitReviewHandler}
+            showNotes={showNotes}
+            showQA={showQA}
+            showReviews={showReviews}
+            showReports={showReports}
+            currentTab={currentTab}
+            certificateAlert={certificateAlert}
+            onTabChangeHandler={onTabChangeHandler}
           ></ExamToolManager>
         </Fragment>
       );

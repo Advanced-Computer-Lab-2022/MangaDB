@@ -9,23 +9,17 @@ import { Alert } from "@material-tailwind/react";
 import ReviewsCourseView from "../CourseView/ReviewsCourseView";
 
 const NotesManager = (props) => {
-  const [showNotes, setShowNotes] = useState(true);
-  const [showQA, setShowQA] = useState(false);
-  const [showReviews, setShowReviews] = useState(false);
-  const [showReports, setShowReports] = useState(false);
-  const [currentTab, setCurrentTab] = useState("Notes");
   const [timestamp, setTimeStamp] = useState(0);
   const [playing, setPlaying] = useState(true);
-  const [certificateAlert, setCertificateAlert] = useState(false);
 
   useEffect(() => {
     if (
       +props.progress / +props.totalSources === 1 &&
-      currentTab === "Download Certificate"
+      props.currentTab === "Download Certificate"
     ) {
       props.downloadCertificateHandler();
     }
-  }, [currentTab, props.progress, props.totalSources]);
+  }, [props.currentTab, props.progress, props.totalSources]);
 
   // add delete edit notes
   const addNote = (note) => {
@@ -53,7 +47,12 @@ const NotesManager = (props) => {
       sourceId: props.currentSourceId,
       notes: [...temp, obj],
     };
-    var newNotes = [...props.notes, obj];
+    var obj2 = {
+      ...obj,
+      subtitleDescription: `${props.subtitleNo}. ${props.subtitle}`,
+      sourceDescription: `${props.sourceNo}. ${props.source}`,
+    };
+    var newNotes = [...props.notes, obj2];
     axios.patch(
       `http://localhost:3000/user/notes/${props.studentId}`,
       sentData
@@ -138,42 +137,6 @@ const NotesManager = (props) => {
     setPlaying(true);
   };
 
-  const onTabChangeHandler = (tab) => {
-    setCurrentTab(tab);
-    if (tab === "Notes") {
-      setShowNotes(true);
-      setShowQA(false);
-      setShowReviews(false);
-      setShowReports(false);
-      setCertificateAlert(false);
-    } else if (tab === "Q&A") {
-      setShowNotes(false);
-      setShowQA(true);
-      setShowReviews(false);
-      setShowReports(false);
-      setCertificateAlert(false);
-    } else if (tab === "Reviews") {
-      setShowNotes(false);
-      setShowQA(false);
-      setShowReviews(true);
-      setCertificateAlert(false);
-
-      setShowReports(false);
-    } else if (tab === "Reports") {
-      setShowNotes(false);
-      setShowQA(false);
-      setShowReviews(false);
-      setShowReports(true);
-      setCertificateAlert(false);
-    } else if (tab === "Download Certificate") {
-      setShowNotes(false);
-      setShowQA(false);
-      setShowReviews(false);
-      setShowReports(false);
-      setCertificateAlert(true);
-    }
-  };
-
   const selectedNotesChangeHandler = (newSelected) => {
     props.changeNotesFilter(newSelected);
   };
@@ -193,10 +156,10 @@ const NotesManager = (props) => {
       />
       <div className="">
         <ToolbarTabs
-          currentTab={currentTab}
-          onTabChangeHandler={onTabChangeHandler}
+          currentTab={props.currentTab}
+          onTabChangeHandler={props.onTabChangeHandler}
         />
-        {showNotes && (
+        {props.showNotes && (
           <Notes
             courseDescription={props.courseDescription}
             selected={props.currentNotesFilter}
@@ -210,7 +173,7 @@ const NotesManager = (props) => {
             deleteNote={deleteNote}
           />
         )}
-        {showQA && (
+        {props.showQA && (
           <QA
             QAFilter={props.QAFilter}
             QA={props.QA}
@@ -218,14 +181,15 @@ const NotesManager = (props) => {
             changeQuestionFilterHandler={props.changeQuestionFilterHandler}
           ></QA>
         )}
-        {showReviews && (
+        {props.showReviews && (
           <ReviewsCourseView
             onSubmit={props.submitReviewHandler}
             courseId={props.courseId}
             reviews={props.reviews}
+            reviewsCount={props.reviewsCount}
           />
         )}
-        {showReports && (
+        {props.showReports && (
           <Reports
             onSubmit={props.submitReportHandler}
             selected={props.currentReportsSelector}
@@ -234,7 +198,7 @@ const NotesManager = (props) => {
             reports={props.reports}
           />
         )}
-        {certificateAlert ? (
+        {props.certificateAlert ? (
           +props.progress / +props.totalSources !== 1 ? (
             <Alert
               show={true}

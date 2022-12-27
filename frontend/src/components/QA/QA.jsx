@@ -11,41 +11,45 @@ const QA = (props) => {
     props.addQuestionHandler(question);
     setQuestion("");
   };
-  const displayedQuestions = props.QA.map((QA) => {
-    if (props.QAFilter.name === "All") {
-      if (QA.answer) {
-        return (
-          <QuestionCard
-            status="Answered"
-            date={QA.date}
-            question={QA.question}
-            answer={QA.answer}
-          ></QuestionCard>
-        );
+  var displayedQuestions;
+  if (props.QA) {
+    displayedQuestions = props.QA.map((QA) => {
+      if (props.QAFilter.name === "All") {
+        if (QA.answer) {
+          return (
+            <QuestionCard
+              status="Answered"
+              date={QA.date}
+              question={QA.question}
+              answer={QA.answer}
+            ></QuestionCard>
+          );
+        } else {
+          return (
+            <QuestionCard
+              status="Pending"
+              date={QA.date}
+              question={QA.question}
+            ></QuestionCard>
+          );
+        }
       } else {
-        return (
-          <QuestionCard
-            status="Pending"
-            date={QA.date}
-            question={QA.question}
-          ></QuestionCard>
-        );
+        if (QA.answer) {
+          return (
+            <QuestionCard
+              status="Answered"
+              date={QA.date}
+              question={QA.question}
+              answer={QA.answer}
+            ></QuestionCard>
+          );
+        } else {
+          return <div className="w-0 h-0 overflow-hidden"></div>;
+        }
       }
-    } else {
-      if (QA.answer) {
-        return (
-          <QuestionCard
-            status="Answered"
-            date={QA.date}
-            question={QA.question}
-            answer={QA.answer}
-          ></QuestionCard>
-        );
-      } else {
-        return <div className="w-0 h-0 overflow-hidden"></div>;
-      }
-    }
-  });
+    });
+  }
+
   return (
     <div className="m-4">
       <div className="flex justify-between items-center mb-2">

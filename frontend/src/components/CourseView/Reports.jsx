@@ -5,7 +5,7 @@ import ReportItem from "./ReportItem";
 import ReportTypeSelector from "./ReportTypeSelector";
 
 const Reports = (props) => {
-  const [eneteredReport, setEnteredReport] = useState("");
+  const [enteredReport, setEnteredReport] = useState("");
 
   const reportChangeHandler = (event) => {
     setEnteredReport(event.target.value);
@@ -13,10 +13,10 @@ const Reports = (props) => {
 
   const onClickHandler = () => {
     const reportData = {
-      userId: "638a07cdbc3508481a2d7da9",
+      userId: "63a37e9688311fa832f43336",
       courseId: props.courseId,
       type: props.selected.name,
-      description: eneteredReport,
+      description: enteredReport,
     };
     props.onSubmit(reportData);
   };
@@ -85,7 +85,6 @@ const Reports = (props) => {
       </div>
       <div>
         <div className=" font-semibold text-xl">Your Previous Reports:</div>
-        {/* <ReportItem status="Resolved" /> */}
         {reports}
       </div>
     </div>

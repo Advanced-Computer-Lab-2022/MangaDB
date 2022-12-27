@@ -5,23 +5,17 @@ import ToolbarTabs from "./ExamToolbarTabs";
 import Reports from "../CourseView/Reports";
 import QA from "../QA/QA";
 import { Alert } from "@material-tailwind/react";
+import ReviewsCourseView from "../CourseView/ReviewsCourseView";
 const ExamToolManager = (props) => {
-  const [showNotes, setShowNotes] = useState(true);
-  const [showQA, setShowQA] = useState(false);
-  const [showReviews, setShowReviews] = useState(false);
-  const [showReports, setShowReports] = useState(false);
-  const [currentTab, setCurrentTab] = useState("Notes");
-  const [certificateAlert, setCertificateAlert] = useState(false);
-  
   const timestamp = 0;
   useEffect(() => {
     if (
       +props.progress / +props.totalSources === 1 &&
-      currentTab === "Download Certificate"
+      props.currentTab === "Download Certificate"
     ) {
       props.downloadCertificateHandler();
     }
-  }, [currentTab, props.progress, props.totalSources]);
+  }, [props.currentTab, props.progress, props.totalSources]);
   //delete edit notes
   const editNote = (noteIndex, newNote) => {
     var newNotes = [];
@@ -89,48 +83,12 @@ const ExamToolManager = (props) => {
     props.setNotes(newNotes);
   };
 
-  //controls
-  const onTabChangeHandler = (tab) => {
-    setCurrentTab(tab);
-    if (tab === "Notes") {
-      setShowNotes(true);
-      setShowQA(false);
-      setShowReviews(false);
-      setShowReports(false);
-      setCertificateAlert(false);
-    } else if (tab === "Q&A") {
-      setShowNotes(false);
-      setShowQA(true);
-      setShowReviews(false);
-      setShowReports(false);
-      setCertificateAlert(false);
-    } else if (tab === "Reviews") {
-      setShowNotes(false);
-      setShowQA(false);
-      setShowReviews(true);
-      setShowReports(false);
-      setCertificateAlert(false);
-    } else if (tab === "Reports") {
-      setShowNotes(false);
-      setShowQA(false);
-      setShowReviews(false);
-      setShowReports(true);
-      setCertificateAlert(false);
-    } else if (tab === "Download Certificate") {
-      setShowNotes(false);
-      setShowQA(false);
-      setShowReviews(false);
-      setShowReports(false);
-      setCertificateAlert(true);
-    }
-  };
-
   const selectedNotesChangeHandler = (newSelected) => {
     props.changeNotesFilter(newSelected);
   };
 
   const selectedReportsChangeHandler = (newSelected) => {
-    props.changeReportsFilter(newSelected);
+    props.changeReportsSelector(newSelected);
   };
 
   const submitReportHandler = (data) => {
@@ -143,10 +101,10 @@ const ExamToolManager = (props) => {
     <Fragment>
       <div className="">
         <ToolbarTabs
-          currentTab={currentTab}
-          onTabChangeHandler={onTabChangeHandler}
+          currentTab={props.currentTab}
+          onTabChangeHandler={props.onTabChangeHandler}
         />
-        {showNotes && (
+        {props.showNotes && (
           <Notes
             courseDescription={props.courseDescription}
             selected={props.currentNotesFilter}
@@ -157,7 +115,7 @@ const ExamToolManager = (props) => {
             deleteNote={deleteNote}
           />
         )}
-        {showQA && (
+        {props.showQA && (
           <QA
             QAFilter={props.QAFilter}
             QA={props.QA}
@@ -165,16 +123,24 @@ const ExamToolManager = (props) => {
             changeQuestionFilterHandler={props.changeQuestionFilterHandler}
           ></QA>
         )}
-        {showReviews && <></>}
-        {showReports && (
-          <Reports
-            onSubmit={submitReportHandler}
-            selected={props.currentReportsFilter}
-            selectedChangeHandler={selectedReportsChangeHandler}
+        {props.showReviews && (
+          <ReviewsCourseView
+            onSubmit={props.submitReviewHandler}
             courseId={props.courseId}
+            reviews={props.reviews}
+            reviewsCount={props.reviewsCount}
           />
         )}
-        {certificateAlert ? (
+        {props.showReports && (
+          <Reports
+            onSubmit={props.submitReportHandler}
+            selected={props.currentReportsSelector}
+            selectedChangeHandler={selectedReportsChangeHandler}
+            courseId={props.courseId}
+            reports={props.reports}
+          />
+        )}
+        {props.certificateAlert ? (
           +props.progress / +props.totalSources !== 1 ? (
             <Alert
               show={true}

@@ -292,7 +292,7 @@ exports.resetPassword = async (req, res) => {
 //get courses this user is registered in
 exports.getRegisteredCourses = async (req, res) => {
   const id = req.params.id;
-  const pageSize=+req.query.pagesize||10;
+  const pageSize=req.query.pagesize||10;
   const currentPage=req.query.page||1;
   try {
     const userData = await user.findById(id).populate("courseDetails.course");

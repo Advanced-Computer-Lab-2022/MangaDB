@@ -8,6 +8,8 @@ import SecondaryButton from "../components/UI/SecondaryButton";
 import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
 import CourseCardListView from "../components/Course/CourseCardListView";
 import CourseCard from "../components/Course/CourseCard";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Pagination from "@mui/material/Pagination";
 const options = [
   { id: 1, name: "Web Development" },
   { id: 2, name: "Machine Learning" },
@@ -15,6 +17,21 @@ const options = [
   { id: 4, name: "Database Administration" },
   { id: 5, name: "Data Analysis" },
 ];
+const theme = createTheme({
+  status: {
+    danger: "#e53e3e",
+  },
+  palette: {
+    primary: {
+      main: "#3970AC",
+      darker: "#053e85",
+    },
+    neutral: {
+      main: "#64748B",
+      contrastText: "#fff",
+    },
+  },
+});
 
 const icon = <TuneOutlinedIcon className="ml-2" />;
 const SearchResultsPage = () => {
@@ -27,6 +44,13 @@ const SearchResultsPage = () => {
       subjects: [],
       rating: null,
     },
+  };
+
+  const [page, setPage] = useState(1);
+  const [noOfPages , setNoOfPages] = useState(1);
+  //funtion to handle the pagination
+  const onChangePageHandler = (event, value) => {
+    setPage(value);
   };
 
   const ReducerFunction = (state, action) => {
@@ -90,10 +114,12 @@ const SearchResultsPage = () => {
         "maxPrice=" +
         searchState.filters.price.maxValue;
     }
+    param = param +  (param ? "&" : "?")+"page="+page;
     axios.get("http://localhost:3000/course/" + param).then((res) => {
+      setNoOfPages(res.data.count)
       dispatchSearch({ type: "COURSES", value: res.data.courses });
     });
-  }, [searchState.search, searchState.filters]);
+  }, [searchState.search, searchState.filters,page]);
   var coursesListView;
   var coursesCardsView;
   if (searchState.displayedCourses.length === 0) {
@@ -202,6 +228,19 @@ const SearchResultsPage = () => {
           {coursesCardsView}
         </div>
       </div>
+      {searchState.displayedCourses.length !== 0 && (
+        <div className="flex items-center justify-center">
+          <ThemeProvider theme={theme}>
+            <Pagination
+              className="ml-2 mr-2"
+              count={Math.ceil(noOfPages/10)}
+              color="primary"
+              page={page}
+              onChange={onChangePageHandler}
+            />
+          </ThemeProvider>
+        </div>
+      )}
     </Fragment>
   );
 };

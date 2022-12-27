@@ -26,7 +26,7 @@ const SubtitleAccordion = (props) => {
   var description
   var sourceIndex = 1;
   const sources = props.sources.map((source ,index ) => {
-    description=`${index +1 + props.sourceIndex}. `.concat(source.description)
+    description=`${index +1 }. `.concat(source.description)
     return (
       <SubtitleBody
         onClick ={props.onClick}

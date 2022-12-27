@@ -34,9 +34,11 @@ const InstructorPage = () => {
   const [receivedData, setReceivedData] = useState({});
   const [enteredReview, setEnteredReview] = useState("");
   const [enteredRating, setEnteredRating] = useState("");
+  const [summary, setSummary] = useState([]);
   const [statsConf, setStatsConf] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
+  //const [reviewedBefore,setReviewedBefore] =useState(false)
   //fetch the data at the start of the code ..
   useEffect(() => {
     axios
@@ -49,6 +51,7 @@ const InstructorPage = () => {
           res.data.instructor.reviews.length,
           res.data.instructor.courseDetails.length,
         ]);
+        setSummary(res.data.count);
         setLoading(false);
       });
   }, []);
@@ -91,10 +94,13 @@ const InstructorPage = () => {
         reviewData
       )
       .then((res) => {
-        setReviews([...reviews, res.review]);
+        console.log(res.data.review);
+        setReviews([...reviews, res.data.review]);
+        
       });
   };
 
+  console.log(receivedData);
   //listen on the rating change
   const ratingChangeHandler = (event) => {
     setEnteredRating(event.target.value);
@@ -246,7 +252,7 @@ const InstructorPage = () => {
                 Instructor Reviews:
               </div>
               <div className=" mb-6 mx-12">
-                <AverageSummary count={receivedData.count} />
+                <AverageSummary count={summary} />
               </div>
               <div className=" mx-8">{displayedReviews}</div>
             </div>

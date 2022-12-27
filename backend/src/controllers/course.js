@@ -15,6 +15,7 @@ exports.getAllCourses = async (req, res, next) => {
   let maxPrice = req.query.maxPrice || Number.MAX_VALUE;
   const rating = req.query.rating || 0;
   const subjects = req.query.subject;
+  const iId = req.query.iId;
   let query = {};
   if (subjects) {
     query = { subject: { $in: subjects } };
@@ -80,6 +81,26 @@ exports.getAllCourses = async (req, res, next) => {
     course.coursePrice = (course.coursePrice * exchangeRate).toFixed(2);
     course.discountedPrice = (course.discountedPrice * exchangeRate).toFixed(2);
   });
+  let instructorCourses=[];
+  if(iId){
+  for(let i=0;i<allCourses.length;i++){
+    if(allCourses[i].instructor==iId){
+      allCourses[i].mine=true;
+      instructorCourses.push({course:allCourses[i],mine:true});
+    }
+    else{
+      allCourses[i].mine=false;
+      instructorCourses.push({course:allCourses[i],mine:false});
+    }
+   
+  }
+ return res.status(200).json({
+    message: "Courses fetched successfully!",
+    courses: instructorCourses,
+    symbol: symbol,
+    count:courseCount
+
+  });}
   res.status(200).json({
     message: "Courses fetched successfully!",
     courses: allCourses,
@@ -89,7 +110,7 @@ exports.getAllCourses = async (req, res, next) => {
   });
 };
 
-exports.getCourse = async (req, res, next) => {
+exports.getCourse = async (req, res) => {
   const courseId = req.params.id;
   const userId = req.query.uid;
   let foundCourse = await course.findById(courseId).catch((error) => {
@@ -105,7 +126,7 @@ exports.getCourse = async (req, res, next) => {
   foundCourse=await foundCourse.populate("subtitles.sources.quiz");
 
   const foundUser = await user.findOne({_id:userId}).catch((error) => {
-    res.status(500).json({
+   return  res.status(500).json({
       message: "Fetching user failed!",
     });
   });
@@ -356,9 +377,21 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
     course.coursePrice = (course.coursePrice * exchangeRate).toFixed(2);
     course.discountedPrice = (course.discountedPrice * exchangeRate).toFixed(2);
   });
+  let instructorCourses = [];
+  for(let i=0;i<allCourses.length;i++){
+    if(allCourses[i].instructor==iId){
+      allCourses[i].mine=true;
+      instructorCourses.push({course:allCourses[i],mine:true});
+    }
+    else{
+      allCourses[i].mine=false;
+      instructorCourses.push({course:allCourses[i],mine:false});
+    }
+   
+  }
   res.status(200).json({
     message: "Courses fetched successfully!",
-    courses: allCourses,
+    courses: instructorCourses,
     symbol: symbol,
   });
 };
@@ -447,7 +480,7 @@ exports.deleteRating = async (req, res, next) => {
   });
 };
 
-exports.getMostViewedCourses = async (req, res, next) => {
+exports.getMostViewedCourses = async (req, res) => {
   const currentPage = req.query.page || 1;
   const perPage = req.query.pageSize || 10;
   const search = req.query.search || "";

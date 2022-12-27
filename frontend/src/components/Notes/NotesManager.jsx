@@ -47,7 +47,12 @@ const NotesManager = (props) => {
       sourceId: props.currentSourceId,
       notes: [...temp, obj],
     };
-    var newNotes = [...props.notes, obj];
+    var obj2 = {
+      ...obj,
+      subtitleDescription: `${props.subtitleNo}. ${props.subtitle}`,
+      sourceDescription: `${props.sourceNo}. ${props.source}`,
+    };
+    var newNotes = [...props.notes, obj2];
     axios.patch(
       `http://localhost:3000/user/notes/${props.studentId}`,
       sentData
@@ -131,8 +136,6 @@ const NotesManager = (props) => {
   const resumeVideo = () => {
     setPlaying(true);
   };
-
- 
 
   const selectedNotesChangeHandler = (newSelected) => {
     props.changeNotesFilter(newSelected);

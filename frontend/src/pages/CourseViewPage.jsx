@@ -150,14 +150,10 @@ const CourseViewPage = () => {
       .then((res) => {
         setReports(res.data);
       });
-    axios
-      .get(
-        `http://localhost:3000/course/rate/${courseId}`
-      )
-      .then((res) => {
-        setReviews(res.data.review);
-        setReviewsCount(res.data.count);
-      })
+    axios.get(`http://localhost:3000/course/rate/${courseId}`).then((res) => {
+      setReviews(res.data.review);
+      setReviewsCount(res.data.count);
+    });
   }, [currentNotesFilter, location.state, receivedData, currentSource]);
 
   //useEffect at the start to receive the data
@@ -313,10 +309,14 @@ const CourseViewPage = () => {
 
   if (currentSource !== "") {
     var subtitle;
+    var subtitleNo;
+    var sourceNo;
     for (var i = 0; i < receivedData.subtitles.length; i++) {
       for (var j = 0; j < receivedData.subtitles[i].sources.length; j++) {
         if (currentSource._id === receivedData.subtitles[i].sources[j]._id) {
           subtitle = receivedData.subtitles[i].description;
+          sourceNo = j + 1;
+          subtitleNo = i + 1;
         }
       }
     }
@@ -358,8 +358,7 @@ const CourseViewPage = () => {
           .concat("/"),
         data
       )
-      .then((res) => {
-      });
+      .then((res) => {});
   };
 
   //we will have an array of viewed sources
@@ -402,6 +401,8 @@ const CourseViewPage = () => {
           currentTab={currentTab}
           certificateAlert={certificateAlert}
           onTabChangeHandler={onTabChangeHandler}
+          sourceNo={sourceNo}
+          subtitleNo={subtitleNo}
         />
       );
     } else {

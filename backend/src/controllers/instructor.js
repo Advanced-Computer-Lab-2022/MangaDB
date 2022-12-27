@@ -85,9 +85,9 @@ exports.rateInstructor = async (req, res) => {
         newRating=newRating.toFixed(2);
         foundInstructor.rating=newRating;
         foundInstructor.reviews.push({user:userId,userName: foundUser.firstName + " "+foundUser.lastName,rating:rating,review:review});
-        await foundInstructor.save().then((createdReview)=>{
+        await foundInstructor.save().then((updatedInstructor)=>{
              res.status(200).json({
-            review:createdReview,
+            review:updatedInstructor.reviews[reviewCount],
             message: "Instructor was rated successfully."
         });
         }).catch((err)=>{

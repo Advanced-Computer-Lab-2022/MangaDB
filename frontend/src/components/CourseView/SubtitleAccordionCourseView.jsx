@@ -27,7 +27,7 @@ const SubtitleAccordionCourseView = (props) => {
   var sourceIndex = 1;
   var sourceCount = 0;
   const sources = props.sources.map((source, index) => {
-    description = `${index + 1 + props.sourceIndex}. `.concat(
+    description = `${index + 1 }. `.concat(
       source.description
     );
     sourceCount++;

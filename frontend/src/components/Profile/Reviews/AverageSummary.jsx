@@ -1,6 +1,5 @@
 import { Fragment } from "react";
 import { StarIcon as Star } from "@heroicons/react/solid";
-import Stars from "../../UI/Stars";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -23,8 +22,6 @@ const AverageSummary = (props) => {
   const weightedAvergae = weightedSum / totalCount;
 
   const avgRating = Math.round(weightedAvergae * 10) / 10;
-
-  console.log(avgRating);
 
   return (
     <Fragment>

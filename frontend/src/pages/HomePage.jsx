@@ -153,7 +153,7 @@ const HomePage = () => {
           {courses}
         </Carousel>
         <div className="font-bold text-2xl mt-8 mb-4 flex justify-start mx-12 w-max">
-          On Sale Right Now! :
+          On Sale Right Now!  
         </div>
         <Carousel
           rewind={true}

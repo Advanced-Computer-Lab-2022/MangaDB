@@ -6,7 +6,7 @@ import ReportsRequestsManager from "./ReportsRequestsManager";
 import { SnackbarProvider, useSnackbar } from "notistack";
 import PsychologyAltOutlinedIcon from '@mui/icons-material/PsychologyAltOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import UsersManager from "./UsersManager";
+//import UsersManager from "./UsersManager";
 import AdminAddNewUser from "../../pages/AdminAddNewUser";
 
 export default function AdminPage() {

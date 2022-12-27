@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import PrimaryButton from "../UI/PrimaryButton";
 
 const TableRows = (props) => {
+
+  const [showPromotationModal, setShowPromotationModal] = useState(false);
+  const [anchorOpened, setAnchorOpened] = useState(false);
+
+  const openList = () => {
+    setAnchorOpened(true);
+  };
+
+  const closeList = () => {
+    setAnchorOpened(false);
+  };
+
   const rows = props.rows.map((row, rowIdx) => {
     const totalHours = Math.round(+row.totalMins / 60);
     return (

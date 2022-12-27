@@ -4,7 +4,7 @@ const auth = require("../middleware/auth");
 
 router.get("/", courseController.getAllCourses);
 
-router.get("/:id", courseController.getCourse);
+
 
 router.patch("/:id", courseController.updateCourse);
 
@@ -23,6 +23,8 @@ router.get("/mostrated", courseController.getMostRatedCourses);
 router.post("/addsubtitle/:id", courseController.addSubtitle);
 
 router.post("/askquestion/:id", courseController.askQuestion);
+router.get("/discountedcourses", courseController.getDiscountedCourses);
+router.get("/:id", courseController.getCourse);
 
 
 

@@ -5,6 +5,8 @@ import NavBar from "../components/UI/NavBar/NavBar";
 import InstructorControls from "../components/Table/InstructorControls";
 import Filters from "../components/Filters/Filters";
 import TableListViewCard from "../components/Table/TableListViewCard";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Pagination from "@mui/material/Pagination";
 const options = [
   { id: 1, name: "Web Development" },
   { id: 2, name: "Machine Learning" },
@@ -12,6 +14,21 @@ const options = [
   { id: 4, name: "Database Administration" },
   { id: 5, name: "Data Analysis" },
 ];
+const theme = createTheme({
+  status: {
+    danger: "#e53e3e",
+  },
+  palette: {
+    primary: {
+      main: "#3970AC",
+      darker: "#053e85",
+    },
+    neutral: {
+      main: "#64748B",
+      contrastText: "#fff",
+    },
+  },
+});
 
 const IntructorCoursePage = (props) => {
   const defaultState = {
@@ -24,6 +41,13 @@ const IntructorCoursePage = (props) => {
     },
     myCourses: false,
   };
+  const [page, setPage] = useState(1);
+  const [noOfPages, setNoOfPages] = useState(1);
+  //funtion to handle the pagination
+  const onChangePageHandler = (event, value) => {
+    setPage(value);
+  };
+
   const ReducerFunction = (state, action) => {
     if (action.type === "SEARCH") {
       const newState = { ...state, search: action.value };
@@ -160,6 +184,19 @@ const IntructorCoursePage = (props) => {
         <Table rows={rows} />
       </div>
       <div className="flex justify-around flex-wrap xl:hidden">{cards}</div>
+      {searchState.displayedCourses.length !== 0 && (
+        <div className="flex items-center justify-center">
+          <ThemeProvider theme={theme}>
+            <Pagination
+              className="ml-2 mr-2"
+              count={Math.ceil(noOfPages / 10)}
+              color="primary"
+              page={page}
+              onChange={onChangePageHandler}
+            />
+          </ThemeProvider>
+        </div>
+      )}
     </Fragment>
   );
 };

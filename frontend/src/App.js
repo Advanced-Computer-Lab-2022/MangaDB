@@ -67,7 +67,7 @@ function App() {
           path="403"
           element={<UnAuthorizedPage></UnAuthorizedPage>}
         ></Route>
-        <Route path ="myCourses" element={<MyCourses></MyCourses>}></Route>
+        <Route path="myCourses" element={<MyCourses></MyCourses>}></Route>
       </Routes>
 
       <Footer></Footer>

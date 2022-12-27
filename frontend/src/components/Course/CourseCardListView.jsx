@@ -11,8 +11,9 @@ const CourseCardListView = (props) => {
   const navigate = useNavigate();
   const clickHandler = () => {
     const instructorId = "6386427487d3f94e4cb7a28d";
-    navigate(`/coursedetails/${instructorId}`,{state:props.id})
+    navigate(`/coursedetails/${instructorId}`, { state: {courseId:props.id, userId:props.userId}} );
   };
+  const totalDuration = Math.round(props.duration / 60);
   return (
     <div class="relative w-4/5 flex items-center bg-white border border-gray-200 shadow-md rounded-md">
       <img class="max-w-xs h-full" src={reactImg} alt=""></img>
@@ -51,11 +52,11 @@ const CourseCardListView = (props) => {
         </p>
         <div className="bg-white  py-1 text-sm font-semibold rounded-full">
           <AccessTimeIcon className="-mt-[3px]" fontSize="inherit" />{" "}
-          {props.duration} {"hrs"}
+          {totalDuration} {"hrs"}
           <div className="flex justify-end items-center">
             {props.discount > 0 && (
               <div className="line-through decoration-1 text-lg font-thin mr-4">
-                {props.coursePrice}$
+                {props.coursePrice}{props.currencySymbol}
               </div>
             )}
             <h5 class="text-2xl font-bold tracking-tight text-gray-900">
@@ -63,7 +64,7 @@ const CourseCardListView = (props) => {
                 <div className="text-green-600 mr-6">FREE</div>
               )}
               {props.discountedPrice != 0 && (
-                <div className="mr-6">{props.discountedPrice}$</div>
+                <div className="mr-6">{props.discountedPrice}{props.currencySymbol}</div>
               )}
             </h5>
             <SecondaryButton

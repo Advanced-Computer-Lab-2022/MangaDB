@@ -5,18 +5,11 @@ import PrimaryButton from "../UI/PrimaryButton";
 const TableRows = (props) => {
 
   const [showPromotationModal, setShowPromotationModal] = useState(false);
-  const [anchorOpened, setAnchorOpened] = useState(false);
 
-  const openList = () => {
-    setAnchorOpened(true);
-  };
-
-  const closeList = () => {
-    setAnchorOpened(false);
-  };
 
   const rows = props.rows.map((row, rowIdx) => {
     const totalHours = Math.round(+row.totalMins / 60);
+    const items = row.discount === 0 ? ["View Course", "Add Promotion"] : ["View Course"];
     return (
       <tr
         key={row.courseId}
@@ -81,7 +74,7 @@ const TableRows = (props) => {
         </td>
         <td className="text-center my-4 px-2">{totalHours} hrs</td>
         <td className="text-center flex justify-center my-4 px-2">
-          <DropDown items={["Add Promotion", "View Course"]} />
+          <DropDown items={items} />
         </td>
       </tr>
     );

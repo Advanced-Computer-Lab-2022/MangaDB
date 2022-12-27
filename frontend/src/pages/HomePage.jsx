@@ -50,7 +50,7 @@ const HomePage = () => {
       <CourseCard
         id={course._id}
         userId={location.state}
-        duration={course.totalHours}
+        duration={course.totalMins}
         title={course.courseTitle}
         instructorName={course.instructorName}
         subject={course.subject}
@@ -68,7 +68,7 @@ const HomePage = () => {
       <CourseCard
         id={course._id}
         userId={location.state}
-        duration={course.totalHours}
+        duration={course.totalMins}
         title={course.courseTitle}
         instructorName={course.instructorName}
         subject={course.subject}
@@ -121,31 +121,31 @@ const HomePage = () => {
           autoPlaySpeed={1500}
           autoPlay={true}
           rewindWithAnimation={true}
-          itemClass="ml-2"
+          itemClass="ml-3"
           draggable={false}
           responsive={{
             desktop: {
               breakpoint: {
                 max: 3000,
-                min: 1024,
+                min: 1240,
               },
               items: 3,
               partialVisibilityGutter: 40,
             },
+            tablet: {
+              breakpoint: {
+                max: 1239,
+                min: 850,
+              },
+              items: 2,
+              partialVisibilityGutter: 30,
+            },
             mobile: {
               breakpoint: {
-                max: 464,
+                max: 849,
                 min: 0,
               },
               items: 1,
-              partialVisibilityGutter: 30,
-            },
-            tablet: {
-              breakpoint: {
-                max: 1024,
-                min: 464,
-              },
-              items: 2,
               partialVisibilityGutter: 30,
             },
           }}
@@ -162,31 +162,31 @@ const HomePage = () => {
           autoPlaySpeed={1500}
           autoPlay={true}
           rewindWithAnimation={true}
-          itemClass="ml-2"
+          itemClass="ml-3"
           draggable={false}
           responsive={{
             desktop: {
               breakpoint: {
                 max: 3000,
-                min: 1024,
+                min: 1240,
               },
               items: 3,
               partialVisibilityGutter: 40,
             },
+            tablet: {
+              breakpoint: {
+                max: 1239,
+                min: 850,
+              },
+              items: 2,
+              partialVisibilityGutter: 30,
+            },
             mobile: {
               breakpoint: {
-                max: 464,
+                max: 849,
                 min: 0,
               },
               items: 1,
-              partialVisibilityGutter: 30,
-            },
-            tablet: {
-              breakpoint: {
-                max: 1024,
-                min: 464,
-              },
-              items: 2,
               partialVisibilityGutter: 30,
             },
           }}

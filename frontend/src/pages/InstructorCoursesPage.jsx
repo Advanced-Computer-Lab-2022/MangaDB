@@ -116,7 +116,7 @@ const IntructorCoursePage = (props) => {
         searchState.filters.price.maxValue;
     }
     if (!searchState.myCourses) {
-      axios.get("http://localhost:3000/course/" + param).then((res) => {
+      axios.get("http://localhost:3000/course/" + param + "&iId=636011143c6ccb49e4e446b4").then((res) => {
         dispatchSearch({ type: "COURSES", value: res.data.courses });
       });
     } else {

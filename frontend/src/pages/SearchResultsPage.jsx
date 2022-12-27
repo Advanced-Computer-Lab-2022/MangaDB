@@ -10,7 +10,6 @@ import CourseCardListView from "../components/Course/CourseCardListView";
 import CourseCard from "../components/Course/CourseCard";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
-import { set } from "mongoose";
 const options = [
   { id: 1, name: "Web Development" },
   { id: 2, name: "Machine Learning" },

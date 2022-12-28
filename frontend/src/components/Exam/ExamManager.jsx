@@ -193,7 +193,7 @@ const ExamManager = forwardRef((props, ref) => {
               </div>
             </div>
           </div>
-          <div className="mt-4">
+          <div className=" flex justify-end mr-4 mt-2">
             <SecondaryButton
               text="Start Exam"
               onClick={startExamClickHandler}

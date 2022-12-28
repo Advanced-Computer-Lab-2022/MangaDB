@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import Search from "../UI/Search/Search";
 import SecondaryButton from "../UI/SecondaryButton";
 import TertiaryButton from "../UI/TertiaryButton";
@@ -7,6 +7,12 @@ import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
 const icon = <TuneOutlinedIcon className="ml-2" />;
 
 const InstructorControls = (props) => {
+  const [active, setActive] = useState(false);
+
+  const myCoursesClickHandler = () => {
+    setActive(prev => !prev)
+    props.onCoursesClick();
+  };
   return (
     <Fragment>
       <div className="flex md:justify-between justify-center my-4">
@@ -23,15 +29,24 @@ const InstructorControls = (props) => {
               onClick={props.onShowFilters}
               text="Filter"
               icon={icon}
-            ></SecondaryButton>
+            />
           </div>
         </div>
         <div className="mt-[6px] mr-4 hidden md:block">
-          <TertiaryButton onClick={props.onCoursesClick} text="My Courses" />
+          <TertiaryButton
+            onClick={myCoursesClickHandler}
+            text="My Courses"
+            state={active ? "My Courses" : ""}
+          />
         </div>
       </div>
       <div className="flex justify-center mb-2 md:hidden">
-        <TertiaryButton className="w-[80vw]" onClick={props.onCoursesClick} text="My Courses" />
+        <TertiaryButton
+          className="w-[80vw]"
+          onClick={myCoursesClickHandler}
+          text="My Courses"
+          state={active ? "My Courses" : ""}
+        />
       </div>
     </Fragment>
   );

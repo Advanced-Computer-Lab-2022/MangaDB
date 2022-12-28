@@ -11,7 +11,7 @@ const TableRows = (props) => {
 
   const openPromotionModal = () => {
     setShowPromotationModal(true);
-    console.log(showPromotationModal);
+    //console.log(showPromotationModal);
   };
 
   const closePromotionModal = () => {
@@ -111,7 +111,7 @@ const TableRows = (props) => {
         <td className="text-center flex justify-center my-4 px-2">
           <DropDown items={items} openPromotion={openPromotionModal} closePromotion={closePromotionModal} />
         </td>
-        {showPromotationModal && <Modal><div>
+        {showPromotationModal && <Modal onClick={closePromotionModal}><div>
           Hello
           </div></Modal>}
         {showReportModal && <Modal></Modal>}

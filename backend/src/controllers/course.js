@@ -69,11 +69,14 @@ exports.getAllCourses = async (req, res, next) => {
       summary: 1,
       discountedPrice: 1,
       discount: 1,
+      discountStartDate: 1,
+      discountEndDate: 1,
       courseImage: 1,
       rating: 1,
       instructor: 1,
       instructorName: 1,
       subject: 1,
+
     })
     .catch((error) => {
       res.status(500).json({
@@ -289,9 +292,6 @@ exports.createCourse = async (req, res, next) => {
   }
   newCourse.subtitles=subtitles;
   newCourse.totalMins=courseDuration;
- let finalExam=req.body.finalExam;
-  finalExam=await examController.createExam(finalExam);
-  newCourse.finalExam=finalExam;
   await newCourse
     .save()
     .then((createdCourse) => {
@@ -320,6 +320,7 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
   let minPrice = req.query.minPrice || 0;
   let maxPrice = req.query.maxPrice || Number.MAX_VALUE;
   const subjects = req.query.subject;
+  const iId = req.params.id;
   let query = {};
   if (subjects) {
     query = { subject: { $in: subjects } };
@@ -364,6 +365,8 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
       coursePrice: 1,
       discountedPrice: 1,
       discount: 1,
+      discountStartDate: 1,
+      discountEndDate: 1,
       courseImage: 1,
       rating: 1,
       instructor: 1,

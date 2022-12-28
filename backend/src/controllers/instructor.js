@@ -85,10 +85,41 @@ exports.rateInstructor = async (req, res) => {
         newRating=newRating.toFixed(2);
         foundInstructor.rating=newRating;
         foundInstructor.reviews.push({user:userId,userName: foundUser.firstName + " "+foundUser.lastName,rating:rating,review:review});
-        foundInstructor.save();
-        res.status(200).send({
+        await foundInstructor.save().then((updatedInstructor)=>{
+            let rating1=0;
+            let rating2=0;
+            let rating3=0;
+            let rating4=0;
+            let rating5=0;
+            for (let i = 0; i < updatedInstructor.reviews.length; i++) {
+              if (updatedInstructor.reviews[i].rating == 1) {
+                rating1++;
+              }
+              if (updatedInstructor.reviews[i].rating == 2) {
+                rating2++;
+              }
+              if (updatedInstructor.reviews[i].rating == 3) {
+                rating3++;
+              }
+              if (updatedInstructor.reviews[i].rating == 4) {
+                rating4++;
+              }
+              if (updatedInstructor.reviews[i].rating == 5) {
+                rating5++;
+              }
+            }
+            let count=[{rating:1,count:rating1},{rating:2,count:rating2},{rating:3,count:rating3},{rating:4,count:rating4},{rating:5,count:rating5}];
+             res.status(200).json({
+            review:updatedInstructor.reviews[reviewCount],
             message: "Instructor was rated successfully.",
+            count:count
         });
+        }).catch((err)=>{
+            res.status(500).json({
+                message:"Failed To Save Review Please Try Again later"
+            })
+        });
+       
     }}}
     }}
     catch (err) {   

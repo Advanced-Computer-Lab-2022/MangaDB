@@ -7,6 +7,10 @@ const exam=require('../models/exam');
 const blackList=require('../models/token');
 const invoice=require('../models/invoice');
 const currencyConverter = require("../helper/currencyconverter");
+const jsPDF= require("jspdf");
+const html2canvas= require("html2canvas");
+
+
 
 exports.createUser = async (req, res) => {
   if (!req.body.userName || !req.body.password || !req.body.role) {
@@ -319,7 +323,15 @@ exports.getRegisteredCourses = async (req, res) => {
     });
   }
 };
+exports.sendCertificate= async(userEmail,userName)=>{
+  const mailOptions = {
+    email: userEmail,
+    subject: 'Certificate',
+    html: `<div> Kindly Find Your Certificate Attached Below</div>`,
+};
 
+mailer.sendEmail(mailOptions);
+};
 exports.openSource = async (req, res) => {
   const courseId = req.params.id;
   const { userId, sourceId } = req.body;
@@ -387,6 +399,18 @@ exports.openSource = async (req, res) => {
         });
         let percentage =userData.courseDetails[courseIndex].percentageCompleted+1;
         userData.courseDetails[courseIndex].percentageCompleted = percentage;
+        if(percentage=== userData.courseDetails[courseIndex].totalSources){
+          if(percentage===  userData.courseDetails[courseIndex].totalSources){
+            let userName=userData.firstName+" "+userData.lastName;
+            const mailOptions = {
+              email: userData.email,
+              subject: 'Certificate',
+              html:`<div> Kindly Find Your Certificate Attached Below</div>` ,
+      };
+      
+      mailer.sendEmail(mailOptions);
+          };
+        }
         await userData.save();
         res.status(200).send({ message: "source opened successfully" });
       }
@@ -765,6 +789,17 @@ exports.solveExam=async (req, res) => {
     }
     myUser.courseDetails[courseIndex].exams.push({examId:req.body.examid,score:studentGrade,answers:studentAnswers});
     myUser.courseDetails[courseIndex].percentageCompleted=myUser.courseDetails[courseIndex].percentageCompleted+1;;
+    if(myUser.courseDetails[courseIndex].percentageCompleted===  myUser.courseDetails[courseIndex].totalSources){
+      let userName=myUser.firstName+" "+myUser.lastName;
+      const mailOptions = {
+        email: myUser.email,
+        subject: 'Certificate',
+        html:`<div> Kindly Find Your Certificate Attached Below</div>` ,
+};
+
+mailer.sendEmail(mailOptions);
+    };
+
     await myUser.save();
     res.status(200).json({answers:studentAnswers,score:studentGrade});
 

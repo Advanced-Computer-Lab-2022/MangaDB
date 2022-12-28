@@ -5,10 +5,26 @@ import PrimaryButton from "../UI/PrimaryButton";
 import Countdown from "react-countdown";
 
 const TableRows = (props) => {
-  useEffect(() => {}, []);
 
   const [showPromotationModal, setShowPromotationModal] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
+
+  const openPromotionModal = () => {
+    setShowPromotationModal(true);
+    //console.log(showPromotationModal);
+  };
+
+  const closePromotionModal = () => {
+    setShowPromotationModal(false);
+  };
+
+  const openReportModal = () => {
+    setShowReportModal(true);
+  };
+
+  const closeReportModal = () => {
+    setShowReportModal(false);
+  };
 
   const rows = props.rows.map((row, rowIdx) => {
     const totalHours = Math.round(+row.totalMins / 60);
@@ -83,15 +99,21 @@ const TableRows = (props) => {
             {""}
             {row.discount === 1 ? "" : "$"}
           </div>
-          <div className="text-sm">
-              Expires In: <span className=" text-red-600"> <Countdown date={row.discountEndDate} /> </span>
+          <div className="text-xs">
+            Expires In:{" "}
+            <span className=" text-red-600">
+              {" "}
+              <Countdown date={row.discountEndDate} />{" "}
+            </span>
           </div>
         </td>
         <td className="text-center my-4 px-2">{totalHours} hrs</td>
         <td className="text-center flex justify-center my-4 px-2">
-          <DropDown items={items} />
+          <DropDown items={items} openPromotion={openPromotionModal} closePromotion={closePromotionModal} />
         </td>
-        {showPromotationModal && <Modal></Modal>}
+        {showPromotationModal && <Modal onClick={closePromotionModal}><div>
+          Hello
+          </div></Modal>}
         {showReportModal && <Modal></Modal>}
       </tr>
     );

@@ -179,7 +179,7 @@ const InstructorPage = () => {
             INSTRUCTOR
           </p>
           <p className=" flex items-center justify-center font-bold text-4xl">
-            {receivedData.instructor.firstName}{" "}
+            {receivedData.instructor.firstName}
             {receivedData.instructor.lastName}
           </p>
           <p className="flex items-center justify-center text-gray-500">

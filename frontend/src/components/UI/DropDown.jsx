@@ -8,9 +8,32 @@ function classNames(...classes) {
 }
 
 const DropDown = (props) => {
+  const viewCourseClickHandler = () => {
+    //navigate to Course details
+  };
+
+  const reportProblemClickHndler = () => {
+    //show report modal
+  };
+
+  const addPromotionClickHandler = () => {
+    //show promotion modal
+  };
+
+  var count = 0;
+
   const menuItems = props.items.map((menuItem) => {
+    count++;
     return (
-      <Menu.Item>
+      <Menu.Item
+        onClick={
+          count === 1
+            ? viewCourseClickHandler
+            : count === 2
+            ? reportProblemClickHndler
+            : addPromotionClickHandler
+        }
+      >
         {({ active }) => (
           <p
             className={classNames(

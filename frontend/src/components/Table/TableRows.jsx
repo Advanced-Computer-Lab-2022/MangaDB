@@ -1,15 +1,21 @@
+import { Modal } from "@mui/material";
 import React, { useState } from "react";
 import DropDown from "../UI/DropDown";
 import PrimaryButton from "../UI/PrimaryButton";
 
 const TableRows = (props) => {
-
   const [showPromotationModal, setShowPromotationModal] = useState(false);
-
+  const [showReportModal, setShowReportModal] = useState(false);
 
   const rows = props.rows.map((row, rowIdx) => {
     const totalHours = Math.round(+row.totalMins / 60);
-    const items = row.discount === 0 ? ["View Course", "Add Promotion"] : ["View Course"];
+    const items =
+      row.mine === false
+        ? ["View Course"]
+        : row.discount !== 0
+        ? ["View Course", "Report a Problem"]
+        : ["View Course", "Report a Problem", "Add Promotion"];
+    console.log(row.mine);
     return (
       <tr
         key={row.courseId}
@@ -76,6 +82,8 @@ const TableRows = (props) => {
         <td className="text-center flex justify-center my-4 px-2">
           <DropDown items={items} />
         </td>
+        {showPromotationModal && <Modal></Modal>}
+        {showReportModal && <Modal></Modal>}
       </tr>
     );
   });

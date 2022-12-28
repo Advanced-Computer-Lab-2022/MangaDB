@@ -1,6 +1,5 @@
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import { DotsVerticalIcon } from "@heroicons/react/solid";
 import PrimaryButton from "./PrimaryButton";
 
 function classNames(...classes) {
@@ -8,17 +7,15 @@ function classNames(...classes) {
 }
 
 const DropDown = (props) => {
-  const viewCourseClickHandler = () => {
-    //navigate to Course details
-  };
-
-  const reportProblemClickHndler = () => {
-    //show report modal
-  };
-
-  const addPromotionClickHandler = () => {
+  const clickHandler = (event) => {
     //show promotion modal
-    props.openPromotion();
+    if (event.target.innerHTML === "Add Promotion") {
+      props.openPromotion();
+    } else if (event.target.innerHTML === "Report Problem") {
+      //handle the report
+    } else {
+      //handle the view course
+    }
   };
 
   var count = 0;
@@ -26,15 +23,7 @@ const DropDown = (props) => {
   const menuItems = props.items.map((menuItem) => {
     count++;
     return (
-      <Menu.Item
-        onClick={
-          count === 1
-            ? viewCourseClickHandler
-            : count === 2
-            ? reportProblemClickHndler
-            : addPromotionClickHandler
-        }
-      >
+      <Menu.Item onClick={clickHandler}>
         {({ active }) => (
           <p
             className={classNames(

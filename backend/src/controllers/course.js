@@ -320,6 +320,7 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
   let minPrice = req.query.minPrice || 0;
   let maxPrice = req.query.maxPrice || Number.MAX_VALUE;
   const subjects = req.query.subject;
+  const iId = req.params.id;
   let query = {};
   if (subjects) {
     query = { subject: { $in: subjects } };
@@ -850,6 +851,7 @@ exports.getInstructorQuestions = async (req, res, next) => {
   }
   res.status(200).send(questions);
 };
+
 exports.getDiscountedCourses=async(req,res,next)=>{
 let courses=await course.find({discount:{ $gt: 0 }}).limit(9);
 

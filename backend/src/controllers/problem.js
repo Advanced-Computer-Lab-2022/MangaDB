@@ -15,7 +15,7 @@ exports.createProblem = async (req, res) => {
     course: courseId,
     courseName: foundCourse.courseTitle,
     user: user,
-    userName:"httzabat lma n3ml l token",
+    userName: "httzabat lma n3ml l token",
     type: type,
     description: description,
   });
@@ -28,9 +28,8 @@ exports.createProblem = async (req, res) => {
 };
 
 exports.getProblems = async (req, res) => {
-  const status=req.query.status;
-  const type=req.query.type;
-
+  const status = req.query.status;
+  const type = req.query.type;
 
   let query1 = {};
   let query2 = {};
@@ -57,9 +56,9 @@ exports.getProblem = async (req, res) => {
     if (!foundProblem) {
       return res.status(404).send();
     }
-     if (foundProblem.status === "unseen") {
+    if (foundProblem.status === "unseen") {
       //if(req.user.role === "ADMIN"){
-     //  foundProblem.status = "pending";
+      //  foundProblem.status = "pending";
       await foundProblem.save();
       //}
     }
@@ -76,7 +75,9 @@ exports.deleteProblem = async (req, res) => {
     if (!foundProblem) {
       return res.status(404).send();
     }
-    res.status(200).send({ message: "Problem deleted successfully", foundProblem });
+    res
+      .status(200)
+      .send({ message: "Problem deleted successfully", foundProblem });
   } catch (error) {
     res.status(500).send(error);
   }
@@ -96,7 +97,9 @@ exports.updateProblem = async (req, res) => {
     if (!foundProblem) {
       return res.status(404).send();
     }
-    res.status(200).send({ message: "Problem updated successfully", foundProblem });
+    res
+      .status(200)
+      .send({ message: "Problem updated successfully", foundProblem });
   } catch (error) {
     res.status(500).send(error);
   }
@@ -104,7 +107,7 @@ exports.updateProblem = async (req, res) => {
 
 exports.followUpProblem = async (req, res) => {
   const followUpComment = req.body.followUpComment;
-  const userId=req.body.userId;
+  const userId = req.body.userId;
   const _id = req.params.id;
   try {
     const foundProblem = await problem.findOne({ _id, user: userId });
@@ -123,9 +126,9 @@ exports.followUpProblem = async (req, res) => {
 };
 
 exports.getUserProblems = async (req, res) => {
-    const _id = req.params.id;
-    const status=req.query.status;
-  const type=req.query.type;
+  const _id = req.params.id;
+  const status = req.query.status;
+  const type = req.query.type;
 
   let query1 = {};
   let query2 = {};
@@ -135,46 +138,68 @@ exports.getUserProblems = async (req, res) => {
   if (type) {
     query2 = { type: { $regex: type, $options: "i" } };
   }
-  const query = { $and: [query1, query2,{ user: _id }] };
-    try {
-        const problems = await problem.find(query).sort({ date: -1 });
-        res.send(problems);
-    } catch (error) {
-        res.status(500).send("Internal server error");
-    }
+  const query = { $and: [query1, query2, { user: _id }] };
+  try {
+    const problems = await problem.find(query).sort({ date: -1 });
+    res.send(problems);
+  } catch (error) {
+    res.status(500).send("Internal server error");
+  }
 };
 
 exports.getCourseProblems = async (req, res) => {
   const _id = req.params.id;
-  const status=req.query.status;
-const type=req.query.type;
+  const status = req.query.status;
+  const type = req.query.type;
 
-let query1 = {};
-let query2 = {};
-if (status) {
-  query1 = { status: { $regex: status, $options: "i" } };
-}
-if (type) {
-  query2 = { type: { $regex: type, $options: "i" } };
-}
-const query = { $and: [query1, query2,{ course: _id }] };
-    try {
-        const problems = await problem.find(query).sort({ date: -1 });
-        res.send(problems);
-    } catch (error) {
-        res.status(500).send("Internal server error");
-    }
+  let query1 = {};
+  let query2 = {};
+  if (status) {
+    query1 = { status: { $regex: status, $options: "i" } };
+  }
+  if (type) {
+    query2 = { type: { $regex: type, $options: "i" } };
+  }
+  const query = { $and: [query1, query2, { course: _id }] };
+  try {
+    const problems = await problem.find(query).sort({ date: -1 });
+    res.send(problems);
+  } catch (error) {
+    res.status(500).send("Internal server error");
+  }
 };
 
-
 exports.getUserCourseProblems = async (req, res) => {
-const cId = req.params.id;
-const uId=req.query.uId;
+  const cId = req.params.id;
+  const uId = req.query.uId;
 
-    try {
-        const problems = await problem.find({ course: cId,user: uId}).sort({ date: -1 });
-        res.status(200).send(problems);
-    } catch (error) {
-        res.status(500).send("Internal server error");
-    }
+  try {
+    const problems = await problem
+      .find({ course: cId, user: uId })
+      .sort({ date: -1 });
+    res.status(200).send(problems);
+  } catch (error) {
+    res.status(500).send("Internal server error");
+  }
+};
+
+exports.getUnresolvedUserProblems = async (req, res) => {
+  const _id = req.params.id;
+  const query = {
+    $and: [
+      {
+        $or: [
+          { status: { $regex: "Unseen", $options: "i" } },
+          { status: { $regex: "Pending", $options: "i" } },
+        ],
+      },
+      { user: _id },
+    ],
+  };
+  try {
+    const problems = await problem.find(query).sort({ date: -1 });
+    res.send(problems);
+  } catch (error) {
+    res.status(500).send("Internal server error");
+  }
 };

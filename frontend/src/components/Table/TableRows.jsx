@@ -1,9 +1,40 @@
-import React from "react";
+import { Modal } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import DropDown from "../UI/DropDown";
 import PrimaryButton from "../UI/PrimaryButton";
+import Countdown from "react-countdown";
 
 const TableRows = (props) => {
+
+  const [showPromotationModal, setShowPromotationModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
+
+  const openPromotionModal = () => {
+    setShowPromotationModal(true);
+    //console.log(showPromotationModal);
+  };
+
+  const closePromotionModal = () => {
+    setShowPromotationModal(false);
+  };
+
+  const openReportModal = () => {
+    setShowReportModal(true);
+  };
+
+  const closeReportModal = () => {
+    setShowReportModal(false);
+  };
+
   const rows = props.rows.map((row, rowIdx) => {
     const totalHours = Math.round(+row.totalMins / 60);
+    const items =
+      row.mine === false
+        ? ["View Course"]
+        : row.discount !== 0
+        ? ["View Course", "Report a Problem"]
+        : ["View Course", "Report a Problem", "Add Promotion"];
+    console.log(row.mine);
     return (
       <tr
         key={row.courseId}
@@ -59,28 +90,31 @@ const TableRows = (props) => {
             row.discount === 1 ? "text-green-600" : ""
           }`}
         >
-          {row.discount === 0
-            ? "_"
-            : row.discount === 1
-            ? "FREE"
-            : row.discountedPrice}{" "}
-          {row.discount === 1 ? "" : "$"}
+          <div>
+            {row.discount === 0
+              ? "_"
+              : row.discount === 1
+              ? "FREE"
+              : row.discountedPrice}
+            {""}
+            {row.discount === 1 ? "" : "$"}
+          </div>
+          <div className="text-xs">
+            Expires In:{" "}
+            <span className=" text-red-600">
+              {" "}
+              <Countdown date={row.discountEndDate} />{" "}
+            </span>
+          </div>
         </td>
         <td className="text-center my-4 px-2">{totalHours} hrs</td>
         <td className="text-center flex justify-center my-4 px-2">
-          <PrimaryButton>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="currentColor"
-              class="bi bi-three-dots"
-              viewBox="0 0 16 16"
-            >
-              <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-            </svg>
-          </PrimaryButton>
+          <DropDown items={items} openPromotion={openPromotionModal} closePromotion={closePromotionModal} />
         </td>
+        {showPromotationModal && <Modal onClick={closePromotionModal}><div>
+          Hello
+          </div></Modal>}
+        {showReportModal && <Modal></Modal>}
       </tr>
     );
   });

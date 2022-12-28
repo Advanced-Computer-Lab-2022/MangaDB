@@ -47,7 +47,7 @@ const SearchResultsPage = () => {
   };
 
   const [page, setPage] = useState(1);
-  const [noOfPages , setNoOfPages] = useState(1);
+  const [noOfPages, setNoOfPages] = useState(1);
   //funtion to handle the pagination
   const onChangePageHandler = (event, value) => {
     setPage(value);
@@ -114,12 +114,12 @@ const SearchResultsPage = () => {
         "maxPrice=" +
         searchState.filters.price.maxValue;
     }
-    param = param +  (param ? "&" : "?")+"page="+page;
+    param = param + (param ? "&" : "?") + "page=" + page;
     axios.get("http://localhost:3000/course/" + param).then((res) => {
-      setNoOfPages(res.data.count)
+      setNoOfPages(res.data.count);
       dispatchSearch({ type: "COURSES", value: res.data.courses });
     });
-  }, [searchState.search, searchState.filters,page]);
+  }, [searchState.search, searchState.filters, page]);
   var coursesListView;
   var coursesCardsView;
   if (searchState.displayedCourses.length === 0) {
@@ -160,7 +160,7 @@ const SearchResultsPage = () => {
       return (
         <CourseCardListView
           id={course._id}
-          duration={course.totalHours}
+          duration={course.totalMins}
           title={course.courseTitle}
           instructorName={course.instructorName}
           subject={course.subject}
@@ -170,6 +170,7 @@ const SearchResultsPage = () => {
           discountedPrice={course.discountedPrice}
           discount={course.discount}
           rating={course.rating}
+          currencySymbol="$"
           // currencySymbol={currencySymbol}
         ></CourseCardListView>
       );
@@ -178,16 +179,17 @@ const SearchResultsPage = () => {
       return (
         <CourseCard
           id={course._id}
-          duration={course.totalHours}
+          duration={course.total}
           title={course.courseTitle}
           instructorName={course.instructorName}
           subject={course.subject}
-          level="Advanced"
+          level={course.level}
           coursePrice={course.coursePrice}
           discountedPrice={course.discountedPrice}
           discount={course.discount}
           rating={course.rating}
           currencySymbol="$"
+          // currencySymbol={currencySymbol}
         ></CourseCard>
       );
     });
@@ -232,7 +234,7 @@ const SearchResultsPage = () => {
           <ThemeProvider theme={theme}>
             <Pagination
               className="ml-2 mr-2"
-              count={Math.ceil(noOfPages/10)}
+              count={Math.ceil(noOfPages / 10)}
               color="primary"
               page={page}
               onChange={onChangePageHandler}

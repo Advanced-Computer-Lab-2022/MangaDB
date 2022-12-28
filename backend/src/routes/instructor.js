@@ -26,6 +26,8 @@ router.patch("/answerQuestion",courseController.answerQuestion);
 
 router.get("/:id",instructorController.viewInstructor);
 
+router.get("/myReviews/:id",instructorController.viewMyReviews);
+
 
 // router.post("/addcourse/:id",auth.validateToken,auth.authenticateRole(["INSTRUCTOR"]), courseController.createCourse);
 

@@ -115,14 +115,16 @@ const IntructorCoursePage = (props) => {
         "maxPrice=" +
         searchState.filters.price.maxValue;
     }
+    var param2 = param;
+    param2 = param2 + (param ? "&" : "?") +  "iId=" + "63a36fd41bd9f2e6163b0481"
     if (!searchState.myCourses) {
-      axios.get("http://localhost:3000/course/" + param).then((res) => {
+      axios.get("http://localhost:3000/course/" + param2).then((res) => {
         dispatchSearch({ type: "COURSES", value: res.data.courses });
       });
     } else {
       axios
         .get(
-          "http://localhost:3000/instructor/searchcourses/636011143c6ccb49e4e446b4" +
+          "http://localhost:3000/instructor/searchcourses/63a36fd41bd9f2e6163b0481" +
             param
         )
         .then((res) => {
@@ -130,18 +132,21 @@ const IntructorCoursePage = (props) => {
         });
     }
   }, [searchState.search, searchState.filters, searchState.myCourses]);
+  console.log(searchState.displayedCourses);
   var rows = searchState.displayedCourses.map((course) => {
     return {
-      courseId: course._id,
-      courseTitle: course.courseTitle,
-      instructorName: course.instructorName,
-      subject: course.subject,
-      rating: course.rating,
-      level: course.level,
-      price: course.coursePrice,
-      discountedPrice: course.discountedPrice,
-      totalMins: course.totalMins,
-      discount: course.discount,
+      courseId: course.course._id,
+      courseTitle: course.course.courseTitle,
+      instructorName: course.course.instructorName,
+      subject: course.course.subject,
+      rating: course.course.rating,
+      level: course.course.level,
+      price: course.course.coursePrice,
+      discountedPrice: course.course.discountedPrice,
+      totalMins: course.course.totalMins,
+      discount: course.course.discount,
+      discountEndDate: course.course.discountEndDate,
+      mine: course.mine,
     };
   });
 
@@ -157,6 +162,8 @@ const IntructorCoursePage = (props) => {
         price={row.price}
         discount={row.discount}
         discountedPrice={row.discountedPrice}
+        discountEndDate={row.discountEndDate}
+        mine={row.mine}
       />
     );
   });

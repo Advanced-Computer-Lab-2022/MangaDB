@@ -483,7 +483,7 @@ const CourseViewPage = () => {
       <div className="py-4 flex justify-center font-medium text-xl bg-gray-50 z-20">
         {receivedData.courseTitle}: {currentSource.description}
       </div>
-      <div className="flex z-50">
+      <div className="md:flex z-50">
         <div className="video/exam md:w-[70%] w-full mb-4 md:mb-0">
           {displayedSource}
         </div>

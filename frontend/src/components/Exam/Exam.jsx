@@ -4,6 +4,7 @@ import ExamChoices from "./ExamChoices";
 import SecondaryButton from "../UI/SecondaryButton";
 import SolvedExamChoices from "./SolvedExamChoices";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Divider } from "@mui/material";
 const theme = createTheme({
   status: {
     danger: "#e53e3e",
@@ -115,7 +116,7 @@ const Exam = (props) => {
         {props.exam[selectedQuestion - 1].question}
       </p>
       {displayedExam}
-      <div className="mt-2 flex items-center justify-center">
+      <div className="my-2 flex items-center justify-center">
         <SecondaryButton
           disabled={prevButtonState}
           onClick={prevOnClickHandler}

@@ -18,6 +18,7 @@ import InstructorWallet from "./pages/IntructorWallet";
 import PageNotFound from "./pages/PageNotFound";
 import UnAuthorizedPage from "./pages/UnAuthorizedPage";
 import MyCourses from "./pages/MyCourses";
+import AdminPage from "./components/Admin/AdminPage";
 import InstructorPage from "./pages/InstructorPage";
 import InstructorDashboard from "./pages/InstructorDashboard";
 function App() {
@@ -49,7 +50,7 @@ function App() {
         ></Route>
         <Route
           path="/admin/:id"
-          element={<AdminAddNewUser></AdminAddNewUser>}
+          element={<AdminPage></AdminPage>}
         ></Route>
         <Route
           path="courses/:id"

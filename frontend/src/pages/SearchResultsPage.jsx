@@ -124,7 +124,6 @@ const SearchResultsPage = () => {
   var coursesCardsView;
   if (searchState.displayedCourses.length === 0) {
     coursesListView = (
-      // <div className="text-xl font-semibold mt-16">No Courses Found.</div>
       <div className="bg-gray-100 border-4 p-4 ">
         <h3 className="text-xl mt-8  font-semibold text-black-800">
           Sorry, We Couldn't Find Any Matching Results

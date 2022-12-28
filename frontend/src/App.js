@@ -19,6 +19,7 @@ import PageNotFound from "./pages/PageNotFound";
 import UnAuthorizedPage from "./pages/UnAuthorizedPage";
 import MyCourses from "./pages/MyCourses";
 import InstructorPage from "./pages/InstructorPage";
+import InstructorDashboard from "./pages/InstructorDashboard";
 function App() {
   return (
     <Fragment>
@@ -73,6 +74,7 @@ function App() {
           path="InstructorPage"
           element={<InstructorPage></InstructorPage>}
         ></Route>
+        <Route path = "instructorDashboard" element={<InstructorDashboard></InstructorDashboard>}></Route>
       </Routes>
 
       <Footer></Footer>

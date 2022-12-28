@@ -12,6 +12,7 @@ const CourseCard = (props) => {
     const instructorId = "6386427487d3f94e4cb7a28d";
     navigate(`/coursedetails/${instructorId}`, { state: {courseId:props.id, userId:props.userId}} );
   };
+  const totalHours = Math.round(+props.duration / 60);
   return (
     <button className="hover:scale-105 transition flex content-start relative mb-8 mx-4" onClick={clickHandler}>
       <div class=" relative bg-white border border-gray-200 shadow-md w-80">
@@ -20,7 +21,7 @@ const CourseCard = (props) => {
         </div>
         <div className="bg-white px-2 py-1 text-xs font-semibold rounded-full absolute top-3 left-3">
           <AccessTimeIcon className="-mt-[3px]" fontSize="inherit" />{" "}
-          {props.duration} {"hrs"}
+          {totalHours} {"hrs"}
         </div>
 
         <div className="py-5 px-2 flex flex-col items-start">
@@ -62,8 +63,6 @@ const CourseCard = (props) => {
                   {props.currencySymbol.toString()}
                 </div>
               )}
-              {/* {props.discountedPrice === 0 ? "FREE" : props.discountedPrice}
-              {props.currencySymbol.toString()} */}
               {props.discountedPrice === 0 && (
                 <div className="text-green-600">FREE</div>
               )}

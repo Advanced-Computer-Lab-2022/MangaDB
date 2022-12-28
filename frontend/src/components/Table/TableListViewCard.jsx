@@ -1,5 +1,7 @@
 import PrimaryButton from "../UI/PrimaryButton";
 import Stars from "../UI/Stars";
+import Countdown from "react-countdown";
+
 const TableListViewCard = (props) => {
   return (
     <div className=" w-[30rem] shadow-lg rounded-2xl mx-4 my-2">
@@ -73,6 +75,9 @@ const TableListViewCard = (props) => {
           <div className="font-medium">Discounted Price</div>
           <div className={`${props.discount === 1 ? 'text-green-600 font-medium' : ''}`}>
             {props.discount === 0 ? '_' : props.discount === 1 ? 'FREE' : props.discountedPrice} {props.discount === 1 ? "" : "$"}
+            <span className="ml-2">
+            Expires In: <span className=" text-red-600"> <Countdown date={props.discountEndDate} /> </span>
+            </span>
           </div>
         </div>
       </div>

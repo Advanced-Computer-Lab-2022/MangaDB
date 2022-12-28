@@ -28,8 +28,8 @@ const ToolbarTabs = (props) => {
   };
 
   return (
-    <div className="ml-4">
-      <div className="sm:hidden">
+    <div className="">
+      <div className="sm:hidden mt-4 mx-2">
         <select
           id="tabs"
           name="tabs"
@@ -40,7 +40,7 @@ const ToolbarTabs = (props) => {
           ))}
         </select>
       </div>
-      <div className="hidden sm:block">
+      <div className="hidden sm:block ml-4">
         <div className="border-b border-gray-200">
           <nav className="-mb-px flex space-x-8" aria-label="Tabs">
             {tabs.map((tab) => (

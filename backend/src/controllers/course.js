@@ -69,11 +69,14 @@ exports.getAllCourses = async (req, res, next) => {
       summary: 1,
       discountedPrice: 1,
       discount: 1,
+      discountStartDate: 1,
+      discountEndDate: 1,
       courseImage: 1,
       rating: 1,
       instructor: 1,
       instructorName: 1,
       subject: 1,
+
     })
     .catch((error) => {
       res.status(500).json({

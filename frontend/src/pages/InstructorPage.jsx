@@ -4,8 +4,8 @@ import NavBar from "../components/UI/NavBar/NavBar";
 import SecondaryButton from "../components/UI/SecondaryButton";
 import AverageSummary from "../components/Profile/Reviews/AverageSummary";
 import ReviewItem from "../components/CourseDetailsComp/ReviewItem";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CourseCard from "../components/Course/CourseCard";
+import Carousel from "react-multi-carousel";
 
 import {
   BookOpenIcon,
@@ -13,22 +13,6 @@ import {
   UsersIcon,
 } from "@heroicons/react/outline";
 import Rating from "@mui/material/Rating";
-// pagination blue theme
-const theme = createTheme({
-  status: {
-    danger: "#e53e3e",
-  },
-  palette: {
-    primary: {
-      main: "#3970AC",
-      darker: "#053e85",
-    },
-    neutral: {
-      main: "#64748B",
-      contrastText: "#fff",
-    },
-  },
-});
 
 const InstructorPage = () => {
   const [receivedData, setReceivedData] = useState({});
@@ -63,19 +47,19 @@ const InstructorPage = () => {
       {
         id: 1,
         name: " Number Of Students",
-        stat: receivedData.students,
+        stat: statsConf[0],
         icon: UsersIcon,
       },
       {
         id: 2,
         name: `Number Of Reviews `,
-        stat: receivedData.instructor.reviews.length,
+        stat: statsConf[1],
         icon: CalendarIcon,
       },
       {
         id: 3,
         name: `Number Of Courses`,
-        stat: receivedData.instructor.courseDetails.length,
+        stat: statsConf[2],
         icon: BookOpenIcon,
       },
     ];
@@ -96,11 +80,15 @@ const InstructorPage = () => {
       .then((res) => {
         console.log(res.data.review);
         setReviews([...reviews, res.data.review]);
-        
+        setSummary(res.data.count);
+        setStatsConf([
+          receivedData.students,
+          receivedData.instructor.reviews.length + 1,
+          receivedData.instructor.courseDetails.length,
+        ]);
       });
   };
 
-  console.log(receivedData);
   //listen on the rating change
   const ratingChangeHandler = (event) => {
     setEnteredRating(event.target.value);
@@ -191,17 +179,14 @@ const InstructorPage = () => {
             INSTRUCTOR
           </p>
           <p className=" flex items-center justify-center font-bold text-4xl">
-            {receivedData.instructor.firstName}{" "}
+            {receivedData.instructor.firstName}
             {receivedData.instructor.lastName}
           </p>
           <p className="flex items-center justify-center text-gray-500">
             About Me
           </p>
           <p className="flex items-center justify-center text-center">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
-            consequuntur voluptates itaque, perspiciatis pariatur unde veniam
-            culpa obcaecati soluta nesciunt autem, incidunt quia rem labore cum
-            magni eaque. Cupiditate, blanditiis.
+            {receivedData.instructor.biography}
           </p>
           <div className="ml-2">
             <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -261,7 +246,46 @@ const InstructorPage = () => {
             <div className=" font-semibold text-xl mb-4">
               Instructor Courses:
             </div>
-            <div>{displayedCourses}</div>
+            <div>
+              <Carousel
+                rewind={true}
+                pauseOnHover
+                infinite
+                autoPlaySpeed={1500}
+                autoPlay={true}
+                rewindWithAnimation={true}
+                itemClass="ml-2"
+                draggable={false}
+                responsive={{
+                  desktop: {
+                    breakpoint: {
+                      max: 3000,
+                      min: 1024,
+                    },
+                    items: 3,
+                    partialVisibilityGutter: 40,
+                  },
+                  mobile: {
+                    breakpoint: {
+                      max: 464,
+                      min: 0,
+                    },
+                    items: 1,
+                    partialVisibilityGutter: 30,
+                  },
+                  tablet: {
+                    breakpoint: {
+                      max: 1024,
+                      min: 464,
+                    },
+                    items: 2,
+                    partialVisibilityGutter: 30,
+                  },
+                }}
+              >
+                {displayedCourses}
+              </Carousel>
+            </div>
           </div>
         </div>
       )}

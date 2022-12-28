@@ -53,23 +53,33 @@ const questionsStub = [
   },
 ];
 const InstructorDashboard = () => {
-  const [receivedData, setReceivedData] = useState();
+  const [receivedData, setReceivedData] = useState({});
   const [questions, setQuestions] = useState(questionsStub);
   const [loading, setLoading] = useState(false);
+  const [count, setCount] = useState([]);
+  const [loaded, setLoaded] = useState(false);
   //loading as the endpoint contains a lot of data..
   //fetch the data as soon as he logs in..
-  useEffect(() => {}, []);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/instructor/63a36fd41bd9f2e6163b0481")
+      .then((res) => {
+        setReceivedData(res.data.instructor);
+        setCount(res.data.count);
+        setLoaded(true);
+      });
+  }, []);
 
   const onConfirmReplyHandler = (id, reply) => {
     //axios post
-    var temp=[];
-    for(var i = 0; i < questions.length; i++) {
-        if(questions[i]._id !== id) {
-            temp.push(questions[i]);
-        }
+    var temp = [];
+    for (var i = 0; i < questions.length; i++) {
+      if (questions[i]._id !== id) {
+        temp.push(questions[i]);
+      }
     }
-    setQuestions(temp)
-    console.log(id)
+    setQuestions(temp);
+    console.log(id);
     console.log(reply);
   };
 
@@ -89,8 +99,8 @@ const InstructorDashboard = () => {
   ];
   //handle the displayed Reviews
   var displayedReviews = [];
-  if (reviews !== []) {
-    displayedReviews = reviews.map((review) => {
+  if (reviews !== [] && loaded) {
+    displayedReviews = receivedData.reviews.map((review) => {
       const formattedDate = review.date.substring(0, 10).split("-");
       const year = formattedDate[0];
       const month =
@@ -183,14 +193,14 @@ const InstructorDashboard = () => {
       </div>
     );
   }
-
+  console.log(receivedData);
   return (
     <Fragment>
       <NavBar></NavBar>
       <div className=" flex space-x-14 mt-4 items-center justify-center">
         <div className="font-semibold text-xl text-center text-gray-700 ">
           <p>Welcome Back,</p>
-          <p className="text-center text-3xl font-semibold">Omar Moataz!</p>
+          <p className="text-center text-3xl font-semibold">{receivedData.firstName} {receivedData.lastName}!</p>
           <p className="text-center mt-6 text-gray-500 flex space-x-2 items-center justify-center">
             <BellIcon className="fill-yellow-400 w-6 h-8 mr-2"></BellIcon>
             You have {questions.length} unanswered questions from your students
@@ -250,15 +260,7 @@ const InstructorDashboard = () => {
         <div>
           <div className=" font-semibold text-xl mb-4">Instructor Reviews:</div>
           <div className=" mb-6 mx-12">
-            <AverageSummary
-              count={[
-                { rating: 1, count: 12 },
-                { rating: 2, count: 6 },
-                { rating: 3, count: 2 },
-                { rating: 4, count: 22 },
-                { rating: 5, count: 32 },
-              ]}
-            />
+            {loaded && <AverageSummary count={count} />}
           </div>
           <div className=" mx-8">{displayedReviews}</div>
         </div>

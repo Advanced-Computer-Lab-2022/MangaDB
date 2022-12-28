@@ -18,6 +18,7 @@ const DropDown = (props) => {
 
   const addPromotionClickHandler = () => {
     //show promotion modal
+    props.openPromotion();
   };
 
   var count = 0;

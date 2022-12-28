@@ -39,6 +39,8 @@ router.get('/mycourses/:id',userController.getRegisteredCourses);
 router.get('/wallet/:id',userController.getWallet);
 
 
+
+
 // router.post('/login', userController.login);
 
 // router.patch('/updateuser/:id',auth.validateToken,auth.authenticateRole(["INSTRUCTOR","TRAINEE","CORPORATE"]), userController.updateUser);

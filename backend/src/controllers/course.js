@@ -367,6 +367,8 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
       coursePrice: 1,
       discountedPrice: 1,
       discount: 1,
+      discountStartDate: 1,
+      discountEndDate: 1,
       courseImage: 1,
       rating: 1,
       instructor: 1,

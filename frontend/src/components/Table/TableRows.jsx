@@ -1,9 +1,12 @@
 import { Modal } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DropDown from "../UI/DropDown";
 import PrimaryButton from "../UI/PrimaryButton";
+import Countdown from "react-countdown";
 
 const TableRows = (props) => {
+  useEffect(() => {}, []);
+
   const [showPromotationModal, setShowPromotationModal] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
 
@@ -71,12 +74,18 @@ const TableRows = (props) => {
             row.discount === 1 ? "text-green-600" : ""
           }`}
         >
-          {row.discount === 0
-            ? "_"
-            : row.discount === 1
-            ? "FREE"
-            : row.discountedPrice}{" "}
-          {row.discount === 1 ? "" : "$"}
+          <div>
+            {row.discount === 0
+              ? "_"
+              : row.discount === 1
+              ? "FREE"
+              : row.discountedPrice}
+            {""}
+            {row.discount === 1 ? "" : "$"}
+          </div>
+          <div className="text-sm">
+              Expires In: <span className=" text-red-600"> <Countdown date={row.discountEndDate} /> </span>
+          </div>
         </td>
         <td className="text-center my-4 px-2">{totalHours} hrs</td>
         <td className="text-center flex justify-center my-4 px-2">

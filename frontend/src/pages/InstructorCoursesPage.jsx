@@ -145,6 +145,7 @@ const IntructorCoursePage = (props) => {
       discountedPrice: course.course.discountedPrice,
       totalMins: course.course.totalMins,
       discount: course.course.discount,
+      discountEndDate: course.course.discountEndDate,
       mine: course.mine,
     };
   });
@@ -161,6 +162,7 @@ const IntructorCoursePage = (props) => {
         price={row.price}
         discount={row.discount}
         discountedPrice={row.discountedPrice}
+        discountEndDate={row.discountEndDate}
         mine={row.mine}
       />
     );

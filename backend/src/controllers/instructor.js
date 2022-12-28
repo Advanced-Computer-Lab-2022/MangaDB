@@ -313,6 +313,7 @@ exports.getMoneyOwed = async (req, res) => {
 };
 
 exports.getInstructorRating = async (req, res) => {
+
     const instructorId=req.params.id;
     try {
         const instructorData=await user.findById(instructorId);
@@ -331,6 +332,7 @@ exports.getInstructorRating = async (req, res) => {
             message: err.message || "Some error occurred while getting instructor rating.",
         });
     }
+
 }
 
 
@@ -376,3 +378,41 @@ exports.viewInstructor=async (req, res) => {
     });
 
   }
+
+  //difference between this and viewInstructor is that this one is for instructor to view his own profile
+  exports.viewMyReviews=async (req, res) => {
+    const instructorId = req.params.id;
+    const instructorData = await
+    user.findById
+    (instructorId);
+    if (!instructorData) {
+      res.status(404).json({ message: "Instructor Not Found" });
+      return;
+    }
+    let rating1=0;
+    let rating2=0;
+    let rating3=0;
+    let rating4=0;
+    let rating5=0;
+    for (let i = 0; i < instructorData.reviews.length; i++) {
+      if (instructorData.reviews[i].rating == 1) {
+        rating1++;
+      }
+      if (instructorData.reviews[i].rating == 2) {
+        rating2++;
+      }
+      if (instructorData.reviews[i].rating == 3) {
+        rating3++;
+      }
+      if (instructorData.reviews[i].rating == 4) {
+        rating4++;
+      }
+      if (instructorData.reviews[i].rating == 5) {
+        rating5++;
+      }
+    }
+    let count=[{rating:1,count:rating1},{rating:2,count:rating2},{rating:3,count:rating3},{rating:4,count:rating4},{rating:5,count:rating5}];
+    res.status(200).json({ instructor: instructorData,
+      count:count
+    });
+}

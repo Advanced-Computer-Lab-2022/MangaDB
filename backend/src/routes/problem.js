@@ -20,6 +20,8 @@ router.get("/user/:id", problemController.getUserProblems);
 
 router.get("/course/:id", problemController.getCourseProblems);
 
+router.get("/unresolvedProblem/:id", problemController.getUnresolvedUserProblems);
+
 
 // router.post("/",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]), problemController.createProblem);
 

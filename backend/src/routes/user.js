@@ -38,7 +38,7 @@ router.get('/mycourses/:id',userController.getRegisteredCourses);
 
 router.get('/wallet/:id',userController.getWallet);
 
-
+router.get("/certificate", userController.testCertificate);
 
 
 // router.post('/login', userController.login);

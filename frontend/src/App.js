@@ -48,10 +48,7 @@ function App() {
           path="/profile/:id"
           element={<InstructorProfilePage></InstructorProfilePage>}
         ></Route>
-        <Route
-          path="/admin/:id"
-          element={<AdminPage></AdminPage>}
-        ></Route>
+        <Route path="/admin/:id" element={<AdminPage></AdminPage>}></Route>
         <Route
           path="courses/:id"
           element={<InstructorCoursesPage></InstructorCoursesPage>}
@@ -75,7 +72,10 @@ function App() {
           path="InstructorPage"
           element={<InstructorPage></InstructorPage>}
         ></Route>
-        <Route path = "instructorDashboard" element={<InstructorDashboard></InstructorDashboard>}></Route>
+        <Route
+          path="instructorDashboard/:id"
+          element={<InstructorDashboard></InstructorDashboard>}
+        ></Route>
       </Routes>
 
       <Footer></Footer>

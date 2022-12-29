@@ -22,16 +22,10 @@ export default function ReportsRequestsManager(props) {
   const handleClickVariant = (variant) => {
     //console.log("here");
     // variant could be success, error, warning, info, or default
-    if (variant === "success") {
+    if(variant === "success")
       enqueueSnackbar("Status has been updated successfuly", { variant });
-    } else {
-      enqueueSnackbar(
-        "This request is already accepted and you can't change its status",
-        {
-          variant,
-        }
-      );
-    }
+      else
+      enqueueSnackbar("This user already has access to this course", { variant });
   };
 
   const [value1, setValue1] = useState(0);
@@ -51,15 +45,15 @@ export default function ReportsRequestsManager(props) {
 
         break;
       case 1:
-        setProblemTypeFilter("Financial");
+        setProblemTypeFilter("financial");
         break;
 
       case 2:
-        setProblemTypeFilter("Technical");
+        setProblemTypeFilter("technical");
         break;
 
       case 3:
-        setProblemTypeFilter("Other");
+        setProblemTypeFilter("other");
         break;
     }
   };
@@ -71,13 +65,13 @@ export default function ReportsRequestsManager(props) {
         setProblemStatusFilter("all");
         break;
       case 1:
-        setProblemStatusFilter("Resolved");
+        setProblemStatusFilter("resolved");
         break;
       case 2:
-        setProblemStatusFilter("Pending");
+        setProblemStatusFilter("pending");
         break;
       case 3:
-        setProblemStatusFilter("Unseen");
+        setProblemStatusFilter("unseen");
         break;
     }
   };
@@ -116,7 +110,7 @@ export default function ReportsRequestsManager(props) {
     }
   };
 
-  const firstAction = (problemId, problemType) => {
+  const firstAction = (problemId) => {
     if (props.type === "problem") {
       axios
         .patch(`http://localhost:3000/problem/${problemId}`, {
@@ -128,40 +122,22 @@ export default function ReportsRequestsManager(props) {
           getData();
         });
     } else {
-      if (problemType === "access") {
-        axios
-          .patch(`http://localhost:3000/request/access/${problemId}`)
-          .then((res) => {
-            getData();
-            handleClickVariant("success");
-          })
-          .catch((error) => {
-            if (
-              +error.message.split(" ")[error.message.split(" ").length - 1] ===
-              400
-            ) {
-              handleClickVariant("error");
-            }
-          });
-      } else {
-        if (problemType === "refund") {
-          axios
-            .patch(`http://localhost:3000/request/refund/${problemId}`)
-            .then((res) => {
-              getData();
-              handleClickVariant("success");
-            })
-            .catch((error) => {
-              if (
-                +error.message.split(" ")[
-                  error.message.split(" ").length - 1
-                ] === 400
-              ) {
-                handleClickVariant("error");
-              }
-            });
-        }
-      }
+      axios
+        .patch(`http://localhost:3000/request/access/${problemId}`, {
+          status: "accepted",
+          //seen: "true",
+        })
+        .then((res) => {
+          getData();
+          handleClickVariant("success");
+        })
+        .catch((error) => {
+          if (
+            +error.message.split(" ")[error.message.split(" ").length - 1] ===400
+          ) {
+            handleClickVariant("error");
+          }
+        });
     }
   };
 
@@ -187,8 +163,8 @@ export default function ReportsRequestsManager(props) {
     }
   }
 
-  function secondAction(problemId, problemType, problemStatus) {
-    if (problemType === "problem") {
+  function secondAction(problemId) {
+    if (props.type === "problem") {
       axios
         .patch(`http://localhost:3000/problem/${problemId}`, {
           status: "resolved",
@@ -199,47 +175,19 @@ export default function ReportsRequestsManager(props) {
           handleClickVariant("success");
         });
     } else {
-      if (problemStatus !== "accepted") {
-        axios
-          .patch(`http://localhost:3000/request/reject/${problemId}`)
-          .then((res) => {
-            getData();
-            handleClickVariant("success");
-          })
-          .catch((error) => {
-            if (
-              +error.message.split(" ")[error.message.split(" ").length - 1] ===
-              400
-            ) {
-              handleClickVariant("error");
-            }
-          });
-      } else {
-        handleClickVariant("error");
-      }
-    }
-  }
-
-  function thirdAction(problemId, problemType,problemStatus) {
-    console.log(problemStatus);
-    if (problemStatus !== "accepted") {
       axios
-        .patch(`http://localhost:3000/request/pend/${problemId}`)
+        .patch(`http://localhost:3000/request/${problemId}`, {
+          status: "rejected",
+          seen: "true",
+        })
         .then((res) => {
           getData();
           handleClickVariant("success");
-        })
-        .catch((error) => {
-          if (
-            +error.message.split(" ")[error.message.split(" ").length - 1] ===
-            400
-          ) {
-            handleClickVariant("error");
-          }
         });
-    } else {
-      handleClickVariant("error");
     }
+  }
+
+  function thirdAction(problemId) {
   }
 
   useEffect(() => {
@@ -345,34 +293,14 @@ export default function ReportsRequestsManager(props) {
             (problem.status === requestStatusFilter ||
               requestStatusFilter === "all")) ? (
             <ReportsRequestsCard
-            alreadyHandled={problem.status === "accepted" || problem.status === "rejected" || problem.status === "resolved"}
-              userName={problem.userName}
-              courseName={problem.courseName}
               date={problem.date.split("T")[0]}
               reason={problem.reason}
               type={problem.type}
               status={problem.status}
               description={problem.description}
-              firstActionClickHandler={firstAction.bind(
-                null,
-                problem._id,
-                problem.type,
-                problem.status
-              )}
-              secondActionClickHandler={secondAction.bind(
-                null,
-                problem._id,
-                problem.type,
-                problem.status,
-
-              )}
-              thirdActionClickHandler={thirdAction.bind(
-                null,
-                problem._id,
-                problem.type,
-                problem.status,
-
-              )}
+              firstActionClickHandler={firstAction.bind(null, problem._id)}
+              secondActionClickHandler={secondAction.bind(null, problem._id)}
+              thirdActionClickHandler={thirdAction.bind(null, problem._id)}
             ></ReportsRequestsCard>
           ) : null
         )}

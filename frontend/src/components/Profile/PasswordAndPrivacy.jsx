@@ -3,8 +3,6 @@ import SecondaryButton from "../UI/SecondaryButton";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Disclosure, RadioGroup } from "@headlessui/react";
-import { useSnackbar } from "notistack";
-import axios from "axios";
 import {
   CreditCardIcon,
   KeyIcon,
@@ -14,7 +12,9 @@ import {
 
 const subNavigation = [
   { name: "Profile", icon: UserCircleIcon, current: false },
+  { name: "Billing", icon: CreditCardIcon, current: false },
   { name: "Security & Privacy", icon: KeyIcon, current: true },
+  { name: "Reviews & Ratings", icon: StarIcon, current: false },
 ];
 
 const settings = [
@@ -55,13 +55,6 @@ const PasswordAndPrivacy = (props) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [emptyCurrentPassword, setEmptyCurrentPassword] = useState(false);
-  const [emptyNewPassword, setEmptyNewPassword] = useState(false);
-  const [emptyConfirmNewPassword, setEmptyConfirmNewPassword] = useState(false);
-  const [warning, setWarning] = useState("");
-  const [passwordMatch, setPasswordMatch] = useState(true);
-  const [incorrectCurrentPassword, setIncorrectCurrentPassword] =
-    useState(false);
 
   const onClickNewPasswordHandler = () => {
     setShowNewPassword((prev) => {
@@ -89,93 +82,16 @@ const PasswordAndPrivacy = (props) => {
     setConfirmPassword(event.target.value);
   };
 
-  const { enqueueSnackbar } = useSnackbar();
-  const handleClickVariant = (variant) => {
-    //console.log("here");
-    enqueueSnackbar(
-      "Security and privacy information has been updated successfly  ",
-      { variant }
-    );
-  };
-
   const onSaveHandler = (event) => {
     event.preventDefault();
     //can handle validation later..
-    var currentWarning = "";
-    if (currentPassword === "") {
-      setEmptyCurrentPassword(true);
-      currentWarning = "Please fill the following fields ";
-      console.log("here");
-    } else {
-      setEmptyCurrentPassword(false);
-    }
-    if (newPassword === "") {
-      setEmptyNewPassword(true);
-      currentWarning = "Please fill the following fields ";
-    } else {
-      setEmptyNewPassword(false);
-    }
-    if (confirmPassword === "") {
-      setEmptyConfirmNewPassword(true);
-      currentWarning = "Please fill the following fields ";
-    } else {
-      setEmptyConfirmNewPassword(false);
-    }
-    if (newPassword !== confirmPassword) {
-      setPasswordMatch(false);
-      currentWarning = "Passwords do not match ";
-    } else {
-      setPasswordMatch(true);
-    }
-    
-
-    setWarning(currentWarning);
-    if (
-      currentPassword==="" ||
-      newPassword ==="" ||
-      confirmPassword === "" ||
-      newPassword !== confirmPassword
-    ) {
-      window.scrollTo(0, 0, "smooth");
-      return;
-    }
     const saveData = {
-      oldPassword: currentPassword,
       password: newPassword,
-      //emailPrivacy: selected,
+      emailPrivacy: selected,
     };
-    //props.onSaveHandler(saveData);
+    props.onSaveHandler(saveData);
     console.log(saveData);
-
-    axios
-      .patch(
-        "http://localhost:3000/user/changepassword/63acd64846cc70eed673a330",
-        saveData /*,
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-            "content-type": "text/json",
-          },
-        }*/
-      )
-      .then((res) => {
-        handleClickVariant("success");
-      })
-      .catch((err) => {
-        if (
-          err.message.split(" ")[err.message.split(" ").length - 1] === "401" && currentPassword !== ""
-        ) {
-          setIncorrectCurrentPassword(true);
-          handleIncorrectCurrentPassword();
-        }
-      });
   };
-
-  const handleIncorrectCurrentPassword = () => {
-    setIncorrectCurrentPassword(true);
-    setWarning("Incorrect current password");
-    window.scrollTo(0, 0, "smooth");
-  }
 
   return (
     <div>
@@ -283,38 +199,7 @@ const PasswordAndPrivacy = (props) => {
                       This information is related to your security and privacy.
                     </p>
                   </div>
-                  <div
-                    class={
-                      emptyNewPassword ||
-                      emptyCurrentPassword ||
-                      emptyConfirmNewPassword ||
-                      !passwordMatch ||
-                      incorrectCurrentPassword
-                        ? "p-4 mt-3 text-red-900 bg-red-50 border rounded-md"
-                        : "hidden"
-                    }
-                  >
-                    <div class="flex justify-between flex-wrap">
-                      <div class="w-0 flex-1 flex">
-                        <div class="mr-3 pt-1">
-                          <svg
-                            width="26"
-                            height="26"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="currentColor"
-                          >
-                            <path d="M13.6086 3.247l8.1916 15.8c.0999.2.1998.5.1998.8 0 1-.7992 1.8-1.7982 1.8H3.7188c-.2997 0-.4995-.1-.7992-.2-.7992-.5-1.1988-1.5-.6993-2.4 5.3067-10.1184 8.0706-15.385 8.2915-15.8.3314-.6222.8681-.8886 1.4817-.897.6135-.008 1.273.2807 1.6151.897zM12 18.95c.718 0 1.3-.582 1.3-1.3 0-.718-.582-1.3-1.3-1.3-.718 0-1.3.582-1.3 1.3 0 .718.582 1.3 1.3 1.3zm-.8895-10.203v5.4c0 .5.4.9.9.9s.9-.4.9-.9v-5.3c0-.5-.4-.9-.9-.9s-.9.4-.9.8z"></path>
-                          </svg>
-                        </div>
-                        <div>
-                          <h4 class="text-md mt-[5px] leading-6 font-medium">
-                            {warning}
-                          </h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+
                   <div className="mt-6 flex flex-col lg:flex-row">
                     <div className="flex-grow space-y-6">
                       <div>
@@ -323,8 +208,7 @@ const PasswordAndPrivacy = (props) => {
                             for="password"
                             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                           >
-                            Current Password{" "}
-                            <span className="text-red-500">*</span>
+                            Current Password
                           </label>
                           <div className="flex relative">
                             {" "}
@@ -333,9 +217,8 @@ const PasswordAndPrivacy = (props) => {
                               value={currentPassword}
                               type={showCurrentPassword ? "text" : "password"}
                               id="password"
-                              className={"bg-gray-50 border text-sm  text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ".concat(
-                                emptyCurrentPassword || incorrectCurrentPassword ? "border-red-500" : "border-gray-300"
-                              )}
+                              className="bg-gray-50 border text-sm border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              required
                             ></input>
                             {showCurrentPassword ? (
                               <VisibilityIcon
@@ -355,7 +238,7 @@ const PasswordAndPrivacy = (props) => {
                             for="password"
                             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                           >
-                            New Password <span className="text-red-500">*</span>
+                            New Password
                           </label>
                           <div className="flex relative">
                             {" "}
@@ -364,11 +247,8 @@ const PasswordAndPrivacy = (props) => {
                               value={newPassword}
                               type={showNewPassword ? "text" : "password"}
                               id="password"
-                              className={"bg-gray-50 border text-sm  text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ".concat(
-                                emptyNewPassword || !passwordMatch
-                                  ? "border-red-500"
-                                  : "border-gray-300"
-                              )}
+                              className="bg-gray-50 border text-sm border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              required
                             ></input>
                             {showNewPassword ? (
                               <VisibilityIcon
@@ -389,8 +269,7 @@ const PasswordAndPrivacy = (props) => {
                           for="confirm_password"
                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >
-                          Confirm password{" "}
-                          <span className="text-red-500">*</span>
+                          Confirm password
                         </label>
                         <div className="flex relative">
                           <input
@@ -398,11 +277,7 @@ const PasswordAndPrivacy = (props) => {
                             value={confirmPassword}
                             type={showConfirmPassword ? "text" : "password"}
                             id="confirm_password"
-                            className={"bg-gray-50 border text-sm  text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ".concat(
-                              emptyConfirmNewPassword || !passwordMatch
-                                ? "border-red-500"
-                                : "border-gray-300"
-                            )}
+                            className="bg-gray-50 border text-sm border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           ></input>
                           {showConfirmPassword ? (
                             <VisibilityIcon

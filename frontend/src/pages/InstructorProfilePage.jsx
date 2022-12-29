@@ -1,4 +1,4 @@
-import { useState, useEffect,useRef } from "react";
+import { useState, useEffect } from "react";
 import PersonalInfoForm from "../components/Profile/PersonalInfoForm";
 import PasswordAndPrivacy from "../components/Profile/PasswordAndPrivacy";
 import Billing from "../components/Profile/Billing";
@@ -70,28 +70,62 @@ const reviews = [
 const InstructorProfilePage = () => {
   const [receivedUserInfo, setReceivedUserInfo] = useState(user);
   const [selectedStage, setSelectedStage] = useState(1);
-
-  const managerRef = useRef();
   //gather the userInfo
- 
-//change it to auth later
-  
+// const { enqueueSnackbar } = useSnackbar();
+//   const handleClickVariant = (variant) => {
+//     //console.log("here");
+//     enqueueSnackbar("User has been added successfuly  ", { variant });
+//   };
+
   useEffect(() => {
-    axios.get("http://localhost:3000/admin/getuser/63acd64846cc70eed673a330").then((res) => {
-      //console.log(res.data);
-      //console.log(user);
+    axios.get("http://localhost:3000/instructor/editProfile").then((res) => {
       setReceivedUserInfo(res.data);
-      managerRef.current.handleRender();
     });
   }, []);
 
   //function to handle submitting changes to the personal info
+  const personalInfoSaveHandler = (data) => {
+    console.log(data);
+    axios
+      .patch(
+        "http://localhost:3000/user/updateuser/638a07cdbc3508481a2d7da9",
+        data,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      )
+      .then((res) => {
+        //handleClickVariant("success");
+      });
+  };
 
   //function to handle the change of password or privacy
-
+  const securityChangeHandler = (data) => {
+    axios
+      .patch(
+        "http://localhost:3000/user/updateuser/638a07cdbc3508481a2d7da9",
+        data,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      )
+      .then((res) => {});
+  };
 
   //function to change/ add credit card information
-  
+  const creditCardChangeHandler = (data) => {
+    axios
+      .post("http://localhost:3000/instructor/", data, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
+      .then((res) => {});
+  };
 
   const changeStageHandler = (newStageName) => {
     if (newStageName === "Profile") {
@@ -111,7 +145,6 @@ const InstructorProfilePage = () => {
 
   var displayedStep;
   if (selectedStage === 1) {
-    console.log(receivedUserInfo);
     displayedStep = (
       <PersonalInfoForm
         email={receivedUserInfo.email}
@@ -119,14 +152,23 @@ const InstructorProfilePage = () => {
         lastName={receivedUserInfo.lastName}
         gender={receivedUserInfo.gender}
         biography={receivedUserInfo.biography}
+        onSaveHandler={personalInfoSaveHandler}
         changeStageHandler={changeStageHandler}
-        ref={managerRef}
       ></PersonalInfoForm>
+    );
+  } else if (selectedStage === 2) {
+    displayedStep = (
+      <Billing
+        changeStageHandler={changeStageHandler}
+        onSaveHandler={creditCardChangeHandler}
+        payments={receivedUserInfo.payments}
+      ></Billing>
     );
   } else if (selectedStage === 3) {
     displayedStep = (
       <PasswordAndPrivacy
         changeStageHandler={changeStageHandler}
+        onSaveHandler={securityChangeHandler}
         selected={receivedUserInfo.emailPrivacy}
       ></PasswordAndPrivacy>
     );

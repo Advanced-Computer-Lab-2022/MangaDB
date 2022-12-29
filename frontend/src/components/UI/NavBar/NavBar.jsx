@@ -14,18 +14,8 @@ import DashboardNavBar from "./DashboardNavBar";
 import AddCourseNavBar from "./AddCourseNavBar";
 import AddUserNavBar from "./AddUserNavBar";
 import RequestedCoursesNavBar from "./RequestedCoursesNavBar";
-import LogoutNavBAr from "./LogoutNavBar";
 
-var navButtons = [
-  { name: "Home", active: true },
-  { name: "My Courses", active: false },
-  { name: "FAQs", active: false },
-  { name: "Logout", active: false },
-  { name: "Profile", active: false },
-
-  
-  {name:"Requested Courses", active:false},
-];
+var navButtons = [{name: "Home", active: true},{name: "My Courses", active: false},{name: "FAQs", active: false},{name: "Cart", active: false},{name: "Profile", active: false}]
 
 const NavBar = (props) => {
   const [open, setOpen] = useState(false);
@@ -114,8 +104,6 @@ const NavBar = (props) => {
               return <AddUserNavBar active={navButton.active} />;
             } else if (navButton.name === "Requested Courses") {
               return <RequestedCoursesNavBar active={navButton.active} />;
-            } else if (navButton.name === "Logout") {
-              return <LogoutNavBAr active={navButton.active} />;
             }
           })}
           <li className="cursor-pointer">

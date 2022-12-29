@@ -25,15 +25,15 @@ export default function ReportsRequestsCard(props) {
       >
         <div>
           <div class="flex relative">
-            <div className="p-2 w-full ">
-              <div className="flex justify-between whitespace-nowrap">
+            <div className="p-2 w-full whitespace-nowrap">
+              <div className="flex justify-between">
                 <h4 class="text-base font-semibold text-gray-700">
-                  {props.userName?props.userName:""}
+                  Mina Magdy
                 </h4>
-                <p class="text-gray-400 text-sm font-semibold ml-4">{props.date}</p>
+                <p class="text-gray-400 text-sm font-semibold">{props.date}</p>
               </div>
               <p class="text-gray-400 text-sm">
-                {props.courseName?"Course: " + props.courseName:""}
+                Course: Web development bootcamp
               </p>
               {props.description ? (
                 <p class="text-gray-400 text-sm">type: {props.type}</p>
@@ -70,13 +70,13 @@ export default function ReportsRequestsCard(props) {
             <button
               aria-describedby={id}
               onClick={handleClick}
-              className={"rounded-full ".concat(props.alreadyHandled ?"opacity-50 cursor-default":"hover:bg-gray-50 ease-in-out duration-300 active:opacity-75 cursor-pointer p-2")}
+              className="rounded-full hover:bg-gray-50 ease-in-out duration-300 active:opacity-75 cursor-pointer p-2"
             >
               <MoreVertIcon className=" opacity-50 " />
-            </button >
+            </button>
             <Popover
               id={id}
-              open={open && !props.alreadyHandled}
+              open={open}
               anchorEl={anchorEl}
               onClose={handleClose}
               anchorOrigin={{
@@ -107,7 +107,7 @@ export default function ReportsRequestsCard(props) {
                       onClick={props.thirdActionClickHandler}
                       className=" mx-10 whitespace-nowrap pb-1"
                     >
-                      Pend request
+                      Mark as pending
                     </button>
                   </div>
                 ) : (

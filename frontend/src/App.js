@@ -17,7 +17,6 @@ import InstructorWallet from "./pages/IntructorWallet";
 import PageNotFound from "./pages/PageNotFound";
 import UnAuthorizedPage from "./pages/UnAuthorizedPage";
 import MyCourses from "./pages/MyCourses";
-import TraineeProfilePage from "./pages/TraineeProfilePage";
 import AdminPage from "./components/Admin/AdminPage";
 import InstructorPage from "./pages/InstructorPage";
 import InstructorDashboard from "./pages/InstructorDashboard";
@@ -46,19 +45,10 @@ function App() {
           element={<CourseViewPage></CourseViewPage>}
         ></Route>
         <Route
-          path="/profileInstructor/:id"
+          path="/profile/:id"
           element={<InstructorProfilePage></InstructorProfilePage>}
         ></Route>
-
-        <Route
-          path="/profileTrainee/:id"
-          element={<TraineeProfilePage></TraineeProfilePage>}
-        ></Route>
-        <Route
-          path="/admin/:id"
-          element={<AdminPage></AdminPage>}
-        ></Route>
-
+        <Route path="/admin/:id" element={<AdminPage></AdminPage>}></Route>
         <Route
           path="courses/:id"
           element={<InstructorCoursesPage></InstructorCoursesPage>}
@@ -82,14 +72,15 @@ function App() {
           path="InstructorPage"
           element={<InstructorPage></InstructorPage>}
         ></Route>
-
+<<<<<<< HEAD
         <Route
           path="instructorDashboard/:id"
           element={<InstructorDashboard></InstructorDashboard>}
         ></Route>
-        
+=======
+        <Route path = "instructorDashboard" element={<InstructorDashboard></InstructorDashboard>}></Route>
         <Route path = "instructorCourseDetails/:id" element={<InstructorCourseDetails></InstructorCourseDetails>}></Route>
-
+>>>>>>> dev
       </Routes>
 
       <Footer></Footer>

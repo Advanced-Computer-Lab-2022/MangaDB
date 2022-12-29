@@ -43,9 +43,87 @@ const IntructorCoursePage = (props) => {
   };
   const [page, setPage] = useState(1);
   const [noOfPages, setNoOfPages] = useState(1);
+
   //funtion to handle the pagination
   const onChangePageHandler = (event, value) => {
     setPage(value);
+  };
+  
+  const [showPromotationModal, setShowPromotationModal] = useState(false);
+  const [promotionId, setPromotionId] = useState(-1);
+  const [promotionCourse, setPromotionCourse] = useState("");
+  const [promotionAmount, setPromotionAmount] = useState("");
+  const [promotionEndDate, setPromotionEndDate] = useState("");
+
+  const openPromotionModal = (id, course) => {
+    setShowPromotationModal(true);
+    setPromotionId(id);
+    setPromotionCourse(course);
+    //console.log(showPromotationModal);
+  };
+
+  const closePromotionModal = () => {
+    setShowPromotationModal(false);
+    setPromotionId(-1);
+  };
+
+  const promotionAmountChangeHandler = (event) => {
+    setPromotionAmount(event.target.value);
+  };
+
+  const promotionEndDateChangeHandler = (event) => {
+    setPromotionEndDate(new Date(event.target.value).toISOString());
+  };
+
+  const promotionSubmitHandler = () => {
+    closePromotionModal();
+    const data = {
+      discount: +promotionAmount / 100,
+      discountStartDate: new Date().toISOString(),
+      discountEndDate: promotionEndDate,
+    };
+    axios
+      .patch(
+        "http://localhost:3000/instructor/creatediscount/" + promotionId,
+        data
+      )
+      .then((res) => {
+        console.log(res);
+      });
+  };
+  
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportId, setReportId] = useState(-1);
+  const [reportCourse, setReportCourse] = useState("");
+  const [currentReportsSelector, setCurrentReportsSelector] = useState({
+    id: 1,
+    name: "Technical",
+  });
+  const [enteredReport, setEnteredReport] = useState("");
+
+  const openReportModal = (id, course) => {
+    setShowReportModal(true);
+    setReportId(id);
+    setReportCourse(course);
+  };
+
+  const closeReportModal = () => {
+    setShowReportModal(false);
+    setReportId(-1)
+  };
+
+  const reportSelectorChangeHandler = (data) => {
+    setCurrentReportsSelector(data);
+  };
+
+  const enteredReportChangeHandler = (event) => {
+    setEnteredReport(event.target.value);
+  };
+
+  const reportSubmitHandler = () => {
+    closeReportModal();
+    //axios post you have the course id..
+    //set the report data..
   };
 
   const ReducerFunction = (state, action) => {
@@ -116,7 +194,7 @@ const IntructorCoursePage = (props) => {
         searchState.filters.price.maxValue;
     }
     var param2 = param;
-    param2 = param2 + (param ? "&" : "?") +  "iId=" + "63a36fd41bd9f2e6163b0481"
+    param2 = param2 + (param ? "&" : "?") + "iId=" + "63a36fd41bd9f2e6163b0481";
     if (!searchState.myCourses) {
       axios.get("http://localhost:3000/course/" + param2).then((res) => {
         dispatchSearch({ type: "COURSES", value: res.data.courses });
@@ -132,7 +210,6 @@ const IntructorCoursePage = (props) => {
         });
     }
   }, [searchState.search, searchState.filters, searchState.myCourses]);
-  console.log(searchState.displayedCourses);
   var rows = searchState.displayedCourses.map((course) => {
     return {
       courseId: course.course._id,
@@ -153,6 +230,7 @@ const IntructorCoursePage = (props) => {
   var cards = rows.map((row) => {
     return (
       <TableListViewCard
+        courseId={row.courseId}
         title={row.courseTitle}
         instructor={row.instructorName}
         subject={row.subject}
@@ -164,6 +242,16 @@ const IntructorCoursePage = (props) => {
         discountedPrice={row.discountedPrice}
         discountEndDate={row.discountEndDate}
         mine={row.mine}
+        promotionCourse={promotionCourse}
+        showPromotationModal={showPromotationModal}
+        promotionId={promotionId}
+        closePromotionModal={closePromotionModal}
+        openPromotionModal={openPromotionModal}
+        showReportModal={showReportModal}
+        //reportData={reportData}
+        reportId={reportId}
+        openReportModal={openReportModal}
+        closeReportModal={closeReportModal}
       />
     );
   });
@@ -188,7 +276,23 @@ const IntructorCoursePage = (props) => {
         prevSearchState={searchState.search}
       />
       <div className="hidden xl:block">
-        <Table rows={rows} />
+        <Table
+          rows={rows}
+          promotionCourse={promotionCourse}
+          showPromotationModal={showPromotationModal}
+          //promotionData={promotionData}
+          promotionAmountChangeHandler={promotionAmountChangeHandler}
+          promotionEndDateChangeHandler={promotionEndDateChangeHandler}
+          promotionSubmitHandler={promotionSubmitHandler}
+          promotionId={promotionId}
+          closePromotionModal={closePromotionModal}
+          openPromotionModal={openPromotionModal}
+          showReportModal={showReportModal}
+          //reportData={reportData}
+          reportId={reportId}
+          openReportModal={openReportModal}
+          closeReportModal={closeReportModal}
+        />
       </div>
       <div className="flex justify-around flex-wrap xl:hidden">{cards}</div>
       {searchState.displayedCourses.length !== 0 && (

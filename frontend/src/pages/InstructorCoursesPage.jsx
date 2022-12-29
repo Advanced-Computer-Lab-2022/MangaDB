@@ -106,6 +106,15 @@ const IntructorCoursePage = (props) => {
     closeReportModal();
     //axios post you have the course id..
     //set the report data..
+    const data = {
+      userId: "63a36fd41bd9f2e6163b0481",
+      courseId: reportId,
+      type: currentReportsSelector.name,
+      description: enteredReport,
+    };
+    axios.post("http://localhost:3000/problem/", data).then((res) => {
+      console.log("report submitted successfully");
+    });
   };
 
   //funtion to handle the pagination

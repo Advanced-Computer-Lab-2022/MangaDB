@@ -1,9 +1,9 @@
-import React, { useState, useEffect, Fragment } from "react";
 import DropDown from "../UI/DropDown";
-import PrimaryButton from "../UI/PrimaryButton";
 import Countdown from "react-countdown";
 const TableRows = (props) => {
   const rows = props.rows.map((row, rowIdx) => {
+    console.log(row.discountEndDate)
+
     const totalHours = Math.round(+row.totalMins / 60);
     const items =
       row.mine === false
@@ -11,11 +11,9 @@ const TableRows = (props) => {
         : row.discount !== 0
         ? ["View Course", "Report a Problem"]
         : ["View Course", "Report a Problem", "Add Promotion"];
-    
-    const date = props.promotionId === row.courseId ? props.promotionEndDate : row.discountEndDate;
     return (
       <tr
-        key={row.courseId}
+        key={row._id}
         className={`w-full ${rowIdx % 2 === 0 ? "bg-white" : "bg-gray-50"}`}
       >
         <td className="text-center my-4 min-h-[47px] h-fit mx-auto max-w-[20rem] truncate px-2 font-medium">
@@ -80,7 +78,7 @@ const TableRows = (props) => {
           <div className="text-xs">
             Expires In:{" "}
             <span className=" text-red-600">
-              <Countdown date={date} />
+                <Countdown date={row.discountEndDate} key={row.discountEndDate} />
             </span>
           </div>
         </td>

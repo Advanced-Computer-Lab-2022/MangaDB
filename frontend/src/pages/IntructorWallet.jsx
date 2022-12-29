@@ -1,6 +1,7 @@
 import NavBar from "../components/UI/NavBar/NavBar";
 import InstructorWalletCard from "../components/Wallet/InstructorWalletCard";
 import Stats from "../components/Wallet/Statistics/Stats";
+import axios from "axios";
 import {
   VictoryBar,
   VictoryChart,
@@ -68,16 +69,18 @@ const InstructorWallet = () => {
   var yearRevenue = 0;
   var prevYearRevenue = 0;
 
+  //get the current date
   const now = new Date();
   var month = now.getMonth();
   var year = now.getFullYear();
 
-  //for the 2 graphs
+  //for the barchart
   var year1 = 0;
   var year2 = 0;
   var year3 = 0;
   var year4 = 0;
 
+  //for the piechart
   var jan = 0;
   var feb = 0;
   var mar = 0;
@@ -91,9 +94,6 @@ const InstructorWallet = () => {
   var nov = 0;
   var dec = 0;
 
-  //flag to handle the first year display
-  var flag = false;
-
   //calculate some stats
   for (var i = 0; i < receivedData.history.length; i++) {
     if (month + 1 === +receivedData.history[i].month) {
@@ -106,7 +106,6 @@ const InstructorWallet = () => {
       yearRevenue = yearRevenue + +receivedData.history[i].amount;
     }
     if (year - 1 === +receivedData.history[i].year) {
-      flag = true;
       prevYearRevenue = prevYearRevenue + +receivedData.history[i].amount;
     }
     //handle the first barchart
@@ -178,7 +177,9 @@ const InstructorWallet = () => {
 
   useEffect(() => {
     //axios to get the data..
-
+    axios.get('http://localhost:3000/instructor/amountowed/63a36fd41bd9f2e6163b0481').then(res => {
+      console.log(res)
+    })
     setTimeout(() => {
       setData2([
         { x: 1, y: 2, label: "Jan" },

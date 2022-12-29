@@ -38,8 +38,8 @@ const Stats = (props) => {
   ];
   return (
     <div className="ml-2">
-      <h3 className="text-lg leading-6 font-medium text-gray-900">
-        Performance
+      <h3 className="text-lg leading-6 ml-2 text-gray-900 font-semibold">
+        Performance Compared To Previous Year
       </h3>
 
       <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">

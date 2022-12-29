@@ -18,6 +18,7 @@ import InstructorWallet from "./pages/IntructorWallet";
 import PageNotFound from "./pages/PageNotFound";
 import UnAuthorizedPage from "./pages/UnAuthorizedPage";
 import MyCourses from "./pages/MyCourses";
+import TraineeProfilePage from "./pages/TraineeProfilePage";
 import AdminPage from "./components/Admin/AdminPage";
 import InstructorPage from "./pages/InstructorPage";
 import InstructorDashboard from "./pages/InstructorDashboard";
@@ -45,8 +46,12 @@ function App() {
           element={<CourseViewPage></CourseViewPage>}
         ></Route>
         <Route
-          path="/profile/:id"
+          path="/profileInstructor/:id"
           element={<InstructorProfilePage></InstructorProfilePage>}
+        ></Route>
+        <Route
+          path="/profileTrainee/:id"
+          element={<TraineeProfilePage></TraineeProfilePage>}
         ></Route>
         <Route
           path="/admin/:id"

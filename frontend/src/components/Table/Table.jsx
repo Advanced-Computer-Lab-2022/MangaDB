@@ -2,7 +2,7 @@ import React from "react";
 import TableHeader from "./TableHeader";
 import TableRows from "./TableRows";
 import Modal from "../UI/Modal";
-import { useState, Fragment } from "react";
+import {  Fragment } from "react";
 import SecondaryButton from "../UI/SecondaryButton";
 import { Divider } from "@mui/material";
 
@@ -69,8 +69,9 @@ const Table = (props) => {
           </thead>
           <tbody className="w-full">
             <TableRows
-              promotionData={props.promotionData}
               promotionId={props.promotionId}
+              promotionAmount={props.promotionAmount}
+              promotionEndDate={props.promotionEndDate}
               closePromotionModal={props.closePromotionModal}
               openPromotionModal={props.openPromotionModal}
               reportData={props.reportData}

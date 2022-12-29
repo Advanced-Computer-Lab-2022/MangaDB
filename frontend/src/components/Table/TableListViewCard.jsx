@@ -1,4 +1,3 @@
-import PrimaryButton from "../UI/PrimaryButton";
 import Stars from "../UI/Stars";
 import Countdown from "react-countdown";
 import DropDown from "../UI/DropDown";
@@ -101,13 +100,12 @@ const TableListViewCard = (props) => {
                 ? "_"
                 : props.discount === 1
                 ? "FREE"
-                : props.discountedPrice}{" "}
+                : props.discountedPrice}
               {props.discount === 1 ? "" : "$"}
               <span className="ml-2">
                 Expires In:{" "}
                 <span className=" text-red-600">
-                  {" "}
-                  <Countdown date={props.discountEndDate} />{" "}
+                  <Countdown date={props.discountEndDate} key ={props.discountEndDate} />
                 </span>
               </span>
             </div>

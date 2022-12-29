@@ -14,10 +14,10 @@ const Stats = (props) => {
     {
       id: 1,
       name: "Total Purchases",
-      stat: "71,897",
+      stat: props.yearPurchases,
       icon: UsersIcon,
-      change: "122",
-      changeType: "increase",
+      change: props.purchasesChange,
+      changeType: props.purchasesDirection,
     },
     {
       id: 2,

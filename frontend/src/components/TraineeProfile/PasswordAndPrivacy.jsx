@@ -10,11 +10,14 @@ import {
   KeyIcon,
   UserCircleIcon,
   StarIcon,
+  ExclamationIcon
 } from "@heroicons/react/outline";
 
 const subNavigation = [
   { name: "Profile", icon: UserCircleIcon, current: false },
   { name: "Security & Privacy", icon: KeyIcon, current: true },
+  { name: "Requests", icon: ExclamationIcon, current: false },  
+
 ];
 
 const settings = [
@@ -149,7 +152,7 @@ const PasswordAndPrivacy = (props) => {
 
     axios
       .patch(
-        "http://localhost:3000/user/changepassword/63acd64846cc70eed673a330",
+        "http://localhost:3000/user/changepassword/63a41b632334fd21e6fab392",
         saveData /*,
         {
           headers: {

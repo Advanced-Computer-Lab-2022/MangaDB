@@ -1,8 +1,8 @@
 import { useState, useEffect,useRef } from "react";
-import PersonalInfoForm from "../components/Profile/PersonalInfoForm";
-import PasswordAndPrivacy from "../components/Profile/PasswordAndPrivacy";
-import Billing from "../components/Profile/Billing";
+import PersonalInfoForm from "../components/TraineeProfile/PersonalInfoForm";
+import PasswordAndPrivacy from "../components/TraineeProfile/PasswordAndPrivacy";
 import Reviews from "../components/Profile/Reviews/Reviews";
+import Reqests from "../components/TraineeProfile/Requests";
 import axios from "axios";
 import { SnackbarProvider, useSnackbar } from "notistack";
 //stub for the userPersonal Info Received
@@ -67,37 +67,44 @@ const reviews = [
   },
 ];
 
-const InstructorProfilePage = () => {
+const TraineeProfilePage = () => {
   const [receivedUserInfo, setReceivedUserInfo] = useState(user);
   const [selectedStage, setSelectedStage] = useState(1);
 
   const managerRef = useRef();
+
   //gather the userInfo
  
-//change it to auth later
-  
+
   useEffect(() => {
-    axios.get("http://localhost:3000/admin/getuser/63acd64846cc70eed673a330").then((res) => {
+    axios.get("http://localhost:3000/admin/getuser/63a41b632334fd21e6fab392").then((res) => {
       //console.log(res.data);
       //console.log(user);
       setReceivedUserInfo(res.data);
+      console.log(res.data);
       managerRef.current.handleRender();
     });
   }, []);
-
   //function to handle submitting changes to the personal info
 
   //function to handle the change of password or privacy
 
 
   //function to change/ add credit card information
-  
+  const creditCardChangeHandler = (data) => {
+    axios
+      .post("http://localhost:3000/instructor/", data, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
+      .then((res) => {});
+  };
 
   const changeStageHandler = (newStageName) => {
     if (newStageName === "Profile") {
       setSelectedStage(1);
-    } else if (newStageName === "Billing") {
-      setSelectedStage(2);
+    
     } else if (newStageName === "Security & Privacy") {
       setSelectedStage(3);
     } else {
@@ -111,7 +118,6 @@ const InstructorProfilePage = () => {
 
   var displayedStep;
   if (selectedStage === 1) {
-    console.log(receivedUserInfo);
     displayedStep = (
       <PersonalInfoForm
         email={receivedUserInfo.email}
@@ -132,11 +138,7 @@ const InstructorProfilePage = () => {
     );
   } else {
     displayedStep = (
-      <Reviews
-        changeStageHandler={changeStageHandler}
-        reviewReportHandler={reviewReportHandler}
-        reviews={reviews}
-      ></Reviews>
+      <Reqests changeStageHandler={changeStageHandler} ></Reqests>
     );
   }
   return (
@@ -145,4 +147,4 @@ const InstructorProfilePage = () => {
     </SnackbarProvider>
   );
 };
-export default InstructorProfilePage;
+export default TraineeProfilePage;

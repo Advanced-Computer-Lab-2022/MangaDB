@@ -1,4 +1,4 @@
-import { Fragment, useState, useImperativeHandle, forwardRef,useEffect } from "react";
+import { Fragment, useState ,useImperativeHandle,forwardRef} from "react";
 import TertiaryButton from "../UI/TertiaryButton";
 import countryList from "react-select-country-list";
 import * as React from "react";
@@ -14,6 +14,7 @@ import {
   KeyIcon,
   UserCircleIcon,
   StarIcon,
+  ExclamationIcon
 } from "@heroicons/react/outline";
 
 function emailRegex(email) {
@@ -25,6 +26,7 @@ function emailRegex(email) {
 const subNavigation = [
   { name: "Profile", icon: UserCircleIcon, current: true },
   { name: "Security & Privacy", icon: KeyIcon, current: false },
+  { name: "Requests", icon: ExclamationIcon, current: false },  
 ];
 
 function classNames(...classes) {
@@ -41,12 +43,10 @@ for (var i = 0; i < countryLabels.length; i++) {
   };
 }
 
-const PersonalInfoForm = forwardRef((props, ref) => {
+const PersonalInfoForm = forwardRef ((props,ref) => {
   const defaultGender = props.gender ? props.gender : "Male";
   const defaultEmail = props.email ? props.email : "";
-  console.log(props.biography);
   const defaultBiography = props.biography ? props.biography : "";
-  console.log(defaultBiography);
   const defaultFirstName = props.firstName ? props.firstName : "";
   const defaultLastName = props.lastName ? props.lastName : "";
 
@@ -64,8 +64,6 @@ const PersonalInfoForm = forwardRef((props, ref) => {
   const [emptyLastName, setEmptyLastName] = useState(false);
   const [emailValid, setEmailValid] = useState(true);
   const [warning, setWarning] = useState("");
-
-  const [render, setRender] = useState(false);
 
   const CountryHandler = (event) => {
     console.log(event.target.outerText.split("("));
@@ -94,7 +92,7 @@ const PersonalInfoForm = forwardRef((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     handleRender() {
-     setBiography(defaultBiography);
+      setBiography(defaultBiography);
       setFirstName(defaultFirstName);
       setLastName(defaultLastName);
       setEmail(defaultEmail);
@@ -102,8 +100,6 @@ const PersonalInfoForm = forwardRef((props, ref) => {
     },
   }));
 
-  useEffect(() => {
-  }, [render]);
   const onSaveHandler = (event) => {
     event.preventDefault();
     var currentWarning = "";
@@ -144,20 +140,20 @@ const PersonalInfoForm = forwardRef((props, ref) => {
       biography: biography,
       gender: selectedGender,
     };
-
+    
+    
     axios
-      .patch(
-        "http://localhost:3000/user/updateuser/63acd64846cc70eed673a330",
-        saveData /*, {
+      .patch("http://localhost:3000/user/updateuser/63a41b632334fd21e6fab392", saveData/*, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
           "content-type": "text/json",
         },
-      }*/
-      )
+      }*/)
       .then((res) => {
         handleClickVariant("success");
       });
+    
+      
   };
 
   const { enqueueSnackbar } = useSnackbar();

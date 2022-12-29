@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../UI/Modal";
 import Divider from "@mui/material/Divider";
 import Video from "../Video/Video";
+import { useSnackbar } from "notistack";
+
 const AddToCartCard = (props) => {
   const [ModalShown, setModalShown] = useState(false);
   const hideModalHandler = () => {
@@ -15,7 +17,19 @@ const AddToCartCard = (props) => {
     setModalShown(true);
   };
   const navigate = useNavigate();
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleClickVariant = (variant) => {
+    if (variant === "success") {
+      enqueueSnackbar("Course has been requested successfuly", { variant });
+    }
+  };
   const clickHandler = () => {
+    if(props.corp){
+      //end point for enroll corporate
+      handleClickVariant("success");
+    }
     if (props.userRegister) navigate("/courseview/1", { state: props.id });
   };
   const displayedVideo = (
@@ -62,9 +76,10 @@ const AddToCartCard = (props) => {
         </svg>
 
         <SecondaryButton
-          onClick={clickHandler}
-          text={props.userRegister ? "Go To Course" : "Add To Cart"}
-          className="w-full"
+          onClick={!props.requested?clickHandler:null}
+          text={props.requested?"Requested":(props.corp?"Request Access":(props.userRegister ? "Go To Course" : "Add To Cart"))}
+          className="w-full "
+          disabled={props.requested}
         />
       </div>
     </Fragment>

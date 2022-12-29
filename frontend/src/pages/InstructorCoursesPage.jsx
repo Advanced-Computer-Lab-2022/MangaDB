@@ -60,14 +60,14 @@ const IntructorCoursePage = (props) => {
       const newState = { ...defaultState, myCourses: !state.myCourses };
       return newState;
     }
-  };  
+  };
 
   const [searchState, dispatchSearch] = useReducer(
     ReducerFunction,
     defaultState
   );
   const [showFilters, setShowFilters] = useState(false);
- 
+
   const [showPromotationModal, setShowPromotationModal] = useState(false);
   const [promotionId, setPromotionId] = useState(-1);
   const [promotionCourse, setPromotionCourse] = useState("");
@@ -91,7 +91,7 @@ const IntructorCoursePage = (props) => {
 
   const closeReportModal = () => {
     setShowReportModal(false);
-    setReportId(-1)
+    setReportId(-1);
   };
 
   const reportSelectorChangeHandler = (data) => {
@@ -108,8 +108,8 @@ const IntructorCoursePage = (props) => {
     //set the report data..
   };
 
-   //funtion to handle the pagination
-   const onChangePageHandler = (event, value) => {
+  //funtion to handle the pagination
+  const onChangePageHandler = (event, value) => {
     setPage(value);
   };
 
@@ -122,7 +122,6 @@ const IntructorCoursePage = (props) => {
 
   const closePromotionModal = () => {
     setShowPromotationModal(false);
-    
   };
 
   const promotionAmountChangeHandler = (event) => {
@@ -132,7 +131,7 @@ const IntructorCoursePage = (props) => {
   const promotionEndDateChangeHandler = (event) => {
     setPromotionEndDate(new Date(event.target.value).toISOString());
   };
- 
+
   const showFiltersHandler = () => {
     setShowFilters(true);
   };
@@ -152,19 +151,21 @@ const IntructorCoursePage = (props) => {
         data
       )
       .then((res) => {
-        var courses = [] ;
-        for (var i = 0; i < searchState.displayedCourses.length ; i++) {
-          console.log(searchState.displayedCourses[i].course._id)
-          console.log(searchState.displayedCourses[i].course._id !== res.data._id)
-          if(searchState.displayedCourses[i].course._id !== res.data._id){
-            courses.push(searchState.displayedCourses[i])
-          }
-          else{
-            var temp = {course: res.data , mine:true}
-            courses.push(temp)
+        var courses = [];
+        for (var i = 0; i < searchState.displayedCourses.length; i++) {
+          console.log(searchState.displayedCourses[i].course._id);
+          console.log(
+            searchState.displayedCourses[i].course._id !== res.data._id
+          );
+          if (searchState.displayedCourses[i].course._id !== res.data._id) {
+            courses.push(searchState.displayedCourses[i]);
+          } else {
+            var temp = { course: res.data, mine: true };
+            courses.push(temp);
           }
         }
-        dispatchSearch({ type: "COURSES", value: courses })});
+        dispatchSearch({ type: "COURSES", value: courses });
+      });
   };
   const searchBarChangeHandler = (searchValue) => {
     dispatchSearch({ type: "SEARCH", value: searchValue });
@@ -259,9 +260,11 @@ const IntructorCoursePage = (props) => {
         promotionEndDate={promotionEndDate}
         closePromotionModal={closePromotionModal}
         openPromotionModal={openPromotionModal}
+        reportCourse={reportCourse}
         showReportModal={showReportModal}
-        //reportData={reportData}
         reportId={reportId}
+        currentReportsSelector={currentReportsSelector}
+        enteredReport={enteredReport}
         openReportModal={openReportModal}
         closeReportModal={closeReportModal}
       />
@@ -292,7 +295,6 @@ const IntructorCoursePage = (props) => {
           rows={rows}
           promotionCourse={promotionCourse}
           showPromotationModal={showPromotationModal}
-          //promotionData={promotionData}
           promotionAmountChangeHandler={promotionAmountChangeHandler}
           promotionEndDateChangeHandler={promotionEndDateChangeHandler}
           promotionSubmitHandler={promotionSubmitHandler}
@@ -301,9 +303,14 @@ const IntructorCoursePage = (props) => {
           promotionEndDate={promotionEndDate}
           closePromotionModal={closePromotionModal}
           openPromotionModal={openPromotionModal}
+          reportSelectorChangeHandler={reportSelectorChangeHandler}
+          enteredReportChangeHandler={enteredReportChangeHandler}
+          reportSubmitHandler={reportSubmitHandler}
+          reportCourse={reportCourse}
           showReportModal={showReportModal}
-          //reportData={reportData}
           reportId={reportId}
+          currentReportsSelector={currentReportsSelector}
+          enteredReport={enteredReport}
           openReportModal={openReportModal}
           closeReportModal={closeReportModal}
         />

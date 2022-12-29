@@ -8,7 +8,7 @@ export default function SuccessfulPayment() {
     const navigate = useNavigate()
 
   useEffect(() => {
-        //call endpoint of payment
+        //call endpoint of payment "enroll"
     /*setTimeout(() => {
       navigate('/home/1')
     }, 5000)*/

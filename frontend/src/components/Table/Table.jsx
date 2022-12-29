@@ -2,12 +2,12 @@ import React from "react";
 import TableHeader from "./TableHeader";
 import TableRows from "./TableRows";
 import Modal from "../UI/Modal";
-import {  Fragment } from "react";
+import { Fragment } from "react";
 import SecondaryButton from "../UI/SecondaryButton";
 import { Divider } from "@mui/material";
+import ReportTypeSelector from "../CourseView/ReportTypeSelector";
 
 const Table = (props) => {
-
   return (
     <Fragment>
       {props.showPromotationModal && (
@@ -15,7 +15,7 @@ const Table = (props) => {
           <div>
             <div className="grid grid-cols-3 mb-2 font-semibold text-lg">
               <div></div>
-              <div className="flex justify-center">{props.promotionCourse}</div>
+              <div className="flex justify-center text-center">{props.promotionCourse}</div>
               <div className="flex justify-end">
                 <button
                   className="hover:text-red-600"
@@ -59,7 +59,46 @@ const Table = (props) => {
       )}
       {props.showReportModal && (
         <Modal onClick={props.closeReportModal}>
-          <div>{props.reportCourse}</div>
+          <div>
+            <div className="grid grid-cols-3 mb-2 font-semibold text-lg">
+              <div></div>
+              <div className="flex justify-center text-center">{props.reportCourse}</div>
+              <div className="flex justify-end">
+                <button
+                  className="hover:text-red-600"
+                  onClick={props.closeReportModal}
+                >
+                  x
+                </button>
+              </div>
+            </div>
+            <Divider />
+            <div className="mt-4">
+              <div className="text-lg font-medium">
+                Type:
+              </div>
+              <ReportTypeSelector
+                selected={props.currentReportsSelector}
+                selectedChangeHandler={props.reportSelectorChangeHandler}
+              />
+            </div>
+            <div>
+              <div className="text-lg font-medium mt-4">
+                Report Your Problem:
+              </div>
+              <textarea
+                  className="w-full px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
+            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
+                  onChange={props.enteredReportChangeHandler}
+                />
+            </div>
+          </div>
+          <div className="flex justify-end mt-4">
+            <SecondaryButton
+              text="Submit"
+              onClick={props.reportSubmitHandler}
+            ></SecondaryButton>
+          </div>
         </Modal>
       )}
       <div>

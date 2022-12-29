@@ -9,6 +9,11 @@ import userIcon from "../../Assets/Images/userIcon.svg";
 import PasswordField from "../Login-SignUp/PasswordField";
 import { useSnackbar } from "notistack";
 import logo from "../../Assets/Images/Logo.svg";
+const addUserReqBody = {
+  userName: "JHVJHVGH",
+  password: "JGYUGU",
+  role: "ADMIN",
+};
 
 export default function AddUserForm(props) {
   const [type, setType] = useState("ADMIN");
@@ -19,7 +24,8 @@ export default function AddUserForm(props) {
   const [warning, setWarning] = useState("");
 
   const setTypeHandler = (e) => {
-    setType(e.target.value.split(" ")[0].toUpperCase());
+    addUserReqBody.role = e.target.value.toUpperCase().split(" ")[0];
+    setType(e.target.value);
   };
   const { enqueueSnackbar } = useSnackbar();
   const handleClickVariant = (variant) => {
@@ -35,6 +41,7 @@ export default function AddUserForm(props) {
       password: PasswordRef.current.value,
       role: type
     };
+     console.log(sentData);
 
     if (UserNameRef.current.value === "" || PasswordRef.current.value === "") {
       if (UserNameRef.current.value === "") {
@@ -51,7 +58,6 @@ export default function AddUserForm(props) {
       }
       return;
     } else {
-      //console.log(sentData);
       axios
         .post("http://localhost:3000/admin/adduser", sentData)
         .then((res) => {
@@ -59,8 +65,7 @@ export default function AddUserForm(props) {
         })
         .catch((error) => {
           if (
-            +error.message.split(" ")[error.message.split(" ").length - 1] ===
-            400
+            +error.message.split(" ")[error.message.split(" ").length - 1] ===400
           ) {
             setEmptyUserName(true);
             setWarning("Username already exists");
@@ -75,7 +80,7 @@ export default function AddUserForm(props) {
         <Card className="flex flex-col space-y-12 justify-center items-center  outline-primaryBlue  p-16  rounded-3xl">
           <div
             class={
-              emptyPassword || emptyUserName
+              emptyPassword || emptyUserName 
                 ? "p-4 mt-3 text-red-900 bg-red-50 border rounded-md"
                 : "hidden"
             }

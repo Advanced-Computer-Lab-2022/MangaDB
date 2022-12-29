@@ -1,4 +1,4 @@
-import { Fragment, useState, useImperativeHandle, forwardRef,useEffect } from "react";
+import { Fragment, useState } from "react";
 import TertiaryButton from "../UI/TertiaryButton";
 import countryList from "react-select-country-list";
 import * as React from "react";
@@ -8,7 +8,6 @@ import Autocomplete from "@mui/material/Autocomplete";
 import SecondaryButton from "../UI/SecondaryButton";
 import { Disclosure } from "@headlessui/react";
 import { useSnackbar } from "notistack";
-import axios from "axios";
 import {
   CreditCardIcon,
   KeyIcon,
@@ -16,15 +15,12 @@ import {
   StarIcon,
 } from "@heroicons/react/outline";
 
-function emailRegex(email) {
-  const re =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(String(email).toLowerCase());
-}
 
 const subNavigation = [
   { name: "Profile", icon: UserCircleIcon, current: true },
+  { name: "Billing", icon: CreditCardIcon, current: false },
   { name: "Security & Privacy", icon: KeyIcon, current: false },
+  { name: "Reviews & Ratings", icon: StarIcon, current: false },
 ];
 
 function classNames(...classes) {
@@ -41,12 +37,10 @@ for (var i = 0; i < countryLabels.length; i++) {
   };
 }
 
-const PersonalInfoForm = forwardRef((props, ref) => {
+const PersonalInfoForm = (props) => {
   const defaultGender = props.gender ? props.gender : "Male";
   const defaultEmail = props.email ? props.email : "";
-  console.log(props.biography);
   const defaultBiography = props.biography ? props.biography : "";
-  console.log(defaultBiography);
   const defaultFirstName = props.firstName ? props.firstName : "";
   const defaultLastName = props.lastName ? props.lastName : "";
 
@@ -59,13 +53,6 @@ const PersonalInfoForm = forwardRef((props, ref) => {
   const [biography, setBiography] = useState(defaultBiography);
   const [firstName, setFirstName] = useState(defaultFirstName);
   const [lastName, setLastName] = useState(defaultLastName);
-  const [emptyEmail, setEmptyEmail] = useState(false);
-  const [emptyFirstName, setEmptyFirstName] = useState(false);
-  const [emptyLastName, setEmptyLastName] = useState(false);
-  const [emailValid, setEmailValid] = useState(true);
-  const [warning, setWarning] = useState("");
-
-  const [render, setRender] = useState(false);
 
   const CountryHandler = (event) => {
     console.log(event.target.outerText.split("("));
@@ -92,80 +79,24 @@ const PersonalInfoForm = forwardRef((props, ref) => {
     setLastName(event.target.value);
   };
 
-  useImperativeHandle(ref, () => ({
-    handleRender() {
-     setBiography(defaultBiography);
-      setFirstName(defaultFirstName);
-      setLastName(defaultLastName);
-      setEmail(defaultEmail);
-      setSelectedGender(defaultGender);
-    },
-  }));
-
-  useEffect(() => {
-  }, [render]);
   const onSaveHandler = (event) => {
     event.preventDefault();
-    var currentWarning = "";
-    if (email === "") {
-      setEmptyEmail(true);
-      currentWarning = "please fill the following fields ";
-    } else {
-      setEmptyEmail(false);
-    }
-    if (firstName === "") {
-      setEmptyFirstName(true);
-      currentWarning = "please fill the following fields ";
-    } else {
-      setEmptyFirstName(false);
-    }
-    if (lastName === "") {
-      setEmptyLastName(true);
-      currentWarning = "please fill the following fields ";
-    } else {
-      setEmptyLastName(false);
-    }
-    if (emailRegex(email) === false && email !== "") {
-      setEmailValid(false);
-      currentWarning = "please enter a valid email ";
-    } else {
-      setEmailValid(true);
-    }
-    setWarning(currentWarning);
-    if (currentWarning !== "") {
-      window.scrollTo(0, 0, "smooth");
-      return;
-    }
-
     const saveData = {
-      email: email,
-      firstName: firstName,
-      lastName: lastName,
-      biography: biography,
-      gender: selectedGender,
-    };
+      email:email,
+      firstName:firstName,
+      lastName:lastName,
+      biography:biography,
+      gender:selectedGender
 
-    axios
-      .patch(
-        "http://localhost:3000/user/updateuser/63acd64846cc70eed673a330",
-        saveData /*, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
-        },
-      }*/
-      )
-      .then((res) => {
-        handleClickVariant("success");
-      });
+    }
+    props.onSaveHandler(saveData);
+    //handleClickVariant("success");
   };
 
   const { enqueueSnackbar } = useSnackbar();
   const handleClickVariant = (variant) => {
     //console.log("here");
-    enqueueSnackbar("Personal information has been updated successfuly  ", {
-      variant,
-    });
+    enqueueSnackbar("User has been added successfuly  ", { variant });
   };
   return (
     <div>
@@ -234,10 +165,10 @@ const PersonalInfoForm = forwardRef((props, ref) => {
             <div className="divide-y divide-gray-200 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x">
               <aside className="py-6 lg:col-span-3">
                 <div className="space-y-1">
-                  {subNavigation.map((item, index) => (
+                  {subNavigation.map((item,index) => (
                     <div
                       key={item.name}
-                      onClick={props.changeStageHandler.bind(null, item.name)}
+                      onClick={props.changeStageHandler.bind(null,item.name)}
                       className={classNames(
                         item.current
                           ? "bg-teal-50 border-teal-500 text-teal-700 hover:bg-teal-50 hover:text-teal-700"
@@ -275,37 +206,6 @@ const PersonalInfoForm = forwardRef((props, ref) => {
                       what you share.
                     </p>
                   </div>
-                  <div
-                    class={
-                      emptyEmail ||
-                      emptyFirstName ||
-                      emptyLastName ||
-                      !emailValid
-                        ? "p-4 mt-3 text-red-900 bg-red-50 border rounded-md"
-                        : "hidden"
-                    }
-                  >
-                    <div class="flex justify-between flex-wrap">
-                      <div class="w-0 flex-1 flex">
-                        <div class="mr-3 pt-1">
-                          <svg
-                            width="26"
-                            height="26"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="currentColor"
-                          >
-                            <path d="M13.6086 3.247l8.1916 15.8c.0999.2.1998.5.1998.8 0 1-.7992 1.8-1.7982 1.8H3.7188c-.2997 0-.4995-.1-.7992-.2-.7992-.5-1.1988-1.5-.6993-2.4 5.3067-10.1184 8.0706-15.385 8.2915-15.8.3314-.6222.8681-.8886 1.4817-.897.6135-.008 1.273.2807 1.6151.897zM12 18.95c.718 0 1.3-.582 1.3-1.3 0-.718-.582-1.3-1.3-1.3-.718 0-1.3.582-1.3 1.3 0 .718.582 1.3 1.3 1.3zm-.8895-10.203v5.4c0 .5.4.9.9.9s.9-.4.9-.9v-5.3c0-.5-.4-.9-.9-.9s-.9.4-.9.8z"></path>
-                          </svg>
-                        </div>
-                        <div>
-                          <h4 class="text-md mt-[5px] leading-6 font-medium">
-                            {warning}
-                          </h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
 
                   <div className="mt-6 flex flex-col lg:flex-row">
                     <div className="flex-grow space-y-6">
@@ -314,7 +214,7 @@ const PersonalInfoForm = forwardRef((props, ref) => {
                           htmlFor="email"
                           className="block text-sm font-medium text-gray-700"
                         >
-                          Email <span className="text-red-500">*</span>
+                          Email
                         </label>
                         <div className="mt-1 rounded-md shadow-sm flex">
                           <input
@@ -324,9 +224,7 @@ const PersonalInfoForm = forwardRef((props, ref) => {
                             name="email"
                             id="email"
                             autoComplete="username"
-                            className={"focus:ring-sky-500 focus:border-sky-500 flex-grow block w-full min-w-0  rounded-md sm:text-sm border-gray-300 ".concat(
-                              !emailValid || emptyEmail ? "border-red-300 " : ""
-                            )}
+                            className="focus:ring-sky-500 focus:border-sky-500 flex-grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300"
                           />
                         </div>
                       </div>
@@ -360,18 +258,16 @@ const PersonalInfoForm = forwardRef((props, ref) => {
                         htmlFor="first-name"
                         className="block text-sm font-medium text-gray-700"
                       >
-                        First name <span className="text-red-500">*</span>
+                        First name
                       </label>
                       <input
                         onChange={firstNameChangeHandler}
-                        value={firstName}
+                        value ={firstName}
                         type="text"
                         name="first-name"
                         id="first-name"
                         autoComplete="given-name"
-                        className={"mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm ".concat(
-                          emptyFirstName ? "border-red-300 " : ""
-                        )}
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
                       />
                     </div>
 
@@ -380,7 +276,7 @@ const PersonalInfoForm = forwardRef((props, ref) => {
                         htmlFor="last-name"
                         className="block text-sm font-medium text-gray-700"
                       >
-                        Last name <span className="text-red-500">*</span>
+                        Last name
                       </label>
                       <input
                         value={lastName}
@@ -389,9 +285,7 @@ const PersonalInfoForm = forwardRef((props, ref) => {
                         name="last-name"
                         id="last-name"
                         autoComplete="family-name"
-                        className={"mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm ".concat(
-                          emptyLastName ? "border-red-300 " : ""
-                        )}
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
                       />
                     </div>
 
@@ -474,5 +368,5 @@ const PersonalInfoForm = forwardRef((props, ref) => {
       </main>
     </div>
   );
-});
+};
 export default PersonalInfoForm;

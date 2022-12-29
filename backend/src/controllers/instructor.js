@@ -280,7 +280,7 @@ exports.getMoneyOwed = async (req, res) => {
         let date =invoiceData[i].invoiceDate.toISOString().split('-');
          year = parseInt(date[0] ) ;
          month = date[1];
-        if(month!=prevMonth&&prevMonth!=0)
+        if((month!=prevMonth&&prevMonth!=0)||(prevYear!=year&&prevYear!=0))
         {
             history.push({month:prevMonth,year:prevYear,amount:total.toFixed(2)});
             total=0;

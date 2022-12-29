@@ -7,7 +7,6 @@ import SearchResultsPage from "./pages/SearchResultsPage";
 import InstructorProfilePage from "./pages/InstructorProfilePage";
 import CourseDetailsPage from "./pages/CourseDetailsPage";
 import CourseViewPage from "./pages/CourseViewPage";
-import AdminAddNewUser from "./pages/AdminAddNewUser";
 import InstructorCoursesPage from "./pages/InstructorCoursesPage";
 import AddCoursePage from "./pages/AddCoursePage";
 import SignUp from "./pages/SignUp";
@@ -22,6 +21,7 @@ import TraineeProfilePage from "./pages/TraineeProfilePage";
 import AdminPage from "./components/Admin/AdminPage";
 import InstructorPage from "./pages/InstructorPage";
 import InstructorDashboard from "./pages/InstructorDashboard";
+import InstructorCourseDetails from "./pages/InstructorCourseDetails";
 function App() {
   return (
     <Fragment>
@@ -49,6 +49,7 @@ function App() {
           path="/profileInstructor/:id"
           element={<InstructorProfilePage></InstructorProfilePage>}
         ></Route>
+
         <Route
           path="/profileTrainee/:id"
           element={<TraineeProfilePage></TraineeProfilePage>}
@@ -57,6 +58,7 @@ function App() {
           path="/admin/:id"
           element={<AdminPage></AdminPage>}
         ></Route>
+
         <Route
           path="courses/:id"
           element={<InstructorCoursesPage></InstructorCoursesPage>}
@@ -80,7 +82,14 @@ function App() {
           path="InstructorPage"
           element={<InstructorPage></InstructorPage>}
         ></Route>
-        <Route path = "instructorDashboard" element={<InstructorDashboard></InstructorDashboard>}></Route>
+
+        <Route
+          path="instructorDashboard/:id"
+          element={<InstructorDashboard></InstructorDashboard>}
+        ></Route>
+        
+        <Route path = "instructorCourseDetails/:id" element={<InstructorCourseDetails></InstructorCourseDetails>}></Route>
+
       </Routes>
 
       <Footer></Footer>

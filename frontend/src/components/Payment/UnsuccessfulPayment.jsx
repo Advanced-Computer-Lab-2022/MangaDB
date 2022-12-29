@@ -9,7 +9,7 @@ export default function UnsuccessfulPayment() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    //call endpoint of payment
+    //call endpoint of payment "delete invoice"
     /*setTimeout(() => {
       navigate('/home/1')
     }, 5000)*/

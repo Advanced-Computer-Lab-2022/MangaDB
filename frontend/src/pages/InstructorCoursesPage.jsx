@@ -46,11 +46,20 @@ const IntructorCoursePage = (props) => {
   const [showPromotationModal, setShowPromotationModal] = useState(false);
   const [promotionId, setPromotionId] = useState(-1);
   const [promotionCourse, setPromotionCourse] = useState("");
-  const [promotionData, setPromotionData] = useState({});
+  const [promotionAmount, setPromotionAmount] = useState("");
+  const [promotionEndDate, setPromotionEndDate] = useState("");
   const [showReportModal, setShowReportModal] = useState(false);
   const [reportId, setReportId] = useState(-1);
   const [reportCourse, setReportCourse] = useState("");
   const [reportData, setReportData] = useState({});
+
+  const promotionAmountChangeHandler = (event) => {
+    setPromotionAmount(event.target.value);
+  };
+
+  const promotionEndDateChangeHandler = (event) => {
+    setPromotionEndDate(new Date(event.target.value).toISOString());
+  };
 
   const openPromotionModal = (id, course) => {
     setShowPromotationModal(true);
@@ -75,8 +84,19 @@ const IntructorCoursePage = (props) => {
 
   const promotionSubmitHandler = () => {
     closePromotionModal();
-    //axios post you have the course id..
-    //set the promotion data..
+    const data = {
+      discount: +promotionAmount / 100,
+      discountStartDate: new Date().toISOString(),
+      discountEndDate: promotionEndDate,
+    };
+    axios
+      .patch(
+        "http://localhost:3000/instructor/creatediscount/" + promotionId,
+        data
+      )
+      .then((res) => {
+        console.log(res);
+      });
   };
 
   const reportSubmitHandler = () => {
@@ -173,7 +193,6 @@ const IntructorCoursePage = (props) => {
         });
     }
   }, [searchState.search, searchState.filters, searchState.myCourses]);
-  console.log(searchState.displayedCourses);
   var rows = searchState.displayedCourses.map((course) => {
     return {
       courseId: course.course._id,
@@ -194,6 +213,7 @@ const IntructorCoursePage = (props) => {
   var cards = rows.map((row) => {
     return (
       <TableListViewCard
+        courseId={row.courseId}
         title={row.courseTitle}
         instructor={row.instructorName}
         subject={row.subject}
@@ -205,8 +225,9 @@ const IntructorCoursePage = (props) => {
         discountedPrice={row.discountedPrice}
         discountEndDate={row.discountEndDate}
         mine={row.mine}
+        promotionCourse={promotionCourse}
         showPromotationModal={showPromotationModal}
-        promotionData={promotionData}
+        //promotionData={promotionData}
         promotionId={promotionId}
         closePromotionModal={closePromotionModal}
         openPromotionModal={openPromotionModal}
@@ -241,8 +262,12 @@ const IntructorCoursePage = (props) => {
       <div className="hidden xl:block">
         <Table
           rows={rows}
+          promotionCourse={promotionCourse}
           showPromotationModal={showPromotationModal}
-          promotionData={promotionData}
+          //promotionData={promotionData}
+          promotionAmountChangeHandler={promotionAmountChangeHandler}
+          promotionEndDateChangeHandler={promotionEndDateChangeHandler}
+          promotionSubmitHandler={promotionSubmitHandler}
           promotionId={promotionId}
           closePromotionModal={closePromotionModal}
           openPromotionModal={openPromotionModal}

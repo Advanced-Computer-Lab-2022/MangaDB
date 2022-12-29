@@ -3,10 +3,9 @@ import { useState } from "react";
 import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import ReportsRequestsManager from "./ReportsRequestsManager";
-import { SnackbarProvider, useSnackbar } from "notistack";
+import { SnackbarProvider } from "notistack";
 import PsychologyAltOutlinedIcon from '@mui/icons-material/PsychologyAltOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-//import UsersManager from "./UsersManager";
 import AdminAddNewUser from "../../pages/AdminAddNewUser";
 
 export default function AdminPage() {

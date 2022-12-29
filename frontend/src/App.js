@@ -48,7 +48,16 @@ function App() {
           path="/profile/:id"
           element={<InstructorProfilePage></InstructorProfilePage>}
         ></Route>
-        <Route path="/admin/:id" element={<AdminPage></AdminPage>}></Route>
+        <Route
+          path="/profileTrainee/:id"
+          element={<TraineeProfilePage></TraineeProfilePage>}
+        ></Route>
+        <Route
+          path="/admin/:id"
+          element={<AdminPage></AdminPage>}
+        ></Route>
+
+
         <Route
           path="courses/:id"
           element={<InstructorCoursesPage></InstructorCoursesPage>}
@@ -72,15 +81,12 @@ function App() {
           path="InstructorPage"
           element={<InstructorPage></InstructorPage>}
         ></Route>
-<<<<<<< HEAD
         <Route
           path="instructorDashboard/:id"
           element={<InstructorDashboard></InstructorDashboard>}
         ></Route>
-=======
-        <Route path = "instructorDashboard" element={<InstructorDashboard></InstructorDashboard>}></Route>
+
         <Route path = "instructorCourseDetails/:id" element={<InstructorCourseDetails></InstructorCourseDetails>}></Route>
->>>>>>> dev
       </Routes>
 
       <Footer></Footer>

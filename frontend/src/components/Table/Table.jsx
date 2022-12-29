@@ -5,50 +5,28 @@ import Modal from "../UI/Modal";
 import { useState, Fragment } from "react";
 import SecondaryButton from "../UI/SecondaryButton";
 const Table = (props) => {
-  const [showPromotationModal, setShowPromotationModal] = useState(false);
-  const [showReportModal, setShowReportModal] = useState(false);
-  const [promotionId, setPromotionId] = useState(-1);
-  const [promotionCourse, setPromotionCourse] = useState("");
-  const [promotionData, setPromotionData] = useState({});
-  const openPromotionModal = (id, course) => {
-    setShowPromotationModal(true);
-    setPromotionId(id);
-    setPromotionCourse(course);
-    //console.log(showPromotationModal);
-  };
-
-  const closePromotionModal = () => {
-    setShowPromotationModal(false);
-  };
-
-  const openReportModal = () => {
-    setShowReportModal(true);
-  };
-
-  const closeReportModal = () => {
-    setShowReportModal(false);
-  };
-
-  const promotionSubmitHandler = () => {
-    closePromotionModal();
-    //axios post you have the course id.. 
-    //set the promotion data ..
-  };
   return (
     <Fragment>
-      {showPromotationModal && (
-        <Modal onClick={closePromotionModal}>
+      {props.showPromotationModal && (
+        <Modal onClick={props.closePromotionModal}>
           <div>
-            {promotionCourse}
+            {props.promotionCourse}
             <label>Amount</label>
             <input className="border"></input>
             <label>Duration</label>
             <input className="border"></input>
           </div>
-          <SecondaryButton text="submit" onClick={promotionSubmitHandler}></SecondaryButton>
+          <SecondaryButton
+            text="submit"
+            onClick={props.promotionSubmitHandler}
+          ></SecondaryButton>
         </Modal>
       )}
-      {showReportModal && <Modal></Modal>}
+      {props.showReportModal && (
+        <Modal onClick={props.closeReportModal}>
+          <div>{props.reportCourse}</div>
+        </Modal>
+      )}
       <div>
         <table className="w-full">
           <thead className="bg-gray-100">
@@ -56,10 +34,14 @@ const Table = (props) => {
           </thead>
           <tbody className="w-full">
             <TableRows
-              promotionData={promotionData}
-              promotionId={promotionId}
-              closePromotionModal={closePromotionModal}
-              openPromotionModal={openPromotionModal}
+              promotionData={props.promotionData}
+              promotionId={props.promotionId}
+              closePromotionModal={props.closePromotionModal}
+              openPromotionModal={props.openPromotionModal}
+              reportData={props.reportData}
+              reportId={props.reportId}
+              openReportModal={props.openReportModal}
+              closeReportModal={props.closeReportModal}
               rows={props.rows}
             />
           </tbody>

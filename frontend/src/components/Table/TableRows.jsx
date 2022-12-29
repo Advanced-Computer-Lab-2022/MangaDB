@@ -11,6 +11,8 @@ const TableRows = (props) => {
         : row.discount !== 0
         ? ["View Course", "Report a Problem"]
         : ["View Course", "Report a Problem", "Add Promotion"];
+    
+    const date = props.promotionId === row.courseId ? props.promotionEndDate : row.discountEndDate;
     return (
       <tr
         key={row.courseId}
@@ -78,7 +80,7 @@ const TableRows = (props) => {
           <div className="text-xs">
             Expires In:{" "}
             <span className=" text-red-600">
-              <Countdown date={row.discountEndDate} />
+              <Countdown date={date} />
             </span>
           </div>
         </td>

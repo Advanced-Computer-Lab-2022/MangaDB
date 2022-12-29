@@ -43,23 +43,17 @@ const IntructorCoursePage = (props) => {
   };
   const [page, setPage] = useState(1);
   const [noOfPages, setNoOfPages] = useState(1);
+
+  //funtion to handle the pagination
+  const onChangePageHandler = (event, value) => {
+    setPage(value);
+  };
+  
   const [showPromotationModal, setShowPromotationModal] = useState(false);
   const [promotionId, setPromotionId] = useState(-1);
   const [promotionCourse, setPromotionCourse] = useState("");
   const [promotionAmount, setPromotionAmount] = useState("");
   const [promotionEndDate, setPromotionEndDate] = useState("");
-  const [showReportModal, setShowReportModal] = useState(false);
-  const [reportId, setReportId] = useState(-1);
-  const [reportCourse, setReportCourse] = useState("");
-  const [reportData, setReportData] = useState({});
-
-  const promotionAmountChangeHandler = (event) => {
-    setPromotionAmount(event.target.value);
-  };
-
-  const promotionEndDateChangeHandler = (event) => {
-    setPromotionEndDate(new Date(event.target.value).toISOString());
-  };
 
   const openPromotionModal = (id, course) => {
     setShowPromotationModal(true);
@@ -70,16 +64,15 @@ const IntructorCoursePage = (props) => {
 
   const closePromotionModal = () => {
     setShowPromotationModal(false);
+    setPromotionId(-1);
   };
 
-  const openReportModal = (id, course) => {
-    setShowReportModal(true);
-    setReportId(id);
-    setReportCourse(course);
+  const promotionAmountChangeHandler = (event) => {
+    setPromotionAmount(event.target.value);
   };
 
-  const closeReportModal = () => {
-    setShowReportModal(false);
+  const promotionEndDateChangeHandler = (event) => {
+    setPromotionEndDate(new Date(event.target.value).toISOString());
   };
 
   const promotionSubmitHandler = () => {
@@ -98,15 +91,39 @@ const IntructorCoursePage = (props) => {
         console.log(res);
       });
   };
+  
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportId, setReportId] = useState(-1);
+  const [reportCourse, setReportCourse] = useState("");
+  const [currentReportsSelector, setCurrentReportsSelector] = useState({
+    id: 1,
+    name: "Technical",
+  });
+  const [enteredReport, setEnteredReport] = useState("");
+
+  const openReportModal = (id, course) => {
+    setShowReportModal(true);
+    setReportId(id);
+    setReportCourse(course);
+  };
+
+  const closeReportModal = () => {
+    setShowReportModal(false);
+    setReportId(-1)
+  };
+
+  const reportSelectorChangeHandler = (data) => {
+    setCurrentReportsSelector(data);
+  };
+
+  const enteredReportChangeHandler = (event) => {
+    setEnteredReport(event.target.value);
+  };
 
   const reportSubmitHandler = () => {
     closeReportModal();
     //axios post you have the course id..
     //set the report data..
-  };
-  //funtion to handle the pagination
-  const onChangePageHandler = (event, value) => {
-    setPage(value);
   };
 
   const ReducerFunction = (state, action) => {
@@ -227,12 +244,11 @@ const IntructorCoursePage = (props) => {
         mine={row.mine}
         promotionCourse={promotionCourse}
         showPromotationModal={showPromotationModal}
-        //promotionData={promotionData}
         promotionId={promotionId}
         closePromotionModal={closePromotionModal}
         openPromotionModal={openPromotionModal}
         showReportModal={showReportModal}
-        reportData={reportData}
+        //reportData={reportData}
         reportId={reportId}
         openReportModal={openReportModal}
         closeReportModal={closeReportModal}
@@ -272,7 +288,7 @@ const IntructorCoursePage = (props) => {
           closePromotionModal={closePromotionModal}
           openPromotionModal={openPromotionModal}
           showReportModal={showReportModal}
-          reportData={reportData}
+          //reportData={reportData}
           reportId={reportId}
           openReportModal={openReportModal}
           closeReportModal={closeReportModal}

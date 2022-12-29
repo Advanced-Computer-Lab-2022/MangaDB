@@ -11,10 +11,12 @@ const DropDown = (props) => {
     //show promotion modal
     if (event.target.innerHTML === "Add Promotion") {
       props.openPromotion();
-    } else if (event.target.innerHTML === "Report Problem") {
+    } else if (event.target.innerHTML === "Report a Problem") {
       //handle the report
+      props.openReport();
     } else {
       //handle the view course
+      //navigate to course view
     }
   };
 
@@ -47,7 +49,7 @@ const DropDown = (props) => {
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
-              fill="currentColor"
+              fill={`${props.fill}`}
               class="bi bi-three-dots"
               viewBox="0 0 16 16"
             >

@@ -85,10 +85,41 @@ exports.rateInstructor = async (req, res) => {
         newRating=newRating.toFixed(2);
         foundInstructor.rating=newRating;
         foundInstructor.reviews.push({user:userId,userName: foundUser.firstName + " "+foundUser.lastName,rating:rating,review:review});
-        foundInstructor.save();
-        res.status(200).send({
+        await foundInstructor.save().then((updatedInstructor)=>{
+            let rating1=0;
+            let rating2=0;
+            let rating3=0;
+            let rating4=0;
+            let rating5=0;
+            for (let i = 0; i < updatedInstructor.reviews.length; i++) {
+              if (updatedInstructor.reviews[i].rating == 1) {
+                rating1++;
+              }
+              if (updatedInstructor.reviews[i].rating == 2) {
+                rating2++;
+              }
+              if (updatedInstructor.reviews[i].rating == 3) {
+                rating3++;
+              }
+              if (updatedInstructor.reviews[i].rating == 4) {
+                rating4++;
+              }
+              if (updatedInstructor.reviews[i].rating == 5) {
+                rating5++;
+              }
+            }
+            let count=[{rating:1,count:rating1},{rating:2,count:rating2},{rating:3,count:rating3},{rating:4,count:rating4},{rating:5,count:rating5}];
+             res.status(200).json({
+            review:updatedInstructor.reviews[reviewCount],
             message: "Instructor was rated successfully.",
+            count:count
         });
+        }).catch((err)=>{
+            res.status(500).json({
+                message:"Failed To Save Review Please Try Again later"
+            })
+        });
+       
     }}}
     }}
     catch (err) {   
@@ -234,20 +265,45 @@ exports.setDiscount= async (req, res) => {
 
 exports.getMoneyOwed = async (req, res) => {
     const instructorId=req.user.id;
-    let date=new Date(Date.now());
-    let startOfMonth=new Date(date.getFullYear(),date.getMonth(),1);
-    date=date.toISOString();
-    startOfMonth=startOfMonth.toISOString();
     try {
-        const invoiceData=await invoice.find({$and: [{instructor:instructorId},{invoiceDate:{$gte:startOfMonth}},{invoiceDate:{$lte:date}}]});
+        const invoiceData=await invoice.find({instructor:instructorId}).sort({invoiceDate:1});
+        let history=[];
         let total=0;
-        invoiceData.forEach((element) => {
-            total+=element.totalAmount*0.8;
+        let prevMonth=0;
+        let prevYear=0;
+        let year = 0;
+        let month = 0;
+        let currentYearPurchases=0;
+        let lastYearPurchases=0;
+        const currentYear=new Date().getFullYear();
+        for(let i=0;i<invoiceData.length;i++){    
+        let date =invoiceData[i].invoiceDate.toISOString().split('-');
+         year = parseInt(date[0] ) ;
+         month = date[1];
+        if((month!=prevMonth&&prevMonth!=0)||(prevYear!=year&&prevYear!=0))
+        {
+            history.push({month:prevMonth,year:prevYear,amount:total.toFixed(2)});
+            total=0;
+            
         }
-        );
+        if(year==currentYear){
+            currentYearPurchases+=1;
+        }
+        else if(year==currentYear-1){
+            lastYearPurchases+=1;
+        }
+
+        total+=(invoiceData[i].totalAmount)*0.90;
+        prevMonth=month;
+        prevYear=year;
+    }
+    
+    history.push({month:month,year:year,amount:total.toFixed(2)});
         res.status(200).send({
             message: "Instructor money owed was found successfully.",
-            moneyOwed : total
+            history : history,
+            currentYearPurchases:currentYearPurchases,
+            lastYearPurchases:lastYearPurchases
         });
     } catch (err) {
         res.status(500).send({
@@ -257,6 +313,7 @@ exports.getMoneyOwed = async (req, res) => {
 };
 
 exports.getInstructorRating = async (req, res) => {
+
     const instructorId=req.params.id;
     try {
         const instructorData=await user.findById(instructorId);
@@ -275,6 +332,87 @@ exports.getInstructorRating = async (req, res) => {
             message: err.message || "Some error occurred while getting instructor rating.",
         });
     }
+
 }
 
 
+exports.viewInstructor=async (req, res) => {
+    const instructorId = req.params.id;
+    const instructorData = await
+    user.findById
+    (instructorId).populate("courseDetails.course");
+    if (!instructorData) {
+      res.status(404).json({ message: "Instructor Not Found" });
+      return;
+    }
+    let rating1=0;
+    let rating2=0;
+    let rating3=0;
+    let rating4=0;
+    let rating5=0;
+    for (let i = 0; i < instructorData.reviews.length; i++) {
+      if (instructorData.reviews[i].rating == 1) {
+        rating1++;
+      }
+      if (instructorData.reviews[i].rating == 2) {
+        rating2++;
+      }
+      if (instructorData.reviews[i].rating == 3) {
+        rating3++;
+      }
+      if (instructorData.reviews[i].rating == 4) {
+        rating4++;
+      }
+      if (instructorData.reviews[i].rating == 5) {
+        rating5++;
+      }
+    }
+    let count=[{rating:1,count:rating1},{rating:2,count:rating2},{rating:3,count:rating3},{rating:4,count:rating4},{rating:5,count:rating5}];
+    let totalViews=0;
+    for(let i=0;i<instructorData.courseDetails.length;i++){
+      totalViews+=instructorData.courseDetails[i].course.views;
+    }
+    res.status(200).json({ instructor: instructorData,
+      students:totalViews,
+      count:count
+    });
+
+  }
+
+  //difference between this and viewInstructor is that this one is for instructor to view his own profile
+  exports.viewMyReviews=async (req, res) => {
+    const instructorId = req.params.id;
+    const instructorData = await
+    user.findById
+    (instructorId);
+    if (!instructorData) {
+      res.status(404).json({ message: "Instructor Not Found" });
+      return;
+    }
+    let rating1=0;
+    let rating2=0;
+    let rating3=0;
+    let rating4=0;
+    let rating5=0;
+    for (let i = 0; i < instructorData.reviews.length; i++) {
+      if (instructorData.reviews[i].rating == 1) {
+        rating1++;
+      }
+      if (instructorData.reviews[i].rating == 2) {
+        rating2++;
+      }
+      if (instructorData.reviews[i].rating == 3) {
+        rating3++;
+      }
+      if (instructorData.reviews[i].rating == 4) {
+        rating4++;
+      }
+      if (instructorData.reviews[i].rating == 5) {
+        rating5++;
+      }
+    }
+    let count=[{rating:1,count:rating1},{rating:2,count:rating2},{rating:3,count:rating3},{rating:4,count:rating4},{rating:5,count:rating5}];
+    res.status(200).json({ instructor: instructorData,
+      count:count
+    });
+}

@@ -9,7 +9,6 @@ import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownR
 import SubtitleBody from "./SubtitleBody";
 
 const SubtitleAccordion = (props) => {
-
   const [isOpened, setIsOpened] = useState(false);
   const handleOpen = () => {
     setIsOpened((prevOpen) => !prevOpen);
@@ -23,17 +22,17 @@ const SubtitleAccordion = (props) => {
   ) : (
     <KeyboardArrowDownRoundedIcon />
   );
-  var description
+  var description;
   var sourceIndex = 1;
-  const sources = props.sources.map((source ,index ) => {
-    description=`${index +1 + props.sourceIndex}. `.concat(source.description)
+  const sources = props.sources.map((source, index) => {
+    description = `${index + 1}. `.concat(source.description);
     return (
       <SubtitleBody
-        onClick ={props.onClick}
+        onClick={props.onClick}
         description={description}
         duration={source.sourceDuration}
         type={source.sourceType}
-        link = {source.link}
+        link={source.link}
         id={source._id}
         source={source}
       />
@@ -45,9 +44,11 @@ const SubtitleAccordion = (props) => {
         className="text-md font-medium AccordionOpenButton"
         onClick={handleOpen}
       >
-        <div>{props.title}</div>
-        <div className="flex justify-end absolute right-10 mob:relative mob:right-0 min-w-[40px] bg-gray-100 px-4 shadow-md rounded-3xl">
-          {props.duration} mins
+        <div className="w-[70%] truncate flex justify-start">{props.title}</div>
+        <div className="w-[30%] flex justify-end">
+          <div className="bg-gray-100 px-4 shadow-md rounded-3xl">
+            {props.duration} mins
+          </div>
         </div>
       </AccordionHeader>
       <AccordionBody className="opacity-0 transition ease-out duration-150 ml-6 w-auto">

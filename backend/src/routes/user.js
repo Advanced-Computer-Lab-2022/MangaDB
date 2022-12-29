@@ -38,6 +38,10 @@ router.post('/solveExam',auth.validateToken,auth.authenticateRole(["TRAINEE","CO
 
 router.get('/myCourses',auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]),userController.getRegisteredCourses);
 
+router.get('/wallet/:id',userController.getWallet);
+
+router.get("/certificate", userController.testCertificate);
+
 router.get("/myProfile",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE","INSTRUCTOR"]),userController.viewProfile);
 S
 module.exports=router;

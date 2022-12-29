@@ -1,11 +1,21 @@
 const course = require("../models/course");
 const user = require("../models/user");
 const currencyConverter = require("../helper/currencyconverter");
-const examController=require('./exam');
+const examController = require("./exam");
 const exam = require("../models/exam");
-const question=require("../models/question");
+const question = require("../models/question");
 
-
+getCourseQuestions = async (courseID, userID) => {
+  let questions = await question.find(
+    { courseId: courseID, userId: userID },
+    { courseName: 0, instructorId: 0, courseName: 0, userName: 0, userId: 0 }
+  );
+  if (!questions) {
+    return [];
+  }
+  
+  return questions;
+};
 
 exports.getAllCourses = async (req, res, next) => {
   const currentPage = req.query.page || 1;
@@ -15,6 +25,7 @@ exports.getAllCourses = async (req, res, next) => {
   let maxPrice = req.query.maxPrice || Number.MAX_VALUE;
   const rating = req.query.rating || 0;
   const subjects = req.query.subject;
+  const iId = req.query.iId;
   let query = {};
   if (subjects) {
     query = { subject: { $in: subjects } };
@@ -58,63 +69,89 @@ exports.getAllCourses = async (req, res, next) => {
       summary: 1,
       discountedPrice: 1,
       discount: 1,
+      discountStartDate: 1,
+      discountEndDate: 1,
       courseImage: 1,
       rating: 1,
       instructor: 1,
       instructorName: 1,
       subject: 1,
+
     })
     .catch((error) => {
       res.status(500).json({
         message: "Fetching courses failed!",
       });
     });
+   let courseCount=await course.find().count().catch((error) => {
+    res.status(500).json({
+      message: "Counting Courses Failed"
+    });
+  });
   countryDetails = await currencyConverter.convertCurrency("US", countryCode);
   exchangeRate = countryDetails.rate;
   allCourses.forEach((course) => {
     course.coursePrice = (course.coursePrice * exchangeRate).toFixed(2);
     course.discountedPrice = (course.discountedPrice * exchangeRate).toFixed(2);
   });
+  let instructorCourses=[];
+  if(iId){
+  for(let i=0;i<allCourses.length;i++){
+    if(allCourses[i].instructor==iId){
+      allCourses[i].mine=true;
+      instructorCourses.push({course:allCourses[i],mine:true});
+    }
+    else{
+      allCourses[i].mine=false;
+      instructorCourses.push({course:allCourses[i],mine:false});
+    }
+   
+  }
+ return res.status(200).json({
+    message: "Courses fetched successfully!",
+    courses: instructorCourses,
+    symbol: symbol,
+    count:courseCount
+
+  });}
   res.status(200).json({
     message: "Courses fetched successfully!",
     courses: allCourses,
     symbol: symbol,
+    count:courseCount
+
   });
 };
 
-exports.getCourse = async (req, res, next) => {
+exports.getCourse = async (req, res) => {
   const courseId = req.params.id;
   const userId = req.user.id;
   let foundCourse = await course.findById(courseId).catch((error) => {
     res.status(500).json({
       message: "Fetching course failed!",
     });
-  })
-  if(!foundCourse)
-  return res.status(404).json({
-    message: "Course not found!",
+  });
+  if (!foundCourse)
+    return res.status(404).json({
+      message: "Course not found!",
     });
 
-  foundCourse=await foundCourse.populate("subtitles.sources.quiz");
-  let userCourseData=null;
-  
-  if(userId)
-  {const foundUser = await user.findOne({_id:userId}).catch((error) => {
+  foundCourse = await foundCourse.populate("subtitles.sources.quiz");
+
+  const foundUser = await user.findOne({ _id: userId }).catch((error) => {
     res.status(500).json({
       message: "Fetching user failed!",
     });
   });
 
   // to  be changed to false and uncomment for loop when token added
- 
- 
-    for(let i=0;i<foundUser.courseDetails.length;i++){
-      if(foundUser.courseDetails[i].course==courseId){
-        userCourseData=foundUser.courseDetails[i];
-        break;
-      }
-    }
+  let userCourseData = null;
 
+  for (let i = 0; i < foundUser.courseDetails.length; i++) {
+    if (foundUser.courseDetails[i].course == courseId) {
+      userCourseData = foundUser.courseDetails[i];
+      break;
+    }
   }
 
   const countryCode = req.query.CC || "US";
@@ -131,11 +168,14 @@ exports.getCourse = async (req, res, next) => {
     foundCourse.discountedPrice = (
       course.discountedPrice * exchangeRate
     ).toFixed(2);
+    let questions = await getCourseQuestions(courseId, userId);
+    
     res.status(200).json({
       message: "Course fetched successfully!",
       course: foundCourse,
-     userData: userCourseData ,
+      userData: userCourseData,
       symbol: symbol,
+      QA: questions,
     });
   } else {
     res.status(404).json({
@@ -167,29 +207,28 @@ exports.updateCourse = async (req, res, next) => {
 exports.addSubtitle = async (req, res, next) => {
   const subtitle = req.body.subtitle;
   const courseId = req.params.id;
- try{
-  const foundCourse=await course.findById(courseId);
-  let subDuration=0;
-  for(let j=0;j<subtitle.sources.length;j++){
-    if(subtitle.sources[j].sourceType==='Quiz'){
-      const myExam=subtitle.sources[j].exam;
-      const examId=await examController.createExam(myExam);
-      subtitle.sources[j].quiz=examId;
-
+  try {
+    const foundCourse = await course.findById(courseId);
+    let subDuration = 0;
+    for (let j = 0; j < subtitle.sources.length; j++) {
+      if (subtitle.sources[j].sourceType === "Quiz") {
+        const myExam = subtitle.sources[j].exam;
+        const examId = await examController.createExam(myExam);
+        subtitle.sources[j].quiz = examId;
+      }
+      subDuration += subtitle.sources[j].sourceDuration;
     }
-   subDuration+=subtitle.sources[j].sourceDuration;
+    foundCourse.totalMins += subDuration;
+    foundCourse.subtitles.push(subtitle);
+    await foundCourse.save();
+    res.status(200).json({
+      message: "Subtitle added successfully!",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Subtitle adding failed!",
+    });
   }
-foundCourse.totalMins+=subDuration;
-  foundCourse.subtitles.push(subtitle);
-  await foundCourse.save();
-  res.status(200).json({
-    message: "Subtitle added successfully!",
-  });
-}catch(error){
-  res.status(500).json({
-    message: "Subtitle adding failed!",
-  });
-}
 };
 
 exports.deleteCourse = async (req, res, next) => {
@@ -213,16 +252,14 @@ exports.createCourse = async (req, res, next) => {
   const instructorId = req.user.id;
   const foundInstructor = await user.findById(instructorId);
   if (!foundInstructor.agreedToTerms)
-    return res
-      .status(400)
-      .json({
-        message:
-          "You have to agree to our terms and policy in order to create a course",
-      });
+    return res.status(400).json({
+      message:
+        "You have to agree to our terms and policy in order to create a course",
+    });
   const instructorName =
     foundInstructor.firstName + " " + foundInstructor.lastName;
   const discount = req.body.discount || 0;
-  const subtitles= req.body.subtitles;
+  const subtitles = req.body.subtitles;
   const newCourse = new course({
     courseTitle: req.body.courseTitle,
     courseDescription: req.body.courseDescription,
@@ -234,32 +271,28 @@ exports.createCourse = async (req, res, next) => {
     instructor: instructorId,
     instructorName: instructorName,
     discount: discount,
-    discountedPrice: req.body.coursePrice-(req.body.coursePrice*discount),
-    requirements: req.body.requirements,                                                                                   
+    discountedPrice: req.body.coursePrice - req.body.coursePrice * discount,
+    requirements: req.body.requirements,
     summary: req.body.summary,
   });
-  let subDuration=0;
-  let courseDuration=0;
-  for(let i=0;i<subtitles.length;i++){
-    for(let j=0;j<subtitles[i].sources.length;j++){
-      if(subtitles[i].sources[j].sourceType==='Quiz'){
-        const myExam=subtitles[i].sources[j].exam;
-        const examId=await examController.createExam(myExam);
-        subtitles[i].sources[j].quiz=examId;
-
+  let subDuration = 0;
+  let courseDuration = 0;
+  for (let i = 0; i < subtitles.length; i++) {
+    for (let j = 0; j < subtitles[i].sources.length; j++) {
+      if (subtitles[i].sources[j].sourceType === "Quiz") {
+        const myExam = subtitles[i].sources[j].exam;
+        const examId = await examController.createExam(myExam);
+        subtitles[i].sources[j].quiz = examId;
       }
-     subDuration+=subtitles[i].sources[j].sourceDuration;
+      subDuration += subtitles[i].sources[j].sourceDuration;
     }
-   
-    courseDuration+=subDuration;
-    subtitles[i].subtitleDuration=subDuration;
-    subDuration=0;
+
+    courseDuration += subDuration;
+    subtitles[i].subtitleDuration = subDuration;
+    subDuration = 0;
   }
   newCourse.subtitles=subtitles;
   newCourse.totalMins=courseDuration;
- // let finalExam=req.body.finalExam;
-  //finalExam=await examController.createExam(finalExam);
-  //newCourse.finalExam=finalExam;
   await newCourse
     .save()
     .then((createdCourse) => {
@@ -288,6 +321,7 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
   let minPrice = req.query.minPrice || 0;
   let maxPrice = req.query.maxPrice || Number.MAX_VALUE;
   const subjects = req.query.subject;
+  const iId = req.params.id;
   let query = {};
   if (subjects) {
     query = { subject: { $in: subjects } };
@@ -332,6 +366,8 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
       coursePrice: 1,
       discountedPrice: 1,
       discount: 1,
+      discountStartDate: 1,
+      discountEndDate: 1,
       courseImage: 1,
       rating: 1,
       instructor: 1,
@@ -349,9 +385,21 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
     course.coursePrice = (course.coursePrice * exchangeRate).toFixed(2);
     course.discountedPrice = (course.discountedPrice * exchangeRate).toFixed(2);
   });
+  let instructorCourses = [];
+  for(let i=0;i<allCourses.length;i++){
+    if(allCourses[i].instructor==iId){
+      allCourses[i].mine=true;
+      instructorCourses.push({course:allCourses[i],mine:true});
+    }
+    else{
+      allCourses[i].mine=false;
+      instructorCourses.push({course:allCourses[i],mine:false});
+    }
+   
+  }
   res.status(200).json({
     message: "Courses fetched successfully!",
-    courses: allCourses,
+    courses: instructorCourses,
     symbol: symbol,
   });
 };
@@ -377,7 +425,12 @@ exports.rateCourse = async (req, res, next) => {
       (1 / (reviewCount + 1)) * rating;
     newRating = newRating.toFixed(2);
     foundCourse.rating = newRating;
-    foundCourse.reviews.push({ user: userId,userName: foundUser.firstName + " "+foundUser.lastName , review: review, rating: rating });
+    foundCourse.reviews.push({
+      user: userId,
+      userName: foundUser.firstName + " " + foundUser.lastName,
+      review: review,
+      rating: rating,
+    });
     await foundCourse.save();
     res.status(200).json({
       message: "Course rated successfully!",
@@ -394,7 +447,7 @@ exports.editRating = async (req, res, next) => {
   const userId = req.user.id;
   const rating = req.body.rating;
   const review = req.body.review;
-  let foundCourse = await course.findById(courseId);
+  let myCourse = await course.findById(courseId);
   let oldRating = 0;
   foundCourse.reviews.forEach((element) => {
     oldRating = element.rating;
@@ -440,7 +493,7 @@ exports.deleteRating = async (req, res, next) => {
   });
 };
 
-exports.getMostViewedCourses = async (req, res, next) => {
+exports.getMostViewedCourses = async (req, res) => {
   const currentPage = req.query.page || 1;
   const perPage = req.query.pageSize || 10;
   const search = req.query.search || "";
@@ -615,17 +668,39 @@ exports.getCourseRating = async (req, res) => {
   const courseId = req.params.id;
   try{
   const foundCourse = await course.findById(courseId);
-    
+  let rating1=0;
+  let rating2=0;
+  let rating3=0;
+  let rating4=0;
+  let rating5=0;
+  for (let i = 0; i < foundCourse.reviews.length; i++) {
+    if (foundCourse.reviews[i].rating == 1) {
+      rating1++;
+    }
+    if (foundCourse.reviews[i].rating == 2) {
+      rating2++;
+    }
+    if (foundCourse.reviews[i].rating == 3) {
+      rating3++;
+    }
+    if (foundCourse.reviews[i].rating == 4) {
+      rating4++;
+    }
+    if (foundCourse.reviews[i].rating == 5) {
+      rating5++;
+    }
+  }
+  let count=[{rating:1,count:rating1},{rating:2,count:rating2},{rating:3,count:rating3},{rating:4,count:rating4},{rating:5,count:rating5}]
   return res.status(200).json({
     message: "Rating fetched successfully!",
     review: foundCourse.reviews,
+    count:count
   });
   }catch(error){
     return res.status(500).json({
       message: "Fetching course failed!",
     });
   }
-
 };
 
 exports.getRating = async (req, res, next) => {
@@ -636,17 +711,17 @@ exports.getRating = async (req, res, next) => {
       message: "Fetching course failed!",
     });
   });
-  let found=false;
+  let found = false;
   for (let i = 0; i < foundCourse.reviews.length; i++) {
     if (foundCourse.reviews[i].user == userId) {
-      found=true;
+      found = true;
       return res.status(200).json({
         message: "Rating fetched successfully!",
         rating: foundCourse.reviews[i],
       });
     }
   }
-  if(!found){
+  if (!found) {
     return res.status(200).json({
       message: "user has not rated this course!",
       rating: null,
@@ -655,134 +730,133 @@ exports.getRating = async (req, res, next) => {
 };
 
 exports.addSource = async (req, res, next) => {
-
   const courseId = req.params.id;
   const userId = req.user.id;;
   const source = req.body.source;
-  const subtitleId=req.body.subtitleId;
+  const subtitleId = req.body.subtitleId;
   const foundCourse = await course.findById(courseId).catch((error) => {
     res.status(500).json({
       message: "Fetching course failed!",
     });
   });
-  if(source.sourceType==='Quiz'){
-    const myExam=source.exam;
-    const examId=await examController.createExam(myExam);
-    source.quiz=examId;
+  if (source.sourceType === "Quiz") {
+    const myExam = source.exam;
+    const examId = await examController.createExam(myExam);
+    source.quiz = examId;
   }
 
-  for(let i=0;i<foundCourse.subtitles.length;i++){
-    if(foundCourse.subtitles[i]._id==subtitleId){
+  for (let i = 0; i < foundCourse.subtitles.length; i++) {
+    if (foundCourse.subtitles[i]._id == subtitleId) {
       foundCourse.subtitles[i].sources.push(source);
-      foundCourse.subtitles[i].subtitleDuration+=source.duration;
-      foundCourse.totalMins+=source.duration;
+      foundCourse.subtitles[i].subtitleDuration += source.duration;
+      foundCourse.totalMins += source.duration;
       break;
     }
-
   }
   foundCourse.save().catch((error) => {
     res.status(500).json({
       message: "Adding source failed!",
     });
-  }
-  );
+  });
   res.status(200).json({
     message: "Source added successfully!",
   });
 };
 
-
-
-  
- 
-exports.updateDiscountedPrice= async()=>{
-  const courses=await course.find();
-  const currentDate=new Date(Date.now());
-  for(let i=0;i<courses.length;i++){
-   let course=courses[i];
-   let startDate=course.discountStartDate;
-   let endDate=courses[i].discountEndDate;
-   if(startDate&&startDate<=currentDate&&endDate>currentDate){
-    course.discountedPrice=course.coursePrice-(course.coursePrice*course.discount);
-    await  course.save();
-   }
-   if(endDate&&endDate<=currentDate){
-    course.discount=0;
-    course.discountedPrice= course.coursePrice;
-    await  course.save();
-   }
-  
+exports.updateDiscountedPrice = async () => {
+  const courses = await course.find();
+  const currentDate = new Date(Date.now());
+  for (let i = 0; i < courses.length; i++) {
+    let course = courses[i];
+    let startDate = course.discountStartDate;
+    let endDate = courses[i].discountEndDate;
+    if (startDate && startDate <= currentDate && endDate > currentDate) {
+      course.discountedPrice =
+        course.coursePrice - course.coursePrice * course.discount;
+      await course.save();
+    }
+    if (endDate && endDate <= currentDate) {
+      course.discount = 0;
+      course.discountedPrice = course.coursePrice;
+      await course.save();
+    }
   }
-
 };
-exports.askQuestion=async (req,res,next)=>{
-  let cId=req.params.id;
-  let uId=req.user.id;
-  let currentCourse=await course.findById(cId);
-  let currentUser= await user.findById(uId);
-  let currentQuestion=req.body.question;
-  let courseName= currentCourse.courseTitle;
-  let userName=currentUser.firstName+" "+currentUser.lastName;
-  let courseInstuctorId=currentCourse.instructor;
-  if(!question||question===""){
-    res.status(400).json({message:"Please Enter Question"});
+exports.askQuestion = async (req, res, next) => {
+  let cId = req.params.id;
+  let uId = req.user.id;
+  let currentCourse = await course.findById(cId);
+  let currentUser = await user.findById(uId);
+  let currentQuestion = req.body.question;
+  let courseName = currentCourse.courseTitle;
+  let userName = currentUser.firstName + " " + currentUser.lastName;
+  let courseInstuctorId = currentCourse.instructor;
+  let questionDate = req.body.date;
+  if (!question || question === "") {
+    res.status(400).json({ message: "Please Enter Question" });
     return;
   }
-  let newQuestion=new question({question:currentQuestion,courseId:cId,courseName:courseName,userId:uId,userName:userName,instructorId:courseInstuctorId});
+  let newQuestion = new question({
+    question: currentQuestion,
+    courseId: cId,
+    courseName: courseName,
+    userId: uId,
+    userName: userName,
+    instructorId: courseInstuctorId,
+    date: questionDate,
+  });
   await newQuestion
-  .save()
-  .then((createdQuestion) => {
-    res.status(200).json({
-      message: "Question added successfully",
-      question: createdQuestion
+    .save()
+    .then((createdQuestion) => {
+      res.status(200).json({
+        message: "Question added successfully",
+        question: createdQuestion,
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "Asking Question Failed!",
+        error: error.message,
+      });
     });
-  })
-  .catch((error) => {
-    res.status(500).json({
-      message: "Asking Question Failed!",
-      error: error.message
-    });
-  });
-
 };
 
-exports.answerQuestion=async (req,res,next)=>{
-  let qId=req.body.questionId;
-  let answer=req.body.answer;
-  let currentQuestion=await question.findById(qId);
-  currentQuestion.answer=answer;
-  await currentQuestion.save().then((answeredQuestion) => {
-    res.status(200).json({
-      message: "Answer added successfully",
-      question: answeredQuestion
+exports.answerQuestion = async (req, res, next) => {
+  let qId = req.body.questionId;
+  let answer = req.body.answer;
+  let currentQuestion = await question.findById(qId);
+  currentQuestion.answer = answer;
+  await currentQuestion
+    .save()
+    .then((answeredQuestion) => {
+      res.status(200).json({
+        message: "Answer added successfully",
+        question: answeredQuestion,
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "Error in answering question",
+        error: error.message,
+      });
     });
-  })
-  .catch((error) => {
-    res.status(500).json({
-      message: "Error in answering question",
-      error: error.message
-    });
-  });
-
-
 };
-exports.getInstructorQuestions=async (req,res,next)=>{
-
-let questions=await question.find({instructorId:req.user.id,answer: { $exists: false }},{courseName:0,instructorId:0,userId:0});
-if(!questions){
-  res.status(400).json({message:"Please Enter Valid Instructor ID"});
-  return;
-}
-res.status(200).send(questions);
-
-};
-exports.getCourseQuestions=async (req,res,next)=>{
-
-  let questions=await question.find({courseId:req.params.id,userId:req.user.id},{courseName:0,instructorId:0,courseName:0,userName:0,userId:0});
-  if(!questions){
-    res.status(400).json({message:"Error in Fetching"});
+exports.getInstructorQuestions = async (req, res, next) => {
+  let questions = await question.find(
+    { instructorId: req.user.id, answer: { $exists: false } },
+    { courseName: 0, instructorId: 0, userId: 0 }
+  );
+  if (!questions) {
+    res.status(400).json({ message: "Please Enter Valid Instructor ID" });
     return;
   }
   res.status(200).send(questions);
-  
-  };
+};
+
+exports.getDiscountedCourses=async(req,res,next)=>{
+let courses=await course.find({discount:{ $gt: 0 }}).limit(9);
+
+res.status(200).send(courses);
+
+}
+

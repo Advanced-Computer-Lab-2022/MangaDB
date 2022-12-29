@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef } from "react";
 import PersonalInfoForm from "../components/Profile/PersonalInfoForm";
 import PasswordAndPrivacy from "../components/Profile/PasswordAndPrivacy";
 import Billing from "../components/Profile/Billing";
@@ -70,20 +70,22 @@ const reviews = [
 const InstructorProfilePage = () => {
   const [receivedUserInfo, setReceivedUserInfo] = useState(user);
   const [selectedStage, setSelectedStage] = useState(1);
-  //gather the userInfo
-  const { enqueueSnackbar } = useSnackbar();
-  const handleClickVariant = (variant) => {
-    //console.log("here");
-    enqueueSnackbar("User has been added successfuly  ", { variant });
-  };
 
-  useEffect(() => {
-    axios.get("http://localhost:3000/instructor/editProfile" ,{
+  const managerRef = useRef();
+  //gather the userInfo
+ 
+//change it to auth later
+  
+  useEffect(() => {//to be changed
+    axios.get("http://localhost:3000/admin/getuser/63acd64846cc70eed673a330",{
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token'),
         'content-type': 'text/json'
 }}).then((res) => {
+      //console.log(res.data);
+      //console.log(user);
       setReceivedUserInfo(res.data);
+      managerRef.current.handleRender();
     });
   }, []);
 
@@ -146,6 +148,7 @@ const InstructorProfilePage = () => {
 
   var displayedStep;
   if (selectedStage === 1) {
+    console.log(receivedUserInfo);
     displayedStep = (
       <PersonalInfoForm
         email={receivedUserInfo.email}
@@ -153,23 +156,14 @@ const InstructorProfilePage = () => {
         lastName={receivedUserInfo.lastName}
         gender={receivedUserInfo.gender}
         biography={receivedUserInfo.biography}
-        onSaveHandler={personalInfoSaveHandler}
         changeStageHandler={changeStageHandler}
+        ref={managerRef}
       ></PersonalInfoForm>
-    );
-  } else if (selectedStage === 2) {
-    displayedStep = (
-      <Billing
-        changeStageHandler={changeStageHandler}
-        onSaveHandler={creditCardChangeHandler}
-        payments={receivedUserInfo.payments}
-      ></Billing>
     );
   } else if (selectedStage === 3) {
     displayedStep = (
       <PasswordAndPrivacy
         changeStageHandler={changeStageHandler}
-        onSaveHandler={securityChangeHandler}
         selected={receivedUserInfo.emailPrivacy}
       ></PasswordAndPrivacy>
     );

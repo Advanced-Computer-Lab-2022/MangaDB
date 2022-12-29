@@ -12,6 +12,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { useNavigate } from "react-router-dom";
+import Checkbox from "@mui/material/Checkbox";
+
 function emailRegex(email) {
   const re =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -38,6 +40,12 @@ export default function SignUp() {
   const [userNameValid, setUserNameValid] = useState(true);
   const navigate = useNavigate();
 
+  const [checked, setChecked] = useState(true);
+
+  const handleChange = (event) => {
+    console.log(event.target.checked);
+    setChecked(event.target.checked);
+  };
   const genderChangeHandler = (e) => {
     setGender(e.target.value);
   };
@@ -105,16 +113,24 @@ export default function SignUp() {
     } else {
       setEmailValid(true);
     }
-    if(userNameValid === false){
+
+    if (userNameValid === false) {
       setWarning("username already exists");
       window.scrollTo(0, 0, "smooth");
-    }
-    else{
+    } else {
       setUserNameValid(true);
-      
     }
 
-    if (!warning) {
+    if (
+      emailValid === true &&
+      passwordMatch === true &&
+      emptyUserName === false &&
+      emptyPassword === false &&
+      emptyConfirmPassword === false &&
+      emptyEmail === false &&
+      emptyFirstName === false &&
+      emptyLastName === false
+    ) {
       const sentData = {
         userName: UserNameRef.current.value,
         password: PasswordRef.current.value,
@@ -125,6 +141,17 @@ export default function SignUp() {
         role: "TRAINEE",
       };
       //console.log(sentData);
+      console.log(
+        emptyConfirmPassword,
+        emptyEmail,
+        emptyFirstName,
+        emptyLastName,
+        emptyPassword,
+        emptyUserName,
+        passwordMatch,
+        emailValid,
+        userNameValid
+      );
       axios
         .post("http://localhost:3000/user/register", sentData,{
           headers: {
@@ -133,15 +160,19 @@ export default function SignUp() {
 }})
         .then((res) => {
           //console.log(res);
+          setUserNameValid(true);
           navigate(`/home/1`, { state: res.data._id });
         })
         .catch((err) => {
-          if(err.message.split(" ")[(err.message.split(" ").length) - 1] ==="400" && UserNameRef.current.value !== ""){
-          setUserNameValid(false);
+          if (
+            err.message.split(" ")[err.message.split(" ").length - 1] ===
+              "400" &&
+            UserNameRef.current.value !== ""
+          ) {
+            setUserNameValid(false);
           }
         });
     }
-    
 
     return;
 
@@ -325,12 +356,31 @@ export default function SignUp() {
                 label="Confirm Password"
                 warning={emptyConfirmPassword || passwordMatch === false}
               />
+              <div className="flex flex-row items-center ">
+                <Checkbox
+                  defaultChecked
+                  checked={checked}
+                  onChange={handleChange}
+                  inputProps={{ "aria-label": "controlled" }}
+                />
+                <p class="text-center ">
+                  Agree to our{" "}
+                  <button
+                    onClick={() => {}}
+                    class="text-primaryBlue hover:opacity-70 ease-in-out duration-300 font-medium inline-flex space-x-1 items-center"
+                  >
+                    <span>terms and conditions </span>
+                  </button>
+                  {" *"}
+                </p>{" "}
+              </div>
 
               <SecondaryButton
                 type="submit"
                 className="flex space-x-2 items-center justify-center py-3 font-semibold hover: "
                 text="Sign Up"
-                onClick={onSubmitHandler}
+                onClick={checked ? onSubmitHandler : null}
+                disabled={!checked}
               ></SecondaryButton>
 
               <div className="flex justify-center">

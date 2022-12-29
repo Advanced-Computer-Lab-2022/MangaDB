@@ -8,7 +8,10 @@ const ToolbarTabs = (props) => {
     { name: "Q&A", current: props.currentTab === "Q&A" ? true : false },
     { name: "Reviews", current: props.currentTab === "Reviews" ? true : false },
     { name: "Reports", current: props.currentTab === "Reports" ? true : false },
-
+    {
+      name: "Download Certificate",
+      current: props.currentTab === "Download Certificate" ? true : false,
+    },
   ];
   const onClickHandler = (event) => {
     if (event.target.innerHTML === "Notes") {
@@ -17,14 +20,16 @@ const ToolbarTabs = (props) => {
       props.onTabChangeHandler("Q&A");
     } else if (event.target.innerHTML === "Reviews") {
       props.onTabChangeHandler("Reviews");
-    } else {
+    } else if (event.target.innerHTML === "Download Certificate") {
+      props.onTabChangeHandler("Download Certificate");
+    } else if (event.target.innerHTML === "Reports") {
       props.onTabChangeHandler("Reports");
     }
   };
 
   return (
-    <div className="ml-4">
-      <div className="sm:hidden">
+    <div className="">
+      <div className="sm:hidden mt-4 mx-2">
         <select
           id="tabs"
           name="tabs"
@@ -35,7 +40,7 @@ const ToolbarTabs = (props) => {
           ))}
         </select>
       </div>
-      <div className="hidden sm:block">
+      <div className="hidden sm:block ml-4">
         <div className="border-b border-gray-200">
           <nav className="-mb-px flex space-x-8" aria-label="Tabs">
             {tabs.map((tab) => (

@@ -4,7 +4,7 @@ const auth = require("../middleware/auth");
 
 router.get("/", courseController.getAllCourses);
 
-router.get("/:id",auth.validateToken, courseController.getCourse);
+
 
 router.patch("/:id",auth.validateToken,auth.authenticateRole(["INSTRUCTOR"]), courseController.updateCourse);
 
@@ -24,7 +24,12 @@ router.post("/addSubtitle/:id", courseController.addSubtitle);
 
 router.post("/askQuestion/:id",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]), courseController.askQuestion);
 
-router.get("/courseQuestions/:id",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]),courseController.getCourseQuestions);
+router.get("/discountedcourses", courseController.getDiscountedCourses);
+
+router.get("/:id", courseController.getCourse);
+
+
+
 
 
 module.exports = router;

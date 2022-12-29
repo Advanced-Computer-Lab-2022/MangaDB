@@ -3,6 +3,8 @@ const auth = require("../middleware/auth");
 const problemController = require("../controllers/problem");
 
 
+router.get("/unresolvedProblem/:id", problemController.getUnresolvedUserProblems);
+
 
 
 router.post("/",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]), problemController.createProblem);

@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState } from "react";
 import axios from "axios";
 import NavBar from "../components/UI/NavBar/NavBar";
 import CreateCourseForm from "../components/CreateCourse/CreateCourseForm";
@@ -18,12 +18,6 @@ const AddCoursePage = (props) => {
       id: 2,
       status: "",
       description: "fill the course content",
-    },
-    {
-      name: "Course Exam",
-      id: 3,
-      status: "",
-      description: "Create a Final Exam",
     },
   ]);
   const [data, setData] = useState({});
@@ -46,32 +40,12 @@ const AddCoursePage = (props) => {
   };
   const secondDataHandler = (secondStepData) => {
     var secondData = { ...data, subtitles: secondStepData };
-    setData(secondData);
-    var newSteps = [];
-    var flag = false;
-    for (var i = 0; i < steps.length; i++) {
-      if ((steps[i].status === "") & !flag) {
-        newSteps.push(steps[i]);
-      } else if (steps[i].status === "current") {
-        newSteps.push({ ...steps[i], status: "complete" });
-        flag = true;
-      } else if (flag) {
-        newSteps.push({ ...steps[i], status: "current" });
-        flag = false;
-      } else if (steps[i].status === "complete") {
-        newSteps.push({ ...steps[i] });
-      }
-    }
-    setSteps(newSteps);
-  };
-
-  const submiHandler = (thirdData) => {
-    var submitData = { ...data, courseFinalExam: thirdData };
-    console.log(submitData);
+    
+    console.log(secondData);
     axios
       .post(
         "http://localhost:3000/instructor/addCourse",
-        submitData ,{
+        secondData ,{
           headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('token'),
             'content-type': 'text/json'
@@ -80,7 +54,10 @@ const AddCoursePage = (props) => {
       .then((res) => {
         console.log(res);
       });
+ 
   };
+
+ 
   
   return (
     <Fragment>
@@ -92,9 +69,7 @@ const AddCoursePage = (props) => {
       {steps[1].status === "current" && (
         <AddSubtitles onConfirm={secondDataHandler}></AddSubtitles>
       )}
-      {steps[2].status === "current" && (
-        <CreateExam onSubmit={submiHandler}></CreateExam>
-      )}
+     
     </Fragment>
   );
 };

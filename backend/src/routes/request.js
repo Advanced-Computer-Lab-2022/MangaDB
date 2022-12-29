@@ -18,6 +18,10 @@ router.patch("/access/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), 
 
 router.patch("/reject/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), requestController.declineRequest);
 
+router.patch("/pend/:id", requestController.pendRequest);
+
+router.get("/user/:id", requestController.getUserRequests);
+
 router.delete("/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), requestController.deleteRequest);
 
 module.exports = router;

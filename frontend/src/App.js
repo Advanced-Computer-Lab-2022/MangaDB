@@ -7,16 +7,23 @@ import SearchResultsPage from "./pages/SearchResultsPage";
 import InstructorProfilePage from "./pages/InstructorProfilePage";
 import CourseDetailsPage from "./pages/CourseDetailsPage";
 import CourseViewPage from "./pages/CourseViewPage";
-import AdminAddNewUser from "./pages/AdminAddNewUser";
 import InstructorCoursesPage from "./pages/InstructorCoursesPage";
 import AddCoursePage from "./pages/AddCoursePage";
 import SignUp from "./pages/SignUp";
 import ResetPassword from "./pages/ResetPassword";
 import Footer from "./components/UI/Footer/Footer";
 import FAQS from "./pages/FAQS";
+import InstructorWallet from "./pages/IntructorWallet";
+import PageNotFound from "./pages/PageNotFound";
+import UnAuthorizedPage from "./pages/UnAuthorizedPage";
+import MyCourses from "./pages/MyCourses";
+import TraineeProfilePage from "./pages/TraineeProfilePage";
+import AdminPage from "./components/Admin/AdminPage";
+import InstructorPage from "./pages/InstructorPage";
+import InstructorDashboard from "./pages/InstructorDashboard";
+import InstructorCourseDetails from "./pages/InstructorCourseDetails";
 function App() {
   return (
-    // navbar should be here
     <Fragment>
       <Routes>
         <Route path="/" element={<Login></Login>}></Route>
@@ -39,13 +46,19 @@ function App() {
           element={<CourseViewPage></CourseViewPage>}
         ></Route>
         <Route
-          path="/profile/:id"
+          path="/profileInstructor/:id"
           element={<InstructorProfilePage></InstructorProfilePage>}
         ></Route>
         <Route
-          path="/admin/:id"
-          element={<AdminAddNewUser></AdminAddNewUser>}
+          path="/profileTrainee/:id"
+          element={<TraineeProfilePage></TraineeProfilePage>}
         ></Route>
+        <Route
+          path="/admin/:id"
+          element={<AdminPage></AdminPage>}
+        ></Route>
+
+
         <Route
           path="courses/:id"
           element={<InstructorCoursesPage></InstructorCoursesPage>}
@@ -54,8 +67,29 @@ function App() {
           path="addcourse/:id"
           element={<AddCoursePage></AddCoursePage>}
         ></Route>
+        <Route
+          path="myWallet/:id"
+          element={<InstructorWallet></InstructorWallet>}
+        ></Route>
         <Route path="FAQS" element={<FAQS></FAQS>}></Route>
+        <Route path="404" element={<PageNotFound></PageNotFound>}></Route>
+        <Route
+          path="403"
+          element={<UnAuthorizedPage></UnAuthorizedPage>}
+        ></Route>
+        <Route path="myCourses" element={<MyCourses></MyCourses>}></Route>
+        <Route
+          path="InstructorPage"
+          element={<InstructorPage></InstructorPage>}
+        ></Route>
+        <Route
+          path="instructorDashboard/:id"
+          element={<InstructorDashboard></InstructorDashboard>}
+        ></Route>
+
+        <Route path = "instructorCourseDetails/:id" element={<InstructorCourseDetails></InstructorCourseDetails>}></Route>
       </Routes>
+
       <Footer></Footer>
     </Fragment>
   );

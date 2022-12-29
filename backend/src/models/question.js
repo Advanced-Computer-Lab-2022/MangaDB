@@ -24,7 +24,8 @@ const  questionSchema = new mongoose.Schema({
     },
     instructorId:{
         type:mongoose.Schema.Types.ObjectId
-    }
+    },
+    date:{type:Date,default:Date.now}
 
 
 

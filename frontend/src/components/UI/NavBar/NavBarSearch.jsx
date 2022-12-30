@@ -16,9 +16,17 @@ import AddUserNavBar from "./AddUserNavBar";
 import RequestedCoursesNavBar from "./RequestedCoursesNavBar";
 import SecondaryButton from "../SecondaryButton";
 import SearchBar from "../Search/SearchBar";
+import LogoutNavBAr from "./LogoutNavBar";
 
-var navButtons = [{name: "Home", active: true},{name: "My Courses", active: false},{name: "FAQs", active: false},{name: "Cart", active: false},{name: "Profile", active: false}]
-
+//var navButtons = [{name: "Home", active: true},{name: "My Courses", active: false},{name: "FAQs", active: false},{name: "Cart", active: false},{name: "Profile", active: false}]
+var navButtons = [
+  { name: "Home", active: true },
+  { name: "My Courses", active: false },
+  { name: "FAQs", active: false },
+  { name: "Logout", active: false },
+  { name: "Profile", active: false },
+  
+];
 const NavBarSearch = (props) => {
   const [open, setOpen] = useState(false);
 

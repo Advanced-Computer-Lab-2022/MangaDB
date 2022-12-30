@@ -3,20 +3,27 @@ import reactImg from "../../Assets/Images/react.png";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Stars from "../UI/Stars";
 import { useNavigate } from "react-router-dom";
-
+import classNames from "classnames";
 const size = 5;
 
-const CourseCard = (props) => {
+const saleRibbon = classNames(`after:content-[""] after:rounded-br-md after:absolute after:-right-4 before:-right-4 after:z-behind after:bg-canadian-red after:border-l-white after:border-l-[20px] after:border-t-transparent after:border-b-transparent before:absolute before:border-l-[5px] before:border-l-red-800 before:border-t-[5px] before:border-t-transparent `);
+const SaleCourseCard = (props) => {
   const navigate = useNavigate();
   const clickHandler = () => {
     const instructorId = "6386427487d3f94e4cb7a28d";
-    navigate(`/coursedetails/${instructorId}`, { state: {courseId:props.id, userId:props.userId}} );
+    navigate(`/coursedetails/${instructorId}`, {
+      state: { courseId: props.id, userId: props.userId },
+    });
   };
   const totalHours = Math.round(+props.duration / 60);
+
   return (
-    <button className="hover:scale-105 transition flex content-start relative mb-8 mx-4" onClick={clickHandler}>
+    <button
+      className="hover:scale-105 transition flex content-start relative mb-8 mx-4 "
+      onClick={clickHandler}
+    >
       <div class=" relative bg-white border border-gray-200 shadow-md w-80">
-        <div className="h-48 w-80">
+        <div className={"h-48 w-80  "}>
           <img className="" src={reactImg} alt=""></img>
         </div>
         <div className="bg-white px-2 py-1 text-xs font-semibold rounded-full absolute top-3 left-3">
@@ -79,4 +86,4 @@ const CourseCard = (props) => {
     </button>
   );
 };
-export default CourseCard;
+export default SaleCourseCard;

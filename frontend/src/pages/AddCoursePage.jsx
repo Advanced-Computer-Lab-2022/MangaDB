@@ -40,21 +40,20 @@ const AddCoursePage = (props) => {
   };
   const secondDataHandler = (secondStepData) => {
     var secondData = { ...data, subtitles: secondStepData };
-    
+
     console.log(secondData);
     axios
-      .post(
-        "http://localhost:3000/instructor/addcourse/63a36fd41bd9f2e6163b0481",
-        secondData
-      )
+      .post("http://localhost:3000/instructor/addcourse/", secondData, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "content-type": "text/json",
+        },
+      })
       .then((res) => {
         console.log(res);
       });
- 
   };
 
- 
-  
   return (
     <Fragment>
       <NavBar></NavBar>
@@ -65,7 +64,6 @@ const AddCoursePage = (props) => {
       {steps[1].status === "current" && (
         <AddSubtitles onConfirm={secondDataHandler}></AddSubtitles>
       )}
-     
     </Fragment>
   );
 };

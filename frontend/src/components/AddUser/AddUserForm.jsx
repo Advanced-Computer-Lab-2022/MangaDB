@@ -30,7 +30,7 @@ export default function AddUserForm(props) {
     const sentData = {
       userName: UserNameRef.current.value,
       password: PasswordRef.current.value,
-      role: type
+      role: type,
     };
     if (UserNameRef.current.value === "" || PasswordRef.current.value === "") {
       if (UserNameRef.current.value === "") {
@@ -49,7 +49,12 @@ export default function AddUserForm(props) {
     } else {
       //console.log(sentData);
       axios
-        .post("http://localhost:3000/admin/adduser", sentData)
+        .post("http://localhost:3000/admin/adduser", sentData, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+            "content-type": "text/json",
+          },
+        })
         .then((res) => {
           handleClickVariant("success");
         })

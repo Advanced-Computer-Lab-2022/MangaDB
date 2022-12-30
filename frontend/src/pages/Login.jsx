@@ -78,19 +78,7 @@ export default function Login() {
 
   const forgetPasswordHandler = (e) => {
     e.preventDefault();
-    if (UserNameRef.current.value === "") {
-      setEmptyUserName(true);
-      setWarning("please fill the following fields");
-    } else {
-      axios
-        .post("http://localhost:3000/user/forgetpassword", {
-          userName: UserNameRef.current.value,
-        })
-        .then((res) => {
-          console.log(res);
-          setWarning("Please check your email for the reset link");
-        });
-    }
+    navigate("/forgotPassword");
   };
 
   const onSuccess = (res) => {

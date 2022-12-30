@@ -5,6 +5,7 @@ import CourseCard from "../components/Course/CourseCard";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 import Navbar from "../components/UI/NavBar/NavBar";
+import { SnackbarProvider, useSnackbar } from "notistack";
 
 // pagination blue theme
 const theme = createTheme({
@@ -29,13 +30,26 @@ const MyCourses = () => {
   const [page, setPage] = useState(1);
   const [noOfPages, setNoOfPages] = useState(0);
 
+  const [myRequests, setMyRequests] = useState([]);
+  const [render, setRender] = useState(false);
+  
+  const [userRole, setUserRole] = useState("TRAINEE");
+
   //funtion to handle the pagination
+
+  const renderHandler = () => {
+    setRender(!render);
+  };
+
   const onChangePageHandler = (event, value) => {
     setPage(value);
   };
 
   useEffect(() => {
     //fetch the courses of the trainee
+    axios.get(`http://localhost:3000/admin/getuser/63a37e9688311fa832f43336`).then((res) => {
+      setUserRole(res.data.role);
+    });
     axios
       .get(
         `http://localhost:3000/user/mycourses/63a37e9688311fa832f43336/?page=${page}`
@@ -44,8 +58,19 @@ const MyCourses = () => {
         setNoOfPages(res.data.count);
         setMyCourses(res.data.courses);
       });
-  }, [page]);
-  console.log(myCourses);
+
+      axios.get(`http://localhost:3000/request/user/63a37e9688311fa832f43336`).then((res)=>{
+        for(let i=0;i<res.data.requests.length;i++){
+          if(res.data.requests[i].type=="refund"){
+            //console.log(res.data.requests[i].course);  
+            setMyRequests([...myRequests,res.data.requests[i].course]);
+          }
+        }
+        //console.log(res.data.requests[1].type);
+      });
+  }, [page,render]);
+
+  
   // handle the small screen and big screen..
   var coursesListView;
   var coursesCardsView;
@@ -63,6 +88,10 @@ const MyCourses = () => {
         discountedPrice={course.course.discountedPrice}
         discount={course.course.discount}
         rating={course.course.rating}
+        refundable={(course.totalSources/2)>=course.percentageCompleted && userRole=="TRAINEE"}
+        myCourses={true}
+        requested={myRequests.includes(course.course._id)}
+        renderHandler={renderHandler}
         // currencySymbol={currencySymbol}
       ></CourseCardListView>
     );
@@ -87,6 +116,7 @@ const MyCourses = () => {
   });
 
   return (
+    <SnackbarProvider maxSnack={3}>
     <Fragment>
       <Navbar></Navbar>
       <div className="flex flex-col gap-y-4 mb-4">
@@ -112,6 +142,7 @@ const MyCourses = () => {
         )}
       </div>
     </Fragment>
+    </SnackbarProvider>
   );
 };
 export default MyCourses;

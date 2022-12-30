@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { EyeIcon } from "@heroicons/react/solid";
 import { EyeOffIcon } from "@heroicons/react/solid";
 import PasswordField from "../components/Login-SignUp/PasswordField";
+import axios from "axios";
 
 export default function ResetPassword() {
   const newPasswordRef = useRef();
@@ -14,12 +15,15 @@ export default function ResetPassword() {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    if (newPasswordRef.current.value !== confirmNewPasswordRef.current.value && newPasswordRef.current.value !== "" && confirmNewPasswordRef.current.value !== "") {
+    if (
+      newPasswordRef.current.value !== confirmNewPasswordRef.current.value &&
+      newPasswordRef.current.value !== "" &&
+      confirmNewPasswordRef.current.value !== ""
+    ) {
       setPasswordMatch(false);
       console.log("passwords don't match");
       setWarning("passwords do not match");
-    }
-    else {
+    } else {
       setPasswordMatch(false);
       setWarning("");
     }
@@ -37,7 +41,24 @@ export default function ResetPassword() {
     } else {
       setEmptyConfirmPassword(false);
     }
-    
+
+    if (!warning) {
+      axios
+        .post(
+          "http://localhost:3000/user/resetpassword",
+          { password: newPasswordRef },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+              "content-type": "text/json",
+            },
+          }
+        )
+        .then((res) => {
+          localStorage.removeItem("token");
+        });
+    }
+
     //handle patch request
   };
   return (
@@ -50,7 +71,10 @@ export default function ResetPassword() {
           </p>
           <div
             class={
-               ( (emptyPassword || emptyConfirmPassword ||  passwordMatch === false) &&warning )
+              (emptyPassword ||
+                emptyConfirmPassword ||
+                passwordMatch === false) &&
+              warning
                 ? "p-4 mt-3 text-red-900 bg-red-50 border rounded-md"
                 : "hidden"
             }
@@ -76,7 +100,6 @@ export default function ResetPassword() {
               </div>
             </div>
           </div>
-
 
           <form action="" class="my-10" onSubmit={onSubmitHandler}>
             <div class="flex flex-col space-y-5">

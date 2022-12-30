@@ -144,7 +144,7 @@ export default function SignUp() {
         .then((res) => {
           //console.log(res);
           setUserNameValid(true);
-          navigate(`/home/1`, { state: res.data._id });
+          navigate(`/`, { state: res.data._id });
         })
         .catch((err) => {
           if (

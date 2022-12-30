@@ -1047,3 +1047,8 @@ res.status(200).json({message:"Email Sent"});
   };
   
 
+exports.getUserProfile = async (req, res) => {
+  const { _id } = req.user.id;
+  const foundUser=await user.findById(_id);
+  res.status(200).json(foundUser);
+};

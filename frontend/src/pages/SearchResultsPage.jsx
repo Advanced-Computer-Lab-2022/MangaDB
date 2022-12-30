@@ -10,6 +10,7 @@ import CourseCardListView from "../components/Course/CourseCardListView";
 import CourseCard from "../components/Course/CourseCard";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
+import { SnackbarProvider, useSnackbar } from "notistack";
 const options = [
   { id: 1, name: "Web Development" },
   { id: 2, name: "Machine Learning" },
@@ -195,6 +196,7 @@ const SearchResultsPage = () => {
     });
   }
   return (
+    <SnackbarProvider maxSnack={3}>
     <Fragment>
       <NavBar />
       <div className="mt-4 flex justify-center space-x-4 mb-3 items-center">
@@ -243,6 +245,7 @@ const SearchResultsPage = () => {
         </div>
       )}
     </Fragment>
+    </SnackbarProvider>
   );
 };
 export default SearchResultsPage;

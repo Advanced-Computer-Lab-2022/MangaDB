@@ -817,6 +817,7 @@ catch (err) {
 
 exports.registerToCourse=async (req, res) => {
   const invoiceId = req.body.invoiceId;
+  console.log(invoiceId);
   const foundInvoice=await invoice.findOne({_id:invoiceId}).catch((err) => {
    return res.status(500).send({
       message: "Error in getting invoice",

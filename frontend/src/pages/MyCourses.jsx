@@ -24,60 +24,6 @@ const theme = createTheme({
       },
     },
   });
-// stub for the courses 
-const stub = [{
-    _id: 1,
-    totalMins: 400,
-    courseTitle: "stub course ",
-    instructorName : "Omar Moataz",
-    subject : "Web Development",
-    level: "Intermediate",
-    courseDescription: "This is the stub description",
-    coursePrice: 500,
-    discountedPrice : 100,
-    discount: 0.2,
-    rating:5
-},
-{
-    _id: 2,
-    totalMins: 400,
-    courseTitle: "stub course ",
-    instructorName : "Omar Moataz",
-    subject : "Web Development",
-    level: "Intermediate",
-    courseDescription: "This is the stub description",
-    coursePrice: 500,
-    discountedPrice : 100,
-    discount: 0.2,
-    rating:5
-},
-{
-    _id: 3,
-    totalMins: 400,
-    courseTitle: "stub course ",
-    instructorName : "Omar Moataz",
-    subject : "Web Development",
-    level: "Intermediate",
-    courseDescription: "This is the stub description",
-    coursePrice: 500,
-    discountedPrice : 100,
-    discount: 0.2,
-    rating:5
-},
-{
-    _id: 4,
-    totalMins: 400,
-    courseTitle: "stub course ",
-    instructorName : "Omar Moataz",
-    subject : "Web Development",
-    level: "Intermediate",
-    courseDescription: "This is the stub description",
-    coursePrice: 500,
-    discountedPrice : 100,
-    discount: 0.2,
-    rating:5
-}
-]
 
 const MyCourses = () => {
   //replace the stub in the useState with an empty array
@@ -114,7 +60,7 @@ const MyCourses = () => {
 
       axios.get(`http://localhost:3000/request/user/63a37e9688311fa832f43336`).then((res)=>{
         for(let i=0;i<res.data.requests.length;i++){
-          if(res.data.requests[i].type=="refund"){
+          if(res.data.requests[i].type==="refund"){
             //console.log(res.data.requests[i].course);  
             setMyRequests([...myRequests,res.data.requests[i].course]);
           }

@@ -51,7 +51,9 @@ for (var i = 0; i < countryLabels.length; i++) {
 const PersonalInfoForm = forwardRef((props, ref) => {
   const defaultGender = props.gender ? props.gender : "Male";
   const defaultEmail = props.email ? props.email : "";
+  console.log(props.biography);
   const defaultBiography = props.biography ? props.biography : "";
+  console.log(defaultBiography);
   const defaultFirstName = props.firstName ? props.firstName : "";
   const defaultLastName = props.lastName ? props.lastName : "";
 
@@ -109,6 +111,18 @@ const PersonalInfoForm = forwardRef((props, ref) => {
     setLastName(event.target.value);
   };
 
+  useImperativeHandle(ref, () => ({
+    handleRender() {
+     setBiography(defaultBiography);
+      setFirstName(defaultFirstName);
+      setLastName(defaultLastName);
+      setEmail(defaultEmail);
+      setSelectedGender(defaultGender);
+    },
+  }));
+
+  useEffect(() => {
+  }, [render]);
   const onSaveHandler = (event) => {
     event.preventDefault();
     var currentWarning = "";

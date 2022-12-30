@@ -32,7 +32,7 @@ const CourseCardListView = (props) => {
   };
   const clickHandler = () => {
     const instructorId = "6386427487d3f94e4cb7a28d";
-    navigate(`/coursedetails/${instructorId}`, { state: {courseId:props.id, userId:props.userId}} );
+    navigate(`/coursedetails/${instructorId}`, { state: props.id });
   };
   const totalDuration = Math.round(props.duration / 60);
   return (
@@ -77,7 +77,8 @@ const CourseCardListView = (props) => {
           <div className="flex justify-end items-center">
             {props.discount > 0 && (
               <div className="line-through decoration-1 text-lg font-thin mr-4">
-                {props.coursePrice}{props.currencySymbol}
+                {props.coursePrice}
+                {props.currencySymbol}
               </div>
             )}
             <h5 class="text-2xl font-bold tracking-tight text-gray-900">
@@ -85,13 +86,16 @@ const CourseCardListView = (props) => {
                 <div className="text-green-600 mr-6">FREE</div>
               )}
               {props.discountedPrice != 0 && (
-                <div className="mr-6">{props.discountedPrice}{props.currencySymbol}</div>
+                <div className="mr-6">
+                  {props.discountedPrice}
+                  {props.currencySymbol}
+                </div>
               )}
             </h5>
             <SecondaryButton
               onClick={clickHandler}
-              text="View"
-              className="text-md font-bold"
+              text={"View"}
+              className="text-md font-bold "
             />
             {props.myCourses ? (
               <SecondaryButton

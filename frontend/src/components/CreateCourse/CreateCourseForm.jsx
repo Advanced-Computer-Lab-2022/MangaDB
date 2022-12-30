@@ -165,7 +165,6 @@ const CreateCourseForm = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    //handleFormValidation();
     var data = {
       courseTitle: enteredCourseTitle,
       level: selectedLevel,
@@ -179,9 +178,8 @@ const CreateCourseForm = (props) => {
     };
     if (handleFormValidation()) {
       props.onSave(data);
-    }
-    else{
-      window.scrollTo(0, 0,"smooth");
+    } else {
+      window.scrollTo(0, 0, "smooth");
     }
   };
 

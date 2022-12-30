@@ -11,23 +11,6 @@ import ReportItem from "../components/CourseView/ReportItem"
 import { Divider } from "@mui/material";
 import InstructorQACard from "../components/QA/InstructorQACard";
 
-const reviews = [
-  {
-    userName: "Omar Moataz",
-    date: "2022-12-27T10:15:58.506+00:00",
-    review: "this is so gut",
-  },
-  {
-    userName: "Omar Moataz",
-    date: "2022-12-27T10:15:58.506+00:00",
-    review: "this is so gut",
-  },
-  {
-    userName: "Omar Moataz",
-    date: "2022-12-27T10:15:58.506+00:00",
-    review: "this is so gut",
-  },
-];
 const questionsStub = [
   {
     _id: 1,
@@ -134,7 +117,7 @@ const InstructorDashboard = () => {
   ];
   //handle the displayed Reviews
   var displayedReviews = [];
-  if (reviews !== [] && loaded) {
+  if (loaded && receivedData.reviews !== []) {
     displayedReviews = receivedData.reviews.map((review) => {
       const formattedDate = review.date.substring(0, 10).split("-");
       const year = formattedDate[0];

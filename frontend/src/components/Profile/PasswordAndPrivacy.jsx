@@ -99,6 +99,7 @@ const PasswordAndPrivacy = (props) => {
     setConfirmPassword(event.target.value);
   };
 
+
   const onSaveHandler = (event) => {
     event.preventDefault();
 
@@ -141,11 +142,50 @@ const PasswordAndPrivacy = (props) => {
     }
 
     //can handle validation later..
+    var currentWarning = "";
+    if (currentPassword === "") {
+      setEmptyCurrentPassword(true);
+      currentWarning = "Please fill the following fields ";
+      console.log("here");
+    } else {
+      setEmptyCurrentPassword(false);
+    }
+    if (newPassword === "") {
+      setEmptyNewPassword(true);
+      currentWarning = "Please fill the following fields ";
+    } else {
+      setEmptyNewPassword(false);
+    }
+    if (confirmPassword === "") {
+      setEmptyConfirmNewPassword(true);
+      currentWarning = "Please fill the following fields ";
+    } else {
+      setEmptyConfirmNewPassword(false);
+    }
+    if (newPassword !== confirmPassword) {
+      setPasswordMatch(false);
+      currentWarning = "Passwords do not match ";
+    } else {
+      setPasswordMatch(true);
+    }
+    
+
+    setWarning(currentWarning);
+    if (
+      currentPassword==="" ||
+      newPassword ==="" ||
+      confirmPassword === "" ||
+      newPassword !== confirmPassword
+    ) {
+      window.scrollTo(0, 0, "smooth");
+      return;
+    }
     const saveData = {
       oldPassword: currentPassword,
       password: newPassword,
       //emailPrivacy: selected,
     };
+    //props.onSaveHandler(saveData);
     //props.onSaveHandler(saveData);
     console.log(saveData);
     axios
@@ -177,6 +217,7 @@ const PasswordAndPrivacy = (props) => {
     setWarning("Incorrect current password");
     window.scrollTo(0, 0, "smooth");
   };
+
 
   return (
     <div>
@@ -326,6 +367,8 @@ const PasswordAndPrivacy = (props) => {
                             for="password"
                             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                           >
+                            Current Password{" "}
+                            <span className="text-red-500">*</span>
                             Current Password{" "}
                             <span className="text-red-500">*</span>
                           </label>

@@ -48,7 +48,11 @@ const CourseViewPage = () => {
     const userid = "63a37e9688311fa832f43336";
     if (currentNotesFilter.name === "All Lessons") {
       axios
-        .get(`http://localhost:3000/user/coursenotes/${userid}?cid=${courseId}`)
+        .get(`http://localhost:3000/user/courseNotes?cid=${courseId}` ,{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}})
         .then((res) => {
           var notesSet = [];
           for (var i = 0; i < res.data.noteData.length; i++) {
@@ -85,8 +89,12 @@ const CourseViewPage = () => {
       }
       axios
         .get(
-          `http://localhost:3000/user/subtitlenotes/${userid}?cid=${courseId}&sid=${subtitleId}`
-        )
+          `http://localhost:3000/user/subtitleNotes?cid=${courseId}&sid=${subtitleId}`
+          ,{
+            headers: {
+              'Authorization': 'Bearer ' + localStorage.getItem('token'),
+              'content-type': 'text/json'
+  }})
         .then((res) => {
           var notesSet = [];
           for (var i = 0; i < res.data.noteData.length; i++) {
@@ -115,8 +123,12 @@ const CourseViewPage = () => {
     } else {
       axios
         .get(
-          `http://localhost:3000/user/sourcenotes/${userid}?cid=${courseId}&sid=${currentSource._id}`
-        )
+          `http://localhost:3000/user/sourceNotes?cid=${courseId}&sid=${currentSource._id}`
+          ,{
+            headers: {
+              'Authorization': 'Bearer ' + localStorage.getItem('token'),
+              'content-type': 'text/json'
+  }})
         .then((res) => {
           var notesSet = [];
           for (var i = 0; i < res.data.noteData.length; i++) {
@@ -163,8 +175,12 @@ const CourseViewPage = () => {
     //shouldnt we send the userId ??
     axios
       .get(
-        `http://localhost:3000/course/${courseId}?uid=63a37e9688311fa832f43336`
-      )
+        `http://localhost:3000/course/${courseId}`
+        ,{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}})
       .then((res) => {
         setReceivedData(res.data.course);
         setQA(res.data.QA);
@@ -191,7 +207,7 @@ const CourseViewPage = () => {
   const onSolveExamHandler = (receivedSolution) => {
     //should mark this as visited in the back and store the data
     //send the sourceId , examId ,userid and courseId
-    var endPoint = `http://localhost:3000/user/solveexam/`;
+    var endPoint = `http://localhost:3000/user/solveExam/`;
 
     var sentData = {
       studentAnswers: receivedSolution,
@@ -203,6 +219,8 @@ const CourseViewPage = () => {
       .post(endPoint, sentData, {
         headers: {
           "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("token")
         },
       })
       .then((res) => {
@@ -285,7 +303,7 @@ const CourseViewPage = () => {
   const onWatchHandler = () => {
     //will need the userID , sourceId, courseId
     //the userID and courseid are given from the navigation
-    var endPoint = `http://localhost:3000/user/opensource/${receivedData._id}`;
+    var endPoint = `http://localhost:3000/user/openSource/${receivedData._id}`;
     const userId = "63a37e9688311fa832f43336";
     const submittedData = {
       userId: userId,
@@ -295,16 +313,23 @@ const CourseViewPage = () => {
       .patch(endPoint, submittedData, {
         headers: {
           "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("token")
         },
       })
+      .then((res) => {});
+
+    axios
+      .get(
+        `http://localhost:3000/user/progress/${receivedData._id}`
+        ,{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}}
+      )
       .then((res) => {
-        axios
-          .get(
-            `http://localhost:3000/user/progress/${receivedData._id}?uid=${userId}`
-          )
-          .then((res) => {
-            setProgress(res.data.percentage);
-          });
+        setProgress(res.data.percentage);
       });
   };
 

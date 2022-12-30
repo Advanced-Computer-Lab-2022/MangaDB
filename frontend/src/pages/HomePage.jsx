@@ -12,6 +12,7 @@ import SearchBar from "../components/UI/Search/SearchBar";
 import Cloud from "../components/HomeComponents/Cloud";
 import Testomonial from "../components/HomeComponents/Testomonial";
 import Incentives from "../components/HomeComponents/Incentives";
+import SaleCourseCard from "../components/Course/SaleCourseCard";
 import { useLocation } from "react-router-dom";
 const HomePage = () => {
   const [displayedCourses, setDisplayedCourses] = useState([]);
@@ -65,7 +66,7 @@ const HomePage = () => {
   });
   const displayedDiscountedCourses = discountedCourses.map((course) => {
     return (
-      <CourseCard
+      <SaleCourseCard
         id={course._id}
         userId={location.state}
         duration={course.totalMins}
@@ -78,7 +79,7 @@ const HomePage = () => {
         discount={course.discount}
         rating={course.rating}
         currencySymbol={currencySymbol}
-      ></CourseCard>
+      ></SaleCourseCard>
     );
   });
   return (

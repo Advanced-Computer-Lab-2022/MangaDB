@@ -55,6 +55,7 @@ const PasswordAndPrivacy = (props) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
   const [emptyCurrentPassword, setEmptyCurrentPassword] = useState(false);
   const [emptyNewPassword, setEmptyNewPassword] = useState(false);
   const [emptyConfirmNewPassword, setEmptyConfirmNewPassword] = useState(false);
@@ -67,6 +68,15 @@ const PasswordAndPrivacy = (props) => {
     setShowNewPassword((prev) => {
       return !prev;
     });
+  };
+
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant) => {
+    //console.log("here");
+    enqueueSnackbar(
+      "Security and privacy information has been updated successfly  ",
+      { variant }
+    );
   };
   const onClickConfirmPasswordHandler = () => {
     setShowConfirmPassword((prev) => {
@@ -89,17 +99,48 @@ const PasswordAndPrivacy = (props) => {
     setConfirmPassword(event.target.value);
   };
 
-  const { enqueueSnackbar } = useSnackbar();
-  const handleClickVariant = (variant) => {
-    //console.log("here");
-    enqueueSnackbar(
-      "Security and privacy information has been updated successfly  ",
-      { variant }
-    );
-  };
 
   const onSaveHandler = (event) => {
     event.preventDefault();
+
+    var currentWarning = "";
+    if (currentPassword === "") {
+      setEmptyCurrentPassword(true);
+      currentWarning = "Please fill the following fields ";
+      console.log("here");
+    } else {
+      setEmptyCurrentPassword(false);
+    }
+    if (newPassword === "") {
+      setEmptyNewPassword(true);
+      currentWarning = "Please fill the following fields ";
+    } else {
+      setEmptyNewPassword(false);
+    }
+    if (confirmPassword === "") {
+      setEmptyConfirmNewPassword(true);
+      currentWarning = "Please fill the following fields ";
+    } else {
+      setEmptyConfirmNewPassword(false);
+    }
+    if (newPassword !== confirmPassword) {
+      setPasswordMatch(false);
+      currentWarning = "Passwords do not match ";
+    } else {
+      setPasswordMatch(true);
+    }
+
+    setWarning(currentWarning);
+    if (
+      currentPassword === "" ||
+      newPassword === "" ||
+      confirmPassword === "" ||
+      newPassword !== confirmPassword
+    ) {
+      window.scrollTo(0, 0, "smooth");
+      return;
+    }
+
     //can handle validation later..
     var currentWarning = "";
     if (currentPassword === "") {
@@ -145,37 +186,38 @@ const PasswordAndPrivacy = (props) => {
       //emailPrivacy: selected,
     };
     //props.onSaveHandler(saveData);
+    //props.onSaveHandler(saveData);
     console.log(saveData);
-
     axios
       .patch(
         "http://localhost:3000/user/changepassword/63acd64846cc70eed673a330",
         saveData /*,
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-            "content-type": "text/json",
-          },
-        }*/
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "content-type": "text/json",
+        },
+      }*/
       )
       .then((res) => {
         handleClickVariant("success");
       })
       .catch((err) => {
         if (
-          err.message.split(" ")[err.message.split(" ").length - 1] === "401" && currentPassword !== ""
+          err.message.split(" ")[err.message.split(" ").length - 1] === "401" &&
+          currentPassword !== ""
         ) {
           setIncorrectCurrentPassword(true);
           handleIncorrectCurrentPassword();
         }
       });
   };
-
   const handleIncorrectCurrentPassword = () => {
     setIncorrectCurrentPassword(true);
     setWarning("Incorrect current password");
     window.scrollTo(0, 0, "smooth");
-  }
+  };
+
 
   return (
     <div>
@@ -283,6 +325,7 @@ const PasswordAndPrivacy = (props) => {
                       This information is related to your security and privacy.
                     </p>
                   </div>
+
                   <div
                     class={
                       emptyNewPassword ||
@@ -315,6 +358,7 @@ const PasswordAndPrivacy = (props) => {
                       </div>
                     </div>
                   </div>
+
                   <div className="mt-6 flex flex-col lg:flex-row">
                     <div className="flex-grow space-y-6">
                       <div>
@@ -323,6 +367,8 @@ const PasswordAndPrivacy = (props) => {
                             for="password"
                             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                           >
+                            Current Password{" "}
+                            <span className="text-red-500">*</span>
                             Current Password{" "}
                             <span className="text-red-500">*</span>
                           </label>
@@ -334,8 +380,11 @@ const PasswordAndPrivacy = (props) => {
                               type={showCurrentPassword ? "text" : "password"}
                               id="password"
                               className={"bg-gray-50 border text-sm  text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ".concat(
-                                emptyCurrentPassword || incorrectCurrentPassword ? "border-red-500" : "border-gray-300"
+                                emptyCurrentPassword || incorrectCurrentPassword
+                                  ? "border-red-500"
+                                  : "border-gray-300"
                               )}
+                              required
                             ></input>
                             {showCurrentPassword ? (
                               <VisibilityIcon
@@ -369,6 +418,7 @@ const PasswordAndPrivacy = (props) => {
                                   ? "border-red-500"
                                   : "border-gray-300"
                               )}
+                              required
                             ></input>
                             {showNewPassword ? (
                               <VisibilityIcon

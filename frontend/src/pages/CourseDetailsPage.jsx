@@ -24,13 +24,18 @@ const CourseDetailsPage = () => {
       .get(
         "http://localhost:3000/course/"
           .concat(courseId)
-          .concat("?uid=638a07cdbc3508481a2d7da9")
+          ,{
+            headers: {
+              'Authorization': 'Bearer ' + localStorage.getItem('token'),
+              'content-type': 'text/json'
+  }}
       )
       .then((res) => {
         setCourseDetails(res.data.course);
         console.log(res.data);
         setLoaded(true);
         if (res.data.userData !== null) {
+          //to be changed
           if (res.data.userData.role === "corporate") {
             //check if requested before
             setCorp(true);
@@ -39,8 +44,8 @@ const CourseDetailsPage = () => {
           setUserRegistered(false);
         }
       });
-    const userId = "638a07cdbc3508481a2d7da9";
-   
+    const userId = "63a37e9688311fa832f43336";
+
     // axios
     //   .post(`http://localhost:3000/invoice/${location.state.courseId}`, {
     //     userId: userId,
@@ -56,11 +61,17 @@ const CourseDetailsPage = () => {
     //     }
     //   });
 
-    axios.get("http://localhost:3000/course/rate/".concat(courseId)).then((res) => {
+    axios.get("http://localhost:3000/course/rate/".concat(courseId) ,{
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        'content-type': 'text/json'
+}}).then((res) => {
       // setCourseDetails(res.data.course);
       // console.log(res.data.course);
       // setLoaded(true);
-      console.log(res.data.review);
+      setCourseReviews(res.data.review);
+      //console.log(res.data.count);
+      setReviewsCount(res.data.count);
     });
 
     // axios
@@ -68,15 +79,33 @@ const CourseDetailsPage = () => {
     //   .then((res) => {
     //     console.log(res);
     //   });
+
+
+    //get the requests of the user and check if the course is requested before
+    axios.get(`http://localhost:3000/request/user/63a37e9688311fa832f43336`).then((res)=>{
+      //console.log(res.data.requests[0].type);
+      for(let i=0;i<res.data.requests.length;i++){
+        console.log(res.data.requests[i].type);
+        if(res.data.requests[i].type=="access" && res.data.requests[i].course==courseId && res.data.requests[i].status!=="accepted"){
+          //console.log(res.data.requests[i].course);  
+          setRequested(true);
+        }
+      }
+      //console.log(res.data.requests[1].type);
+    });
   }, []);
 
   const submitReviewHandler = (data) => {
-    console.log(data);
+    //console.log(data);
     const courseId = location.state.courseId;
     axios
       .post(
         "http://localhost:3000/course/rate/".concat(courseId).concat("/"),
-        data
+        data ,{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}}
       )
       .then((res) => {
         console.log(res);

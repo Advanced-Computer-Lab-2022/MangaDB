@@ -88,6 +88,7 @@ const AddSubtitles = (props) => {
   });
   const showSubtitleModal = () => {
     setEmptySubtitles(false);
+
     setSubtitleModalShown(true);
   };
   const hideSubtitleModal = () => {
@@ -136,15 +137,8 @@ const AddSubtitles = (props) => {
           </div>
         </div>
         <div className="ml-4 px-4 py-6 sm:px-6">
-          
         <div>
-        <h2 className="text-lg leading-6 font-medium text-gray-900 mb-1">
-          Personal Information
-        </h2>
-        <p className="mt-1 text-sm text-gray-500">
-          This information will be displayed publicly so be careful what you
-          share.
-        </p>
+        
       </div>
       <div
         class={
@@ -172,7 +166,6 @@ const AddSubtitles = (props) => {
           </div>
         </div>
       </div>
-
 
           <div className="flex space-x-2 justify-center">
             <div className="flex-col min-w-[80%]">

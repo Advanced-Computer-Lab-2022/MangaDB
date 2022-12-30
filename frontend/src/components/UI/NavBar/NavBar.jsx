@@ -22,9 +22,7 @@ var navButtons = [
   { name: "FAQs", active: false },
   { name: "Logout", active: false },
   { name: "Profile", active: false },
-
   
-  {name:"Requested Courses", active:false},
 ];
 
 const NavBar = (props) => {

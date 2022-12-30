@@ -97,13 +97,26 @@ exports.getUserById = async (req, res) => {
   }
 };
 
+exports.viewProfile = async (req, res) => {
+  const id = req.user.id;
+  try {
+    await user.findById(id).then((data) => {
+      if (!data)
+        res.status(404).send({ message: "Not found user with id " + id });
+      else res.send(data);
+    });
+  } catch (err) {
+    res.status(500).send({ message: "Error retrieving user with id=" + id });
+  }
+};
+
 exports.updateUser = async (req, res) => {
   if (!req.body) {
     return res.status(400).send({
       message: "Data to update can not be empty!",
     });
   }
-  const id = req.params.id;
+  const id = req.user.id;
   try {
     await user
       .findByIdAndUpdate(id, req.body, { useFindAndModify: false, new: true })
@@ -167,7 +180,7 @@ exports.getUserByRole = async (req, res) => {
 };
 
 exports.changePassword = async (req, res) => {
-  const id = req.params.id;
+  const id =  req.user.id;
   const { oldPassword, password } = req.body;
   const salt = await bcrypt.genSalt(10);
   const newPassword = await bcrypt.hash(password, salt);
@@ -221,9 +234,6 @@ exports.changePassword = async (req, res) => {
                     { id: data._id, userName: data.userName, role: data.role },
                     process.env.TOKEN_SECRET
                   );
-                  res.cookie("token", token, {
-                    httpOnly: true,
-                  });
                     const mailOptions = {
                         email: data.email,
                         subject: 'Reset Password',
@@ -295,7 +305,7 @@ exports.resetPassword = async (req, res) => {
 
 //get courses this user is registered in
 exports.getRegisteredCourses = async (req, res) => {
-  const id = req.params.id;
+  const id =  req.user.id;
   const pageSize=req.query.pagesize||10;
   const currentPage=req.query.page||1;
   try {
@@ -334,7 +344,8 @@ mailer.sendEmail(mailOptions);
 };
 exports.openSource = async (req, res) => {
   const courseId = req.params.id;
-  const { userId, sourceId } = req.body;
+  const  sourceId  = req.body.sourceId;
+  const userId = req.user.id;
   try {
     const userData = await user.findById(userId);
     if (!userData) {
@@ -380,9 +391,9 @@ exports.openSource = async (req, res) => {
         let subtitleIndex=-1;
         for(let i=0;i<courseData.subtitles.length;i++){
           for(let j=0;j<courseData.subtitles[i].sources.length;j++){
+            sourceIndex++;
             if(courseData.subtitles[i].sources[j]._id==sourceId){
               sourceDescription=courseData.subtitles[i].sources[j].description;
-              sourceIndex=j;
               subtitleDescription=courseData.subtitles[i].description;
               subtitleIndex=i;
               break;
@@ -424,7 +435,7 @@ exports.openSource = async (req, res) => {
 //probably useless
 exports.getProgress = async (req, res) => {
   const courseId = req.params.id;
-  const  id  = req.query.uid;
+  const  id  = req.user.id;
   try {
     const userData = await user.findById(id);
     if (!userData) {
@@ -462,7 +473,7 @@ exports.getProgress = async (req, res) => {
 };
 
 exports.addNotes = async (req, res) => {
-  const id = req.params.id;
+  const id =  req.user.id;
   const { courseId, sourceId, notes } = req.body;
   try {
     const userData = await user.findById(id);
@@ -527,7 +538,7 @@ exports.addNotes = async (req, res) => {
 };
 
 exports.getCourseNotes = async (req, res) => {
-  const id = req.params.id;
+  const id =  req.user.id;
   const  courseId  = req.query.cid;
   try {
     const userData = await user.findById(id);
@@ -566,7 +577,7 @@ exports.getCourseNotes = async (req, res) => {
 
 exports.getSubtitleNotes = async (req, res) => {
 
-  const id = req.params.id;
+  const id =  req.user.id;
   const  courseId  = req.query.cid;
   const  subtitleId  = req.query.sid;
   console.log( id, courseId, subtitleId );
@@ -626,7 +637,7 @@ exports.getSubtitleNotes = async (req, res) => {
 };
 
 exports.getSourceNotes=async (req, res) => {
-  const id = req.params.id;
+  const id =  req.user.id;
   const  courseId  = req.query.cid;
   const  sourceId  = req.query.sid;
   console.log(id,courseId,sourceId);
@@ -676,7 +687,7 @@ exports.deleteNote=async (req, res) => {
   const noteId = req.body.noteId;
   const courseId  = req.body.courseId;
   const sourceId  = req.body.sourceId;
-  const userId=req.body.userId;
+  const userId= req.user.id;
   try{
     const userData=await user.findById(userId);
     if(!userData){
@@ -737,7 +748,7 @@ exports.deleteNote=async (req, res) => {
 
 exports.solveExam=async (req, res) => {
 
-  const myUser=await user.findOne({_id:req.body.userid});
+  const myUser=await user.findOne({_id: req.user.id});
   const courseId = req.body.courseid;
   console.log(myUser);
   console.log(courseId);
@@ -817,6 +828,7 @@ catch (err) {
 
 exports.registerToCourse=async (req, res) => {
   const invoiceId = req.body.invoiceId;
+  console.log(invoiceId);
   const foundInvoice=await invoice.findOne({_id:invoiceId}).catch((err) => {
    return res.status(500).send({
       message: "Error in getting invoice",
@@ -1047,3 +1059,8 @@ res.status(200).json({message:"Email Sent"});
   };
   
 
+exports.getUserProfile = async (req, res) => {
+  const { _id } = req.user.id;
+  const foundUser=await user.findById(_id);
+  res.status(200).json(foundUser);
+};

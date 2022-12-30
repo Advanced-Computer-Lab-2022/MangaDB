@@ -3,7 +3,7 @@ const course = require("../models/course");
 
 exports.createProblem = async (req, res) => {
   const courseId = req.body.courseId;
-  const user = req.body.userId;
+  const user = req.user.id;
   const type = req.body.type;
   const description = req.body.description;
   const foundCourse = await course.findById(courseId);
@@ -57,10 +57,10 @@ exports.getProblem = async (req, res) => {
       return res.status(404).send();
     }
     if (foundProblem.status === "unseen") {
-      //if(req.user.role === "ADMIN"){
-      //  foundProblem.status = "pending";
+      if(req.user.role === "ADMIN"){
+        foundProblem.status = "pending";
       await foundProblem.save();
-      //}
+      }
     }
     res.send(foundProblem);
   } catch (error) {
@@ -107,7 +107,7 @@ exports.updateProblem = async (req, res) => {
 
 exports.followUpProblem = async (req, res) => {
   const followUpComment = req.body.followUpComment;
-  const userId = req.body.userId;
+  const userId = req.user.id;
   const _id = req.params.id;
   try {
     const foundProblem = await problem.findOne({ _id, user: userId });
@@ -126,9 +126,10 @@ exports.followUpProblem = async (req, res) => {
 };
 
 exports.getUserProblems = async (req, res) => {
-  const _id = req.params.id;
-  const status = req.query.status;
-  const type = req.query.type;
+    const _id = req.user.id;
+    const status=req.query.status;
+  const type=req.query.type;
+ 
 
   let query1 = {};
   let query2 = {};
@@ -171,7 +172,7 @@ exports.getCourseProblems = async (req, res) => {
 
 exports.getUserCourseProblems = async (req, res) => {
   const cId = req.params.id;
-  const uId = req.query.uId;
+  const uId = req.user.id;
 
   try {
     const problems = await problem

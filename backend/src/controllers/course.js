@@ -125,7 +125,7 @@ exports.getAllCourses = async (req, res, next) => {
 
 exports.getCourse = async (req, res) => {
   const courseId = req.params.id;
-  const userId = req.query.uid;
+  const userId = req.user.id;
   let foundCourse = await course.findById(courseId).catch((error) => {
     res.status(500).json({
       message: "Fetching course failed!",
@@ -137,7 +137,9 @@ exports.getCourse = async (req, res) => {
     });
 
   foundCourse = await foundCourse.populate("subtitles.sources.quiz");
-
+  
+  let userCourseData = null;
+if(userId){
   const foundUser = await user.findOne({ _id: userId }).catch((error) => {
     res.status(500).json({
       message: "Fetching user failed!",
@@ -145,7 +147,7 @@ exports.getCourse = async (req, res) => {
   });
 
   // to  be changed to false and uncomment for loop when token added
-  let userCourseData = null;
+  
 
   for (let i = 0; i < foundUser.courseDetails.length; i++) {
     if (foundUser.courseDetails[i].course == courseId) {
@@ -153,7 +155,7 @@ exports.getCourse = async (req, res) => {
       break;
     }
   }
-
+}
   const countryCode = req.query.CC || "US";
   let countryDetails = await currencyConverter.convertCurrency(
     "US",
@@ -168,7 +170,9 @@ exports.getCourse = async (req, res) => {
     foundCourse.discountedPrice = (
       course.discountedPrice * exchangeRate
     ).toFixed(2);
-    let questions = await getCourseQuestions(courseId, userId);
+    let questions = null;
+    if(userId)
+    questions = await getCourseQuestions(courseId, userId);
     
     res.status(200).json({
       message: "Course fetched successfully!",
@@ -187,8 +191,9 @@ exports.getCourse = async (req, res) => {
 //check if course is in instructor's course list
 
 exports.updateCourse = async (req, res, next) => {
+  const courseId = req.params.id;
   await course
-    .findByIdAndUpdate(req.params.id, req.body)
+    .findByIdAndUpdate(courseId, req.body)
     .then((course) => {
       if (course) {
         res.status(200).json({ message: "Course updated successfully!" });
@@ -248,7 +253,7 @@ exports.deleteCourse = async (req, res, next) => {
 };
 
 exports.createCourse = async (req, res, next) => {
-  const instructorId = req.params.id;
+  const instructorId = req.user.id;
   const foundInstructor = await user.findById(instructorId);
   if (!foundInstructor.agreedToTerms)
     return res.status(400).json({
@@ -340,7 +345,7 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
     .find({
       $and: [
         query,
-        { instructor: req.params.id },
+        { instructor: req.user.id },
         { discountedPrice: { $gte: minPrice } },
         { discountedPrice: { $lte: maxPrice } },
         {
@@ -405,7 +410,7 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
 
 exports.rateCourse = async (req, res, next) => {
   const courseId = req.params.id;
-  const userId = req.body.userId;
+  const userId = req.user.id;;
   const rating = req.body.rating;
   const review = req.body.review;
   const foundUser = await user.findById(userId);
@@ -443,7 +448,7 @@ exports.rateCourse = async (req, res, next) => {
 
 exports.editRating = async (req, res, next) => {
   const courseId = req.params.id;
-  const userId = req.body.userId;
+  const userId = req.user.id;
   const rating = req.body.rating;
   const review = req.body.review;
   let myCourse = await course.findById(courseId);
@@ -472,7 +477,7 @@ exports.editRating = async (req, res, next) => {
 };
 exports.deleteRating = async (req, res, next) => {
   const courseId = req.params.id;
-  const userId = req.body.userId;
+  const userId = req.user.id;
   let foundCourse = await course.findById(courseId);
   let oldRating = 0;
   foundCourse.reviews.forEach((element) => {
@@ -644,7 +649,7 @@ exports.getMostRatedCourses = async (req, res, next) => {
 
 exports.openCourse = async (req, res, next) => {
   const courseId = req.params.id;
-  const userId = req.body.userId;
+  const userId = req.user.id;;
   const foundUser = await user.findById(userId).catch((error) => {
     res.status(500).json({
       message: "Fetching user failed!",
@@ -704,7 +709,7 @@ exports.getCourseRating = async (req, res) => {
 
 exports.getRating = async (req, res, next) => {
   const courseId = req.params.id;
-  const userId = req.query.uid;
+  const userId = req.user.id;;
   const foundCourse = await course.findById(courseId).catch((error) => {
     res.status(500).json({
       message: "Fetching course failed!",
@@ -730,7 +735,7 @@ exports.getRating = async (req, res, next) => {
 
 exports.addSource = async (req, res, next) => {
   const courseId = req.params.id;
-  const userId = req.body.userId;
+  const userId = req.user.id;;
   const source = req.body.source;
   const subtitleId = req.body.subtitleId;
   const foundCourse = await course.findById(courseId).catch((error) => {
@@ -783,7 +788,7 @@ exports.updateDiscountedPrice = async () => {
 };
 exports.askQuestion = async (req, res, next) => {
   let cId = req.params.id;
-  let uId = req.body.userId;
+  let uId = req.user.id;
   let currentCourse = await course.findById(cId);
   let currentUser = await user.findById(uId);
   let currentQuestion = req.body.question;
@@ -842,7 +847,7 @@ exports.answerQuestion = async (req, res, next) => {
 };
 exports.getInstructorQuestions = async (req, res, next) => {
   let questions = await question.find(
-    { instructorId: req.params.id, answer: { $exists: false } },
+    { instructorId: req.user.id, answer: { $exists: false } },
     { courseName: 0, instructorId: 0, userId: 0 }
   );
   if (!questions) {
@@ -858,3 +863,4 @@ let courses=await course.find({discount:{ $gt: 0 }}).limit(9);
 res.status(200).send(courses);
 
 }
+

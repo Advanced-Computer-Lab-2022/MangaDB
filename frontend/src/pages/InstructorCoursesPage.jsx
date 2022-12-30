@@ -213,17 +213,25 @@ const IntructorCoursePage = (props) => {
         "maxPrice=" +
         searchState.filters.price.maxValue;
     }
-    var param2 = param;
+    var param2 = param;//will change iId
     param2 = param2 + (param ? "&" : "?") + "iId=" + "63a36fd41bd9f2e6163b0481";
     if (!searchState.myCourses) {
-      axios.get("http://localhost:3000/course/" + param2).then((res) => {
+      axios.get("http://localhost:3000/course/" + param2 ,{
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          'content-type': 'text/json'
+}}).then((res) => {
         dispatchSearch({ type: "COURSES", value: res.data.courses });
       });
     } else {
       axios
         .get(
-          "http://localhost:3000/instructor/searchcourses/63a36fd41bd9f2e6163b0481" +
-            param
+          "http://localhost:3000/instructor/searchCourses" +
+            param ,{
+              headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'content-type': 'text/json'
+    }}
         )
         .then((res) => {
           dispatchSearch({ type: "COURSES", value: res.data.courses });
@@ -282,7 +290,7 @@ const IntructorCoursePage = (props) => {
 
   return (
     <Fragment>
-      <NavBar />
+      
       {showFilters && (
         <Filters
           prevState={searchState.filters}

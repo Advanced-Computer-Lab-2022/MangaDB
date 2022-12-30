@@ -31,12 +31,11 @@ function isYoutubeURL(str) {
 }
 
 const CreateCourseForm = (props) => {
+
   const [openContract, setOpenContract] = useState(false);
   const handleClose = () => {
     setOpenContract(false);
   };
-  
-
   const [enteredCourseTitle, setEnteredCourseTitle] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("Beginner");
   const [enteredImageURL, setEnteredImageURL] = useState("");
@@ -55,13 +54,13 @@ const CreateCourseForm = (props) => {
   const [emptyOverviewURL, setEmptyOverviewURL] = useState(false);
   const [validOverviewURL, setValidOverviewURL] = useState(true);
 
-
   const acceptContract = () => {
     axios.patch("http://localhost:3000/user/updateuser/63acd64846cc70eed673a330", {agreedToTerms: true}).then((response) => {
       console.log(response.data);
       handleClose();
     });
   }
+
   const courseTitleChangeHandler = (event) => {
     setEnteredCourseTitle(event.target.value);
   };

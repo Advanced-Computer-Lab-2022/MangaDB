@@ -13,7 +13,6 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { useNavigate } from "react-router-dom";
 import Checkbox from "@mui/material/Checkbox";
-
 function emailRegex(email) {
   const re =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -41,11 +40,11 @@ export default function SignUp() {
   const navigate = useNavigate();
 
   const [checked, setChecked] = useState(true);
-
   const handleChange = (event) => {
     console.log(event.target.checked);
     setChecked(event.target.checked);
   };
+
   const genderChangeHandler = (e) => {
     setGender(e.target.value);
   };
@@ -113,7 +112,6 @@ export default function SignUp() {
     } else {
       setEmailValid(true);
     }
-
     if (userNameValid === false) {
       setWarning("username already exists");
       window.scrollTo(0, 0, "smooth");
@@ -157,7 +155,7 @@ export default function SignUp() {
         .then((res) => {
           //console.log(res);
           setUserNameValid(true);
-          navigate(`/home/1`, { state: res.data._id });
+          navigate(`/`, { state: res.data._id });
         })
         .catch((err) => {
           if (
@@ -352,6 +350,25 @@ export default function SignUp() {
                 label="Confirm Password"
                 warning={emptyConfirmPassword || passwordMatch === false}
               />
+              <div className="flex flex-row items-center ">
+                <Checkbox
+                  defaultChecked
+                  checked={checked}
+                  onChange={handleChange}
+                  inputProps={{ "aria-label": "controlled" }}
+                />
+                <p class="text-center ">
+                  Agree to our{" "}
+                  <button
+                    onClick={() => {}}
+                    class="text-primaryBlue hover:opacity-70 ease-in-out duration-300 font-medium inline-flex space-x-1 items-center"
+                  >
+                    <span>terms and conditions </span>
+                  </button>
+                  {" *"}
+                </p>{" "}
+              </div>
+
               <div className="flex flex-row items-center ">
                 <Checkbox
                   defaultChecked

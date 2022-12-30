@@ -7,9 +7,9 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import AverageSummary from "../components/Profile/Reviews/AverageSummary";
 import ReviewItem from "../components/CourseDetailsComp/ReviewItem";
+import ReportItem from "../components/CourseView/ReportItem"
 import { Divider } from "@mui/material";
 import InstructorQACard from "../components/QA/InstructorQACard";
-import ReportItem from "../components/CourseView/ReportItem";
 
 const questionsStub = [
   {
@@ -37,11 +37,36 @@ const questionsStub = [
 ];
 const InstructorDashboard = () => {
   const [receivedData, setReceivedData] = useState({});
+  const [reports, setReports] = useState([]);
   const [questions, setQuestions] = useState(questionsStub);
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState([]);
-  const [reports, setReports] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const [showFollowUpModal, setShowFollowUpModal] = useState(false);
+  const [followUpId, setFollowUpId] = useState(-1);
+  const [followUpProblem, setFollowUpProblem] = useState("");
+  const [followUpDescription, setFollowUpDescription] = useState("");
+
+  const openFollowUpModal = (id, problem) => {
+    setShowFollowUpModal(true);
+    setFollowUpId(id);
+    setFollowUpProblem(problem);
+  }
+
+  const closeFollowUpModal = () => {
+    setShowFollowUpModal(false);
+    setFollowUpId(-1);
+  };
+
+  const followUpDescriptionChangeHandler = (event) => {
+    setFollowUpDescription(event.target.value);
+  }
+
+  const followUpSubmitHandler = () => {
+    closeFollowUpModal();
+    //axios post
+  };
+
   //loading as the endpoint contains a lot of data..
   //fetch the data as soon as he logs in..
   useEffect(() => {
@@ -50,6 +75,7 @@ const InstructorDashboard = () => {
         "http://localhost:3000/instructor/myReviews/63a36fd41bd9f2e6163b0481"
       )
       .then((res) => {
+        console.log(res.data);
         setReceivedData(res.data.instructor);
         setCount(res.data.count);
         setLoaded(true);
@@ -185,9 +211,10 @@ const InstructorDashboard = () => {
       </div>
     );
   }
-  var index = 0;
+  console.log(reports);
   var displayedReports;
-  if (loaded && reports != []) {
+  var index = 0;
+  if (reports !== [] && loaded) {
     displayedReports = reports.map((report) => {
       index++;
       const formattedDate = report.date.substring(0, 10).split("-");
@@ -220,18 +247,28 @@ const InstructorDashboard = () => {
       const fullDate = month + " " + day + ", " + year;
       return (
         <ReportItem
+          id={report._id}
           type={report.type}
           status={report.status}
           index={index}
           date={fullDate}
           description={report.description}
-          isReport={true}
+          courseName={report.courseName}
+          followUpDescriptionChangeHandler={followUpDescriptionChangeHandler}
+          followUpSubmitHandler={followUpSubmitHandler}
+          followUpDescription={followUpDescription}
+          followUpId={followUpId}
+          followUpProblem={followUpProblem}
+          showFollowUpModal={showFollowUpModal}
+          openFollowUpModal={openFollowUpModal}
+          closeFollowUpModal={closeFollowUpModal}
         />
       );
     });
   } else {
-    displayedReports = <div>No Reports Found!</div>;
+    displayedReports = <div>No Reports Found.</div>;
   }
+  console.log(reports);
   return (
     <Fragment>
       <NavBar></NavBar>

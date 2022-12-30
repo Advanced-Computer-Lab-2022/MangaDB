@@ -47,12 +47,14 @@ export default function Login() {
           password: PasswordRef.current.value,
         })
         .then((res) => {
-          /*
-            localStorage.setItem("token", res.data.token);
-            window.location.href = "/home";
-            */
-          const instructorId = "6386427487d3f94e4cb7a28d";
+          localStorage.setItem("token", res.data.token);
+          window.location.href = "/home";
+
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("role", res.data.role);
+          //const instructorId = "6386427487d3f94e4cb7a28d";
           console.log(res.data.token);
+          //navigate(`/home/1`, { state: res.data.token });
           navigate(`/home/1`, { state: res.data.token });
         })
         .catch((error) => {
@@ -78,19 +80,7 @@ export default function Login() {
 
   const forgetPasswordHandler = (e) => {
     e.preventDefault();
-    if (UserNameRef.current.value === "") {
-      setEmptyUserName(true);
-      setWarning("please fill the following fields");
-    } else {
-      axios
-        .post("http://localhost:3000/user/forgetpassword", {
-          userName: UserNameRef.current.value,
-        })
-        .then((res) => {
-          console.log(res);
-          setWarning("Please check your email for the reset link");
-        });
-    }
+    navigate("/forgotPassword");
   };
 
   const onSuccess = (res) => {

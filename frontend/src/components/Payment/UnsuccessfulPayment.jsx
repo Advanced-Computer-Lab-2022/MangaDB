@@ -9,10 +9,12 @@ export default function UnsuccessfulPayment() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    //call endpoint of payment "delete invoice"
-    /*setTimeout(() => {
+
+    //call endpoint of payment
+    localStorage.removeItem("invoiceId");
+    setTimeout(() => {
       navigate('/home/1')
-    }, 5000)*/
+    }, 5000)
   }, []);
   return (
     <div className="flex flex-col space-y-5">

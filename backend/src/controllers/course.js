@@ -170,7 +170,9 @@ if(userId){
     foundCourse.discountedPrice = (
       course.discountedPrice * exchangeRate
     ).toFixed(2);
-    let questions = await getCourseQuestions(courseId, userId);
+    let questions = null;
+    if(userId)
+    questions = await getCourseQuestions(courseId, userId);
     
     res.status(200).json({
       message: "Course fetched successfully!",

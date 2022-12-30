@@ -137,7 +137,9 @@ exports.getCourse = async (req, res) => {
     });
 
   foundCourse = await foundCourse.populate("subtitles.sources.quiz");
-
+  
+  let userCourseData = null;
+if(userId){
   const foundUser = await user.findOne({ _id: userId }).catch((error) => {
     res.status(500).json({
       message: "Fetching user failed!",
@@ -145,7 +147,7 @@ exports.getCourse = async (req, res) => {
   });
 
   // to  be changed to false and uncomment for loop when token added
-  let userCourseData = null;
+  
 
   for (let i = 0; i < foundUser.courseDetails.length; i++) {
     if (foundUser.courseDetails[i].course == courseId) {
@@ -153,7 +155,7 @@ exports.getCourse = async (req, res) => {
       break;
     }
   }
-
+}
   const countryCode = req.query.CC || "US";
   let countryDetails = await currencyConverter.convertCurrency(
     "US",
@@ -168,7 +170,9 @@ exports.getCourse = async (req, res) => {
     foundCourse.discountedPrice = (
       course.discountedPrice * exchangeRate
     ).toFixed(2);
-    let questions = await getCourseQuestions(courseId, userId);
+    let questions = null;
+    if(userId)
+    questions = await getCourseQuestions(courseId, userId);
     
     res.status(200).json({
       message: "Course fetched successfully!",

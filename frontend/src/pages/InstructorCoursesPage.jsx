@@ -282,7 +282,7 @@ const IntructorCoursePage = (props) => {
 
   return (
     <Fragment>
-      <NavBar />
+      
       {showFilters && (
         <Filters
           prevState={searchState.filters}

@@ -40,6 +40,8 @@ router.get('/wallet/:id',userController.getWallet);
 
 router.get("/certificate", userController.testCertificate);
 
+router.get("/profile", userController.getUserProfile);
+
 
 // router.post('/login', userController.login);
 

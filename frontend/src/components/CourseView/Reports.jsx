@@ -59,6 +59,7 @@ const Reports = (props) => {
         index={index}
         date={fullDate}
         description={report.description}
+        isReport={true}
       />
     );
   });

@@ -148,6 +148,7 @@ const CourseViewPage = () => {
         `http://localhost:3000/problem/usercourseproblems/${courseId}?uId=${userid}`
       )
       .then((res) => {
+        console.log(res.data);
         setReports(res.data);
       });
     axios.get(`http://localhost:3000/course/rate/${courseId}`).then((res) => {

@@ -83,27 +83,27 @@ const NavBar = (props) => {
           {/* Profile will not appear active */}
           {navButtons.map((navButton) => {
             if (navButton.name === "Home") {
-              return <HomeNavBar active={navButton.active} />;
+              return <HomeNavBar active={navButton.active} search={false} />;
             } else if (navButton.name === "My Courses") {
-              return <MyCoursesNavBar active={navButton.active} />;
+              return <MyCoursesNavBar active={navButton.active} search={false} />;
             } else if (navButton.name === "FAQs") {
-              return <FAQsNavBar active={navButton.active} />;
+              return <FAQsNavBar active={navButton.active} search={false} />;
             } else if (navButton.name === "Cart") {
-              return <CartNavBar active={navButton.active} />;
+              return <CartNavBar active={navButton.active} search={false} />;
             } else if (navButton.name === "Profile") {
-              return <ProfileNavBar active={navButton.active} />;
+              return <ProfileNavBar active={navButton.active} search={false} />;
             } else if (navButton.name === "Request Course") {
-              return <RequestCourseNavBar active={navButton.active} />;
+              return <RequestCourseNavBar active={navButton.active} search={false} />;
             } else if (navButton.name === "Sign In") {
-              return <SignInNavBar active={navButton.active} />;
+              return <SignInNavBar active={navButton.active} search={false} />;
             } else if (navButton.name === "Dashboard") {
-              return <DashboardNavBar active={navButton.active} />;
+              return <DashboardNavBar active={navButton.active} search={false} />;
             } else if (navButton.name === "Add Course") {
-              return <AddCourseNavBar active={navButton.active} />;
+              return <AddCourseNavBar active={navButton.active} search={false} />;
             } else if (navButton.name === "Add User") {
-              return <AddUserNavBar active={navButton.active} />;
+              return <AddUserNavBar active={navButton.active} search={false} />;
             } else if (navButton.name === "Requested Courses") {
-              return <RequestedCoursesNavBar active={navButton.active} />;
+              return <RequestedCoursesNavBar active={navButton.active} search={false} />;
             }
           })}
           <li className="cursor-pointer">

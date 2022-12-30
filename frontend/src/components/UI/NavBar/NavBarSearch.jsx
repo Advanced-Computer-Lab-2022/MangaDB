@@ -2,11 +2,22 @@ import React, { useState } from "react";
 import logo from "../../../Assets/Images/Logo.svg";
 import CountryManager from "./CountryManager";
 import PrimaryButton from "../PrimaryButton";
-import SecondaryButton from "../SecondaryButton";
 import { Divider } from "@mui/material";
+import HomeNavBar from "./HomeNavBar";
+import MyCoursesNavBar from "./MyCoursesNavBar";
+import FAQsNavBar from "./FAQsNavBar";
+import CartNavBar from "./CartNavBar";
+import ProfileNavBar from "./ProfileNavBar";
+import RequestCourseNavBar from "./RequestCourseNavBar";
+import SignInNavBar from "./SignInNavBar";
+import DashboardNavBar from "./DashboardNavBar";
+import AddCourseNavBar from "./AddCourseNavBar";
+import AddUserNavBar from "./AddUserNavBar";
+import RequestedCoursesNavBar from "./RequestedCoursesNavBar";
+import SecondaryButton from "../SecondaryButton";
 import SearchBar from "../Search/SearchBar";
 
-let navButtons = ["Home", "My Courses", "FAQs", "Cart", "Sign In"];
+var navButtons = [{name: "Home", active: true},{name: "My Courses", active: false},{name: "FAQs", active: false},{name: "Cart", active: false},{name: "Profile", active: false}]
 
 const NavBarSearch = (props) => {
   const [open, setOpen] = useState(false);
@@ -17,12 +28,12 @@ const NavBarSearch = (props) => {
 
   return (
     <div
-      className={`w-full fixed top-0 left-0 md:${"shadow-md"} ${
+      className={`w-full fixed top-0 left-0 xl:${"shadow-md"} ${
         !open ? "shadow-md" : "shadow-none"
       }`}
     >
-      <div className="md:flex py-2 px-8 items-center justify-between">
-        <div className="cursor-pointer flex items-center font-semibold text-2xl md:mb-0">
+      <div className="flex py-2 px-8 items-center justify-between">
+        <div className="cursor-pointer flex items-center font-semibold text-2xl xl:mb-0 xl:mr-4">
           <span>
             <img className="h-10" src={logo} alt="logo" />
           </span>
@@ -35,7 +46,7 @@ const NavBarSearch = (props) => {
         )}
         <div>
           <PrimaryButton
-            className="md:hidden absolute top-5 right-8"
+            className="xl:hidden absolute top-5 right-8"
             onClick={openToggleHandler}
           >
             {open ? (
@@ -66,42 +77,37 @@ const NavBarSearch = (props) => {
             )}
           </PrimaryButton>
         </div>
+        <div className="xl:w-[45vw] xl:mr-0 mr-[18vw]">
+          <SearchBar className="xl:w-[40vw] w-[50vw]" />
+        </div>
         <ul
-          className={`md:flex pb-4 md:pb-0 md:items-center space-y-8 md:space-y-0 md:space-x-12 my-4 md:my-0 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-300 ease-in-out md:shadow-none shadow-md ${
+          className={`xl:flex pb-4 xl:pb-0 xl:items-center space-y-8 xl:space-y-0 xl:space-x-12 my-4 xl:my-0 absolute xl:static bg-white xl:z-auto z-[-1] left-0 w-full xl:w-auto xl:pl-0 pl-9 transition-all duration-300 ease-in-out xl:shadow-none shadow-md ${
             open ? "top-20" : "top-[-490px]"
           }`}
         >
-          {/* <SearchBar className="w-[20vw]" /> */}
           {navButtons.map((navButton) => {
-            if (navButton !== "Cart" && navButton !== "Sign In") {
-              return (
-                <li>
-                  <PrimaryButton text={navButton} />
-                </li>
-              );
-            } else if (navButton === "Cart") {
-              return (
-                <li>
-                  <PrimaryButton className="">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="22"
-                      height="22"
-                      fill="currentColor"
-                      class="bi bi-cart"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-                    </svg>
-                  </PrimaryButton>
-                </li>
-              );
-            } else if (navButton === "Sign In") {
-              return (
-                <li>
-                  <SecondaryButton text={navButton} />
-                </li>
-              );
+            if (navButton.name === "Home") {
+              return <HomeNavBar active={navButton.active} search={true} />;
+            } else if (navButton.name === "My Courses") {
+              return <MyCoursesNavBar active={navButton.active} search={true} />;
+            } else if (navButton.name === "FAQs") {
+              return <FAQsNavBar active={navButton.active} search={true} />;
+            } else if (navButton.name === "Cart") {
+              return <CartNavBar active={navButton.active} search={true} />;
+            } else if (navButton.name === "Profile") {
+              return <ProfileNavBar active={navButton.active} search={true} />;
+            } else if (navButton.name === "Request Course") {
+              return <RequestCourseNavBar active={navButton.active} search={true} />;
+            } else if (navButton.name === "Sign In") {
+              return <SignInNavBar active={navButton.active} search={true} />;
+            } else if (navButton.name === "Dashboard") {
+              return <DashboardNavBar active={navButton.active} search={true} />;
+            } else if (navButton.name === "Add Course") {
+              return <AddCourseNavBar active={navButton.active} search={true} />;
+            } else if (navButton.name === "Add User") {
+              return <AddUserNavBar active={navButton.active} search={true} />;
+            } else if (navButton.name === "Requested Courses") {
+              return <RequestedCoursesNavBar active={navButton.active} search={true} />;
             }
           })}
           <li className="cursor-pointer">

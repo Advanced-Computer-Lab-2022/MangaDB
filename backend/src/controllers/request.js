@@ -316,7 +316,7 @@ exports.requestRefund = async (req, res) => {
 };
 
 exports.getUserRequests= async (req, res) => {
-  const userId = req.params.id;
+  const userId = req.user.id;
   try {
    const foundRequests= await request.find({user:userId});
     if(foundRequests)

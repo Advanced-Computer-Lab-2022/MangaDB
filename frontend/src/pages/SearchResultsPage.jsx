@@ -120,7 +120,6 @@ const SearchResultsPage = () => {
       .get("http://localhost:3000/course/" + param, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
       })
       .then((res) => {

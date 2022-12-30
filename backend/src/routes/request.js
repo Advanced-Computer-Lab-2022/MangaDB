@@ -20,7 +20,7 @@ router.patch("/reject/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), 
 
 router.patch("/pend/:id", requestController.pendRequest);
 
-router.get("/user/:id", requestController.getUserRequests);
+router.get("/user",auth.validateToken,auth.authenticateRole(["TRAINEE", "CORPORATE"]), requestController.getUserRequests);
 
 router.delete("/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), requestController.deleteRequest);
 

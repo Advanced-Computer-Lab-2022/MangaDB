@@ -107,14 +107,19 @@ const IntructorCoursePage = (props) => {
     //axios post you have the course id..
     //set the report data..
     const data = {
-      userId: "63a36fd41bd9f2e6163b0481",
       courseId: reportId,
       type: currentReportsSelector.name,
       description: enteredReport,
     };
-    axios.post("http://localhost:3000/problem/", data).then((res) => {
-      console.log("report submitted successfully");
-    });
+    axios
+      .post("http://localhost:3000/problem/", data, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        console.log("report submitted successfully");
+      });
   };
 
   //funtion to handle the pagination
@@ -156,8 +161,13 @@ const IntructorCoursePage = (props) => {
     };
     axios
       .patch(
-        "http://localhost:3000/instructor/creatediscount/" + promotionId,
-        data
+        "http://localhost:3000/instructor/createDiscount/" + promotionId,
+        data,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
       )
       .then((res) => {
         var courses = [];
@@ -213,26 +223,24 @@ const IntructorCoursePage = (props) => {
         "maxPrice=" +
         searchState.filters.price.maxValue;
     }
-    var param2 = param;//will change iId
-    param2 = param2 + (param ? "&" : "?") + "iId=" + "63a36fd41bd9f2e6163b0481";
+    var param2 = param; //will change iId
     if (!searchState.myCourses) {
-      axios.get("http://localhost:3000/course/" + param2 ,{
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token'),
-          'content-type': 'text/json'
-}}).then((res) => {
-        dispatchSearch({ type: "COURSES", value: res.data.courses });
-      });
+      axios
+        .get("http://localhost:3000/course/" + param, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          dispatchSearch({ type: "COURSES", value: res.data.courses });
+        });
     } else {
       axios
-        .get(
-          "http://localhost:3000/instructor/searchCourses" +
-            param ,{
-              headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                'content-type': 'text/json'
-    }}
-        )
+        .get("http://localhost:3000/instructor/searchCourses" + param, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
         .then((res) => {
           dispatchSearch({ type: "COURSES", value: res.data.courses });
         });
@@ -290,7 +298,6 @@ const IntructorCoursePage = (props) => {
 
   return (
     <Fragment>
-      
       {showFilters && (
         <Filters
           prevState={searchState.filters}

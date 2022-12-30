@@ -5,7 +5,7 @@ const HomeNavBar = (props) => {
   return (
     <li>
       <PrimaryButton className={`flex space-x-4 ${props.active ? 'underline decoration-primaryBlue font-medium decoration-4 underline-offset-8' : 'no-underline'}`}>
-        <span className="md:hidden">
+        <span className={`${props.search ? "xl:hidden" : "md:hidden"}`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="22"

@@ -11,7 +11,6 @@ export default function LogoutNavBAr(props) {
       .post("http://localhost:3000/user/logout", {
         headers: {
           "Authorization": "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
       })
       .then((res) => {
@@ -42,7 +41,7 @@ export default function LogoutNavBAr(props) {
             <div className="md:w-[30px] md:h-1 md:bg-primaryBlue md:absolute md:top-6 md:-left-1"></div>
           )}
         </span>
-        <span className="md:hidden">Cart</span>
+        <span className="md:hidden">Logout</span>
       </PrimaryButton>
     </li>
   );

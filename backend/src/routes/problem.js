@@ -7,7 +7,7 @@ router.get("/unresolvedProblem/:id", problemController.getUnresolvedUserProblems
 
 
 
-router.post("/",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]), problemController.createProblem);
+router.post("/",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE","INSTRUCTOR"]), problemController.createProblem);
 
 router.get("/",auth.validateToken,auth.authenticateRole(["ADMIN"]), problemController.getProblems);
 

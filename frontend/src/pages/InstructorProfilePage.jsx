@@ -1,4 +1,4 @@
-import { useState, useEffect,useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import PersonalInfoForm from "../components/Profile/PersonalInfoForm";
 import PasswordAndPrivacy from "../components/Profile/PasswordAndPrivacy";
 import Billing from "../components/Profile/Billing";
@@ -73,20 +73,23 @@ const InstructorProfilePage = () => {
 
   const managerRef = useRef();
   //gather the userInfo
- 
-//change it to auth later
-  
-  useEffect(() => {//to be changed
-    axios.get("http://localhost:3000/admin/getuser/63acd64846cc70eed673a330",{
-      headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('token'),
-        'content-type': 'text/json'
-}}).then((res) => {
-      //console.log(res.data);
-      //console.log(user);
-      setReceivedUserInfo(res.data);
-      managerRef.current.handleRender();
-    });
+
+  //change it to auth later
+
+  useEffect(() => {
+    //to be changed
+    axios
+      .get("http://localhost:3000/user/myProfile", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        //console.log(res.data);
+        //console.log(user);
+        setReceivedUserInfo(res.data);
+        managerRef.current.handleRender();
+      });
   }, []);
 
   //function to handle submitting changes to the personal info
@@ -96,9 +99,7 @@ const InstructorProfilePage = () => {
       .patch("http://localhost:3000/user/updateUser", data, {
         headers: {
           "Access-Control-Allow-Origin": "*",
-              'Authorization': 'Bearer ' + localStorage.getItem('token'),
-              'content-type': 'text/json'
-  
+          Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
       .then((res) => {});
@@ -110,25 +111,24 @@ const InstructorProfilePage = () => {
       .patch("http://localhost:3000/user/updateUser", data, {
         headers: {
           "Access-Control-Allow-Origin": "*",
-          'Authorization': 'Bearer ' + localStorage.getItem('token'),
-          'content-type': 'text/json'
+          Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
       .then((res) => {});
   };
 
   //function to change/ add credit card information
-  const creditCardChangeHandler = (data) => {
-    axios
-      .post("http://localhost:3000/instructor/", data, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          'Authorization': 'Bearer ' + localStorage.getItem('token'),
-          'content-type': 'text/json'
-        },
-      })
-      .then((res) => {});
-  };
+  // const creditCardChangeHandler = (data) => {
+  //   axios
+  //     .post("http://localhost:3000/instructor/", data, {
+  //       headers: {
+  //         "Access-Control-Allow-Origin": "*",
+  //         Authorization: "Bearer " + localStorage.getItem("token"),
+  //         "content-type": "text/json",
+  //       },
+  //     })
+  //     .then((res) => {});
+  // };
 
   const changeStageHandler = (newStageName) => {
     if (newStageName === "Profile") {

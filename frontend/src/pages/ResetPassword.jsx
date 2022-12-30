@@ -51,7 +51,6 @@ export default function ResetPassword() {
           {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("token"),
-              "content-type": "text/json",
             },
           }
         )

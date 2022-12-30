@@ -146,7 +146,6 @@ const PersonalInfoForm = forwardRef ((props,ref) => {
       .patch("http://localhost:3000/user/updateuser/63a41b632334fd21e6fab392", saveData/*, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
       }*/)
       .then((res) => {

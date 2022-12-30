@@ -170,7 +170,6 @@ const PersonalInfoForm = forwardRef((props, ref) => {
         saveData /*, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
       }*/
       )

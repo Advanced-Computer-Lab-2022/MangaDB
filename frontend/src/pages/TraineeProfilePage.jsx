@@ -80,7 +80,6 @@ const TraineeProfilePage = () => {
       .get("http://localhost:3000/user/myProfile", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
       })
       .then((res) => {

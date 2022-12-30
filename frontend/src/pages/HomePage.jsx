@@ -29,13 +29,13 @@ const HomePage = () => {
   };
   useEffect(() => {
     axios
-      .get("http://localhost:3000/course/mostviewed/?CC=".concat(countryCode))
+      .get("http://localhost:3000/course/mostViewed/?CC=".concat(countryCode))
       .then((res) => {
         setDisplayedCourses(res.data.courses);
         setCurrencySymbol(res.data.symbol);
       });
 
-    axios.get("http://localhost:3000/course/discountedcourses/").then((res) => {
+    axios.get("http://localhost:3000/course/discountedCourses/").then((res) => {
       console.log(res.data);
       setDiscountedCourses(res.data);
     });

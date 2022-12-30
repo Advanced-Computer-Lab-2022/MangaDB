@@ -49,13 +49,10 @@ export default function Login() {
         .then((res) => {
           localStorage.setItem("token", res.data.token);
           window.location.href = "/home";
-
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("role", res.data.role);
-          //const instructorId = "6386427487d3f94e4cb7a28d";
           console.log(res.data.token);
-          //navigate(`/home/1`, { state: res.data.token });
-          navigate(`/home/1`, { state: res.data.token });
+          navigate(`/home`, { state: res.data.token });
         })
         .catch((error) => {
           if (

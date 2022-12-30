@@ -54,8 +54,11 @@ function App() {
           element={<TraineeProfilePage></TraineeProfilePage>}
         ></Route>
         <Route
+         
           path="/admin/:id"
+         
           element={<AdminPage></AdminPage>}
+        
         ></Route>
 
 

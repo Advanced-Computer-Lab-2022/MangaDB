@@ -1,6 +1,7 @@
 import { Tooltip } from "@material-tailwind/react";
 import { useState } from "react";
 import axios from "axios";
+import PrimaryButton from "../UI/PrimaryButton";
 const TraineeWallet = (props) => {
   const [hovered, setHovered] = useState(false);
   const [balance, setBalance] = useState(300);
@@ -23,33 +24,47 @@ const TraineeWallet = (props) => {
     </p>
   );
   return (
-    <div
+    <li
       onMouseOver={hoverHandler}
       onMouseLeave={leaveHandler}
       className="w-fit"
     >
-      <Tooltip
-        open={hovered}
-        placement="bottom"
-        className="text-black border-md text-center p-4 border-white bg-white text-sm font-semibold"
-        content={content}
-        animate={{
-          mount: { scale: 1, y: 0 },
-          unmount: { scale: 0, y: 25 },
-        }}
+      <PrimaryButton
+        className={`flex space-x-4 ${
+          props.active
+            ? "underline decoration-primaryBlue font-medium decoration-4 underline-offset-8"
+            : "no-underline"
+        }`}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="32"
-          height="32"
-          fill="currentColor"
-          class="bi bi-wallet2"
-          viewBox="0 0 16 16"
-        >
-          <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z" />
-        </svg>
-      </Tooltip>
-    </div>
+        <span className="relative">
+          <Tooltip
+            open={hovered}
+            placement="bottom"
+            className="text-black border-md text-center p-4 border-white bg-white text-sm font-semibold"
+            content={content}
+            animate={{
+              mount: { scale: 1, y: 0 },
+              unmount: { scale: 0, y: 25 },
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              fill="currentColor"
+              class="bi bi-wallet2"
+              viewBox="0 0 16 16"
+            >
+              <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z" />
+            </svg>
+          </Tooltip>
+          {props.active && (
+            <div className="md:w-[30px] md:h-1 md:bg-primaryBlue md:absolute md:top-6 md:-left-1"></div>
+          )}
+        </span>
+        <span className="md:hidden mt-1">Wallet</span>
+      </PrimaryButton>
+    </li>
   );
 };
 export default TraineeWallet;

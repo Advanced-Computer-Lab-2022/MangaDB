@@ -74,7 +74,7 @@ exports.issueInvoice = async (req, res) => {
               return;
             }
   
-            res.send({
+            res.status(200).send({
               message: "user undergoing payment, invoice will be issued",
               link: data,
               invoiceId: newInvoice._id

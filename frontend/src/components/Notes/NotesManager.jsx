@@ -54,9 +54,13 @@ const NotesManager = (props) => {
     };
     var newNotes = [...props.notes, obj2];
     axios.patch(
-      `http://localhost:3000/user/notes/${props.studentId}`,
+      `http://localhost:3000/user/notes`,
       sentData
-    );
+      ,{
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          'content-type': 'text/json'
+}});
     props.setNotes(newNotes);
   };
 
@@ -90,9 +94,13 @@ const NotesManager = (props) => {
       notes: temp,
     };
     axios.patch(
-      `http://localhost:3000/user/notes/${props.studentId}`,
+      `http://localhost:3000/user/notes`,
       sentData
-    );
+      ,{
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          'content-type': 'text/json'
+}});
     props.setNotes(newNotes);
   };
 
@@ -120,9 +128,13 @@ const NotesManager = (props) => {
       notes: temp,
     };
     axios.patch(
-      `http://localhost:3000/user/notes/${props.studentId}`,
+      `http://localhost:3000/user/notes`,
       sentData
-    );
+      ,{
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          'content-type': 'text/json'
+}});
     props.setNotes(newNotes);
   };
 
@@ -143,6 +155,16 @@ const NotesManager = (props) => {
 
   const selectedReportsChangeHandler = (newSelected) => {
     props.changeReportsSelector(newSelected);
+  };
+
+  const submitReportHandler = (data) => {
+    axios.post("http://localhost:3000/problem/", data,{
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        'content-type': 'text/json'
+}}).then((res) => {
+      console.log(res);
+    });
   };
 
   return (

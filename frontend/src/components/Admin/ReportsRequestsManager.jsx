@@ -22,6 +22,7 @@ export default function ReportsRequestsManager(props) {
     //console.log("here");
     // variant could be success, error, warning, info, or default
     if (variant === "success") {
+    if (variant === "success") {
       enqueueSnackbar("Status has been updated successfuly", { variant });
     } else {
       enqueueSnackbar(
@@ -114,7 +115,11 @@ export default function ReportsRequestsManager(props) {
         .patch(`http://localhost:3000/problem/${problemId}`, {
           status: "Pending",
           seen: "true",
-        })
+        },{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}})
         .then((res) => {
           handleClickVariant("success");
           getData();
@@ -159,7 +164,11 @@ export default function ReportsRequestsManager(props) {
   function getData() {
     if (props.type === "problem") {
       axios
-        .get("http://localhost:3000/problem")
+        .get("http://localhost:3000/problem",{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}})
         .then((res) => {
           setData(res.data);
         })
@@ -168,7 +177,11 @@ export default function ReportsRequestsManager(props) {
         });
     } else {
       axios
-        .get("http://localhost:3000/request")
+        .get("http://localhost:3000/request",{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}})
         .then((res) => {
           setData(res.data);
         })
@@ -183,7 +196,11 @@ export default function ReportsRequestsManager(props) {
         .patch(`http://localhost:3000/problem/${problemId}`, {
           status: "Resolved",
           seen: "true",
-        })
+        },{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}})
         .then((res) => {
           getData();
           handleClickVariant("success");
@@ -213,7 +230,11 @@ export default function ReportsRequestsManager(props) {
     console.log(problemStatus);
     if (problemStatus !== "accepted") {
       axios
-        .patch(`http://localhost:3000/request/pend/${problemId}`)
+        .patch(`http://localhost:3000/request/pend/${problemId}`,{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}})
         .then((res) => {
           getData();
           handleClickVariant("success");

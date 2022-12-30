@@ -116,7 +116,11 @@ const SearchResultsPage = () => {
         searchState.filters.price.maxValue;
     }
     param = param + (param ? "&" : "?") + "page=" + page;
-    axios.get("http://localhost:3000/course/" + param).then((res) => {
+    axios.get("http://localhost:3000/course/" + param,{
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        'content-type': 'text/json'
+}}).then((res) => {
       setNoOfPages(res.data.count);
       dispatchSearch({ type: "COURSES", value: res.data.courses });
     });

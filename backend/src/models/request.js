@@ -20,6 +20,14 @@ const requestSchema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
+    courseName: {
+        type: String,
+        required: true,
+    },
+    userName: {
+        type: String,
+        required: true,
+    },
     type: {
         type: String,
         enum: ["refund", "access"],
@@ -27,7 +35,7 @@ const requestSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ["pending", "accepted", "rejected","unseen"],
-        default: "pending",
+        default: "unseen",
     },
     date: {
         type: Date,

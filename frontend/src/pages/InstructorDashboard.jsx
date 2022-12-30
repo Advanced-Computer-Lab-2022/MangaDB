@@ -10,24 +10,8 @@ import ReviewItem from "../components/CourseDetailsComp/ReviewItem";
 import ReportItem from "../components/CourseView/ReportItem"
 import { Divider } from "@mui/material";
 import InstructorQACard from "../components/QA/InstructorQACard";
+import ReportItem from "../components/CourseView/ReportItem";
 
-const reviews = [
-  {
-    userName: "Omar Moataz",
-    date: "2022-12-27T10:15:58.506+00:00",
-    review: "this is so gut",
-  },
-  {
-    userName: "Omar Moataz",
-    date: "2022-12-27T10:15:58.506+00:00",
-    review: "this is so gut",
-  },
-  {
-    userName: "Omar Moataz",
-    date: "2022-12-27T10:15:58.506+00:00",
-    review: "this is so gut",
-  },
-];
 const questionsStub = [
   {
     _id: 1,
@@ -58,6 +42,7 @@ const InstructorDashboard = () => {
   const [questions, setQuestions] = useState(questionsStub);
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState([]);
+  const [reports, setReports] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [showFollowUpModal, setShowFollowUpModal] = useState(false);
   const [followUpId, setFollowUpId] = useState(-1);
@@ -134,7 +119,7 @@ const InstructorDashboard = () => {
   ];
   //handle the displayed Reviews
   var displayedReviews = [];
-  if (reviews !== [] && loaded) {
+  if (loaded && receivedData.reviews !== []) {
     displayedReviews = receivedData.reviews.map((review) => {
       const formattedDate = review.date.substring(0, 10).split("-");
       const year = formattedDate[0];

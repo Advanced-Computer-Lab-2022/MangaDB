@@ -8,21 +8,76 @@ import Navbar from "../components/UI/NavBar/NavBar";
 import { SnackbarProvider, useSnackbar } from "notistack";
 
 // pagination blue theme
+// pagination blue theme
 const theme = createTheme({
-  status: {
-    danger: "#e53e3e",
-  },
-  palette: {
-    primary: {
-      main: "#3970AC",
-      darker: "#053e85",
+    status: {
+      danger: "#e53e3e",
     },
-    neutral: {
-      main: "#64748B",
-      contrastText: "#fff",
+    palette: {
+      primary: {
+        main: "#3970AC",
+        darker: "#053e85",
+      },
+      neutral: {
+        main: "#64748B",
+        contrastText: "#fff",
+      },
     },
-  },
-});
+  });
+// stub for the courses 
+const stub = [{
+    _id: 1,
+    totalMins: 400,
+    courseTitle: "stub course ",
+    instructorName : "Omar Moataz",
+    subject : "Web Development",
+    level: "Intermediate",
+    courseDescription: "This is the stub description",
+    coursePrice: 500,
+    discountedPrice : 100,
+    discount: 0.2,
+    rating:5
+},
+{
+    _id: 2,
+    totalMins: 400,
+    courseTitle: "stub course ",
+    instructorName : "Omar Moataz",
+    subject : "Web Development",
+    level: "Intermediate",
+    courseDescription: "This is the stub description",
+    coursePrice: 500,
+    discountedPrice : 100,
+    discount: 0.2,
+    rating:5
+},
+{
+    _id: 3,
+    totalMins: 400,
+    courseTitle: "stub course ",
+    instructorName : "Omar Moataz",
+    subject : "Web Development",
+    level: "Intermediate",
+    courseDescription: "This is the stub description",
+    coursePrice: 500,
+    discountedPrice : 100,
+    discount: 0.2,
+    rating:5
+},
+{
+    _id: 4,
+    totalMins: 400,
+    courseTitle: "stub course ",
+    instructorName : "Omar Moataz",
+    subject : "Web Development",
+    level: "Intermediate",
+    courseDescription: "This is the stub description",
+    coursePrice: 500,
+    discountedPrice : 100,
+    discount: 0.2,
+    rating:5
+}
+]
 
 const MyCourses = () => {
   //replace the stub in the useState with an empty array
@@ -75,6 +130,9 @@ const MyCourses = () => {
   var coursesListView;
   var coursesCardsView;
   coursesListView = myCourses.map((course) => {
+    console.log(course.course._id);
+    //console.log(myRequests);
+    //console.log(myRequests.includes(course._id));
     return (
       <CourseCardListView
         id={course.course._id}
@@ -94,6 +152,7 @@ const MyCourses = () => {
         renderHandler={renderHandler}
         // currencySymbol={currencySymbol}
       ></CourseCardListView>
+     
     );
   });
   coursesCardsView = myCourses.map((course) => {
@@ -116,7 +175,6 @@ const MyCourses = () => {
   });
 
   return (
-    <SnackbarProvider maxSnack={3}>
     <Fragment>
       <Navbar></Navbar>
       <div className="flex flex-col gap-y-4 mb-4">
@@ -142,7 +200,8 @@ const MyCourses = () => {
         )}
       </div>
     </Fragment>
-    </SnackbarProvider>
   );
 };
+
 export default MyCourses;
+

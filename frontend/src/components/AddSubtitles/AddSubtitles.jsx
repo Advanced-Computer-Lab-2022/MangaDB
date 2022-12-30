@@ -4,6 +4,7 @@ import SubtitleForm from "./SubtitleForm";
 import SingleSubtitle from "./SingleSubtitle";
 const AddSubtitles = (props) => {
   const [emptySubtitles, setEmptySubtitles] = useState(false);
+  const [emptySubtitles, setEmptySubtitles] = useState(false);
   const [subtitles, setSubtitles] = useState([]);
   const [subtitleModalShown, setSubtitleModalShown] = useState(false);
   const onAddSourceHandler = (subtitleId, data) => {

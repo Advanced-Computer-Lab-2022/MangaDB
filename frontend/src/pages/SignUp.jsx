@@ -139,8 +139,23 @@ export default function SignUp() {
         role: "TRAINEE",
       };
       //console.log(sentData);
+      console.log(
+        emptyConfirmPassword,
+        emptyEmail,
+        emptyFirstName,
+        emptyLastName,
+        emptyPassword,
+        emptyUserName,
+        passwordMatch,
+        emailValid,
+        userNameValid
+      );
       axios
-        .post("http://localhost:3000/user/register", sentData)
+        .post("http://localhost:3000/user/register", sentData,{
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'content-type': 'text/json'
+}})
         .then((res) => {
           //console.log(res);
           setUserNameValid(true);
@@ -339,6 +354,24 @@ export default function SignUp() {
                 label="Confirm Password"
                 warning={emptyConfirmPassword || passwordMatch === false}
               />
+              <div className="flex flex-row items-center ">
+                <Checkbox
+                  defaultChecked
+                  checked={checked}
+                  onChange={handleChange}
+                  inputProps={{ "aria-label": "controlled" }}
+                />
+                <p class="text-center ">
+                  Agree to our{" "}
+                  <button
+                    onClick={() => {}}
+                    class="text-primaryBlue hover:opacity-70 ease-in-out duration-300 font-medium inline-flex space-x-1 items-center"
+                  >
+                    <span>terms and conditions </span>
+                  </button>
+                  {" *"}
+                </p>{" "}
+              </div>
 
               <div className="flex flex-row items-center ">
                 <Checkbox

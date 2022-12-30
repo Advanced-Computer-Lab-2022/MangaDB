@@ -17,11 +17,12 @@ const InstructorCourseDetailsPage = () => {
   useEffect(() => {
     const courseId = "63a375f6b2ac097c6a3f7ed5";
     axios
-      .get(
-        "http://localhost:3000/course/"
-          .concat(courseId)
-          .concat("?uid=63a37e9688311fa832f43336")
-      )
+      .get("http://localhost:3000/course/".concat(courseId), {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "content-type": "text/json",
+        },
+      })
       .then((res) => {
         setCourseDetails(res.data.course);
         console.log(res.data.course);
@@ -32,7 +33,6 @@ const InstructorCourseDetailsPage = () => {
           setUserRegistered(false);
         }
       });
-    const userId = "63a37e9688311fa832f43336";
 
     // axios
     //   .post(`http://localhost:3000/invoice/${location.state.courseId}`, {
@@ -50,7 +50,12 @@ const InstructorCourseDetailsPage = () => {
     //   });
 
     axios
-      .get("http://localhost:3000/course/rate/".concat(courseId))
+      .get("http://localhost:3000/course/rate/".concat(courseId), {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "content-type": "text/json",
+        },
+      })
       .then((res) => {
         // setCourseDetails(res.data.course);
         // console.log(res.data.course);
@@ -65,7 +70,6 @@ const InstructorCourseDetailsPage = () => {
     //     console.log(res);
     //   });
   }, []);
-  console.log(courseDetails);
   return (
     <Fragment>
       <NavBar />
@@ -83,38 +87,36 @@ const InstructorCourseDetailsPage = () => {
           currencySymbol="$"
         />
       </div>
-        <div className="mx-8 mt-4 h-[600px] w-3/4">
-          <InstructorVideo
-            link={courseDetails.courseOverview}
-          ></InstructorVideo>
-        </div>
-        <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
-          <div className="mb-3">Course Summary</div>
-          <div
-            className="ml-10 align-middle font-normal"
-            dangerouslySetInnerHTML={{ __html: courseDetails.summary }}
-          ></div>
-        </div>
-        {loaded && (
-          <CourseContent
-            content={courseDetails.subtitles}
-            courseDuration={courseDetails.totalMins}
-          />
-        )}
-        <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
-          <div className="mb-3">Course Requirements</div>
-          <div
-            className="ml-10 font-normal"
-            dangerouslySetInnerHTML={{ __html: courseDetails.requirements }}
-          ></div>
-        </div>
-        {loaded && (
-          <InstructorCourseReviews
-            reviews={courseReviews}
-            reviewsCount={reviewsCount}
-            userRegister={userRegistered}
-          />
-        )}
+      <div className="mx-8 mt-4 h-[600px] w-3/4">
+        <InstructorVideo link={courseDetails.courseOverview}></InstructorVideo>
+      </div>
+      <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
+        <div className="mb-3">Course Summary</div>
+        <div
+          className="ml-10 align-middle font-normal"
+          dangerouslySetInnerHTML={{ __html: courseDetails.summary }}
+        ></div>
+      </div>
+      {loaded && (
+        <CourseContent
+          content={courseDetails.subtitles}
+          courseDuration={courseDetails.totalMins}
+        />
+      )}
+      <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
+        <div className="mb-3">Course Requirements</div>
+        <div
+          className="ml-10 font-normal"
+          dangerouslySetInnerHTML={{ __html: courseDetails.requirements }}
+        ></div>
+      </div>
+      {loaded && (
+        <InstructorCourseReviews
+          reviews={courseReviews}
+          reviewsCount={reviewsCount}
+          userRegister={userRegistered}
+        />
+      )}
     </Fragment>
   );
 };

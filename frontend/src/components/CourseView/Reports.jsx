@@ -13,7 +13,6 @@ const Reports = (props) => {
 
   const onClickHandler = () => {
     const reportData = {
-      userId: "63a37e9688311fa832f43336",
       courseId: props.courseId,
       type: props.selected.name,
       description: enteredReport,

@@ -48,11 +48,12 @@ const CourseViewPage = () => {
     const userid = "63a37e9688311fa832f43336";
     if (currentNotesFilter.name === "All Lessons") {
       axios
-        .get(`http://localhost:3000/user/courseNotes?cid=${courseId}` ,{
+        .get(`http://localhost:3000/user/courseNotes?cid=${courseId}`, {
           headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-            'content-type': 'text/json'
-}})
+            Authorization: "Bearer " + localStorage.getItem("token"),
+            "content-type": "text/json",
+          },
+        })
         .then((res) => {
           var notesSet = [];
           for (var i = 0; i < res.data.noteData.length; i++) {
@@ -89,12 +90,14 @@ const CourseViewPage = () => {
       }
       axios
         .get(
-          `http://localhost:3000/user/subtitleNotes?cid=${courseId}&sid=${subtitleId}`
-          ,{
+          `http://localhost:3000/user/subtitleNotes?cid=${courseId}&sid=${subtitleId}`,
+          {
             headers: {
-              'Authorization': 'Bearer ' + localStorage.getItem('token'),
-              'content-type': 'text/json'
-  }})
+              Authorization: "Bearer " + localStorage.getItem("token"),
+              "content-type": "text/json",
+            },
+          }
+        )
         .then((res) => {
           var notesSet = [];
           for (var i = 0; i < res.data.noteData.length; i++) {
@@ -123,12 +126,14 @@ const CourseViewPage = () => {
     } else {
       axios
         .get(
-          `http://localhost:3000/user/sourceNotes?cid=${courseId}&sid=${currentSource._id}`
-          ,{
+          `http://localhost:3000/user/sourceNotes?cid=${courseId}&sid=${currentSource._id}`,
+          {
             headers: {
-              'Authorization': 'Bearer ' + localStorage.getItem('token'),
-              'content-type': 'text/json'
-  }})
+              Authorization: "Bearer " + localStorage.getItem("token"),
+              "content-type": "text/json",
+            },
+          }
+        )
         .then((res) => {
           var notesSet = [];
           for (var i = 0; i < res.data.noteData.length; i++) {
@@ -156,9 +161,12 @@ const CourseViewPage = () => {
         });
     }
     axios
-      .get(
-        `http://localhost:3000/problem/usercourseproblems/${courseId}?uId=${userid}`
-      )
+      .get(`http://localhost:3000/problem/userCourseProblems/${courseId}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "content-type": "text/json",
+        },
+      })
       .then((res) => {
         console.log(res.data);
         setReports(res.data);
@@ -174,13 +182,12 @@ const CourseViewPage = () => {
     const courseId = location.state;
     //shouldnt we send the userId ??
     axios
-      .get(
-        `http://localhost:3000/course/${courseId}`
-        ,{
-          headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-            'content-type': 'text/json'
-}})
+      .get(`http://localhost:3000/course/${courseId}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "content-type": "text/json",
+        },
+      })
       .then((res) => {
         setReceivedData(res.data.course);
         setQA(res.data.QA);
@@ -211,7 +218,6 @@ const CourseViewPage = () => {
 
     var sentData = {
       studentAnswers: receivedSolution,
-      userid: "63a37e9688311fa832f43336",
       courseid: receivedData._id,
       examid: currentSource.quiz._id,
     };
@@ -220,7 +226,7 @@ const CourseViewPage = () => {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
-          "Authorization": "Bearer " + localStorage.getItem("token")
+          Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
       .then((res) => {
@@ -304,9 +310,7 @@ const CourseViewPage = () => {
     //will need the userID , sourceId, courseId
     //the userID and courseid are given from the navigation
     var endPoint = `http://localhost:3000/user/openSource/${receivedData._id}`;
-    const userId = "63a37e9688311fa832f43336";
     const submittedData = {
-      userId: userId,
       sourceId: currentSource._id,
     };
     axios
@@ -314,20 +318,18 @@ const CourseViewPage = () => {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
-          "Authorization": "Bearer " + localStorage.getItem("token")
+          Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
       .then((res) => {});
 
     axios
-      .get(
-        `http://localhost:3000/user/progress/${receivedData._id}`
-        ,{
-          headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-            'content-type': 'text/json'
-}}
-      )
+      .get(`http://localhost:3000/user/progress/${receivedData._id}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "content-type": "text/json",
+        },
+      })
       .then((res) => {
         setProgress(res.data.percentage);
       });
@@ -354,15 +356,19 @@ const CourseViewPage = () => {
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
     let currentDate = `${day}-${month}-${year}`;
-    const userId = "63a37e9688311fa832f43336";
     const sentData = {
-      userId: userId,
       question: recQuestion,
       date: currentDate,
     };
     axios.post(
-      `http://localhost:3000/course/askquestion/${receivedData._id}`,
-      sentData
+      `http://localhost:3000/course/askQuestion/${receivedData._id}`,
+      sentData,
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "content-type": "text/json",
+        },
+      }
     );
     setQA([...QA, { question: recQuestion, date: currentDate }]);
   };
@@ -371,9 +377,16 @@ const CourseViewPage = () => {
   };
 
   const submitReportHandler = (data) => {
-    axios.post("http://localhost:3000/problem/", data).then((res) => {
-      setReports([...reports, res.data]);
-    });
+    axios
+      .post("http://localhost:3000/problem/", data, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "content-type": "text/json",
+        },
+      })
+      .then((res) => {
+        setReports([...reports, res.data]);
+      });
   };
 
   const submitReviewHandler = (data) => {
@@ -382,7 +395,13 @@ const CourseViewPage = () => {
         "http://localhost:3000/course/rate/"
           .concat(receivedData._id)
           .concat("/"),
-        data
+        data,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+            "content-type": "text/json",
+          },
+        }
       )
       .then((res) => {});
   };

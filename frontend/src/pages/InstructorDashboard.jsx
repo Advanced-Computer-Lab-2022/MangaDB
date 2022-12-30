@@ -7,7 +7,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import AverageSummary from "../components/Profile/Reviews/AverageSummary";
 import ReviewItem from "../components/CourseDetailsComp/ReviewItem";
-import ReportItem from "../components/CourseView/ReportItem"
+import ReportItem from "../components/CourseView/ReportItem";
 import { Divider } from "@mui/material";
 import InstructorQACard from "../components/QA/InstructorQACard";
 
@@ -51,7 +51,7 @@ const InstructorDashboard = () => {
     setShowFollowUpModal(true);
     setFollowUpId(id);
     setFollowUpProblem(problem);
-  }
+  };
 
   const closeFollowUpModal = () => {
     setShowFollowUpModal(false);
@@ -60,7 +60,7 @@ const InstructorDashboard = () => {
 
   const followUpDescriptionChangeHandler = (event) => {
     setFollowUpDescription(event.target.value);
-  }
+  };
 
   const followUpSubmitHandler = () => {
     closeFollowUpModal();
@@ -71,18 +71,25 @@ const InstructorDashboard = () => {
   //fetch the data as soon as he logs in..
   useEffect(() => {
     axios
-      .get(
-        "http://localhost:3000/instructor/myReviews/63a36fd41bd9f2e6163b0481"
-      )
+      .get("http://localhost:3000/instructor/myReviews", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "content-type": "text/json",
+        },
+      })
       .then((res) => {
-        console.log(res.data);
         setReceivedData(res.data.instructor);
         setCount(res.data.count);
         setLoaded(true);
       });
 
     axios
-      .get("http://localhost:3000/problem/user/63a36fd41bd9f2e6163b0481")
+      .get("http://localhost:3000/problem/user", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "content-type": "text/json",
+        },
+      })
       .then((res) => {
         setReports(res.data);
       });

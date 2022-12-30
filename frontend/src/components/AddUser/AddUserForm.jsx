@@ -49,11 +49,11 @@ export default function AddUserForm(props) {
     } else {
       //console.log(sentData);
       axios
-        .post("http://localhost:3000/admin/addUser", sentData,{
+        .post("http://localhost:3000/admin/addUser", sentData, {
           headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-            'content-type': 'text/json'
-}})
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
         .then((res) => {
           handleClickVariant("success");
         })

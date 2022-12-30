@@ -74,7 +74,6 @@ const InstructorDashboard = () => {
       .get("http://localhost:3000/instructor/myReviews", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
       })
       .then((res) => {
@@ -87,7 +86,6 @@ const InstructorDashboard = () => {
       .get("http://localhost:3000/problem/user", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
       })
       .then((res) => {

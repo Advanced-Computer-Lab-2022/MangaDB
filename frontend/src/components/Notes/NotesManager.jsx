@@ -53,10 +53,10 @@ const NotesManager = (props) => {
       sourceDescription: `${props.sourceNo}. ${props.source}`,
     };
     var newNotes = [...props.notes, obj2];
+    console.log(sentData.notes);
     axios.patch(`http://localhost:3000/user/notes`, sentData, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
-        "content-type": "text/json",
       },
     });
     props.setNotes(newNotes);
@@ -94,7 +94,6 @@ const NotesManager = (props) => {
     axios.patch(`http://localhost:3000/user/notes`, sentData, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
-        "content-type": "text/json",
       },
     });
     props.setNotes(newNotes);
@@ -126,7 +125,6 @@ const NotesManager = (props) => {
     axios.patch(`http://localhost:3000/user/notes`, sentData, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
-        "content-type": "text/json",
       },
     });
     props.setNotes(newNotes);
@@ -156,7 +154,6 @@ const NotesManager = (props) => {
       .post("http://localhost:3000/problem/", data, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
       })
       .then((res) => {

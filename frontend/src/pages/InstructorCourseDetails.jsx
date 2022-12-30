@@ -20,7 +20,6 @@ const InstructorCourseDetailsPage = () => {
       .get("http://localhost:3000/course/".concat(courseId), {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
       })
       .then((res) => {
@@ -53,7 +52,6 @@ const InstructorCourseDetailsPage = () => {
       .get("http://localhost:3000/course/rate/".concat(courseId), {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
       })
       .then((res) => {

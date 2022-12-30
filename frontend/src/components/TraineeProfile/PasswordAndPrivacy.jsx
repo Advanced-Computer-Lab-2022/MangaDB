@@ -157,7 +157,6 @@ const PasswordAndPrivacy = (props) => {
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
-            "content-type": "text/json",
           },
         }*/
       )

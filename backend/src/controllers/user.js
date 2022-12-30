@@ -475,8 +475,10 @@ exports.getProgress = async (req, res) => {
 exports.addNotes = async (req, res) => {
   const id =  req.user.id;
   const { courseId, sourceId, notes } = req.body;
+  console.log(req.body.notes);
   try {
     const userData = await user.findById(id);
+    console.log("here1");
     if (!userData) {
       res.status(404).send({
         message: `User was not found!`,
@@ -491,12 +493,14 @@ exports.addNotes = async (req, res) => {
           break;
         }
       }
-
+      console.log("here2");
       if (!courseFound) {
+        console.log("here3");
         res.status(400).send({
           message: `User not registered in course`,
         });
       } else {
+        console.log("here4");
         let sourceIndex = -1;
         let sourceFound = false;
         for (
@@ -514,12 +518,14 @@ exports.addNotes = async (req, res) => {
           }
         }
         if (!sourceFound) {
+          console.log("here5");
           res.status(400).send({
             message: `User not opened source`,
           });
         } else {
           userData.courseDetails[courseIndex].viewedSources[sourceIndex].notes =
             notes;
+          console.log(notes);
           await userData.save();
           res.status(200).send({ message: "notes added successfully" });
         }

@@ -119,7 +119,6 @@ export default function ReportsRequestsManager(props) {
             {
               headers: {
                 Authorization: "Bearer " + localStorage.getItem("token"),
-                "content-type": "text/json",
               },
             }
           )
@@ -171,7 +170,6 @@ export default function ReportsRequestsManager(props) {
           .get("http://localhost:3000/problem", {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("token"),
-              "content-type": "text/json",
             },
           })
           .then((res) => {
@@ -208,7 +206,6 @@ export default function ReportsRequestsManager(props) {
             {
               headers: {
                 Authorization: "Bearer " + localStorage.getItem("token"),
-                "content-type": "text/json",
               },
             }
           )
@@ -245,7 +242,6 @@ export default function ReportsRequestsManager(props) {
           .patch(`http://localhost:3000/request/pend/${problemId}`, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("token"),
-              "content-type": "text/json",
             },
           })
           .then((res) => {

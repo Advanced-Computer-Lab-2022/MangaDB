@@ -93,9 +93,11 @@ const InstructorWallet = () => {
   useEffect(() => {
     //axios to get the data..
     axios
-      .get(
-        "http://localhost:3000/instructor/amountowed/63a36fd41bd9f2e6163b0481"
-      )
+      .get("http://localhost:3000/instructor/amountOwed", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
       .then((res) => {
         console.log(res);
         setReceivedData(res.data);

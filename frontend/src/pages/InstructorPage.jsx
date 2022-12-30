@@ -31,7 +31,6 @@ const InstructorPage = () => {
       .get(`http://localhost:3000/instructor/${instructorId}`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
       })
       .then((res) => {
@@ -86,7 +85,6 @@ const InstructorPage = () => {
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
-            "content-type": "text/json",
           },
         }
       )

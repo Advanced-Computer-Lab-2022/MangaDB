@@ -11,7 +11,6 @@ export default function LogoutNavBAr(props) {
       .post("http://localhost:3000/user/logout", {
         headers: {
           "Authorization": "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
       })
       .then((res) => {

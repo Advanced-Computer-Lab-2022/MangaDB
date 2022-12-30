@@ -45,16 +45,15 @@ const CourseViewPage = () => {
 
   useEffect(() => {
     const courseId = location.state;
-    const userid = "63a37e9688311fa832f43336";
     if (currentNotesFilter.name === "All Lessons") {
       axios
         .get(`http://localhost:3000/user/courseNotes?cid=${courseId}`, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
-            "content-type": "text/json",
           },
         })
         .then((res) => {
+          console.log(res);
           var notesSet = [];
           for (var i = 0; i < res.data.noteData.length; i++) {
             if (res.data.noteData[i].notes.length !== 0) {
@@ -94,7 +93,6 @@ const CourseViewPage = () => {
           {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("token"),
-              "content-type": "text/json",
             },
           }
         )
@@ -130,7 +128,6 @@ const CourseViewPage = () => {
           {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("token"),
-              "content-type": "text/json",
             },
           }
         )
@@ -164,11 +161,9 @@ const CourseViewPage = () => {
       .get(`http://localhost:3000/problem/userCourseProblems/${courseId}`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
       })
       .then((res) => {
-        console.log(res.data);
         setReports(res.data);
       });
     axios.get(`http://localhost:3000/course/rate/${courseId}`).then((res) => {
@@ -185,7 +180,6 @@ const CourseViewPage = () => {
       .get(`http://localhost:3000/course/${courseId}`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
       })
       .then((res) => {
@@ -225,7 +219,6 @@ const CourseViewPage = () => {
       .post(endPoint, sentData, {
         headers: {
           "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
@@ -317,7 +310,6 @@ const CourseViewPage = () => {
       .patch(endPoint, submittedData, {
         headers: {
           "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
@@ -327,7 +319,6 @@ const CourseViewPage = () => {
       .get(`http://localhost:3000/user/progress/${receivedData._id}`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
       })
       .then((res) => {
@@ -366,7 +357,6 @@ const CourseViewPage = () => {
       {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
       }
     );
@@ -381,7 +371,6 @@ const CourseViewPage = () => {
       .post("http://localhost:3000/problem/", data, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
       })
       .then((res) => {
@@ -399,7 +388,6 @@ const CourseViewPage = () => {
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
-            "content-type": "text/json",
           },
         }
       )

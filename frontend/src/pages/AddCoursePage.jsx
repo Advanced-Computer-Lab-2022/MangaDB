@@ -43,14 +43,11 @@ const AddCoursePage = (props) => {
 
     console.log(secondData);
     axios
-      .post(
-        "http://localhost:3000/instructor/addCourse",
-        secondData ,{
-          headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-            'content-type': 'text/json'
-}}
-      )
+      .post("http://localhost:3000/instructor/addCourse", secondData, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
       .then((res) => {
         console.log(res);
       });

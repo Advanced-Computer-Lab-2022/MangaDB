@@ -24,6 +24,6 @@ router.post("/askQuestion/:id",auth.validateToken,auth.authenticateRole(["TRAINE
 
 router.get("/discountedCourses", courseController.getDiscountedCourses);
 
-router.get("/:id", courseController.getCourse);
+router.get("/:id",auth.validateToken, courseController.getCourse);
 
 module.exports = router;

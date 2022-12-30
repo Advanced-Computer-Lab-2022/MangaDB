@@ -49,7 +49,6 @@ const ExamToolManager = (props) => {
     axios.patch(`http://localhost:3000/user/notes/`, sentData, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
-        "content-type": "text/json",
       },
     });
     props.setNotes(newNotes);
@@ -81,7 +80,6 @@ const ExamToolManager = (props) => {
     axios.patch(`http://localhost:3000/user/notes/`, sentData, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
-        "content-type": "text/json",
       },
     });
     props.setNotes(newNotes);
@@ -100,7 +98,6 @@ const ExamToolManager = (props) => {
       .post("http://localhost:3000/problem/", data, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
       })
       .then((res) => {

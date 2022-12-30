@@ -115,7 +115,6 @@ const IntructorCoursePage = (props) => {
       .post("http://localhost:3000/problem/", data, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
       })
       .then((res) => {
@@ -167,7 +166,6 @@ const IntructorCoursePage = (props) => {
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
-            "content-type": "text/json",
           },
         }
       )
@@ -231,7 +229,6 @@ const IntructorCoursePage = (props) => {
         .get("http://localhost:3000/course/" + param, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
-            "content-type": "text/json",
           },
         })
         .then((res) => {
@@ -242,7 +239,6 @@ const IntructorCoursePage = (props) => {
         .get("http://localhost:3000/instructor/searchCourses" + param, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
-            "content-type": "text/json",
           },
         })
         .then((res) => {

@@ -8,7 +8,7 @@ const payment=require('../helper/payment');
 
 exports.issueInvoice = async (req, res) => {
     const courseId = req.params.id;
-    const { userId } = req.body;
+    const  userId  = req.user.id;
     const countryCode = req.query.CC || "US";
     let countryDetails = await currencyConverter.convertCurrency(
       "US",
@@ -111,7 +111,7 @@ exports.issueInvoice = async (req, res) => {
     };
 
     exports.getAllUserInvoices = async (req, res) => {
-        const userId = req.params.id;
+        const userId = req.user.id;
         try {
             const invoiceData = await invoice
             .find({user:userId})

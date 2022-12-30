@@ -17,11 +17,11 @@ import InstructorWallet from "./pages/IntructorWallet";
 import PageNotFound from "./pages/PageNotFound";
 import UnAuthorizedPage from "./pages/UnAuthorizedPage";
 import MyCourses from "./pages/MyCourses";
+import TraineeProfilePage from "./pages/TraineeProfilePage";
 import AdminPage from "./components/Admin/AdminPage";
 import InstructorPage from "./pages/InstructorPage";
 import InstructorDashboard from "./pages/InstructorDashboard";
 import InstructorCourseDetails from "./pages/InstructorCourseDetails";
-import TraineeProfilePage from "./pages/TraineeProfilePage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import SuccessfulPayment from "./components/Payment/SuccessfulPayment";
 import UnsuccessfulPayment from "./components/Payment/UnsuccessfulPayment";
@@ -35,7 +35,7 @@ function App() {
           path="/resetpassword"
           element={<ResetPassword></ResetPassword>}
         ></Route>
-        <Route path="/home/:id" element={<HomePage></HomePage>}></Route>
+        <Route path="/home" element={<HomePage></HomePage>}></Route>
         <Route
           path="/searchresults/:id"
           element={<SearchResultsPage></SearchResultsPage>}
@@ -57,9 +57,14 @@ function App() {
           element={<TraineeProfilePage></TraineeProfilePage>}
         ></Route>
         <Route
+         
           path="/admin/:id"
+         
           element={<AdminPage></AdminPage>}
+        
         ></Route>
+
+
         <Route
           path="courses/:id"
           element={<InstructorCoursesPage></InstructorCoursesPage>}

@@ -27,6 +27,7 @@ export default function ForgotPassword() {
         })
         .then((res) => {
           console.log(res);
+          localStorage.setItem("token", res.data.token);
           handleClickVariant("success");
           //setWarning("Please check your email for the reset link");
         });

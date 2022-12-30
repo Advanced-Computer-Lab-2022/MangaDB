@@ -1,4 +1,4 @@
-import { useState, useEffect,useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import PersonalInfoForm from "../components/TraineeProfile/PersonalInfoForm";
 import PasswordAndPrivacy from "../components/TraineeProfile/PasswordAndPrivacy";
 import Reviews from "../components/Profile/Reviews/Reviews";
@@ -74,37 +74,33 @@ const TraineeProfilePage = () => {
   const managerRef = useRef();
 
   //gather the userInfo
- 
 
   useEffect(() => {
-    axios.get("http://localhost:3000/admin/getuser/63a41b632334fd21e6fab392").then((res) => {
-      //console.log(res.data);
-      //console.log(user);
-      setReceivedUserInfo(res.data);
-      console.log(res.data);
-      managerRef.current.handleRender();
-    });
+    axios
+      .get("http://localhost:3000/user/myProfile", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "content-type": "text/json",
+        },
+      })
+      .then((res) => {
+        //console.log(res.data);
+        //console.log(user);
+        //console.log(localStorage.getItem("token"));
+        setReceivedUserInfo(res.data);
+        console.log(res.data);
+        managerRef.current.handleRender();
+      });
   }, []);
   //function to handle submitting changes to the personal info
 
   //function to handle the change of password or privacy
 
-
   //function to change/ add credit card information
-  const creditCardChangeHandler = (data) => {
-    axios
-      .post("http://localhost:3000/instructor/", data, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-      })
-      .then((res) => {});
-  };
 
   const changeStageHandler = (newStageName) => {
     if (newStageName === "Profile") {
       setSelectedStage(1);
-    
     } else if (newStageName === "Security & Privacy") {
       setSelectedStage(3);
     } else {
@@ -137,9 +133,7 @@ const TraineeProfilePage = () => {
       ></PasswordAndPrivacy>
     );
   } else {
-    displayedStep = (
-      <Reqests changeStageHandler={changeStageHandler} ></Reqests>
-    );
+    displayedStep = <Reqests changeStageHandler={changeStageHandler}></Reqests>;
   }
   return (
     <SnackbarProvider maxSnack={3}>

@@ -8,21 +8,22 @@ import Navbar from "../components/UI/NavBar/NavBar";
 import { SnackbarProvider, useSnackbar } from "notistack";
 
 // pagination blue theme
+// pagination blue theme
 const theme = createTheme({
-  status: {
-    danger: "#e53e3e",
-  },
-  palette: {
-    primary: {
-      main: "#3970AC",
-      darker: "#053e85",
+    status: {
+      danger: "#e53e3e",
     },
-    neutral: {
-      main: "#64748B",
-      contrastText: "#fff",
+    palette: {
+      primary: {
+        main: "#3970AC",
+        darker: "#053e85",
+      },
+      neutral: {
+        main: "#64748B",
+        contrastText: "#fff",
+      },
     },
-  },
-});
+  });
 
 const MyCourses = () => {
   //replace the stub in the useState with an empty array
@@ -33,7 +34,7 @@ const MyCourses = () => {
   const [myRequests, setMyRequests] = useState([]);
   const [render, setRender] = useState(false);
   
-  const [userRole, setUserRole] = useState("TRAINEE");
+  const [userRole, setUserRole] = useState(localStorage.getItem("role"));
 
   //funtion to handle the pagination
 
@@ -47,9 +48,7 @@ const MyCourses = () => {
 
   useEffect(() => {
     //fetch the courses of the trainee
-    axios.get(`http://localhost:3000/admin/getuser/63a37e9688311fa832f43336`).then((res) => {
-      setUserRole(res.data.role);
-    });
+    
     axios
       .get(
         `http://localhost:3000/user/mycourses/63a37e9688311fa832f43336/?page=${page}`
@@ -61,7 +60,7 @@ const MyCourses = () => {
 
       axios.get(`http://localhost:3000/request/user/63a37e9688311fa832f43336`).then((res)=>{
         for(let i=0;i<res.data.requests.length;i++){
-          if(res.data.requests[i].type=="refund"){
+          if(res.data.requests[i].type==="refund"){
             //console.log(res.data.requests[i].course);  
             setMyRequests([...myRequests,res.data.requests[i].course]);
           }
@@ -75,6 +74,9 @@ const MyCourses = () => {
   var coursesListView;
   var coursesCardsView;
   coursesListView = myCourses.map((course) => {
+    console.log(course.course._id);
+    //console.log(myRequests);
+    //console.log(myRequests.includes(course._id));
     return (
       <CourseCardListView
         id={course.course._id}
@@ -94,6 +96,7 @@ const MyCourses = () => {
         renderHandler={renderHandler}
         // currencySymbol={currencySymbol}
       ></CourseCardListView>
+     
     );
   });
   coursesCardsView = myCourses.map((course) => {
@@ -116,7 +119,6 @@ const MyCourses = () => {
   });
 
   return (
-    <SnackbarProvider maxSnack={3}>
     <Fragment>
       <Navbar></Navbar>
       <div className="flex flex-col gap-y-4 mb-4">
@@ -142,7 +144,8 @@ const MyCourses = () => {
         )}
       </div>
     </Fragment>
-    </SnackbarProvider>
   );
 };
+
 export default MyCourses;
+

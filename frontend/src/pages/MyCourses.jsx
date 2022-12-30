@@ -88,7 +88,7 @@ const MyCourses = () => {
   const [myRequests, setMyRequests] = useState([]);
   const [render, setRender] = useState(false);
   
-  const [userRole, setUserRole] = useState("TRAINEE");
+  const [userRole, setUserRole] = useState(localStorage.getItem("role"));
 
   //funtion to handle the pagination
 
@@ -102,9 +102,7 @@ const MyCourses = () => {
 
   useEffect(() => {
     //fetch the courses of the trainee
-    axios.get(`http://localhost:3000/admin/getuser/63a37e9688311fa832f43336`).then((res) => {
-      setUserRole(res.data.role);
-    });
+    
     axios
       .get(
         `http://localhost:3000/user/mycourses/63a37e9688311fa832f43336/?page=${page}`

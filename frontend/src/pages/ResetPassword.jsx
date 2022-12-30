@@ -43,9 +43,10 @@ export default function ResetPassword() {
     }
 
     if (!warning) {
+      console.log("here");
       axios
-        .post(
-          "http://localhost:3000/user/resetpassword",
+        .patch(
+          "http://localhost:3000/user/resetPassword",
           { password: newPasswordRef },
           {
             headers: {
@@ -55,6 +56,7 @@ export default function ResetPassword() {
           }
         )
         .then((res) => {
+          //console.log("here");
           localStorage.removeItem("token");
         });
     }

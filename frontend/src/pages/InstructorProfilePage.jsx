@@ -1,5 +1,4 @@
 import { useState, useEffect,useRef } from "react";
-import { useState, useEffect,useRef } from "react";
 import PersonalInfoForm from "../components/Profile/PersonalInfoForm";
 import PasswordAndPrivacy from "../components/Profile/PasswordAndPrivacy";
 import Billing from "../components/Profile/Billing";

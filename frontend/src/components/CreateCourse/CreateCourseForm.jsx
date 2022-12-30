@@ -7,10 +7,6 @@ import Backdrop from "@mui/material/Backdrop";
 import Contract from "./Contract";
 import { useEffect } from "react";
 import axios from "axios";
-import Backdrop from "@mui/material/Backdrop";
-import Contract from "./Contract";
-import { useEffect } from "react";
-import axios from "axios";
 
 var toolbarOptions = [
   ["bold", "italic", "underline", "strike"],

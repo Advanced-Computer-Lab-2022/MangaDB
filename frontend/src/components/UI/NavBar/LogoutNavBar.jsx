@@ -7,19 +7,23 @@ export default function LogoutNavBAr(props) {
   const navigate = useNavigate();
 
   const logoutHandler = () => {
-    
-    axios.post("http://localhost:3000/user/logout", {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-        "content-type": "text/json",
-      },
-    }).then((res) => {
-      localStorage.removeItem("token");
-      console.log(res);
-      navigate("/");
-    });
-    
-    
+    axios
+      .post("http://localhost:3000/user/logout", {
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+          "content-type": "text/json",
+        },
+      })
+      .then((res) => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        console.log(res);
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(localStorage.getItem("token"));
+      });
+
     //navigate("/");
   };
   return (

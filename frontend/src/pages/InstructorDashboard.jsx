@@ -10,7 +10,6 @@ import ReviewItem from "../components/CourseDetailsComp/ReviewItem";
 import ReportItem from "../components/CourseView/ReportItem"
 import { Divider } from "@mui/material";
 import InstructorQACard from "../components/QA/InstructorQACard";
-import ReportItem from "../components/CourseView/ReportItem";
 
 const questionsStub = [
   {
@@ -42,7 +41,6 @@ const InstructorDashboard = () => {
   const [questions, setQuestions] = useState(questionsStub);
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState([]);
-  const [reports, setReports] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [showFollowUpModal, setShowFollowUpModal] = useState(false);
   const [followUpId, setFollowUpId] = useState(-1);

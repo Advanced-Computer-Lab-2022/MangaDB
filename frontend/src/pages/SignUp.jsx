@@ -151,11 +151,7 @@ export default function SignUp() {
         userNameValid
       );
       axios
-        .post("http://localhost:3000/user/register", sentData,{
-          headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-            'content-type': 'text/json'
-}})
+        .post("http://localhost:3000/user/register", sentData)
         .then((res) => {
           //console.log(res);
           setUserNameValid(true);

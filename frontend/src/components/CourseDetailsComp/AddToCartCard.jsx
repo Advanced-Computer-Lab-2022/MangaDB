@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../UI/Modal";
 import Divider from "@mui/material/Divider";
 import Video from "../Video/Video";
+import { useSnackbar } from "notistack";
+import axios from "axios";
 const AddToCartCard = (props) => {
   const [ModalShown, setModalShown] = useState(false);
   const hideModalHandler = () => {
@@ -15,8 +17,34 @@ const AddToCartCard = (props) => {
     setModalShown(true);
   };
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant) => {
+    if (variant === "success") {
+      enqueueSnackbar("Course has been requested successfuly", { variant });
+    }
+  };
   const clickHandler = () => {
+    //handle if user is a guest and navigate to login page
+    if (props.corp) {
+      //end point for enroll corporate
+      axios
+        .post("http://localhost:3000/request/access", {
+          courseId: props.id,
+          userId: "63a37252643dd8bdece35b9b",
+          reason: "i don't like it",
+        })
+        .then((res) => {
+          handleClickVariant("success");
+        });
+    }
     if (props.userRegister) navigate("/courseview/1", { state: props.id });
+    else{
+      axios.post("http://localhost:3000/invoice/".concat(props.id), {userId:"63a37e9688311fa832f43336"}).then((res) => {
+        console.log(res.data);
+        window.location.href= res.data.link;
+        localStorage.setItem("invoiceId", res.data.invoiceId);
+      });
+    }
   };
   const displayedVideo = (
     <Fragment>
@@ -34,7 +62,11 @@ const AddToCartCard = (props) => {
       </div>
       <Divider variant="middle" />
       <div className="py-4">
-        <Video isVisible={true} playing={false} link={props.courseOverview}></Video>
+        <Video
+          isVisible={true}
+          playing={false}
+          link={props.courseOverview}
+        ></Video>
       </div>
     </Fragment>
   );
@@ -62,9 +94,18 @@ const AddToCartCard = (props) => {
         </svg>
 
         <SecondaryButton
-          onClick={clickHandler}
-          text={props.userRegister ? "Go To Course" : "Add To Cart"}
-          className="w-full"
+          onClick={!props.requested ? clickHandler : null}
+          text={
+            props.requested
+              ? "Requested"
+              : (props.userRegister 
+              ? "Go To Course"
+              : (props.corp
+              ? "Request Access"
+              : "Enroll Now"))
+          }
+          className="w-full "
+          disabled={props.requested}
         />
       </div>
     </Fragment>

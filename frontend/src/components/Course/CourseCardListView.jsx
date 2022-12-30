@@ -20,11 +20,19 @@ const CourseCardListView = (props) => {
   const navigate = useNavigate();
   const refundClickHandler = (courseId) => {
     axios
-      .post(`http://localhost:3000/request/refund`, {
-        courseId: courseId,
-        userId: "63a37e9688311fa832f43336",
-        reason: "I don't like it",
-      })
+      .post(
+        `http://localhost:3000/request/refund`,
+        {
+          courseId: courseId,
+          reason: "I don't like it",
+          //reason needs to be removed from front and back
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
       .then((res) => {
         props.renderHandler();
         handleClickVariant("success");
@@ -104,9 +112,9 @@ const CourseCardListView = (props) => {
                     ? refundClickHandler.bind(null, props.id)
                     : null
                 }
-                text={props.requested?"Requested":"Request Refund"}
+                text={props.requested ? "Requested" : "Request Refund"}
                 className="text-md font-bold mx-2 "
-                disabled={props.requested || !props.refundable?true:false}
+                disabled={props.requested || !props.refundable ? true : false}
               />
             ) : null}
           </div>

@@ -18,7 +18,7 @@ router.get("/mostViewed", courseController.getMostViewedCourses);
 
 router.get("/mostRated", courseController.getMostRatedCourses);
 
-router.post("/addSubtitle/:id", courseController.addSubtitle);
+router.post("/addSubtitle/:id", courseController.addSubtitle); //not used
 
 router.post("/askQuestion/:id",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]), courseController.askQuestion);
 

@@ -28,22 +28,36 @@ const AddToCartCard = (props) => {
     if (props.corp) {
       //end point for enroll corporate
       axios
-        .post("http://localhost:3000/request/access", {
-          courseId: props.id,
-          userId: "63a37252643dd8bdece35b9b",
-          reason: "i don't like it",
-        })
+        .post(
+          "http://localhost:3000/request/access",
+          {
+            courseId: props.id,
+            reason: "i don't like it",
+            //reason needs to be removed from front and back
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        )
         .then((res) => {
           handleClickVariant("success");
         });
     }
     if (props.userRegister) navigate("/courseview/1", { state: props.id });
-    else{
-      axios.post("http://localhost:3000/invoice/".concat(props.id), {userId:"63a37e9688311fa832f43336"}).then((res) => {
-        console.log(res.data);
-        window.location.href= res.data.link;
-        localStorage.setItem("invoiceId", res.data.invoiceId);
-      });
+    else {
+      axios
+        .post("http://localhost:3000/invoice/".concat(props.id), {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          window.location.href = res.data.link;
+          localStorage.setItem("invoiceId", res.data.invoiceId);
+        });
     }
   };
   const displayedVideo = (
@@ -98,11 +112,11 @@ const AddToCartCard = (props) => {
           text={
             props.requested
               ? "Requested"
-              : (props.userRegister 
+              : props.userRegister
               ? "Go To Course"
-              : (props.corp
+              : props.corp
               ? "Request Access"
-              : "Enroll Now"))
+              : "Enroll Now"
           }
           className="w-full "
           disabled={props.requested}

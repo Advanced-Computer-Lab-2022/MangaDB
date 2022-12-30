@@ -26,10 +26,8 @@ export default function ForgotPassword() {
           userName: UserNameRef.current.value,
         })
         .then((res) => {
-          console.log(res);
           localStorage.setItem("token", res.data.token);
           handleClickVariant("success");
-          //setWarning("Please check your email for the reset link");
         });
     }
 

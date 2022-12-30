@@ -149,6 +149,7 @@ const NotesManager = (props) => {
     props.changeReportsSelector(newSelected);
   };
 
+  //not used????
   const submitReportHandler = (data) => {
     axios
       .post("http://localhost:3000/problem/", data, {

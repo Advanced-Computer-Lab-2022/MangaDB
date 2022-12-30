@@ -112,7 +112,7 @@ export default function ReportsRequestsManager(props) {
     if (props.type === "problem") {
       axios
         .patch(`http://localhost:3000/problem/${problemId}`, {
-          status: "pending",
+          status: "Pending",
           seen: "true",
         })
         .then((res) => {

@@ -95,7 +95,7 @@ exports.getAllCourses = async (req, res, next) => {
     course.discountedPrice = (course.discountedPrice * exchangeRate).toFixed(2);
   });
   let instructorCourses=[];
-  if(iId){
+  if(iId && req.user.role=="INSTRUCTOR"){
   for(let i=0;i<allCourses.length;i++){
     if(allCourses[i].instructor==iId){
       allCourses[i].mine=true;

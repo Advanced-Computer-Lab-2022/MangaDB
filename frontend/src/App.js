@@ -83,7 +83,7 @@ function App() {
           path="InstructorPage"
           element={<InstructorPage></InstructorPage>}
         ></Route>
-        <Route path = "instructorDashboard" element={<InstructorDashboard></InstructorDashboard>}></Route>
+        <Route path = "instructorDashboard/:id" element={<InstructorDashboard></InstructorDashboard>}></Route>
         <Route path = "instructorCourseDetails/:id" element={<InstructorCourseDetails></InstructorCourseDetails>}></Route>
 
         <Route path = "forgotPassword" element={<ForgotPasswordPage></ForgotPasswordPage>}></Route>

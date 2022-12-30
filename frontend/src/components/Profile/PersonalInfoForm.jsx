@@ -113,7 +113,7 @@ const PersonalInfoForm = forwardRef((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     handleRender() {
-     setBiography(defaultBiography);
+      setBiography(defaultBiography);
       setFirstName(defaultFirstName);
       setLastName(defaultLastName);
       setEmail(defaultEmail);
@@ -121,8 +121,7 @@ const PersonalInfoForm = forwardRef((props, ref) => {
     },
   }));
 
-  useEffect(() => {
-  }, [render]);
+  useEffect(() => {}, [render]);
   const onSaveHandler = (event) => {
     event.preventDefault();
     var currentWarning = "";
@@ -165,14 +164,11 @@ const PersonalInfoForm = forwardRef((props, ref) => {
     //props.onSaveHandler(saveData);
     //handleClickVariant("success");
     axios
-      .patch(
-        "http://localhost:3000/user/updateuser/63acd64846cc70eed673a330",
-        saveData /*, {
+      .patch("http://localhost:3000/user/updateUser", saveData, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
-      }*/
-      )
+      })
       .then((res) => {
         handleClickVariant("success");
       });

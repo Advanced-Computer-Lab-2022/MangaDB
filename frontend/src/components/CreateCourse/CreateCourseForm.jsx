@@ -31,7 +31,6 @@ function isYoutubeURL(str) {
 }
 
 const CreateCourseForm = (props) => {
-
   const [openContract, setOpenContract] = useState(false);
   const handleClose = () => {
     setOpenContract(false);
@@ -55,11 +54,20 @@ const CreateCourseForm = (props) => {
   const [validOverviewURL, setValidOverviewURL] = useState(true);
 
   const acceptContract = () => {
-    axios.patch("http://localhost:3000/user/updateuser/63acd64846cc70eed673a330", {agreedToTerms: true}).then((response) => {
-      console.log(response.data);
-      handleClose();
-    });
-  }
+    axios
+      .patch(
+        "http://localhost:3000/user/updateUser",
+        { agreedToTerms: true },
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
+      .then((response) => {
+        handleClose();
+      });
+  };
 
   const courseTitleChangeHandler = (event) => {
     setEnteredCourseTitle(event.target.value);
@@ -154,12 +162,15 @@ const CreateCourseForm = (props) => {
     //if not, we need to show the contract
     //if yes, we need to show the form
     axios
-      .get("http://localhost:3000/admin/getuser/63acd64846cc70eed673a330")
+      .get("http://localhost:3000/user/myProfile", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
       .then((res) => {
-        console.log(res.data);
         if (res.data.agreedToTerms === false) {
           setOpenContract(true);
-        } 
+        }
       });
   });
 

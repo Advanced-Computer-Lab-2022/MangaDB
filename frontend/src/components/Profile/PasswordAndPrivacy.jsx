@@ -190,13 +190,13 @@ const PasswordAndPrivacy = (props) => {
     console.log(saveData);
     axios
       .patch(
-        "http://localhost:3000/user/changepassword/63acd64846cc70eed673a330",
-        saveData /*,
-      {
+        "http://localhost:3000/user/changePassword",
+        saveData
+      ,{
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
-      }*/
+      }
       )
       .then((res) => {
         handleClickVariant("success");

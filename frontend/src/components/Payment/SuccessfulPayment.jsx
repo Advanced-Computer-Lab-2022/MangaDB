@@ -13,12 +13,21 @@ export default function SuccessfulPayment() {
     //call endpoint of payment "enroll"
     //console.log(localStorage.getItem("invoiceId").toString());
     axios
-      .post("http://localhost:3000/user/enroll", {
-        invoiceId: localStorage.getItem("invoiceId").toString(),
-      })
+      .post(
+        "http://localhost:3000/user/enroll",
+        {
+          invoiceId: localStorage.getItem("invoiceId").toString(),
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
       .then((res) => {
+        localStorage.removeItem("invoiceId");
         setTimeout(() => {
-          navigate("/home/1");
+          navigate("/home");
         }, 5000);
       }, []);
   });

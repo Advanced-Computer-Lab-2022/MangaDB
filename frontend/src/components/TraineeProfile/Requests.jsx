@@ -18,22 +18,26 @@ function classNames(...classes) {
 }
 
 const Requests = (props) => {
-const[requests, setRequests] = useState([]);
-const userId="63a41b632334fd21e6fab392";
-
+  const [requests, setRequests] = useState([]);
+  const userId = "63a41b632334fd21e6fab392";
 
   useEffect(() => {
-    axios.get("http://localhost:3000/request").then((res) => {
-      console.log(res.data[0].status);
-      /*
+    axios
+      .get("http://localhost:3000/request", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        /*
       for(let i = 0; i < res.data.length; i++){
         if(res.data[i].user === userId){
           setRequests([...requests, res.data[i]]);
         }
       }
       */
-      setRequests(res.data);
-    });
+        setRequests(res.data);
+      });
   }, []);
   return (
     <div>
@@ -141,7 +145,16 @@ const userId="63a41b632334fd21e6fab392";
                   </div>
                 </div>
                 {requests.map((request) => {
-                  return <div className="mt-2"><RequestItem status={request.status} date={request.date.split("T")[0]} type={request.type} courseName={request.courseName}></RequestItem></div>
+                  return (
+                    <div className="mt-2">
+                      <RequestItem
+                        status={request.status}
+                        date={request.date.split("T")[0]}
+                        type={request.type}
+                        courseName={request.courseName}
+                      ></RequestItem>
+                    </div>
+                  );
                 })}
               </form>
             </div>

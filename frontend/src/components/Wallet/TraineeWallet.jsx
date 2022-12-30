@@ -1,6 +1,5 @@
 import { Tooltip } from "@material-tailwind/react";
 import { useState } from "react";
-import axios from "axios";
 import PrimaryButton from "../UI/PrimaryButton";
 const TraineeWallet = (props) => {
   const [hovered, setHovered] = useState(false);

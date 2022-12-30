@@ -21,6 +21,10 @@ import AdminPage from "./components/Admin/AdminPage";
 import InstructorPage from "./pages/InstructorPage";
 import InstructorDashboard from "./pages/InstructorDashboard";
 import InstructorCourseDetails from "./pages/InstructorCourseDetails";
+import TraineeProfilePage from "./pages/TraineeProfilePage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import SuccessfulPayment from "./components/Payment/SuccessfulPayment";
+import UnsuccessfulPayment from "./components/Payment/UnsuccessfulPayment";
 function App() {
   return (
     <Fragment>
@@ -45,8 +49,12 @@ function App() {
           element={<CourseViewPage></CourseViewPage>}
         ></Route>
         <Route
-          path="/profile/:id"
+          path="/profileInstructor/:id"
           element={<InstructorProfilePage></InstructorProfilePage>}
+        ></Route>
+        <Route
+          path="/profileTrainee/:id"
+          element={<TraineeProfilePage></TraineeProfilePage>}
         ></Route>
         <Route
           path="/admin/:id"
@@ -77,7 +85,13 @@ function App() {
         ></Route>
         <Route path = "instructorDashboard" element={<InstructorDashboard></InstructorDashboard>}></Route>
         <Route path = "instructorCourseDetails/:id" element={<InstructorCourseDetails></InstructorCourseDetails>}></Route>
+
+        <Route path = "forgotPassword" element={<ForgotPasswordPage></ForgotPasswordPage>}></Route>
+        <Route path = "successfulPayment" element={<SuccessfulPayment></SuccessfulPayment>}></Route>
+        <Route path = "unsuccessfulPayment" element={<UnsuccessfulPayment></UnsuccessfulPayment>}></Route>
+
       </Routes>
+      
 
       <Footer></Footer>
     </Fragment>

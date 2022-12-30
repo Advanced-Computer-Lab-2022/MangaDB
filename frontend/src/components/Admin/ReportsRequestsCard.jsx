@@ -5,15 +5,12 @@ import Typography from "@mui/material/Typography";
 import { useState } from "react";
 export default function ReportsRequestsCard(props) {
   const [anchorEl, setAnchorEl] = useState(null);
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   return (
@@ -25,15 +22,15 @@ export default function ReportsRequestsCard(props) {
       >
         <div>
           <div class="flex relative">
-            <div className="p-2 w-full whitespace-nowrap">
-              <div className="flex justify-between">
+            <div className="p-2 w-full ">
+              <div className="flex justify-between whitespace-nowrap">
                 <h4 class="text-base font-semibold text-gray-700">
-                  Mina Magdy
+                  {props.userName?props.userName:""}
                 </h4>
-                <p class="text-gray-400 text-sm font-semibold">{props.date}</p>
+                <p class="text-gray-400 text-sm font-semibold ml-4">{props.date}</p>
               </div>
               <p class="text-gray-400 text-sm">
-                Course: Web development bootcamp
+                {props.courseName?"Course: " + props.courseName:""}
               </p>
               {props.description ? (
                 <p class="text-gray-400 text-sm">type: {props.type}</p>
@@ -70,13 +67,13 @@ export default function ReportsRequestsCard(props) {
             <button
               aria-describedby={id}
               onClick={handleClick}
-              className="rounded-full hover:bg-gray-50 ease-in-out duration-300 active:opacity-75 cursor-pointer p-2"
+              className={"rounded-full ".concat(props.alreadyHandled ?"opacity-50 cursor-default":"hover:bg-gray-50 ease-in-out duration-300 active:opacity-75 cursor-pointer p-2")}
             >
               <MoreVertIcon className=" opacity-50 " />
-            </button>
+            </button >
             <Popover
               id={id}
-              open={open}
+              open={open && !props.alreadyHandled}
               anchorEl={anchorEl}
               onClose={handleClose}
               anchorOrigin={{
@@ -107,7 +104,7 @@ export default function ReportsRequestsCard(props) {
                       onClick={props.thirdActionClickHandler}
                       className=" mx-10 whitespace-nowrap pb-1"
                     >
-                      Mark as pending
+                      Pend request
                     </button>
                   </div>
                 ) : (

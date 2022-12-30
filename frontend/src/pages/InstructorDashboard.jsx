@@ -59,6 +59,31 @@ const InstructorDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const [showFollowUpModal, setShowFollowUpModal] = useState(false);
+  const [followUpId, setFollowUpId] = useState(-1);
+  const [followUpProblem, setFollowUpProblem] = useState("");
+  const [followUpDescription, setFollowUpDescription] = useState("");
+
+  const openFollowUpModal = (id, problem) => {
+    setShowFollowUpModal(true);
+    setFollowUpId(id);
+    setFollowUpProblem(problem);
+  }
+
+  const closeFollowUpModal = () => {
+    setShowFollowUpModal(false);
+    setFollowUpId(-1);
+  };
+
+  const followUpDescriptionChangeHandler = (event) => {
+    setFollowUpDescription(event.target.value);
+  }
+
+  const followUpSubmitHandler = () => {
+    closeFollowUpModal();
+    //axios post
+  };
+
   //loading as the endpoint contains a lot of data..
   //fetch the data as soon as he logs in..
   useEffect(() => {
@@ -239,18 +264,28 @@ const InstructorDashboard = () => {
       const fullDate = month + " " + day + ", " + year;
       return (
         <ReportItem
+          id={report._id}
           type={report.type}
           status={report.status}
           index={index}
           date={fullDate}
           description={report.description}
           courseName={report.courseName}
+          followUpDescriptionChangeHandler={followUpDescriptionChangeHandler}
+          followUpSubmitHandler={followUpSubmitHandler}
+          followUpDescription={followUpDescription}
+          followUpId={followUpId}
+          followUpProblem={followUpProblem}
+          showFollowUpModal={showFollowUpModal}
+          openFollowUpModal={openFollowUpModal}
+          closeFollowUpModal={closeFollowUpModal}
         />
       );
     });
   } else {
     displayedReports = <div>No Reports Found.</div>;
   }
+  console.log(reports);
   return (
     <Fragment>
       <NavBar></NavBar>

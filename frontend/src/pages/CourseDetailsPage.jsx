@@ -70,7 +70,8 @@ const CourseDetailsPage = () => {
       // console.log(res.data.course);
       // setLoaded(true);
       setCourseReviews(res.data.review);
-      console.log(res.data.review);
+      //console.log(res.data.count);
+      setReviewsCount(res.data.count);
     });
 
     // axios

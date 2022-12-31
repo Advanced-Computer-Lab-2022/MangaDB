@@ -262,7 +262,6 @@ const IntructorCoursePage = (props) => {
       mine: course.mine,
     };
   });
-
   var cards = rows.map((row) => {
     return (
       <TableListViewCard

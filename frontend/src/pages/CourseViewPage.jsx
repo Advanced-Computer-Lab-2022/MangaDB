@@ -230,6 +230,14 @@ const CourseViewPage = () => {
       managerRef.current.refreshManager();
     }
     setCurrentSource(source);
+    if(source.sourceType === "Quiz"){
+      setCurrentTab("")
+      setCertificateAlert(false);
+      setShowQA(false);
+      setShowNotes(false);
+      setShowReports(false);
+      setShowReviews(false)
+    }
   };
   const changeNotesFilter = (data) => {
     setCurrentNotesFilter(data);
@@ -355,7 +363,6 @@ const CourseViewPage = () => {
           },
         })
         .then((res) => {
-          console.log(res.data.percentage)
           setProgress(res.data.percentage);
         });
       });

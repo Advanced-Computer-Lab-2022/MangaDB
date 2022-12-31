@@ -58,7 +58,7 @@ function App() {
         ></Route>
         <Route path="/admin" element={<AdminPage></AdminPage>}></Route>
         <Route
-          path="courses/:id"
+          path="courses"
           element={<InstructorCoursesPage></InstructorCoursesPage>}
         ></Route>
         <Route
@@ -81,7 +81,7 @@ function App() {
           element={<InstructorPage></InstructorPage>}
         ></Route>
         <Route
-          path="instructorDashboard/:id"
+          path="instructorDashboard"
           element={<InstructorDashboard></InstructorDashboard>}
         ></Route>
         <Route

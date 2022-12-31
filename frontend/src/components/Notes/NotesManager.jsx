@@ -10,7 +10,7 @@ import ReviewsCourseView from "../CourseView/ReviewsCourseView";
 
 const NotesManager = (props) => {
   const [timestamp, setTimeStamp] = useState(0);
-  const [playing, setPlaying] = useState(true);
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     if (

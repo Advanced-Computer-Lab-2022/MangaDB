@@ -49,55 +49,55 @@ function App() {
           element={<CourseViewPage></CourseViewPage>}
         ></Route>
         <Route
-          path="/profileInstructor/:id"
+          path="/profileInstructor"
           element={<InstructorProfilePage></InstructorProfilePage>}
         ></Route>
         <Route
-          path="/profileTrainee/:id"
+          path="/profileTrainee"
           element={<TraineeProfilePage></TraineeProfilePage>}
         ></Route>
         <Route path="/admin" element={<AdminPage></AdminPage>}></Route>
         <Route
-          path="courses/:id"
+          path="/courses"
           element={<InstructorCoursesPage></InstructorCoursesPage>}
         ></Route>
         <Route
-          path="addcourse/:id"
+          path="/addcourse"
           element={<AddCoursePage></AddCoursePage>}
         ></Route>
         <Route
-          path="myWallet/:id"
+          path="/myWallet/:id"
           element={<InstructorWallet></InstructorWallet>}
         ></Route>
-        <Route path="FAQS" element={<FAQS></FAQS>}></Route>
-        <Route path="404" element={<PageNotFound></PageNotFound>}></Route>
+        <Route path="/FAQS" element={<FAQS></FAQS>}></Route>
+        <Route path="/404" element={<PageNotFound></PageNotFound>}></Route>
         <Route
-          path="403"
+          path="/403"
           element={<UnAuthorizedPage></UnAuthorizedPage>}
         ></Route>
-        <Route path="myCourses" element={<MyCourses></MyCourses>}></Route>
+        <Route path="/myCourses" element={<MyCourses></MyCourses>}></Route>
         <Route
-          path="InstructorPage"
+          path="/InstructorPage"
           element={<InstructorPage></InstructorPage>}
         ></Route>
         <Route
-          path="instructorDashboard/:id"
+          path="/instructorDashboard"
           element={<InstructorDashboard></InstructorDashboard>}
         ></Route>
         <Route
-          path="instructorCourseDetails/:id"
+          path="/instructorCourseDetails/:id"
           element={<InstructorCourseDetails></InstructorCourseDetails>}
         ></Route>
         <Route
-          path="forgotPassword"
+          path="/forgotPassword"
           element={<ForgotPasswordPage></ForgotPasswordPage>}
         ></Route>
         <Route
-          path="successfulPayment"
+          path="/successfulPayment"
           element={<SuccessfulPayment></SuccessfulPayment>}
         ></Route>
         <Route
-          path="unsuccessfulPayment"
+          path="/unsuccessfulPayment"
           element={<UnsuccessfulPayment></UnsuccessfulPayment>}
         ></Route>
       </Routes>

@@ -68,7 +68,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "PORT=3456 && react-scripts start",
+    "start": "set PORT=3456 && react-scripts start",
     "watch": "tailwindcss -i ./src/input.css -o ./src/output.css --watch",
     "build": "react-scripts build",
     "test": "react-scripts test",

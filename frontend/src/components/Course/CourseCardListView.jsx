@@ -11,7 +11,6 @@ const size = 5;
 const CourseCardListView = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const handleClickVariant = (variant) => {
-    //console.log("here");
     // variant could be success, error, warning, info, or default
     if (variant === "success") {
       enqueueSnackbar("Refund has been requested successfuly", { variant });

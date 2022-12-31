@@ -16,14 +16,11 @@ export default function LogoutNavBAr(props) {
       .then((res) => {
         localStorage.removeItem("token");
         localStorage.removeItem("role");
-        console.log(res);
         navigate("/");
       })
       .catch((err) => {
         console.log(localStorage.getItem("token"));
       });
-
-    //navigate("/");
   };
   return (
     <li>

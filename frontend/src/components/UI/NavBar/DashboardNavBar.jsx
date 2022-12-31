@@ -1,10 +1,18 @@
 import React from "react";
 import PrimaryButton from "../PrimaryButton";
+import { useNavigate } from "react-router-dom";
 
 const DashboardNavBar = (props) => {
+
+  const navigate = useNavigate();
+
+  const onClickHandler = () => {
+    navigate('/instructorDashboard');
+  };
+
   return (
     <li>
-      <PrimaryButton className={`flex space-x-4 ${props.active ? 'underline decoration-primaryBlue font-medium decoration-4 underline-offset-8' : 'no-underline'}`}>
+      <PrimaryButton onClick={!props.active ? onClickHandler : null} className={`flex space-x-4 ${props.active ? 'underline decoration-primaryBlue font-medium decoration-4 underline-offset-8' : 'no-underline'}`}>
         <span className={`${props.search ? "xl:hidden" : "md:hidden"}`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"

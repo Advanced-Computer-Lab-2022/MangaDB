@@ -1,5 +1,4 @@
 import { useState, useEffect, Fragment, useRef } from "react";
-import NavBar from "../components/UI/NavBar/NavBar";
 import ExamManager from "../components/Exam/ExamManager";
 import NotesManager from "../components/Notes/NotesManager";
 import axios from "axios";
@@ -8,6 +7,7 @@ import WarningAlert from "../components/UI/WarningAlert";
 import ContentCourseView from "../components/CourseView/ContentCourseView";
 import ExamToolManager from "../components/ExamToolBar/ExamToolManager";
 import Certificate from "../components/Certificate/Certificate";
+import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 
 const CourseViewPage = () => {
   const location = useLocation();
@@ -42,6 +42,41 @@ const CourseViewPage = () => {
   const [certificateAlert, setCertificateAlert] = useState(false);
   const managerRef = useRef(null);
   const downloadRef = useRef(null);
+  const [showFollowUpModal, setShowFollowUpModal] = useState(false);
+  const [followUpId, setFollowUpId] = useState(-1);
+  const [followUpProblem, setFollowUpProblem] = useState("");
+  const [followUpDescription, setFollowUpDescription] = useState("");
+
+  const openFollowUpModal = (id, problem) => {
+    setShowFollowUpModal(true);
+    setFollowUpId(id);
+    setFollowUpProblem(problem);
+  };
+
+  const closeFollowUpModal = () => {
+    setShowFollowUpModal(false);
+    setFollowUpId(-1);
+  };
+
+  const followUpDescriptionChangeHandler = (event) => {
+    setFollowUpDescription(event.target.value);
+  };
+
+  const followUpSubmitHandler = () => {
+    closeFollowUpModal();
+    const data = {
+      followUpComment: followUpDescription,
+    };
+    axios
+      .post("http://localhost:3000/problem/followUp/" + followUpId, data, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      });
+  };
 
   useEffect(() => {
     const courseId = location.state;
@@ -436,6 +471,14 @@ const CourseViewPage = () => {
           onTabChangeHandler={onTabChangeHandler}
           sourceNo={sourceNo}
           subtitleNo={subtitleNo}
+          followUpDescriptionChangeHandler={followUpDescriptionChangeHandler}
+          followUpSubmitHandler={followUpSubmitHandler}
+          followUpDescription={followUpDescription}
+          followUpId={followUpId}
+          followUpProblem={followUpProblem}
+          showFollowUpModal={showFollowUpModal}
+          openFollowUpModal={openFollowUpModal}
+          closeFollowUpModal={closeFollowUpModal}
         />
       );
     } else {
@@ -501,6 +544,14 @@ const CourseViewPage = () => {
             currentTab={currentTab}
             certificateAlert={certificateAlert}
             onTabChangeHandler={onTabChangeHandler}
+            followUpDescriptionChangeHandler={followUpDescriptionChangeHandler}
+            followUpSubmitHandler={followUpSubmitHandler}
+            followUpDescription={followUpDescription}
+            followUpId={followUpId}
+            followUpProblem={followUpProblem}
+            showFollowUpModal={showFollowUpModal}
+            openFollowUpModal={openFollowUpModal}
+            closeFollowUpModal={closeFollowUpModal}
           ></ExamToolManager>
         </Fragment>
       );
@@ -508,7 +559,7 @@ const CourseViewPage = () => {
   }
   return (
     <Fragment>
-      <NavBar />
+      <NavBarSearch currentTab="My Courses" />
       <div className=" opacity-0 h-0 overflow-hidden w-full relative ">
         <Certificate ref={downloadRef}></Certificate>
       </div>

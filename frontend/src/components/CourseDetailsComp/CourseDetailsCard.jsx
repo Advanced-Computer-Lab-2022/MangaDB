@@ -1,9 +1,17 @@
 import React from "react";
 import Stars from "../UI/Stars";
+import { useNavigate } from "react-router-dom";
 
 const size = 5;
 
 const CourseDetailsCard = (props) => {
+
+  const navigate = useNavigate();
+
+  const clickHandler = () => {
+    navigate('/InstructorPage', { state: { instructorId: props.id } });
+  };
+
   const roundedRating = Math.round(+props.rating * 10) / 10;
   return (
     <div className="md:w-7/12 w-full shadow-lg flex mt-16">
@@ -30,9 +38,14 @@ const CourseDetailsCard = (props) => {
           )}
         </div>
         <div className="font-light text-base text-gray-500">
-          {props.instructorName} . {props.subject}
+          <span className="hover:cursor-pointer font-normal underline" onClick={clickHandler}>
+            {props.instructorName}
+          </span>{" "}
+          . {props.subject}
         </div>
-        <div className="text-xs font-light line-clamp-2">{props.courseDescription}</div>
+        <div className="text-xs font-light line-clamp-2">
+          {props.courseDescription}
+        </div>
         <div className="flex justify-between items-center w-full">
           <div className="flex">
             <Stars size={size} rating={props.rating} />

@@ -79,7 +79,6 @@ const CourseDetailsPage = () => {
       .then((res) => {
       });
   };
-
   return (
     <SnackbarProvider maxSnack={3}>
       <Fragment>
@@ -89,6 +88,7 @@ const CourseDetailsPage = () => {
             courseTitle={courseDetails.courseTitle}
             level={courseDetails.level}
             instructorName={courseDetails.instructorName}
+            id={courseDetails.instructor}
             subject={courseDetails.subject}
             courseDescription={courseDetails.courseDescription}
             rating={courseDetails.rating}

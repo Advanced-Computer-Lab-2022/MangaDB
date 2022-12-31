@@ -18,7 +18,7 @@ const MyCoursesNavBar = (props) => {
 
   return (
     <li>
-      <PrimaryButton onClick={!props.active ? onClickHandler : null} className={`flex space-x-4 ${props.active ? 'underline decoration-primaryBlue font-medium decoration-4 underline-offset-8' : 'no-underline'}`}>
+      <PrimaryButton onClick={onClickHandler} className={`flex space-x-4 ${props.active ? 'underline decoration-primaryBlue font-medium decoration-4 underline-offset-8' : 'no-underline'}`}>
         <span className={`${props.search ? "xl:hidden" : "md:hidden"}`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"

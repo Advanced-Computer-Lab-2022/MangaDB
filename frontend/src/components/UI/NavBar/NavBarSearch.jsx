@@ -14,7 +14,6 @@ import DashboardNavBar from "./DashboardNavBar";
 import AddCourseNavBar from "./AddCourseNavBar";
 import AddUserNavBar from "./AddUserNavBar";
 import RequestedCoursesNavBar from "./RequestedCoursesNavBar";
-import SecondaryButton from "../SecondaryButton";
 import SearchBar from "../Search/SearchBar";
 import LogoutNavBAr from "./LogoutNavBar";
 import TraineeWallet from "../../Wallet/TraineeWallet";
@@ -66,7 +65,7 @@ const NavBarSearch = (props) => {
 
   return (
     <div
-      className={`w-full fixed top-0 left-0 xl:${"shadow-md"} ${
+      className={`w-full fixed top-0 left-0 xl:${"shadow-md"} bg-white z-20 ${
         !open ? "shadow-md" : "shadow-none"
       }`}
     >

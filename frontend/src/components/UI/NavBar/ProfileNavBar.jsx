@@ -17,7 +17,7 @@ const ProfileNavBar = (props) => {
   return (
     <li>
       <PrimaryButton
-        onClick={!props.active ? onClickHandler : null}
+        onClick={onClickHandler}
         className="flex space-x-4"
       >
         <span className="md:w-10 w-[22px] rounded-full">

@@ -12,7 +12,7 @@ const SignInNavBar = (props) => {
 
   return (
     <li>
-      <SecondaryButton onClick={!props.active ? onClickHandler : null} text="Sign In" />
+      <SecondaryButton onClick={onClickHandler} text="Sign In" />
     </li>
   );
 };

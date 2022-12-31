@@ -58,7 +58,7 @@ const CourseCard = (props) => {
                 {props.level}
               </div>
             )}
-            <div class="text-lg font-bold tracking-tight text-gray-900 flex">
+            {localStorage.getItem("role") !== "CORPORATE" && <div class="text-lg font-bold tracking-tight text-gray-900 flex">
               {props.discount > 0 && (
                 <div className="line-through decoration-1 text-sm font-thin mr-2 mt-1">
                   {props.coursePrice}
@@ -74,7 +74,7 @@ const CourseCard = (props) => {
                   {props.currencySymbol.toString()}
                 </div>
               )}
-            </div>
+            </div>}
           </div>
         </div>
       </div>

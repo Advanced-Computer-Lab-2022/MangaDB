@@ -1,9 +1,17 @@
 import React from "react";
 import Stars from "../UI/Stars";
+import { useNavigate } from "react-router-dom";
 
 const size = 5;
 
 const CourseDetailsCard = (props) => {
+
+  const navigate = useNavigate();
+
+  const clickHandler = () => {
+    navigate('/InstructorPage', { state: { instructorId: props.id } });
+  };
+
   const roundedRating = Math.round(+props.rating * 10) / 10;
   return (
     <div className="md:w-7/12 w-full shadow-lg flex mt-16">
@@ -30,9 +38,14 @@ const CourseDetailsCard = (props) => {
           )}
         </div>
         <div className="font-light text-base text-gray-500">
-          {props.instructorName} . {props.subject}
+          <span className="hover:cursor-pointer font-normal underline" onClick={clickHandler}>
+            {props.instructorName}
+          </span>{" "}
+          . {props.subject}
         </div>
-        <div className="text-xs font-light line-clamp-2">{props.courseDescription}</div>
+        <div className="text-xs font-light line-clamp-2">
+          {props.courseDescription}
+        </div>
         <div className="flex justify-between items-center w-full">
           <div className="flex">
             <Stars size={size} rating={props.rating} />
@@ -40,7 +53,7 @@ const CourseDetailsCard = (props) => {
               {roundedRating}
             </div>
           </div>
-          <div class="text-lg font-bold tracking-tight text-gray-900 flex">
+          {localStorage.getItem("role") !== "CORPORATE" && <div class="text-lg font-bold tracking-tight text-gray-900 flex">
             {props.discount > 0 && (
               <div className="line-through decoration-1 text-sm font-thin mr-2 mt-1">
                 {props.coursePrice}
@@ -56,7 +69,7 @@ const CourseDetailsCard = (props) => {
                 {props.currencySymbol.toString()}
               </div>
             )}
-          </div>
+          </div>}
         </div>
       </div>
     </div>

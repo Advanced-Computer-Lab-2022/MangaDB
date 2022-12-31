@@ -81,17 +81,17 @@ const CourseCardListView = (props) => {
           <AccessTimeIcon className="-mt-[3px]" fontSize="inherit" />{" "}
           {totalDuration} {"hrs"}
           <div className="flex justify-end items-center">
-            {props.discount > 0 && (
+            {props.discount > 0 && localStorage.getItem("role") !== "CORPORATE" &&  (
               <div className="line-through decoration-1 text-lg font-thin mr-4">
                 {props.coursePrice}
                 {props.currencySymbol}
               </div>
             )}
             <h5 class="text-2xl font-bold tracking-tight text-gray-900">
-              {props.discountedPrice === 0 && (
+              {props.discountedPrice === 0 && localStorage.getItem("role") !== "CORPORATE" && (
                 <div className="text-green-600 mr-6">FREE</div>
               )}
-              {props.discountedPrice != 0 && (
+              {props.discountedPrice != 0 && localStorage.getItem("role") !== "CORPORATE" && (
                 <div className="mr-6">
                   {props.discountedPrice}
                   {props.currencySymbol}

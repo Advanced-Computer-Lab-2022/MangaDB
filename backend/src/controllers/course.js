@@ -371,7 +371,7 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
       rating: 1,
       instructor: 1,
       instructorName: 1,
-      subject: 1,
+      subject: 1
     })
     .catch((error) => {
       res.status(500).json({

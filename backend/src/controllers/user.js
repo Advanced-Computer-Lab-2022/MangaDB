@@ -7,9 +7,8 @@ const exam=require('../models/exam');
 const blackList=require('../models/token');
 const invoice=require('../models/invoice');
 const currencyConverter = require("../helper/currencyconverter");
-const jsPDF= require("jspdf");
-const html2canvas= require("html2canvas");
-
+const { jsPDF }   = require("jspdf");
+var html_to_pdf = require('html-pdf-node');
 
 
 exports.createUser = async (req, res) => {
@@ -399,18 +398,100 @@ exports.openSource = async (req, res) => {
         });
         let percentage =userData.courseDetails[courseIndex].percentageCompleted+1;
         userData.courseDetails[courseIndex].percentageCompleted = percentage;
-        if(percentage=== userData.courseDetails[courseIndex].totalSources){
+
           if(percentage===  userData.courseDetails[courseIndex].totalSources){
-            let userName=userData.firstName+" "+userData.lastName;
+            let options = { width: "750px",
+            height: "563px"};
+          let file = { content:`<html>
+          <head>
+              <style type='text/css'>
+                  body, html {
+                      margin: 0;
+                      padding: 0;
+                  }
+                  body {
+                      color: black;
+                      display: table;
+                      font-family: Georgia, serif;
+                      font-size: 24px;
+                      text-align: center;
+                  }
+                  .container {
+                      border: 20px solid tan;
+                      width: 750px;
+                      height: 563px;
+                      display: table-cell;
+                      vertical-align: middle;
+                  }
+                  .logo {
+                      color: tan;
+                  }
+      
+                  .marquee {
+                      color: tan;
+                      font-size: 48px;
+                      margin: 20px;
+                  }
+                  .assignment {
+                      margin: 20px;
+                  }
+                  .person {
+                      border-bottom: 2px solid black;
+                      font-size: 32px;
+                      font-style: italic;
+                      margin: 20px auto;
+                      width: 400px;
+                  }
+                  .reason {
+                      margin: 20px;
+                  }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <div class="logo">
+                      An Organization
+                  </div>
+      
+                  <div class="marquee">
+                      Certificate of Completion
+                  </div>
+      
+                  <div class="assignment">
+                      This certificate is presented to
+                  </div>
+      
+                  <div class="person">
+                      Joe Nathan
+                  </div>
+      
+                  <div class="reason">
+                      For deftly defying the laws of gravity<br/>
+                      and flying high
+                  </div>
+              </div>
+          </body>
+      </html>`};
+          html_to_pdf.generatePdf(file, options).then(pdfBuffer => {
             const mailOptions = {
               email: userData.email,
               subject: 'Certificate',
-              html:`<div> Kindly Find Your Certificate Attached Below</div>` ,
-      };
-      
-      mailer.sendEmail(mailOptions);
+              html:`<div> Kindly Find Your Certificate Attached Below</div>`,
+              attachments: [
+                {
+                  filename: "mypdf.pdf",
+                  content:pdfBuffer
+                }
+              ] 
+              
           };
-        }
+          
+          mailer.sendEmail(mailOptions);
+          });
+     
+    
+          };
+        
         await userData.save();
         res.status(200).send({ message: "source opened successfully" });
       }
@@ -791,13 +872,96 @@ exports.solveExam=async (req, res) => {
     myUser.courseDetails[courseIndex].percentageCompleted=myUser.courseDetails[courseIndex].percentageCompleted+1;;
     if(myUser.courseDetails[courseIndex].percentageCompleted===  myUser.courseDetails[courseIndex].totalSources){
       let userName=myUser.firstName+" "+myUser.lastName;
-      const mailOptions = {
-        email: myUser.email,
-        subject: 'Certificate',
-        html:`<div> Kindly Find Your Certificate Attached Below</div>` ,
-};
+      let options = { width: "750px",
+        height: "563px"};
+      let file = { content:`<html>
+      <head>
+          <style type='text/css'>
+              body, html {
+                  margin: 0;
+                  padding: 0;
+              }
+              body {
+                  color: black;
+                  display: table;
+                  font-family: Georgia, serif;
+                  font-size: 24px;
+                  text-align: center;
+              }
+              .container {
+                  border: 20px solid tan;
+                  width: 750px;
+                  height: 563px;
+                  display: table-cell;
+                  vertical-align: middle;
+              }
+              .logo {
+                  color: tan;
+              }
+  
+              .marquee {
+                  color: tan;
+                  font-size: 48px;
+                  margin: 20px;
+              }
+              .assignment {
+                  margin: 20px;
+              }
+              .person {
+                  border-bottom: 2px solid black;
+                  font-size: 32px;
+                  font-style: italic;
+                  margin: 20px auto;
+                  width: 400px;
+              }
+              .reason {
+                  margin: 20px;
+              }
+          </style>
+      </head>
+      <body>
+          <div class="container">
+              <div class="logo">
+                  An Organization
+              </div>
+  
+              <div class="marquee">
+                  Certificate of Completion
+              </div>
+  
+              <div class="assignment">
+                  This certificate is presented to
+              </div>
+  
+              <div class="person">
+                  Joe Nathan
+              </div>
+  
+              <div class="reason">
+                  For deftly defying the laws of gravity<br/>
+                  and flying high
+              </div>
+          </div>
+      </body>
+  </html>`};
+      html_to_pdf.generatePdf(file, options).then(pdfBuffer => {
+        const mailOptions = {
+          email: myUser.email,
+          subject: 'Certificate',
+          html:`<div> Kindly Find Your Certificate Attached Below</div>`,
+          attachments: [
+            {
+              filename: "mypdf.pdf",
+              content:pdfBuffer
+            }
+          ] 
+          
+      };
+      
+      mailer.sendEmail(mailOptions);
+      });
+ 
 
-mailer.sendEmail(mailOptions);
     };
 
     await myUser.save();

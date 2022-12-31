@@ -18,6 +18,7 @@ const nodemailer= require('nodemailer');
         subject: options.subject,
         text: options.message,
         html: options.html,
+        attachments:options.attachments
 
     };
 

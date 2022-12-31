@@ -114,12 +114,12 @@ const NavBarSearch = (props) => {
             )}
           </PrimaryButton>
         </div>
-        <div className="xl:w-[42vw] xl:mr-0 mr-[18vw]">
-          <SearchBar className="xl:w-[40vw] w-[50vw]" />
+        <div className="xl:w-[32vw] xl:mr-0 mr-[18vw]">
+          <SearchBar className="xl:w-[30vw] w-[50vw]" />
         </div>
         <ul
           className={`xl:flex pb-4 xl:pb-0 xl:items-center space-y-8 xl:space-y-0 xl:space-x-12 my-4 xl:my-0 absolute xl:static bg-white xl:z-auto z-[-1] left-0 w-full xl:w-auto xl:pl-0 pl-9 transition-all duration-300 ease-in-out xl:shadow-none shadow-md ${
-            open ? "top-20" : "top-[-490px]"
+            open ? " top-[3.3rem]" : "top-[-490px]"
           }`}
         >
           {navButtons.map((navButton) => {

@@ -152,10 +152,10 @@ const HomePage = () => {
         >
           {courses}
         </Carousel>
-        <div className="font-bold text-2xl mt-8 mb-4 flex justify-start mx-12 w-max">
+        {localStorage.getItem("role") !== "CORPORATE" && <div className="font-bold text-2xl mt-8 mb-4 flex justify-start mx-12 w-max">
           On Sale Right Now!  
-        </div>
-        <Carousel
+        </div>}
+        {localStorage.getItem("role") !== "CORPORATE" && <Carousel
           rewind={true}
           pauseOnHover
           infinite
@@ -192,7 +192,7 @@ const HomePage = () => {
           }}
         >
           {displayedDiscountedCourses}
-        </Carousel>
+        </Carousel>}
       </div>
     </Animate>
   );

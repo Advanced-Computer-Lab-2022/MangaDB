@@ -88,7 +88,6 @@ const CourseViewPage = () => {
           },
         })
         .then((res) => {
-          console.log(res);
           var notesSet = [];
           for (var i = 0; i < res.data.noteData.length; i++) {
             if (res.data.noteData[i].notes.length !== 0) {
@@ -348,16 +347,17 @@ const CourseViewPage = () => {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
-      .then((res) => {});
-
-    axios
-      .get(`http://localhost:3000/user/progress/${receivedData._id}`, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
       .then((res) => {
-        setProgress(res.data.percentage);
+        axios
+        .get(`http://localhost:3000/user/progress/${receivedData._id}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          console.log(res.data.percentage)
+          setProgress(res.data.percentage);
+        });
       });
   };
 

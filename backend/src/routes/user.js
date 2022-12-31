@@ -37,7 +37,7 @@ router.post('/solveExam',auth.validateToken,auth.authenticateRole(["TRAINEE","CO
 
 router.get('/myCourses',auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]),userController.getRegisteredCourses);
 
-router.get('/wallet/:id',auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]),userController.getWallet);
+router.get('/wallet',auth.validateToken,auth.authenticateRole(["TRAINEE"]),userController.getWallet);
 
 router.get("/certificate", userController.testCertificate); //not used
 

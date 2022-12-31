@@ -5,7 +5,6 @@ import logo from "../Assets/Images/Logo.svg";
 import userIcon from "../Assets/Images/userIcon.svg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
 
 export default function Login() {
@@ -191,19 +190,7 @@ export default function Login() {
                 onClick={onSubmitHandler}
               ></SecondaryButton>
               <hr className=" opacity-75" />
-              <div className="flex justify-center">
-                <h2 className="opacity-50">OR</h2>
-              </div>
 
-              <GoogleLogin
-                className="flex space-x-0 items-center justify-center p-3 font-semibold hover:opacity-80  hover:text-black ease-in-out duration-300 border-2 rounded-lg hover:shadow-md text-indigo-500"
-                clientId={clientId}
-                buttonText="Sign in with Google"
-                onSuccess={onSuccess}
-                onFailure={onFailure}
-                cookiePolicy={"single_host_origin"}
-                isSignedIn={true}
-              />
             </div>
           </form>
           <p class="text-center">

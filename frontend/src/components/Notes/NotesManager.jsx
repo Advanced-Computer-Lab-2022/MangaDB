@@ -149,19 +149,6 @@ const NotesManager = (props) => {
     props.changeReportsSelector(newSelected);
   };
 
-  //not used????
-  const submitReportHandler = (data) => {
-    axios
-      .post("http://localhost:3000/problem/", data, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
-      .then((res) => {
-        console.log(res);
-      });
-  };
-
   return (
     <Fragment>
       <Video
@@ -213,6 +200,14 @@ const NotesManager = (props) => {
             selectedChangeHandler={selectedReportsChangeHandler}
             courseId={props.courseId}
             reports={props.reports}
+            followUpDescriptionChangeHandler={props.followUpDescriptionChangeHandler}
+            followUpSubmitHandler={props.followUpSubmitHandler}
+            followUpDescription={props.followUpDescription}
+            followUpId={props.followUpId}
+            followUpProblem={props.followUpProblem}
+            showFollowUpModal={props.showFollowUpModal}
+            openFollowUpModal={props.openFollowUpModal}
+            closeFollowUpModal={props.closeFollowUpModal}
           />
         )}
         {props.certificateAlert ? (

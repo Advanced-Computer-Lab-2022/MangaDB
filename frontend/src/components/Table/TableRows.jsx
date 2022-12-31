@@ -2,8 +2,6 @@ import DropDown from "../UI/DropDown";
 import Countdown from "react-countdown";
 const TableRows = (props) => {
   const rows = props.rows.map((row, rowIdx) => {
-    console.log(row.discountEndDate)
-
     const totalHours = Math.round(+row.totalMins / 60);
     const items =
       row.mine === false

@@ -30,19 +30,21 @@ const AddToCartCard = (props) => {
     if (role === "TRAINEE") {
       if (props.userRegister) {
         setButtonText("Go To Course");
+        setButtonState(true);
       }
     } else if (role === "CORPORATE") {
-      console.log(props.requested);
       if (!props.requested && !props.userRegister) {
         setButtonText("Request Access");
+        setButtonState(true);
       } else if (props.userRegister) {
         setButtonText("Go To Course");
+        setButtonState(true);
       } else {
         setButtonText("Requested");
         setButtonState(false);
       }
     }
-  }, [props.requested, props.userRegister]);
+  }, [props.requested, props.userRegister,role]);
   const clickHandler = () => {
     //handle if user is a guest and navigate to login page
     //case 1: Guest -> Buy Course -> navigate to login
@@ -56,7 +58,7 @@ const AddToCartCard = (props) => {
         navigate("/courseview", { state: props.id });
       } else {
         axios
-          .post("http://localhost:3000/invoice/".concat(props.id), {
+          .post("http://localhost:3000/invoice/".concat(props.id), {}, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("token"),
             },

@@ -17,7 +17,7 @@ import RequestedCoursesNavBar from "./RequestedCoursesNavBar";
 import SecondaryButton from "../SecondaryButton";
 import SearchBar from "../Search/SearchBar";
 import LogoutNavBAr from "./LogoutNavBar";
-
+import TraineeWallet from "../../Wallet/TraineeWallet";
 const NavBarSearch = (props) => {
   var navButtons = [];
 

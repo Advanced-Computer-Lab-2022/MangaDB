@@ -8,7 +8,7 @@ export default function LogoutNavBAr(props) {
 
   const logoutHandler = () => {
     axios
-      .post("http://localhost:3000/user/logout", {
+      .post("http://localhost:3000/user/logout",{}, {
         headers: {
           "Authorization": "Bearer " + localStorage.getItem("token"),
         },

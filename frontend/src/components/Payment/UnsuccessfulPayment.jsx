@@ -10,7 +10,6 @@ export default function UnsuccessfulPayment() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    //call endpoint of payment
     axios
       .delete(
         "http://localhost:3000/invoice/" + localStorage.getItem("invoiceId"),
@@ -23,7 +22,10 @@ export default function UnsuccessfulPayment() {
       .then((res) => {
         localStorage.removeItem("invoiceId");
         setTimeout(() => {
-          navigate("/home");
+          navigate("/courseDetails", {
+            state: { courseId: localStorage.getItem("courseId") },
+          });
+          localStorage.removeItem("courseId");
         }, 5000);
       });
   }, []);

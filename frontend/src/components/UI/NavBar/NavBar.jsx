@@ -47,9 +47,7 @@ const NavBar = (props) => {
     navButtons = [
       { name: "Home", active: {}, role: "CORPORATE" },
       { name: "My Courses", active: {}, role: "CORPORATE" },
-      { name: "Request Course", active: {}, role: "CORPORATE" },
       { name: "FAQs", active: {}, role: "CORPORATE" },
-      { name: "Wallet", active: {}, role: "CORPORATE" },
       { name: "Profile", active: {}, role: "CORPORATE" },
       { name: "Logout", active: {}, role: "CORPORATE" },
     ];

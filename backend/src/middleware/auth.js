@@ -4,8 +4,6 @@ const blackList = require("../models/token");
 exports.validateToken = async (req, res, next) => {
   const authHeader = req.header("Authorization");
   const token = authHeader && authHeader.split(" ")[1];
-  // const token = req.cookies.token;
-
   if (!token) return res.status(401).send("Access denied. No token provided.");
   const isBlacklisted = await blackList.findOne({ token: token });
   if (isBlacklisted) {
@@ -27,6 +25,7 @@ exports.authenticateRole = (roles) => {
     if (roles.includes(req.user.role)) {
       next();
     } else {
+      console.log("here");
       res.status(403).send("You are not authorized to access this resource.");
     }
   };

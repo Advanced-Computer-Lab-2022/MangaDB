@@ -29,23 +29,23 @@ function App() {
   return (
     <Fragment>
       <Routes>
-        <Route path="/" element={<Login></Login>}></Route>
+        <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/signup" element={<SignUp></SignUp>}></Route>
         <Route
           path="/resetpassword"
           element={<ResetPassword></ResetPassword>}
         ></Route>
-        <Route path="/home" element={<HomePage></HomePage>}></Route>
+        <Route path="/" element={<HomePage></HomePage>}></Route>
         <Route
-          path="/searchresults/:id"
+          path="/searchresults"
           element={<SearchResultsPage></SearchResultsPage>}
         ></Route>
         <Route
-          path="/coursedetails/:id"
+          path="/coursedetails"
           element={<CourseDetailsPage></CourseDetailsPage>}
         ></Route>
         <Route
-          path="/courseview/:id"
+          path="/courseview"
           element={<CourseViewPage></CourseViewPage>}
         ></Route>
         <Route
@@ -56,15 +56,7 @@ function App() {
           path="/profileTrainee/:id"
           element={<TraineeProfilePage></TraineeProfilePage>}
         ></Route>
-        <Route
-         
-          path="/admin/:id"
-         
-          element={<AdminPage></AdminPage>}
-        
-        ></Route>
-
-
+        <Route path="/admin" element={<AdminPage></AdminPage>}></Route>
         <Route
           path="courses/:id"
           element={<InstructorCoursesPage></InstructorCoursesPage>}
@@ -88,16 +80,27 @@ function App() {
           path="InstructorPage"
           element={<InstructorPage></InstructorPage>}
         ></Route>
-        <Route path = "instructorDashboard/:id" element={<InstructorDashboard></InstructorDashboard>}></Route>
-        <Route path = "instructorCourseDetails/:id" element={<InstructorCourseDetails></InstructorCourseDetails>}></Route>
-
-        <Route path = "forgotPassword" element={<ForgotPasswordPage></ForgotPasswordPage>}></Route>
-        <Route path = "successfulPayment" element={<SuccessfulPayment></SuccessfulPayment>}></Route>
-        <Route path = "unsuccessfulPayment" element={<UnsuccessfulPayment></UnsuccessfulPayment>}></Route>
-
+        <Route
+          path="instructorDashboard/:id"
+          element={<InstructorDashboard></InstructorDashboard>}
+        ></Route>
+        <Route
+          path="instructorCourseDetails/:id"
+          element={<InstructorCourseDetails></InstructorCourseDetails>}
+        ></Route>
+        <Route
+          path="forgotPassword"
+          element={<ForgotPasswordPage></ForgotPasswordPage>}
+        ></Route>
+        <Route
+          path="successfulPayment"
+          element={<SuccessfulPayment></SuccessfulPayment>}
+        ></Route>
+        <Route
+          path="unsuccessfulPayment"
+          element={<UnsuccessfulPayment></UnsuccessfulPayment>}
+        ></Route>
       </Routes>
-      
-
       <Footer></Footer>
     </Fragment>
   );

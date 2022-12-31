@@ -9,12 +9,14 @@ const size = 5;
 const CourseCard = (props) => {
   const navigate = useNavigate();
   const clickHandler = () => {
-    const instructorId = "6386427487d3f94e4cb7a28d";
-    navigate(`/coursedetails/${instructorId}`, { state: {courseId:props.id, userId:props.userId}} );
+    navigate(`/coursedetails`, { state: { courseId: props.id } });
   };
   const totalHours = Math.round(+props.duration / 60);
   return (
-    <button className="hover:scale-105 transition flex content-start relative mb-8 mx-4" onClick={clickHandler}>
+    <button
+      className="hover:scale-105 transition flex content-start relative mb-8 mx-4"
+      onClick={clickHandler}
+    >
       <div class=" relative bg-white border border-gray-200 shadow-md w-80">
         <div className="h-48 w-80">
           <img className="" src={reactImg} alt=""></img>

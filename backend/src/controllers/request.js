@@ -195,7 +195,8 @@ exports.requestRefund = async (req, res) => {
             const refundAmount = await invoice.findOneAndDelete({course:foundRequest.course,user:foundRequest.user}).then((invoice)=>{
                 return invoice.totalAmount;
             }).catch((err)=>{
-                console.log(err);
+            
+              
             });
 
             foundUser.courseDetails.splice(courseIndex,1);
@@ -216,6 +217,8 @@ exports.requestRefund = async (req, res) => {
     }
 
     exports.grantAccess = async (req, res) => {
+    
+      
         try{
             const requestId = req.params.id;
             const foundRequest = await request.findById

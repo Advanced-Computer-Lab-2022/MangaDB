@@ -47,7 +47,7 @@ export default function ResetPassword() {
       axios
         .patch(
           "http://localhost:3000/user/resetPassword",
-          { password: newPasswordRef },
+          { password: newPasswordRef.current.value },
           {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("token"),

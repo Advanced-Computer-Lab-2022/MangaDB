@@ -883,7 +883,7 @@ exports.setDiscount= async (req, res) => {
   };
 
   exports.getWallet=async (req, res) => {
-    const userId = req.params.id;
+    const userId = req.user.id;
     const countryCode = req.query.CC || "US";
     const countryDetails = await currencyConverter.convertCurrency("US", countryCode);
     let exchangeRate = countryDetails.rate;

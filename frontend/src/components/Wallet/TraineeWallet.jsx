@@ -1,14 +1,23 @@
 import { Tooltip } from "@material-tailwind/react";
 import { useState } from "react";
+import axios from "axios";
 import PrimaryButton from "../UI/PrimaryButton";
 const TraineeWallet = (props) => {
   const [hovered, setHovered] = useState(false);
-  const [balance, setBalance] = useState(300);
+  const [balance, setBalance] = useState(0);
   const [symbol, setSymbol] = useState("$");
   //handle the mouseOver and mouseLeave functions..
   const hoverHandler = (e) => {
-    //endpoint here..
-    setHovered(true);
+    axios
+    .get("http://localhost:3000/user/wallet" ,{
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    })
+    .then((res) => {
+      setBalance(+res.data.wallet)
+      setSymbol(res.data.symbol)
+    });    setHovered(true);
   };
   const leaveHandler = (e) => {
     setHovered(false);

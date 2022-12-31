@@ -6,13 +6,14 @@ import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
 const size = 5;
 
-const saleRibbon = classNames(`after:content-[""] after:rounded-br-md after:absolute after:-right-4 before:-right-4 after:z-behind after:bg-canadian-red after:border-l-white after:border-l-[20px] after:border-t-transparent after:border-b-transparent before:absolute before:border-l-[5px] before:border-l-red-800 before:border-t-[5px] before:border-t-transparent `);
+const saleRibbon = classNames(
+  `after:content-[""] after:rounded-br-md after:absolute after:-right-4 before:-right-4 after:z-behind after:bg-canadian-red after:border-l-white after:border-l-[20px] after:border-t-transparent after:border-b-transparent before:absolute before:border-l-[5px] before:border-l-red-800 before:border-t-[5px] before:border-t-transparent `
+);
 const SaleCourseCard = (props) => {
   const navigate = useNavigate();
   const clickHandler = () => {
-    const instructorId = "6386427487d3f94e4cb7a28d";
-    navigate(`/coursedetails/${instructorId}`, {
-      state: { courseId: props.id, userId: props.userId },
+    navigate(`/coursedetails`, {
+      state: { courseId: props.id },
     });
   };
   const totalHours = Math.round(+props.duration / 60);

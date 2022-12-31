@@ -10,6 +10,7 @@ import { useSnackbar } from "notistack";
 import axios from "axios";
 const AddToCartCard = (props) => {
   const [ModalShown, setModalShown] = useState(false);
+  const [buttonState, setButtonState] = useState(true);
   const hideModalHandler = () => {
     setModalShown(false);
   };
@@ -18,48 +19,73 @@ const AddToCartCard = (props) => {
   };
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const role = localStorage.getItem("role");
   const handleClickVariant = (variant) => {
     if (variant === "success") {
       enqueueSnackbar("Course has been requested successfuly", { variant });
     }
   };
+  var buttonText = "Buy Course";
+  if (role === "TRAINEE") {
+    if (props.userRegister) {
+      buttonText = "Go To Course";
+    }
+  } else if (role === "CORPORATE") {
+    if (!props.requested && !props.userRegister) {
+      buttonText = "Request Access";
+    } else if (props.userRegister) {
+      buttonText = "Go To Course";
+    }
+  }
   const clickHandler = () => {
     //handle if user is a guest and navigate to login page
-    if (props.corp) {
-      //end point for enroll corporate
-      axios
-        .post(
-          "http://localhost:3000/request/access",
-          {
-            courseId: props.id,
-            reason: "i don't like it",
-            //reason needs to be removed from front and back
-          },
-          {
+    //case 1: Guest -> Buy Course -> navigate to login
+    //case 2: Unregistered Corporate Trainee -> Request Access -> feedback course successfully requested
+    //case 3: Unregistered Trainee -> Buy Course -> navigate to stripe
+    //case 4: Registered User -> Go To Course -> navigate to course view page
+    if (!role) {
+      navigate("/login");
+    } else if (role === "TRAINEE") {
+      if (props.userRegister) {
+        navigate("/courseview", { state: props.id });
+      } else {
+        axios
+          .post("http://localhost:3000/invoice/".concat(props.id), {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
-          }
-        )
-        .then((res) => {
-          handleClickVariant("success");
-        });
-    }
-    if (props.userRegister) navigate("/courseview/1", { state: props.id });
-    else {
-      axios
-        .post("http://localhost:3000/invoice/".concat(props.id), {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        })
-        .then((res) => {
-          console.log(res.data);
-          window.location.href = res.data.link;
-          localStorage.setItem("invoiceId", res.data.invoiceId);
-        });
+          })
+          .then((res) => {
+            localStorage.setItem("courseId", props.id);
+            window.location.href = res.data.link;
+            localStorage.setItem("invoiceId", res.data.invoiceId);
+          });
+      }
+    } else if (role === "CORPORATE") {
+      if (!props.requested && !props.userRegister) {
+        axios
+          .post(
+            "http://localhost:3000/request/access",
+            {
+              courseId: props.id,
+              reason: "I want this course",
+            },
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("token"),
+              },
+            }
+          )
+          .then((res) => {
+            setButtonState(false);
+            handleClickVariant("success");
+          });
+      } else if (props.userRegister) {
+        navigate("/courseview", { state: props.id });
+      }
     }
   };
+
   const displayedVideo = (
     <Fragment>
       <div className="grid grid-cols-3 pb-3 font-bold">
@@ -108,18 +134,10 @@ const AddToCartCard = (props) => {
         </svg>
 
         <SecondaryButton
-          onClick={!props.requested ? clickHandler : null}
-          text={
-            props.requested
-              ? "Requested"
-              : props.userRegister
-              ? "Go To Course"
-              : props.corp
-              ? "Request Access"
-              : "Enroll Now"
-          }
+          onClick={!buttonState ? clickHandler : null}
+          text={buttonText}
           className="w-full "
-          disabled={props.requested}
+          disabled={!buttonState}
         />
       </div>
     </Fragment>

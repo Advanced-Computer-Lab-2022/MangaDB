@@ -28,7 +28,6 @@ const CourseDetailsPage = () => {
       })
       .then((res) => {
         setCourseDetails(res.data.course);
-        console.log(res.data);
         setLoaded(true);
         if (res.data.userData !== null) {
           //to be changed
@@ -41,21 +40,6 @@ const CourseDetailsPage = () => {
         }
       });
 
-    // axios
-    //   .post(`http://localhost:3000/invoice/${location.state.courseId}`, {
-    //     userId: userId,
-    //   })
-    //   .then((res) => {})
-    //   .catch((error) => {
-    //     if (
-    //       +error.message.split(" ")[error.message.split(" ").length - 1] === 400
-    //     ) {
-    //       setUserRegistered(true);
-    //     } else {
-    //       setUserRegistered(false);
-    //     }
-    //   });
-
     axios
       .get("http://localhost:3000/course/rate/".concat(courseId), {
         headers: {
@@ -63,46 +47,31 @@ const CourseDetailsPage = () => {
         },
       })
       .then((res) => {
-        // setCourseDetails(res.data.course);
-        // console.log(res.data.course);
-        // setLoaded(true);
         setCourseReviews(res.data.review);
-        //console.log(res.data.count);
         setReviewsCount(res.data.count);
       });
 
-    // axios
-    //   .get("http://localhost:3000/course/rate/".concat(courseId).concat("/"))
-    //   .then((res) => {
-    //     console.log(res);
-    //   });
-
     //get the requests of the user and check if the course is requested before
     axios
-      .get(`http://localhost:3000/request/user/`, {
+      .get(`http://localhost:3000/request/user`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
       .then((res) => {
-        //console.log(res.data.requests[0].type);
         for (let i = 0; i < res.data.requests.length; i++) {
-          console.log(res.data.requests[i].type);
           if (
             res.data.requests[i].type == "access" &&
             res.data.requests[i].course == courseId &&
             res.data.requests[i].status !== "accepted"
           ) {
-            //console.log(res.data.requests[i].course);
             setRequested(true);
           }
         }
-        //console.log(res.data.requests[1].type);
       });
   }, []);
 
   const submitReviewHandler = (data) => {
-    //console.log(data);
     const courseId = location.state.courseId;
     axios
       .post(

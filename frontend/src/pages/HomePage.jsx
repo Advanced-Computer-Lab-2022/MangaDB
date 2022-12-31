@@ -14,6 +14,7 @@ import Testomonial from "../components/HomeComponents/Testomonial";
 import Incentives from "../components/HomeComponents/Incentives";
 import SaleCourseCard from "../components/Course/SaleCourseCard";
 import { useLocation } from "react-router-dom";
+
 const HomePage = () => {
   const [displayedCourses, setDisplayedCourses] = useState([]);
   const [discountedCourses, setDiscountedCourses] = useState([]);
@@ -50,7 +51,6 @@ const HomePage = () => {
     return (
       <CourseCard
         id={course._id}
-        userId={location.state}
         duration={course.totalMins}
         title={course.courseTitle}
         instructorName={course.instructorName}

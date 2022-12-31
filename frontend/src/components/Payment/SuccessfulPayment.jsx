@@ -27,7 +27,10 @@ export default function SuccessfulPayment() {
       .then((res) => {
         localStorage.removeItem("invoiceId");
         setTimeout(() => {
-          navigate("/home");
+          navigate("/courseDetails", {
+            state: { courseId: localStorage.getItem("courseId") },
+          });
+          localStorage.removeItem("courseId");
         }, 5000);
       }, []);
   });

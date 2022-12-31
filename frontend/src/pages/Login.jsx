@@ -48,11 +48,12 @@ export default function Login() {
         })
         .then((res) => {
           localStorage.setItem("token", res.data.token);
-          window.location.href = "/home";
-          localStorage.setItem("token", res.data.token);
           localStorage.setItem("role", res.data.role);
-          console.log(res.data.token);
-          navigate(`/home`, { state: res.data.token });
+          if (res.data.role === "ADMIN") {
+            navigate(`/admin`);
+          } else {
+            navigate(`/`);
+          }
         })
         .catch((error) => {
           if (

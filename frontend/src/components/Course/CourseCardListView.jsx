@@ -39,8 +39,7 @@ const CourseCardListView = (props) => {
       });
   };
   const clickHandler = () => {
-    const instructorId = "6386427487d3f94e4cb7a28d";
-    navigate(`/coursedetails/${instructorId}`, { state: props.id });
+    navigate(`/coursedetails`, { state: { courseId: props.id } });
   };
   const totalDuration = Math.round(props.duration / 60);
   return (

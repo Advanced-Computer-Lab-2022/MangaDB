@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState, Fragment } from "react";
 import SecondaryButton from "../UI/SecondaryButton";
 import reactImage from "../../Assets/Images/react.png";
@@ -11,6 +11,7 @@ import axios from "axios";
 const AddToCartCard = (props) => {
   const [ModalShown, setModalShown] = useState(false);
   const [buttonState, setButtonState] = useState(true);
+  const [buttonText, setButtonText] = useState("Buy Course");
   const hideModalHandler = () => {
     setModalShown(false);
   };
@@ -25,18 +26,23 @@ const AddToCartCard = (props) => {
       enqueueSnackbar("Course has been requested successfuly", { variant });
     }
   };
-  var buttonText = "Buy Course";
-  if (role === "TRAINEE") {
-    if (props.userRegister) {
-      buttonText = "Go To Course";
+  useEffect(() => {
+    if (role === "TRAINEE") {
+      if (props.userRegister) {
+        setButtonText("Go To Course");
+      }
+    } else if (role === "CORPORATE") {
+      console.log(props.requested);
+      if (!props.requested && !props.userRegister) {
+        setButtonText("Request Access");
+      } else if (props.userRegister) {
+        setButtonText("Go To Course");
+      } else {
+        setButtonText("Requested");
+        setButtonState(false);
+      }
     }
-  } else if (role === "CORPORATE") {
-    if (!props.requested && !props.userRegister) {
-      buttonText = "Request Access";
-    } else if (props.userRegister) {
-      buttonText = "Go To Course";
-    }
-  }
+  }, [props.requested, props.userRegister]);
   const clickHandler = () => {
     //handle if user is a guest and navigate to login page
     //case 1: Guest -> Buy Course -> navigate to login
@@ -134,7 +140,7 @@ const AddToCartCard = (props) => {
         </svg>
 
         <SecondaryButton
-          onClick={!buttonState ? clickHandler : null}
+          onClick={buttonState ? clickHandler : null}
           text={buttonText}
           className="w-full "
           disabled={!buttonState}

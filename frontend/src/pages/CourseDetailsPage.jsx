@@ -16,7 +16,6 @@ const CourseDetailsPage = () => {
   const [userRegistered, setUserRegistered] = useState(false);
   const [courseReviews, setCourseReviews] = useState([]);
   const [reviewsCount, setReviewsCount] = useState([]);
-  const [corp, setCorp] = useState(false);
   const [requested, setRequested] = useState(false);
   useEffect(() => {
     const courseId = location.state.courseId;
@@ -30,11 +29,7 @@ const CourseDetailsPage = () => {
         setCourseDetails(res.data.course);
         setLoaded(true);
         if (res.data.userData !== null) {
-          //to be changed
-          if (res.data.userData.role === "corporate") {
-            //check if requested before
-            setCorp(true);
-          } else setUserRegistered(true);
+          setUserRegistered(true);
         } else {
           setUserRegistered(false);
         }
@@ -61,9 +56,8 @@ const CourseDetailsPage = () => {
       .then((res) => {
         for (let i = 0; i < res.data.requests.length; i++) {
           if (
-            res.data.requests[i].type == "access" &&
-            res.data.requests[i].course == courseId &&
-            res.data.requests[i].status !== "accepted"
+            res.data.requests[i].type === "access" &&
+            res.data.requests[i].course === courseId
           ) {
             setRequested(true);
           }
@@ -112,7 +106,6 @@ const CourseDetailsPage = () => {
           userRegister={userRegistered}
           courseImage={courseDetails.courseImage}
           requested={requested}
-          corp={corp}
         />
         <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
           <div className="mb-3">Course Summary</div>

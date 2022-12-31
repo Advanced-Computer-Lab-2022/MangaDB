@@ -9,6 +9,8 @@ import Pagination from "@mui/material/Pagination";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/UI/NavBar/NavBar"
+import { useSnackbar } from "notistack";
+
 const options = [
   { id: 1, name: "Computer Hardware" },
   { id: 2, name: "Data Structures" },
@@ -35,6 +37,17 @@ const theme = createTheme({
 });
 
 const IntructorCoursePage = (props) => {
+
+
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant) => {
+    //console.log("here");
+    enqueueSnackbar("One or more of the selected courses already have promotion  ", {
+      variant,
+    });
+  };
+
+
   const location = useLocation();
   const navigate = useNavigate();
   const defaultState = {
@@ -228,6 +241,13 @@ const IntructorCoursePage = (props) => {
           }
         }
         dispatchSearch({ type: "COURSES", value: courses });
+      }).catch((err) => {
+        console.log(err.message.split(" ")[err.message.split(" ").length - 1]);
+        if(err.message.split(" ")[err.message.split(" ").length - 1]==="400"){
+          handleClickVariant("error")
+
+        }
+
       });
     }
     else{
@@ -376,7 +396,7 @@ const IntructorCoursePage = (props) => {
 
   return (
     <Fragment>
-      <NavBar currentTab="My Courses" />
+      {!props.admin&&<NavBar currentTab="My Courses" />}
       {showFilters && (
         <Filters
           prevState={searchState.filters}

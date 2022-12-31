@@ -1,7 +1,36 @@
 import DropDown from "../UI/DropDown";
 import Countdown from "react-countdown";
+import Checkbox from "@mui/material/Checkbox";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useState } from "react";
 const TableRows = (props) => {
+  //const [checked, setChecked] = useState(false);
+
+  const handleChange = (event,courseId) => {
+    //console.log(event.target.checked);
+    //console.log(courseId);
+    props.selectRowHandler(event.target.checked,courseId);    
+    
+  };
+  
+  const theme = createTheme({
+    status: {
+      danger: "#e53e3e",
+    },
+    palette: {
+      primary: {
+        main: "#3970AC",
+        darker: "#053e85",
+      },
+      neutral: {
+        main: "#64748B",
+        contrastText: "#fff",
+      },
+    },
+  });
+  //var anyBoxesChecked = new Array(numeroPerguntas).fill(false);
   const rows = props.rows.map((row, rowIdx) => {
+    console.log(props.selectedNow.includes(row.courseId));
     const totalHours = Math.round(+row.totalMins / 60);
     const items =
       row.mine === false
@@ -76,28 +105,40 @@ const TableRows = (props) => {
           <div className="text-xs">
             Expires In:{" "}
             <span className=" text-red-600">
-                <Countdown date={row.discountEndDate} key={row.discountEndDate} />
+              <Countdown date={row.discountEndDate} key={row.discountEndDate} />
             </span>
           </div>
         </td>
         <td className="text-center my-4 px-2">{totalHours} hrs</td>
         <td className="text-center flex justify-center my-4 px-2">
-          <DropDown
-            fill="currentColor"
-            items={items}
-            openPromotion={props.openPromotionModal.bind(
-              null,
-              row.courseId,
-              row.courseTitle
-            )}
-            closePromotion={props.closePromotionModal}
-            openReport={props.openReportModal.bind(
-              null,
-              row.courseId,
-              row.courseTitle
-            )}
-            closeReport={props.closeReportModal}
-          />
+          {!props.admin ? (
+            <DropDown
+              fill="currentColor"
+              items={items}
+              openPromotion={props.openPromotionModal.bind(
+                null,
+                row.courseId,
+                row.courseTitle
+              )}
+              closePromotion={props.closePromotionModal}
+              openReport={props.openReportModal.bind(
+                null,
+                row.courseId,
+                row.courseTitle
+              )}
+              closeReport={props.closeReportModal}
+              viewCourse={props.viewCourse.bind(null, row.courseId)}
+            />
+          ) : (
+            <ThemeProvider theme={theme}>
+              <Checkbox
+                color="primary"
+                checked={props.selectedNow.includes(row.courseId)}
+                onChange={event =>handleChange(event, row.courseId)}
+                inputProps={{ "aria-label": "controlled" }}
+              />
+            </ThemeProvider>
+          )}
         </td>
       </tr>
     );

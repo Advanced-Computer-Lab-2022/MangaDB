@@ -144,7 +144,10 @@ const Requests = (props) => {
                     </p>
                   </div>
                 </div>
-                {requests.map((request) => {
+                
+                {requests.length !== 0 ? 
+                (
+                requests.map((request) => {
                   return (
                     <div className="mt-2">
                       <RequestItem
@@ -155,7 +158,11 @@ const Requests = (props) => {
                       ></RequestItem>
                     </div>
                   );
-                })}
+                }))
+                :
+                (<div className="mt-2">
+                  <p className="flex justify-center font-semibold text-slate-600 mt-5">There are no Requests to show !</p>
+                  </div>)}
               </form>
             </div>
           </div>

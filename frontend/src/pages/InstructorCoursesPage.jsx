@@ -6,7 +6,11 @@ import Filters from "../components/Filters/Filters";
 import TableListViewCard from "../components/Table/TableListViewCard";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import NavBar from "../components/UI/NavBar/NavBar"
+import { useSnackbar } from "notistack";
+
 const options = [
   { id: 1, name: "Computer Hardware" },
   { id: 2, name: "Data Structures" },
@@ -33,6 +37,19 @@ const theme = createTheme({
 });
 
 const IntructorCoursePage = (props) => {
+
+
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant) => {
+    //console.log("here");
+    enqueueSnackbar("One or more of the selected courses already have promotion  ", {
+      variant,
+    });
+  };
+
+
+  const location = useLocation();
+  const navigate = useNavigate();
   const defaultState = {
     displayedCourses: [],
     search: "",
@@ -45,6 +62,37 @@ const IntructorCoursePage = (props) => {
   };
   const [page, setPage] = useState(1);
   const [noOfPages, setNoOfPages] = useState(1);
+
+  const [selectedNow, setSelectedNow] = useState([]);
+
+  const selectAllHandler = (selectRows) => {
+    if (selectRows) {
+      const temp = [];
+     // console.log(searchState.displayedCourses);
+      for (let i = 0; i < searchState.displayedCourses.length; i++) {
+        temp.push(searchState.displayedCourses[i].course._id);
+      }
+      //console.log(temp[0]);
+      setSelectedNow(temp);
+    } else {
+      setSelectedNow([]);
+    }
+  };
+
+  const selectRowHandler = (isSelected, courseId) => {
+    if (isSelected){ 
+      setSelectedNow([...selectedNow, courseId]);
+    }
+    else{
+      const index = selectedNow.indexOf(courseId);
+      setSelectedNow(selectedNow.filter((_, i) => i !== index));
+    }
+  };
+
+  const adminAddPromotionHandler = () => {
+    setShowPromotationModal(true);
+  }
+
   const ReducerFunction = (state, action) => {
     if (action.type === "SEARCH") {
       const newState = { ...state, search: action.value };
@@ -84,6 +132,11 @@ const IntructorCoursePage = (props) => {
     name: "Technical",
   });
   const [enteredReport, setEnteredReport] = useState("");
+  const [selected, setSelected] = useState(false);
+
+  const viewCourse = (courseId) => {
+    navigate("/instructorCourseDetails", { state: { courseId: courseId } });
+  };
 
   const openReportModal = (id, course) => {
     setShowReportModal(true);
@@ -155,12 +208,55 @@ const IntructorCoursePage = (props) => {
   };
   const promotionSubmitHandler = () => {
     closePromotionModal();
-    const data = {
-      discount: +promotionAmount / 100,
-      discountStartDate: new Date().toISOString(),
-      discountEndDate: promotionEndDate,
-    };
-    axios
+    
+    if(props.admin){
+      const data = {
+        courses: selectedNow,
+        discount: +promotionAmount / 100,
+        discountStartDate: new Date().toISOString(),
+        discountEndDate: promotionEndDate,
+      };
+      axios
+      .patch(
+        "http://localhost:3000/admin/createDiscount/" ,
+        data,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
+      .then((res) => {
+        var courses = [];
+        for (var i = 0; i < searchState.displayedCourses.length; i++) {
+          console.log(searchState.displayedCourses[i].course._id);
+          console.log(
+            searchState.displayedCourses[i].course._id !== res.data._id
+          );
+          if (searchState.displayedCourses[i].course._id !== res.data._id) {
+            courses.push(searchState.displayedCourses[i]);
+          } else {
+            var temp = { course: res.data, mine: true };
+            courses.push(temp);
+          }
+        }
+        dispatchSearch({ type: "COURSES", value: courses });
+      }).catch((err) => {
+        console.log(err.message.split(" ")[err.message.split(" ").length - 1]);
+        if(err.message.split(" ")[err.message.split(" ").length - 1]==="400"){
+          handleClickVariant("error")
+
+        }
+
+      });
+    }
+    else{
+      const data = {
+        discount: +promotionAmount / 100,
+        discountStartDate: new Date().toISOString(),
+        discountEndDate: promotionEndDate,
+      };
+      axios
       .patch(
         "http://localhost:3000/instructor/createDiscount/" + promotionId,
         data,
@@ -186,6 +282,7 @@ const IntructorCoursePage = (props) => {
         }
         dispatchSearch({ type: "COURSES", value: courses });
       });
+    }
   };
   const searchBarChangeHandler = (searchValue) => {
     dispatchSearch({ type: "SEARCH", value: searchValue });
@@ -234,6 +331,7 @@ const IntructorCoursePage = (props) => {
         })
         .then((res) => {
           dispatchSearch({ type: "COURSES", value: res.data.courses });
+          console.log(res.data.courses);
         });
     } else {
       axios
@@ -246,7 +344,7 @@ const IntructorCoursePage = (props) => {
           dispatchSearch({ type: "COURSES", value: res.data.courses });
         });
     }
-  }, [searchState.search, searchState.filters, searchState.myCourses]);
+  }, [searchState.search, searchState.filters, searchState.myCourses,selectedNow]);
   var rows = searchState.displayedCourses.map((course) => {
     return {
       courseId: course.course._id,
@@ -298,7 +396,7 @@ const IntructorCoursePage = (props) => {
 
   return (
     <Fragment>
-      <NavBar currentTab="My Courses" />
+      {!props.admin&&<NavBar currentTab="My Courses" />}
       {showFilters && (
         <Filters
           prevState={searchState.filters}
@@ -314,6 +412,8 @@ const IntructorCoursePage = (props) => {
         onCoursesClick={viewMyCoursesHandler}
         prevmyCoursesState={searchState.myCourses}
         prevSearchState={searchState.search}
+        admin={props.admin}
+        adminAddPromotionHandler={adminAddPromotionHandler}
       />
       <div className="hidden xl:block">
         <Table
@@ -338,6 +438,12 @@ const IntructorCoursePage = (props) => {
           enteredReport={enteredReport}
           openReportModal={openReportModal}
           closeReportModal={closeReportModal}
+          viewCourse={viewCourse}
+          admin={props.admin}
+          selectAllHandler={selectAllHandler}
+          selectRowHandler={selectRowHandler}
+          selected={selected}
+          selectedNow={selectedNow}
         />
       </div>
       <div className="flex justify-around flex-wrap xl:hidden">{cards}</div>

@@ -8,7 +8,9 @@ router.post("/refund",auth.validateToken,auth.authenticateRole(["TRAINEE"]), req
 
 router.post("/access",auth.validateToken,auth.authenticateRole(["CORPORATE"]), requestController.requestCourseAccess);
 
-router.get("/",auth.validateToken,auth.authenticateRole(["ADMIN"]),requestController.getRequests);
+router.get("/",auth.validateToken,auth.authenticateRole([ 'ADMIN' ]),requestController.getRequests);
+
+router.get("/user",auth.validateToken,auth.authenticateRole(["TRAINEE", "CORPORATE"]), requestController.getUserRequests);
 
 router.get("/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]),requestController.getRequest);
 
@@ -20,7 +22,6 @@ router.patch("/reject/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), 
 
 router.patch("/pend/:id", requestController.pendRequest);
 
-router.get("/user/:id", requestController.getUserRequests);
 
 router.delete("/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), requestController.deleteRequest);
 

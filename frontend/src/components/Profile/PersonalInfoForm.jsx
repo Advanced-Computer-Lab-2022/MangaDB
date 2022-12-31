@@ -1,4 +1,10 @@
-import { Fragment, useState, useImperativeHandle, forwardRef,useEffect } from "react";
+import {
+  Fragment,
+  useState,
+  useImperativeHandle,
+  forwardRef,
+  useEffect,
+} from "react";
 import TertiaryButton from "../UI/TertiaryButton";
 import countryList from "react-select-country-list";
 import * as React from "react";
@@ -9,6 +15,7 @@ import SecondaryButton from "../UI/SecondaryButton";
 import { Disclosure } from "@headlessui/react";
 import { useSnackbar } from "notistack";
 import axios from "axios";
+
 import {
   CreditCardIcon,
   KeyIcon,
@@ -59,17 +66,29 @@ const PersonalInfoForm = forwardRef((props, ref) => {
   const [biography, setBiography] = useState(defaultBiography);
   const [firstName, setFirstName] = useState(defaultFirstName);
   const [lastName, setLastName] = useState(defaultLastName);
+
   const [emptyEmail, setEmptyEmail] = useState(false);
   const [emptyFirstName, setEmptyFirstName] = useState(false);
   const [emptyLastName, setEmptyLastName] = useState(false);
   const [emailValid, setEmailValid] = useState(true);
   const [warning, setWarning] = useState("");
-
   const [render, setRender] = useState(false);
 
   const CountryHandler = (event) => {
     console.log(event.target.outerText.split("("));
   };
+
+  useImperativeHandle(ref, () => ({
+    handleRender() {
+      setBiography(defaultBiography);
+      setFirstName(defaultFirstName);
+      setLastName(defaultLastName);
+      setEmail(defaultEmail);
+      setSelectedGender(defaultGender);
+    },
+  }));
+
+  useEffect(() => {}, [render]);
 
   const MaleClickHandler = (event) => {
     setSelectedGender(event.target.innerHTML);
@@ -94,7 +113,7 @@ const PersonalInfoForm = forwardRef((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     handleRender() {
-     setBiography(defaultBiography);
+      setBiography(defaultBiography);
       setFirstName(defaultFirstName);
       setLastName(defaultLastName);
       setEmail(defaultEmail);
@@ -102,8 +121,7 @@ const PersonalInfoForm = forwardRef((props, ref) => {
     },
   }));
 
-  useEffect(() => {
-  }, [render]);
+  useEffect(() => {}, [render]);
   const onSaveHandler = (event) => {
     event.preventDefault();
     var currentWarning = "";
@@ -136,7 +154,6 @@ const PersonalInfoForm = forwardRef((props, ref) => {
       window.scrollTo(0, 0, "smooth");
       return;
     }
-
     const saveData = {
       email: email,
       firstName: firstName,
@@ -144,17 +161,14 @@ const PersonalInfoForm = forwardRef((props, ref) => {
       biography: biography,
       gender: selectedGender,
     };
-
+    //props.onSaveHandler(saveData);
+    //handleClickVariant("success");
     axios
-      .patch(
-        "http://localhost:3000/user/updateuser/63acd64846cc70eed673a330",
-        saveData /*, {
+      .patch("http://localhost:3000/user/updateUser", saveData, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-type": "text/json",
         },
-      }*/
-      )
+      })
       .then((res) => {
         handleClickVariant("success");
       });
@@ -275,6 +289,7 @@ const PersonalInfoForm = forwardRef((props, ref) => {
                       what you share.
                     </p>
                   </div>
+
                   <div
                     class={
                       emptyEmail ||

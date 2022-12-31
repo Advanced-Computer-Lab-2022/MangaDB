@@ -53,14 +53,12 @@ const NotesManager = (props) => {
       sourceDescription: `${props.sourceNo}. ${props.source}`,
     };
     var newNotes = [...props.notes, obj2];
-    axios.patch(
-      `http://localhost:3000/user/notes`,
-      sentData
-      ,{
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token'),
-          'content-type': 'text/json'
-}});
+    console.log(sentData.notes);
+    axios.patch(`http://localhost:3000/user/notes`, sentData, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
     props.setNotes(newNotes);
   };
 
@@ -93,14 +91,11 @@ const NotesManager = (props) => {
       sourceId: sourceId,
       notes: temp,
     };
-    axios.patch(
-      `http://localhost:3000/user/notes`,
-      sentData
-      ,{
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token'),
-          'content-type': 'text/json'
-}});
+    axios.patch(`http://localhost:3000/user/notes`, sentData, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
     props.setNotes(newNotes);
   };
 
@@ -127,14 +122,11 @@ const NotesManager = (props) => {
       sourceId: sourceId,
       notes: temp,
     };
-    axios.patch(
-      `http://localhost:3000/user/notes`,
-      sentData
-      ,{
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token'),
-          'content-type': 'text/json'
-}});
+    axios.patch(`http://localhost:3000/user/notes`, sentData, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
     props.setNotes(newNotes);
   };
 
@@ -157,14 +149,17 @@ const NotesManager = (props) => {
     props.changeReportsSelector(newSelected);
   };
 
+  //not used????
   const submitReportHandler = (data) => {
-    axios.post("http://localhost:3000/problem/", data,{
-      headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('token'),
-        'content-type': 'text/json'
-}}).then((res) => {
-      console.log(res);
-    });
+    axios
+      .post("http://localhost:3000/problem/", data, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      });
   };
 
   return (

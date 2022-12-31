@@ -13,6 +13,7 @@ const SourceForm = (props) => {
   const [sourceType, setSourceType] = useState("Video");
   const [sourceDuration, setSourceDuration] = useState(0);
   const containerRef = useRef(null);
+
   const [emptySourseTitle, setEmptySourseTitle] = useState(false);
   const [emptySourseLink, setEmptySourseLink] = useState(false);
   const [validSourceLink, setValidSourceLink] = useState(true);
@@ -87,8 +88,6 @@ const SourceForm = (props) => {
       setWarningMessage(currentWarningMessage);
       return;
     }
-
-
     const title = titleRef.current.value;
     const link = sourceLink;
     var sourceData;
@@ -164,13 +163,14 @@ const SourceForm = (props) => {
     displayedForm = (
       <div className="third-control">
         <label className="block" htmlFor="link">
-          Link <span className="text-red-500">*</span>
+        Link <span className="text-red-500">*</span>
         </label>
         <input
           value={sourceLink}
           onChange={linkChangeHandler}
           id="link"
           className={"w-full mt-1 px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue ".concat(emptySourseTitle || !validSourceLink ? "border-red-500" : "")}
+
         ></input>
       </div>
     );
@@ -194,13 +194,7 @@ const SourceForm = (props) => {
       </div>
 
       <div>
-        <h2 className="text-lg leading-6 font-medium text-gray-900 mb-1">
-          Personal Information
-        </h2>
-        <p className="mt-1 text-sm text-gray-500">
-          This information will be displayed publicly so be careful what you
-          share.
-        </p>
+        
       </div>
       <div
         class={
@@ -229,11 +223,12 @@ const SourceForm = (props) => {
         </div>
       </div>
 
+
       <form onSubmit={submitHandler}>
         <div className="space-y-4">
           <div className="first control">
             <label className="block" htmlFor="source-title">
-              Source Title <span className="text-red-500">*</span>
+            Source Title <span className="text-red-500">*</span>
             </label>
             <input
               ref={titleRef}

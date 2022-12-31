@@ -9,7 +9,6 @@ import userIcon from "../../Assets/Images/userIcon.svg";
 import PasswordField from "../Login-SignUp/PasswordField";
 import { useSnackbar } from "notistack";
 import logo from "../../Assets/Images/Logo.svg";
-
 export default function AddUserForm(props) {
   const [type, setType] = useState("ADMIN");
   const UserNameRef = useRef();
@@ -17,7 +16,6 @@ export default function AddUserForm(props) {
   const [emptyUserName, setEmptyUserName] = useState(false);
   const [emptyPassword, setEmptyPassword] = useState(false);
   const [warning, setWarning] = useState("");
-
   const setTypeHandler = (e) => {
     setType(e.target.value.split(" ")[0].toUpperCase());
   };
@@ -27,15 +25,13 @@ export default function AddUserForm(props) {
     // variant could be success, error, warning, info, or default
     enqueueSnackbar("User has been added successfuly  ", { variant });
   };
-
   const onSubmitHandler = (e) => {
     e.preventDefault();
     const sentData = {
       userName: UserNameRef.current.value,
       password: PasswordRef.current.value,
-      role: type
+      role: type,
     };
-
     if (UserNameRef.current.value === "" || PasswordRef.current.value === "") {
       if (UserNameRef.current.value === "") {
         setEmptyUserName(true);
@@ -53,11 +49,11 @@ export default function AddUserForm(props) {
     } else {
       //console.log(sentData);
       axios
-        .post("http://localhost:3000/admin/addUser", sentData,{
+        .post("http://localhost:3000/admin/addUser", sentData, {
           headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-            'content-type': 'text/json'
-}})
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
         .then((res) => {
           handleClickVariant("success");
         })
@@ -72,7 +68,6 @@ export default function AddUserForm(props) {
         });
     }
   };
-
   return (
     <div className="flex justify-center items-center ">
       <form onSubmit={onSubmitHandler}>

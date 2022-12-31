@@ -15,24 +15,55 @@ import AddCourseNavBar from "./AddCourseNavBar";
 import AddUserNavBar from "./AddUserNavBar";
 import RequestedCoursesNavBar from "./RequestedCoursesNavBar";
 import LogoutNavBAr from "./LogoutNavBar";
-
-var navButtons = [
-  { name: "Home", active: true },
-  { name: "My Courses", active: false },
-  { name: "FAQs", active: false },
-  { name: "Logout", active: false },
-  { name: "Profile", active: false },
-
-  
-  {name:"Requested Courses", active:false},
-];
+import TraineeWallet from "../../Wallet/TraineeWallet";
 
 const NavBar = (props) => {
+  var navButtons = [];
+
   const [open, setOpen] = useState(false);
 
   const openToggleHandler = () => {
     setOpen(!open);
   };
+
+  if (localStorage.getItem("role") === null) {
+    //guest
+    navButtons = [
+      { name: "Home", active: {}, role: "GUEST" },
+      { name: "My Courses", active: {}, role: "GUEST" },
+      { name: "FAQs", active: {}, role: "GUEST" },
+      { name: "Sign In", active: {}, role: "GUEST" },
+    ];
+  } else if (localStorage.getItem("role") === "TRAINEE") {
+    navButtons = [
+      { name: "Home", active: {}, role: "TRAINEE" },
+      { name: "My Courses", active: {}, role: "TRAINEE" },
+      { name: "FAQs", active: {}, role: "TRAINEE" },
+      { name: "Wallet", active: {}, role: "TRAINEE" },
+      { name: "Profile", active: {}, role: "TRAINEE" },
+      { name: "Logout", active: {}, role: "TRAINEE" },
+    ];
+  } else if (localStorage.getItem("role") === "CORPORATE") {
+    navButtons = [
+      { name: "Home", active: {}, role: "CORPORATE" },
+      { name: "My Courses", active: {}, role: "CORPORATE" },
+      { name: "Request Course", active: {}, role: "CORPORATE" },
+      { name: "FAQs", active: {}, role: "CORPORATE" },
+      { name: "Wallet", active: {}, role: "CORPORATE" },
+      { name: "Profile", active: {}, role: "CORPORATE" },
+      { name: "Logout", active: {}, role: "CORPORATE" },
+    ];
+  } else if (localStorage.getItem("role") === "INSTRUCTOR") {
+    navButtons = [
+      { name: "Dashboard", active: {}, role: "INSTRUCTOR" },
+      { name: "My Courses", active: {}, role: "INSTRUCTOR" },
+      { name: "Add Course", active: {}, role: "INSTRUCTOR" },
+      { name: "FAQs", active: {}, role: "INSTRUCTOR" },
+      { name: "Wallet", active: {}, role: "INSTRUCTOR" },
+      { name: "Profile", active: {}, role: "INSTRUCTOR" },
+      { name: "Logout", active: {}, role: "INSTRUCTOR" },
+    ];
+  }
 
   return (
     <div
@@ -93,29 +124,103 @@ const NavBar = (props) => {
           {/* Profile will not appear active */}
           {navButtons.map((navButton) => {
             if (navButton.name === "Home") {
-              return <HomeNavBar active={navButton.active} />;
+              return (
+                <HomeNavBar
+                  active={navButton.active}
+                  search={false}
+                  role={navButton.role}
+                />
+              );
             } else if (navButton.name === "My Courses") {
-              return <MyCoursesNavBar active={navButton.active} />;
+              return (
+                <MyCoursesNavBar
+                  active={navButton.active}
+                  search={false}
+                  role={navButton.role}
+                />
+              );
             } else if (navButton.name === "FAQs") {
-              return <FAQsNavBar active={navButton.active} />;
+              return (
+                <FAQsNavBar
+                  active={navButton.active}
+                  search={false}
+                  role={navButton.role}
+                />
+              );
             } else if (navButton.name === "Cart") {
-              return <CartNavBar active={navButton.active} />;
+              return (
+                <CartNavBar
+                  active={navButton.active}
+                  search={false}
+                  role={navButton.role}
+                />
+              );
             } else if (navButton.name === "Profile") {
-              return <ProfileNavBar active={navButton.active} />;
+              return (
+                <ProfileNavBar
+                  active={navButton.active}
+                  search={false}
+                  role={navButton.role}
+                />
+              );
             } else if (navButton.name === "Request Course") {
-              return <RequestCourseNavBar active={navButton.active} />;
+              return (
+                <RequestCourseNavBar
+                  active={navButton.active}
+                  search={false}
+                  role={navButton.role}
+                />
+              );
             } else if (navButton.name === "Sign In") {
-              return <SignInNavBar active={navButton.active} />;
+              return (
+                <SignInNavBar
+                  active={navButton.active}
+                  search={false}
+                  role={navButton.role}
+                />
+              );
             } else if (navButton.name === "Dashboard") {
-              return <DashboardNavBar active={navButton.active} />;
+              return (
+                <DashboardNavBar
+                  active={navButton.active}
+                  search={false}
+                  role={navButton.role}
+                />
+              );
             } else if (navButton.name === "Add Course") {
-              return <AddCourseNavBar active={navButton.active} />;
+              return (
+                <AddCourseNavBar
+                  active={navButton.active}
+                  search={false}
+                  role={navButton.role}
+                />
+              );
             } else if (navButton.name === "Add User") {
-              return <AddUserNavBar active={navButton.active} />;
+              return (
+                <AddUserNavBar
+                  active={navButton.active}
+                  search={false}
+                  role={navButton.role}
+                />
+              );
             } else if (navButton.name === "Requested Courses") {
-              return <RequestedCoursesNavBar active={navButton.active} />;
+              return (
+                <RequestedCoursesNavBar
+                  active={navButton.active}
+                  search={false}
+                  role={navButton.role}
+                />
+              );
             } else if (navButton.name === "Logout") {
-              return <LogoutNavBAr active={navButton.active} />;
+              return (
+                <LogoutNavBAr
+                  active={navButton.active}
+                  search={false}
+                  role={navButton.role}
+                />
+              );
+            } else if (navButton.name === "Wallet") {
+              return <TraineeWallet role={navButton.role} />;
             }
           })}
           <li className="cursor-pointer">

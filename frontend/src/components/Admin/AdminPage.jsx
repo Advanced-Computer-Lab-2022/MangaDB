@@ -7,6 +7,7 @@ import { SnackbarProvider } from "notistack";
 import PsychologyAltOutlinedIcon from '@mui/icons-material/PsychologyAltOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import AdminAddNewUser from "../../pages/AdminAddNewUser";
+import InstructorCoursesPage from "../../pages/InstructorCoursesPage";
 
 export default function AdminPage() {
   const [isClickedUsers, setIsClickedUsers] = useState(true);
@@ -164,6 +165,7 @@ export default function AdminPage() {
           ""
         )}
         {isClickedUsers ? <div className="flex justify-center"><AdminAddNewUser /></div> : ""}
+        {isClickedCourses ? <div className=""><InstructorCoursesPage></InstructorCoursesPage></div> : ""}
       </div>
     </SnackbarProvider>
   );

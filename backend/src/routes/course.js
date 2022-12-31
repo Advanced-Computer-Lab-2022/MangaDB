@@ -2,9 +2,7 @@ const router = require("express").Router();
 const courseController = require("../controllers/course");
 const auth = require("../middleware/auth");
 
-router.get("/", courseController.getAllCourses);
-
-
+router.get("/",auth.validateToken, courseController.getAllCourses);
 
 router.patch("/:id",auth.validateToken,auth.authenticateRole(["INSTRUCTOR"]), courseController.updateCourse);
 
@@ -20,16 +18,12 @@ router.get("/mostViewed", courseController.getMostViewedCourses);
 
 router.get("/mostRated", courseController.getMostRatedCourses);
 
-router.post("/addSubtitle/:id", courseController.addSubtitle);
+router.post("/addSubtitle/:id", courseController.addSubtitle); //not used
 
 router.post("/askQuestion/:id",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]), courseController.askQuestion);
 
-router.get("/discountedcourses", courseController.getDiscountedCourses);
+router.get("/discountedCourses", courseController.getDiscountedCourses);
 
-router.get("/:id", courseController.getCourse);
-
-
-
-
+router.get("/:id",auth.validateToken, courseController.getCourse);
 
 module.exports = router;

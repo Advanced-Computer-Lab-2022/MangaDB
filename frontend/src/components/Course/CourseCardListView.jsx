@@ -6,12 +6,10 @@ import SecondaryButton from "../UI/SecondaryButton";
 import { useNavigate } from "react-router-dom";
 import { SnackbarProvider, useSnackbar } from "notistack";
 import axios from "axios";
-
 const size = 5;
 
 const CourseCardListView = (props) => {
   const { enqueueSnackbar } = useSnackbar();
-
   const handleClickVariant = (variant) => {
     //console.log("here");
     // variant could be success, error, warning, info, or default
@@ -19,22 +17,27 @@ const CourseCardListView = (props) => {
       enqueueSnackbar("Refund has been requested successfuly", { variant });
     }
   };
-
   const navigate = useNavigate();
-
   const refundClickHandler = (courseId) => {
     axios
-      .post(`http://localhost:3000/request/refund`, {
-        courseId: courseId,
-        userId: "63a37e9688311fa832f43336",
-        reason: "I don't like it",
-      })
+      .post(
+        `http://localhost:3000/request/refund`,
+        {
+          courseId: courseId,
+          reason: "I don't like it",
+          //reason needs to be removed from front and back
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
       .then((res) => {
         props.renderHandler();
         handleClickVariant("success");
       });
   };
-
   const clickHandler = () => {
     const instructorId = "6386427487d3f94e4cb7a28d";
     navigate(`/coursedetails/${instructorId}`, { state: props.id });
@@ -109,9 +112,9 @@ const CourseCardListView = (props) => {
                     ? refundClickHandler.bind(null, props.id)
                     : null
                 }
-                text={props.requested?"Requested":"Request Refund"}
+                text={props.requested ? "Requested" : "Request Refund"}
                 className="text-md font-bold mx-2 "
-                disabled={props.requested || !props.refundable?true:false}
+                disabled={props.requested || !props.refundable ? true : false}
               />
             ) : null}
           </div>

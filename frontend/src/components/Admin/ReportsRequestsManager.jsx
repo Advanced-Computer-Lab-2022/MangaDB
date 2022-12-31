@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
 import ReportsRequestsCard from "./ReportsRequestsCard";
 import { useSnackbar } from "notistack";
@@ -13,27 +12,26 @@ import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlined";
 import HourglassEmptyRoundedIcon from "@mui/icons-material/HourglassEmptyRounded";
-
+import axios from "axios";
 export default function ReportsRequestsManager(props) {
   const [data, setData] = useState([]);
-
   const { enqueueSnackbar } = useSnackbar();
-
   const handleClickVariant = (variant) => {
     //console.log("here");
     // variant could be success, error, warning, info, or default
     if (variant === "success") {
-      enqueueSnackbar("Status has been updated successfuly", { variant });
-    } else {
-      enqueueSnackbar(
-        "This request is already accepted and you can't change its status",
-        {
-          variant,
-        }
-      );
+      if (variant === "success") {
+        enqueueSnackbar("Status has been updated successfuly", { variant });
+      } else {
+        enqueueSnackbar(
+          "This request is already accepted and you can't change its status",
+          {
+            variant,
+          }
+        );
+      }
     }
   };
-
   const [value1, setValue1] = useState(0);
   const [value2, setValue2] = useState(0);
   const [value3, setValue3] = useState(0);
@@ -42,28 +40,23 @@ export default function ReportsRequestsManager(props) {
   const [problemStatusFilter, setProblemStatusFilter] = useState("all");
   const [requestStatusFilter, setRequestStatusFilter] = useState("all");
   const [requestTypeFilter, setRequestTypeFilter] = useState("all");
-
   const handleChangeProblemTybe = (event, newValue) => {
     setValue1(newValue);
     switch (newValue) {
       case 0:
         setProblemTypeFilter("all");
-
         break;
       case 1:
         setProblemTypeFilter("Financial");
         break;
-
       case 2:
         setProblemTypeFilter("Technical");
         break;
-
       case 3:
         setProblemTypeFilter("Other");
         break;
     }
   };
-
   const handleChangeProblemStatus = (event, newValue) => {
     setValue2(newValue);
     switch (newValue) {
@@ -115,18 +108,21 @@ export default function ReportsRequestsManager(props) {
         break;
     }
   };
-
   const firstAction = (problemId, problemType) => {
     if (props.type === "problem") {
       axios
-        .patch(`http://localhost:3000/problem/${problemId}`, {
-          status: "pending",
-          seen: "true",
-        },{
-          headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-            'content-type': 'text/json'
-}})
+        .patch(
+          `http://localhost:3000/problem/${problemId}`,
+          {
+            status: "Pending",
+            seen: "true",
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        )
         .then((res) => {
           handleClickVariant("success");
           getData();
@@ -134,15 +130,15 @@ export default function ReportsRequestsManager(props) {
     } else {
       if (problemType === "access") {
         axios
-          .patch(`http://localhost:3000/request/access/${problemId}`)
+          .patch(`http://localhost:3000/request/access/${problemId}`, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
           .then((res) => {
             getData();
             handleClickVariant("success");
-          },{
-          headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-            'content-type': 'text/json'
-}})
+          })
           .catch((error) => {
             if (
               +error.message.split(" ")[error.message.split(" ").length - 1] ===
@@ -154,7 +150,11 @@ export default function ReportsRequestsManager(props) {
       } else {
         if (problemType === "refund") {
           axios
-            .patch(`http://localhost:3000/request/refund/${problemId}`)
+            .patch(`http://localhost:3000/request/refund/${problemId}`, {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("token"),
+              },
+            })
             .then((res) => {
               getData();
               handleClickVariant("success");
@@ -172,15 +172,14 @@ export default function ReportsRequestsManager(props) {
       }
     }
   };
-
   function getData() {
     if (props.type === "problem") {
       axios
-        .get("http://localhost:3000/problem",{
+        .get("http://localhost:3000/problem", {
           headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-            'content-type': 'text/json'
-}})
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
         .then((res) => {
           setData(res.data);
         })
@@ -189,11 +188,11 @@ export default function ReportsRequestsManager(props) {
         });
     } else {
       axios
-        .get("http://localhost:3000/request",{
+        .get("http://localhost:3000/request", {
           headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-            'content-type': 'text/json'
-}})
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
         .then((res) => {
           setData(res.data);
         })
@@ -202,18 +201,21 @@ export default function ReportsRequestsManager(props) {
         });
     }
   }
-
   function secondAction(problemId, problemType, problemStatus) {
-    if (problemType === "problem") {
+    if (props.type === "problem") {
       axios
-        .patch(`http://localhost:3000/problem/${problemId}`, {
-          status: "resolved",
-          seen: "true",
-        },{
-          headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-            'content-type': 'text/json'
-}})
+        .patch(
+          `http://localhost:3000/problem/${problemId}`,
+          {
+            status: "Resolved",
+            seen: "true",
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        )
         .then((res) => {
           getData();
           handleClickVariant("success");
@@ -221,7 +223,11 @@ export default function ReportsRequestsManager(props) {
     } else {
       if (problemStatus !== "accepted") {
         axios
-          .patch(`http://localhost:3000/request/reject/${problemId}`)
+          .patch(`http://localhost:3000/request/reject/${problemId}`, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
           .then((res) => {
             getData();
             handleClickVariant("success");
@@ -239,16 +245,15 @@ export default function ReportsRequestsManager(props) {
       }
     }
   }
-
-  function thirdAction(problemId, problemType,problemStatus) {
+  function thirdAction(problemId, problemType, problemStatus) {
     console.log(problemStatus);
     if (problemStatus !== "accepted") {
       axios
-        .patch(`http://localhost:3000/request/pend/${problemId}`,{
+        .patch(`http://localhost:3000/request/pend/${problemId}`, {
           headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-            'content-type': 'text/json'
-}})
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
         .then((res) => {
           getData();
           handleClickVariant("success");
@@ -265,11 +270,9 @@ export default function ReportsRequestsManager(props) {
       handleClickVariant("error");
     }
   }
-
   useEffect(() => {
     getData();
   }, []);
-
   return (
     <div className="flex flex-col space-y-4 ">
       {props.type === "problem" ? (
@@ -355,7 +358,6 @@ export default function ReportsRequestsManager(props) {
           </Tabs>
         </div>
       )}
-
       <div className="flex justify-around flex-wrap pt-5">
         {data.map((problem) =>
           (props.type === "problem" &&
@@ -369,7 +371,11 @@ export default function ReportsRequestsManager(props) {
             (problem.status === requestStatusFilter ||
               requestStatusFilter === "all")) ? (
             <ReportsRequestsCard
-            alreadyHandled={problem.status === "accepted" || problem.status === "rejected" || problem.status === "resolved"}
+              alreadyHandled={
+                problem.status === "accepted" ||
+                problem.status === "rejected" ||
+                problem.status === "resolved"
+              }
               userName={problem.userName}
               courseName={problem.courseName}
               date={problem.date.split("T")[0]}
@@ -387,15 +393,13 @@ export default function ReportsRequestsManager(props) {
                 null,
                 problem._id,
                 problem.type,
-                problem.status,
-
+                problem.status
               )}
               thirdActionClickHandler={thirdAction.bind(
                 null,
                 problem._id,
                 problem.type,
-                problem.status,
-
+                problem.status
               )}
             ></ReportsRequestsCard>
           ) : null

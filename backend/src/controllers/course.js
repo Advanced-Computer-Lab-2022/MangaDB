@@ -13,7 +13,7 @@ getCourseQuestions = async (courseID, userID) => {
   if (!questions) {
     return [];
   }
-  
+
   return questions;
 };
 
@@ -25,7 +25,7 @@ exports.getAllCourses = async (req, res, next) => {
   let maxPrice = req.query.maxPrice || Number.MAX_VALUE;
   const rating = req.query.rating || 0;
   const subjects = req.query.subject;
-  const iId = req.query.iId;
+  const iId = req.user.id;
   let query = {};
   if (subjects) {
     query = { subject: { $in: subjects } };
@@ -76,50 +76,58 @@ exports.getAllCourses = async (req, res, next) => {
       instructor: 1,
       instructorName: 1,
       subject: 1,
-
     })
     .catch((error) => {
       res.status(500).json({
         message: "Fetching courses failed!",
       });
     });
-   let courseCount=await course.find().count().catch((error) => {
-    res.status(500).json({
-      message: "Counting Courses Failed"
+  let courseCount = await course
+    .find()
+    .count()
+    .catch((error) => {
+      res.status(500).json({
+        message: "Counting Courses Failed",
+      });
     });
-  });
   countryDetails = await currencyConverter.convertCurrency("US", countryCode);
   exchangeRate = countryDetails.rate;
   allCourses.forEach((course) => {
     course.coursePrice = (course.coursePrice * exchangeRate).toFixed(2);
     course.discountedPrice = (course.discountedPrice * exchangeRate).toFixed(2);
   });
+<<<<<<< HEAD
   let instructorCourses=[];
   if(iId && req.user.role=="INSTRUCTOR"){
   for(let i=0;i<allCourses.length;i++){
     if(allCourses[i].instructor==iId){
       allCourses[i].mine=true;
       instructorCourses.push({course:allCourses[i],mine:true});
+=======
+  let instructorCourses = [];
+  if (iId && req.user.role == "INSTRUCTOR") {
+    for (let i = 0; i < allCourses.length; i++) {
+      if (allCourses[i].instructor == iId) {
+        allCourses[i].mine = true;
+        instructorCourses.push({ course: allCourses[i], mine: true });
+      } else {
+        allCourses[i].mine = false;
+        instructorCourses.push({ course: allCourses[i], mine: false });
+      }
+>>>>>>> dev
     }
-    else{
-      allCourses[i].mine=false;
-      instructorCourses.push({course:allCourses[i],mine:false});
-    }
-   
+    return res.status(200).json({
+      message: "Courses fetched successfully!",
+      courses: instructorCourses,
+      symbol: symbol,
+      count: courseCount,
+    });
   }
- return res.status(200).json({
-    message: "Courses fetched successfully!",
-    courses: instructorCourses,
-    symbol: symbol,
-    count:courseCount
-
-  });}
   res.status(200).json({
     message: "Courses fetched successfully!",
     courses: allCourses,
     symbol: symbol,
-    count:courseCount
-
+    count: courseCount,
   });
 };
 
@@ -138,22 +146,23 @@ exports.getCourse = async (req, res) => {
 
   foundCourse = await foundCourse.populate("subtitles.sources.quiz");
 
-  const foundUser = await user.findOne({ _id: userId }).catch((error) => {
-    res.status(500).json({
-      message: "Fetching user failed!",
-    });
-  });
-
-  // to  be changed to false and uncomment for loop when token added
   let userCourseData = null;
+  if (userId) {
+    const foundUser = await user.findOne({ _id: userId }).catch((error) => {
+      res.status(500).json({
+        message: "Fetching user failed!",
+      });
+    });
 
-  for (let i = 0; i < foundUser.courseDetails.length; i++) {
-    if (foundUser.courseDetails[i].course == courseId) {
-      userCourseData = foundUser.courseDetails[i];
-      break;
+    // to  be changed to false and uncomment for loop when token added
+
+    for (let i = 0; i < foundUser.courseDetails.length; i++) {
+      if (foundUser.courseDetails[i].course == courseId) {
+        userCourseData = foundUser.courseDetails[i];
+        break;
+      }
     }
   }
-
   const countryCode = req.query.CC || "US";
   let countryDetails = await currencyConverter.convertCurrency(
     "US",
@@ -168,8 +177,9 @@ exports.getCourse = async (req, res) => {
     foundCourse.discountedPrice = (
       course.discountedPrice * exchangeRate
     ).toFixed(2);
-    let questions = await getCourseQuestions(courseId, userId);
-    
+    let questions = null;
+    if (userId) questions = await getCourseQuestions(courseId, userId);
+
     res.status(200).json({
       message: "Course fetched successfully!",
       course: foundCourse,
@@ -291,8 +301,8 @@ exports.createCourse = async (req, res, next) => {
     subtitles[i].subtitleDuration = subDuration;
     subDuration = 0;
   }
-  newCourse.subtitles=subtitles;
-  newCourse.totalMins=courseDuration;
+  newCourse.subtitles = subtitles;
+  newCourse.totalMins = courseDuration;
   await newCourse
     .save()
     .then((createdCourse) => {
@@ -386,16 +396,14 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
     course.discountedPrice = (course.discountedPrice * exchangeRate).toFixed(2);
   });
   let instructorCourses = [];
-  for(let i=0;i<allCourses.length;i++){
-    if(allCourses[i].instructor==iId){
-      allCourses[i].mine=true;
-      instructorCourses.push({course:allCourses[i],mine:true});
+  for (let i = 0; i < allCourses.length; i++) {
+    if (allCourses[i].instructor == iId) {
+      allCourses[i].mine = true;
+      instructorCourses.push({ course: allCourses[i], mine: true });
+    } else {
+      allCourses[i].mine = false;
+      instructorCourses.push({ course: allCourses[i], mine: false });
     }
-    else{
-      allCourses[i].mine=false;
-      instructorCourses.push({course:allCourses[i],mine:false});
-    }
-   
   }
   res.status(200).json({
     message: "Courses fetched successfully!",
@@ -406,7 +414,7 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
 
 exports.rateCourse = async (req, res, next) => {
   const courseId = req.params.id;
-  const userId = req.user.id;;
+  const userId = req.user.id;
   const rating = req.body.rating;
   const review = req.body.review;
   const foundUser = await user.findById(userId);
@@ -645,7 +653,7 @@ exports.getMostRatedCourses = async (req, res, next) => {
 
 exports.openCourse = async (req, res, next) => {
   const courseId = req.params.id;
-  const userId = req.user.id;;
+  const userId = req.user.id;
   const foundUser = await user.findById(userId).catch((error) => {
     res.status(500).json({
       message: "Fetching user failed!",
@@ -666,37 +674,43 @@ exports.openCourse = async (req, res, next) => {
 
 exports.getCourseRating = async (req, res) => {
   const courseId = req.params.id;
-  try{
-  const foundCourse = await course.findById(courseId);
-  let rating1=0;
-  let rating2=0;
-  let rating3=0;
-  let rating4=0;
-  let rating5=0;
-  for (let i = 0; i < foundCourse.reviews.length; i++) {
-    if (foundCourse.reviews[i].rating == 1) {
-      rating1++;
+  try {
+    const foundCourse = await course.findById(courseId);
+    let rating1 = 0;
+    let rating2 = 0;
+    let rating3 = 0;
+    let rating4 = 0;
+    let rating5 = 0;
+    for (let i = 0; i < foundCourse.reviews.length; i++) {
+      if (foundCourse.reviews[i].rating == 1) {
+        rating1++;
+      }
+      if (foundCourse.reviews[i].rating == 2) {
+        rating2++;
+      }
+      if (foundCourse.reviews[i].rating == 3) {
+        rating3++;
+      }
+      if (foundCourse.reviews[i].rating == 4) {
+        rating4++;
+      }
+      if (foundCourse.reviews[i].rating == 5) {
+        rating5++;
+      }
     }
-    if (foundCourse.reviews[i].rating == 2) {
-      rating2++;
-    }
-    if (foundCourse.reviews[i].rating == 3) {
-      rating3++;
-    }
-    if (foundCourse.reviews[i].rating == 4) {
-      rating4++;
-    }
-    if (foundCourse.reviews[i].rating == 5) {
-      rating5++;
-    }
-  }
-  let count=[{rating:1,count:rating1},{rating:2,count:rating2},{rating:3,count:rating3},{rating:4,count:rating4},{rating:5,count:rating5}]
-  return res.status(200).json({
-    message: "Rating fetched successfully!",
-    review: foundCourse.reviews,
-    count:count
-  });
-  }catch(error){
+    let count = [
+      { rating: 1, count: rating1 },
+      { rating: 2, count: rating2 },
+      { rating: 3, count: rating3 },
+      { rating: 4, count: rating4 },
+      { rating: 5, count: rating5 },
+    ];
+    return res.status(200).json({
+      message: "Rating fetched successfully!",
+      review: foundCourse.reviews,
+      count: count,
+    });
+  } catch (error) {
     return res.status(500).json({
       message: "Fetching course failed!",
     });
@@ -705,7 +719,7 @@ exports.getCourseRating = async (req, res) => {
 
 exports.getRating = async (req, res, next) => {
   const courseId = req.params.id;
-  const userId = req.user.id;;
+  const userId = req.user.id;
   const foundCourse = await course.findById(courseId).catch((error) => {
     res.status(500).json({
       message: "Fetching course failed!",
@@ -731,7 +745,7 @@ exports.getRating = async (req, res, next) => {
 
 exports.addSource = async (req, res, next) => {
   const courseId = req.params.id;
-  const userId = req.user.id;;
+  const userId = req.user.id;
   const source = req.body.source;
   const subtitleId = req.body.subtitleId;
   const foundCourse = await course.findById(courseId).catch((error) => {
@@ -853,10 +867,8 @@ exports.getInstructorQuestions = async (req, res, next) => {
   res.status(200).send(questions);
 };
 
-exports.getDiscountedCourses=async(req,res,next)=>{
-let courses=await course.find({discount:{ $gt: 0 }}).limit(9);
+exports.getDiscountedCourses = async (req, res, next) => {
+  let courses = await course.find({ discount: { $gt: 0 } }).limit(9);
 
-res.status(200).send(courses);
-
-}
-
+  res.status(200).send(courses);
+};

@@ -6,7 +6,7 @@ import {
   UserCircleIcon,
   ExclamationIcon,
 } from "@heroicons/react/outline";
-import ReportItem from "../CourseView/ReportItem";
+import RequestItem from "../CourseView/RequestItem";
 const subNavigation = [
   { name: "Profile", icon: UserCircleIcon, current: false },
   { name: "Security & Privacy", icon: KeyIcon, current: false },
@@ -18,21 +18,26 @@ function classNames(...classes) {
 }
 
 const Requests = (props) => {
-const[requests, setRequests] = useState([]);
-const userId=
-
+  const [requests, setRequests] = useState([]);
+  const userId = "63a41b632334fd21e6fab392";
 
   useEffect(() => {
-    axios.get("http://localhost:3000/request").then((res) => {
-      /*
+    axios
+      .get("http://localhost:3000/request", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        /*
       for(let i = 0; i < res.data.length; i++){
-        if(res.data[i].userId === props.userId){
+        if(res.data[i].user === userId){
           setRequests([...requests, res.data[i]]);
         }
       }
       */
-      setRequests(res.data);
-    });
+        setRequests(res.data);
+      });
   }, []);
   return (
     <div>
@@ -139,7 +144,18 @@ const userId=
                     </p>
                   </div>
                 </div>
-                {<ReportItem requests={requests} />}
+                {requests.map((request) => {
+                  return (
+                    <div className="mt-2">
+                      <RequestItem
+                        status={request.status}
+                        date={request.date.split("T")[0]}
+                        type={request.type}
+                        courseName={request.courseName}
+                      ></RequestItem>
+                    </div>
+                  );
+                })}
               </form>
             </div>
           </div>

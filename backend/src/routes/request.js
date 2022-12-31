@@ -3,7 +3,6 @@ const auth = require("../middleware/auth");
 const requestController = require("../controllers/request");
 
 
-
 router.post("/refund",auth.validateToken,auth.authenticateRole(["TRAINEE"]), requestController.requestRefund);
 
 router.post("/access",auth.validateToken,auth.authenticateRole(["CORPORATE"]), requestController.requestCourseAccess);
@@ -20,8 +19,9 @@ router.patch("/access/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), 
 
 router.patch("/reject/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), requestController.declineRequest);
 
-router.patch("/pend/:id", requestController.pendRequest);
+router.patch("/pend/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), requestController.pendRequest);
 
+router.get("/user",auth.validateToken,auth.authenticateRole(["TRAINEE", "CORPORATE"]), requestController.getUserRequests);
 
 router.delete("/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), requestController.deleteRequest);
 

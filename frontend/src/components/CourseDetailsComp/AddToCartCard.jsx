@@ -7,7 +7,7 @@ import Modal from "../UI/Modal";
 import Divider from "@mui/material/Divider";
 import Video from "../Video/Video";
 import { useSnackbar } from "notistack";
-
+import axios from "axios";
 const AddToCartCard = (props) => {
   const [ModalShown, setModalShown] = useState(false);
   const hideModalHandler = () => {
@@ -17,20 +17,48 @@ const AddToCartCard = (props) => {
     setModalShown(true);
   };
   const navigate = useNavigate();
-
   const { enqueueSnackbar } = useSnackbar();
-
   const handleClickVariant = (variant) => {
     if (variant === "success") {
       enqueueSnackbar("Course has been requested successfuly", { variant });
     }
   };
   const clickHandler = () => {
-    if(props.corp){
+    //handle if user is a guest and navigate to login page
+    if (props.corp) {
       //end point for enroll corporate
-      handleClickVariant("success");
+      axios
+        .post(
+          "http://localhost:3000/request/access",
+          {
+            courseId: props.id,
+            reason: "i don't like it",
+            //reason needs to be removed from front and back
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        )
+        .then((res) => {
+          handleClickVariant("success");
+        });
     }
     if (props.userRegister) navigate("/courseview/1", { state: props.id });
+    else {
+      axios
+        .post("http://localhost:3000/invoice/".concat(props.id), {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          window.location.href = res.data.link;
+          localStorage.setItem("invoiceId", res.data.invoiceId);
+        });
+    }
   };
   const displayedVideo = (
     <Fragment>
@@ -48,7 +76,11 @@ const AddToCartCard = (props) => {
       </div>
       <Divider variant="middle" />
       <div className="py-4">
-        <Video isVisible={true} playing={false} link={props.courseOverview}></Video>
+        <Video
+          isVisible={true}
+          playing={false}
+          link={props.courseOverview}
+        ></Video>
       </div>
     </Fragment>
   );
@@ -76,8 +108,16 @@ const AddToCartCard = (props) => {
         </svg>
 
         <SecondaryButton
-          onClick={!props.requested?clickHandler:null}
-          text={props.requested?"Requested":(props.corp?"Request Access":(props.userRegister ? "Go To Course" : "Add To Cart"))}
+          onClick={!props.requested ? clickHandler : null}
+          text={
+            props.requested
+              ? "Requested"
+              : props.userRegister
+              ? "Go To Course"
+              : props.corp
+              ? "Request Access"
+              : "Enroll Now"
+          }
           className="w-full "
           disabled={props.requested}
         />

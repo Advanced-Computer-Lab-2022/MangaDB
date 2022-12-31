@@ -3,12 +3,11 @@ const userController=require('../controllers/user');
 const auth = require('../middleware/auth');
 
 
-
 router.post('/login', userController.login);
 
 router.patch('/updateUser',auth.validateToken,auth.authenticateRole(["INSTRUCTOR","TRAINEE","CORPORATE"]), userController.updateUser);
 
-router.patch("/changePassword", userController.changePassword);
+router.patch("/changePassword",auth.validateToken,auth.authenticateRole(["INSTRUCTOR","TRAINEE","CORPORATE"]), userController.changePassword);
 
 router.post("/forgetPassword", userController.forgetPassword);
 
@@ -38,9 +37,9 @@ router.post('/solveExam',auth.validateToken,auth.authenticateRole(["TRAINEE","CO
 
 router.get('/myCourses',auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]),userController.getRegisteredCourses);
 
-router.get('/wallet/:id',userController.getWallet);
+router.get('/wallet/:id',auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]),userController.getWallet);
 
-router.get("/certificate", userController.testCertificate);
+router.get("/certificate", userController.testCertificate); //not used
 
 router.get("/myProfile",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE","INSTRUCTOR"]),userController.viewProfile);
 

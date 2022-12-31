@@ -46,10 +46,11 @@ const ExamToolManager = (props) => {
       sourceId: sourceId,
       notes: temp,
     };
-    axios.patch(
-      `http://localhost:3000/user/notes/${props.studentId}`,
-      sentData
-    );
+    axios.patch(`http://localhost:3000/user/notes/`, sentData, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
     props.setNotes(newNotes);
   };
 
@@ -76,10 +77,11 @@ const ExamToolManager = (props) => {
       sourceId: sourceId,
       notes: temp,
     };
-    axios.patch(
-      `http://localhost:3000/user/notes/${props.studentId}`,
-      sentData
-    );
+    axios.patch(`http://localhost:3000/user/notes/`, sentData, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
     props.setNotes(newNotes);
   };
 
@@ -91,10 +93,17 @@ const ExamToolManager = (props) => {
     props.changeReportsSelector(newSelected);
   };
 
+  //not used????
   const submitReportHandler = (data) => {
-    axios.post("http://localhost:3000/problem/", data).then((res) => {
-      console.log(res);
-    });
+    axios
+      .post("http://localhost:3000/problem/", data, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      });
   };
 
   return (

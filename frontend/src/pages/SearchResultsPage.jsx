@@ -116,14 +116,16 @@ const SearchResultsPage = () => {
         searchState.filters.price.maxValue;
     }
     param = param + (param ? "&" : "?") + "page=" + page;
-    axios.get("http://localhost:3000/course/" + param,{
-      headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('token'),
-        'content-type': 'text/json'
-}}).then((res) => {
-      setNoOfPages(res.data.count);
-      dispatchSearch({ type: "COURSES", value: res.data.courses });
-    });
+    axios
+      .get("http://localhost:3000/course/" + param, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        setNoOfPages(res.data.count);
+        dispatchSearch({ type: "COURSES", value: res.data.courses });
+      });
   }, [searchState.search, searchState.filters, page]);
   var coursesListView;
   var coursesCardsView;
@@ -201,54 +203,54 @@ const SearchResultsPage = () => {
   }
   return (
     <SnackbarProvider maxSnack={3}>
-    <Fragment>
-      <NavBar />
-      <div className="mt-4 flex justify-center space-x-4 mb-3 items-center">
-        <Search
-          searchState={searchState.search}
-          onChange={searchBarChangeHandler}
-          className="ml-4"
-        />
-        <SecondaryButton
-          className="mr-4 w-25 h-11"
-          text="Filter"
-          icon={icon}
-          onClick={showFiltersHandler}
-        ></SecondaryButton>
-      </div>
-      {showFilters && (
-        <Filters
-          prevState={searchState.filters}
-          onConfirm={filtersChangeHandler}
-          exchange={1}
-          options={options}
-          onClick={hideFiltersHandler}
-        />
-      )}
+      <Fragment>
+        <NavBar />
+        <div className="mt-4 flex justify-center space-x-4 mb-3 items-center">
+          <Search
+            searchState={searchState.search}
+            onChange={searchBarChangeHandler}
+            className="ml-4"
+          />
+          <SecondaryButton
+            className="mr-4 w-25 h-11"
+            text="Filter"
+            icon={icon}
+            onClick={showFiltersHandler}
+          ></SecondaryButton>
+        </div>
+        {showFilters && (
+          <Filters
+            prevState={searchState.filters}
+            onConfirm={filtersChangeHandler}
+            exchange={1}
+            options={options}
+            onClick={hideFiltersHandler}
+          />
+        )}
 
-      <div className="flex flex-col gap-y-4 mb-4">
-        <div className="font-bold text-2xl ml-24">Results:</div>
-        <div className="flex-col items-center gap-y-4 hidden lg:flex">
-          {coursesListView}
+        <div className="flex flex-col gap-y-4 mb-4">
+          <div className="font-bold text-2xl ml-24">Results:</div>
+          <div className="flex-col items-center gap-y-4 hidden lg:flex">
+            {coursesListView}
+          </div>
+          <div className="flex justify-around flex-wrap lg:hidden">
+            {coursesCardsView}
+          </div>
         </div>
-        <div className="flex justify-around flex-wrap lg:hidden">
-          {coursesCardsView}
-        </div>
-      </div>
-      {searchState.displayedCourses.length !== 0 && (
-        <div className="flex items-center justify-center">
-          <ThemeProvider theme={theme}>
-            <Pagination
-              className="ml-2 mr-2"
-              count={Math.ceil(noOfPages / 10)}
-              color="primary"
-              page={page}
-              onChange={onChangePageHandler}
-            />
-          </ThemeProvider>
-        </div>
-      )}
-    </Fragment>
+        {searchState.displayedCourses.length !== 0 && (
+          <div className="flex items-center justify-center">
+            <ThemeProvider theme={theme}>
+              <Pagination
+                className="ml-2 mr-2"
+                count={Math.ceil(noOfPages / 10)}
+                color="primary"
+                page={page}
+                onChange={onChangePageHandler}
+              />
+            </ThemeProvider>
+          </div>
+        )}
+      </Fragment>
     </SnackbarProvider>
   );
 };

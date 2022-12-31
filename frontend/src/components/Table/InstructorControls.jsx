@@ -46,14 +46,7 @@ const InstructorControls = (props) => {
           
         </div>
       </div>
-      <div className="flex justify-center mb-2 md:hidden">
-        <TertiaryButton
-          className="w-[80vw]"
-          onClick={myCoursesClickHandler}
-          text="My Courses"
-          state={active ? "My Courses" : ""}
-        />
-      </div>
+      
     </Fragment>
   );
 };

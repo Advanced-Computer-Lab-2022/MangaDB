@@ -4,12 +4,15 @@ import Checkbox from "@mui/material/Checkbox";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 const TableRows = (props) => {
-  const [checked, setChecked] = useState(false);
+  //const [checked, setChecked] = useState(false);
 
-  const handleChange = (event) => {
-    console.log(event.target.checked);
-    setChecked(event.target.checked);
+  const handleChange = (event,courseId) => {
+    //console.log(event.target.checked);
+    //console.log(courseId);
+    props.selectRowHandler(event.target.checked,courseId);    
+    
   };
+  
   const theme = createTheme({
     status: {
       danger: "#e53e3e",
@@ -27,6 +30,7 @@ const TableRows = (props) => {
   });
   //var anyBoxesChecked = new Array(numeroPerguntas).fill(false);
   const rows = props.rows.map((row, rowIdx) => {
+    console.log(props.selectedNow.includes(row.courseId));
     const totalHours = Math.round(+row.totalMins / 60);
     const items =
       row.mine === false
@@ -129,8 +133,8 @@ const TableRows = (props) => {
             <ThemeProvider theme={theme}>
               <Checkbox
                 color="primary"
-                checked={checked}
-                onChange={handleChange}
+                checked={props.selectedNow.includes(row.courseId)}
+                onChange={event =>handleChange(event, row.courseId)}
                 inputProps={{ "aria-label": "controlled" }}
               />
             </ThemeProvider>

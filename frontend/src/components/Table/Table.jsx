@@ -106,7 +106,7 @@ const Table = (props) => {
       <div>
         <table className="w-full">
           <thead className="bg-gray-100">
-            <TableHeader admin={props.admin} selectAllHandler={props.selectAllHandler}/>
+            <TableHeader admin={props.admin} selectAllHandler={props.selectAllHandler} selectedNow={props.selectedNow} rows={props.rows}/>
           </thead>
           <tbody className="w-full">
             <TableRows
@@ -122,7 +122,10 @@ const Table = (props) => {
               rows={props.rows}
               viewCourse={props.viewCourse}
               admin={props.admin}
-              selected={props.selected}
+              //selected={props.selected}
+              selectedNow={props.selectedNow}
+              selectRowHandler={props.selectRowHandler}
+              selectAllHandler={props.selectAllHandler}
             />
           </tbody>
         </table>

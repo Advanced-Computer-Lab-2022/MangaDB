@@ -1,7 +1,7 @@
 import React from "react";
 import Checkbox from "@mui/material/Checkbox";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const TableHeader = (props) => {
   const theme = createTheme({
@@ -27,6 +27,14 @@ const TableHeader = (props) => {
     //console.log(event.target.checked);
     props.selectAllHandler(event.target.checked);
   };
+  useEffect(() => {
+    if (props.selectedNow && props.rows) {
+      if (props.selectedNow.length !== props.rows.length) {
+        setChecked(false);
+      }
+    }
+
+  }, [props.selectedNow, props.rows]);
   return (
     <tr className="w-full">
       <th

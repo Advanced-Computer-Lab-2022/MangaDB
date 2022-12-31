@@ -49,6 +49,37 @@ const IntructorCoursePage = (props) => {
   };
   const [page, setPage] = useState(1);
   const [noOfPages, setNoOfPages] = useState(1);
+
+  const [selectedNow, setSelectedNow] = useState([]);
+
+  const selectAllHandler = (selectRows) => {
+    if (selectRows) {
+      const temp = [];
+     // console.log(searchState.displayedCourses);
+      for (let i = 0; i < searchState.displayedCourses.length; i++) {
+        temp.push(searchState.displayedCourses[i].course._id);
+      }
+      //console.log(temp[0]);
+      setSelectedNow(temp);
+    } else {
+      setSelectedNow([]);
+    }
+  };
+
+  const selectRowHandler = (isSelected, courseId) => {
+    if (isSelected){ 
+      setSelectedNow([...selectedNow, courseId]);
+    }
+    else{
+      const index = selectedNow.indexOf(courseId);
+      setSelectedNow(selectedNow.filter((_, i) => i !== index));
+    }
+  };
+
+  const adminAddPromotionHandler = () => {
+    setShowPromotationModal(true);
+  }
+
   const ReducerFunction = (state, action) => {
     if (action.type === "SEARCH") {
       const newState = { ...state, search: action.value };
@@ -91,13 +122,8 @@ const IntructorCoursePage = (props) => {
   const [selected, setSelected] = useState(false);
 
   const viewCourse = (courseId) => {
-    navigate("/instructorCourseDetails",{state:{courseId:courseId}});
+    navigate("/instructorCourseDetails", { state: { courseId: courseId } });
   };
-
-  const selectAllHandler =(selectRows)=>{
-    console.log(selectRows);
-    setSelected(selectRows);
-  }
 
   const openReportModal = (id, course) => {
     setShowReportModal(true);
@@ -169,12 +195,48 @@ const IntructorCoursePage = (props) => {
   };
   const promotionSubmitHandler = () => {
     closePromotionModal();
-    const data = {
-      discount: +promotionAmount / 100,
-      discountStartDate: new Date().toISOString(),
-      discountEndDate: promotionEndDate,
-    };
-    axios
+    
+    if(props.admin){
+      const data = {
+        courses: selectedNow,
+        discount: +promotionAmount / 100,
+        discountStartDate: new Date().toISOString(),
+        discountEndDate: promotionEndDate,
+      };
+      axios
+      .patch(
+        "http://localhost:3000/admin/createDiscount/" ,
+        data,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
+      .then((res) => {
+        var courses = [];
+        for (var i = 0; i < searchState.displayedCourses.length; i++) {
+          console.log(searchState.displayedCourses[i].course._id);
+          console.log(
+            searchState.displayedCourses[i].course._id !== res.data._id
+          );
+          if (searchState.displayedCourses[i].course._id !== res.data._id) {
+            courses.push(searchState.displayedCourses[i]);
+          } else {
+            var temp = { course: res.data, mine: true };
+            courses.push(temp);
+          }
+        }
+        dispatchSearch({ type: "COURSES", value: courses });
+      });
+    }
+    else{
+      const data = {
+        discount: +promotionAmount / 100,
+        discountStartDate: new Date().toISOString(),
+        discountEndDate: promotionEndDate,
+      };
+      axios
       .patch(
         "http://localhost:3000/instructor/createDiscount/" + promotionId,
         data,
@@ -200,6 +262,7 @@ const IntructorCoursePage = (props) => {
         }
         dispatchSearch({ type: "COURSES", value: courses });
       });
+    }
   };
   const searchBarChangeHandler = (searchValue) => {
     dispatchSearch({ type: "SEARCH", value: searchValue });
@@ -248,6 +311,7 @@ const IntructorCoursePage = (props) => {
         })
         .then((res) => {
           dispatchSearch({ type: "COURSES", value: res.data.courses });
+          console.log(res.data.courses);
         });
     } else {
       axios
@@ -260,7 +324,7 @@ const IntructorCoursePage = (props) => {
           dispatchSearch({ type: "COURSES", value: res.data.courses });
         });
     }
-  }, [searchState.search, searchState.filters, searchState.myCourses]);
+  }, [searchState.search, searchState.filters, searchState.myCourses,selectedNow]);
   var rows = searchState.displayedCourses.map((course) => {
     return {
       courseId: course.course._id,
@@ -328,7 +392,8 @@ const IntructorCoursePage = (props) => {
         onCoursesClick={viewMyCoursesHandler}
         prevmyCoursesState={searchState.myCourses}
         prevSearchState={searchState.search}
-        admin={true}
+        admin={props.admin}
+        adminAddPromotionHandler={adminAddPromotionHandler}
       />
       <div className="hidden xl:block">
         <Table
@@ -354,9 +419,11 @@ const IntructorCoursePage = (props) => {
           openReportModal={openReportModal}
           closeReportModal={closeReportModal}
           viewCourse={viewCourse}
-          admin={true}
+          admin={props.admin}
           selectAllHandler={selectAllHandler}
+          selectRowHandler={selectRowHandler}
           selected={selected}
+          selectedNow={selectedNow}
         />
       </div>
       <div className="flex justify-around flex-wrap xl:hidden">{cards}</div>

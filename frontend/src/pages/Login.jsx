@@ -149,7 +149,7 @@ export default function Login() {
               </div>
             </div>
           </div>
-          <form action="" class="my-10">
+          <form action="" class="my-10" onSubmit={onSubmitHandler}>
             <div class="flex flex-col space-y-5">
               <div className="relative">
                 <label for="UserName">
@@ -188,7 +188,7 @@ export default function Login() {
                 type="submit"
                 className="flex space-x-2 items-center justify-center py-3 font-semibold hover: "
                 text="Sign In"
-                onClick={onSubmitHandler}
+                //onClick={onSubmitHandler}
               ></SecondaryButton>
               <hr className=" opacity-75" />
               <div className="flex justify-center">

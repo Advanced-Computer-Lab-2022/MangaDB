@@ -7,6 +7,7 @@ import CourseContent from "../components/CourseDetailsComp/CourseContent";
 import InstructorCourseReviews from "../components/CourseDetailsComp/InstructorCourseReviews";
 import { useLocation } from "react-router-dom";
 import InstructorVideo from "../components/Video/InstructorVideo";
+import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 const InstructorCourseDetailsPage = () => {
   const location = useLocation();
   const [courseDetails, setCourseDetails] = useState({});
@@ -15,7 +16,7 @@ const InstructorCourseDetailsPage = () => {
   const [courseReviews, setCourseReviews] = useState([]);
   const [reviewsCount, setReviewsCount] = useState([]);
   useEffect(() => {
-    const courseId = "63a375f6b2ac097c6a3f7ed5";
+    const courseId = location.state.courseId;
     axios
       .get("http://localhost:3000/course/".concat(courseId), {
         headers: {
@@ -70,7 +71,7 @@ const InstructorCourseDetailsPage = () => {
   }, []);
   return (
     <Fragment>
-      <NavBar />
+      <NavBarSearch currentTab="My Courses" />
       <div className="bg-veryLightBlue py-4 px-6 flex justify-between">
         <CourseDetailsCard
           courseTitle={courseDetails.courseTitle}

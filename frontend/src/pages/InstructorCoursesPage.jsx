@@ -7,6 +7,8 @@ import Filters from "../components/Filters/Filters";
 import TableListViewCard from "../components/Table/TableListViewCard";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const options = [
   { id: 1, name: "Web Development" },
   { id: 2, name: "Machine Learning" },
@@ -31,6 +33,8 @@ const theme = createTheme({
 });
 
 const IntructorCoursePage = (props) => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const defaultState = {
     displayedCourses: [],
     search: "",
@@ -82,6 +86,16 @@ const IntructorCoursePage = (props) => {
     name: "Technical",
   });
   const [enteredReport, setEnteredReport] = useState("");
+  const [selected, setSelected] = useState(false);
+
+  const viewCourse = (courseId) => {
+    navigate("/instructorCourseDetails",{state:{courseId:courseId}});
+  };
+
+  const selectAllHandler =(selectRows)=>{
+    console.log(selectRows);
+    setSelected(selectRows);
+  }
 
   const openReportModal = (id, course) => {
     setShowReportModal(true);
@@ -312,6 +326,7 @@ const IntructorCoursePage = (props) => {
         onCoursesClick={viewMyCoursesHandler}
         prevmyCoursesState={searchState.myCourses}
         prevSearchState={searchState.search}
+        admin={true}
       />
       <div className="hidden xl:block">
         <Table
@@ -336,6 +351,10 @@ const IntructorCoursePage = (props) => {
           enteredReport={enteredReport}
           openReportModal={openReportModal}
           closeReportModal={closeReportModal}
+          viewCourse={viewCourse}
+          admin={true}
+          selectAllHandler={selectAllHandler}
+          selected={selected}
         />
       </div>
       <div className="flex justify-around flex-wrap xl:hidden">{cards}</div>

@@ -10,8 +10,13 @@ const InstructorControls = (props) => {
   const [active, setActive] = useState(false);
 
   const myCoursesClickHandler = () => {
+    if(!props.admin){
     setActive(prev => !prev)
     props.onCoursesClick();
+    }
+    else{
+      props.adminAddPromotionHandler();
+    }
   };
   return (
     <Fragment>
@@ -35,9 +40,10 @@ const InstructorControls = (props) => {
         <div className="mt-[6px] mr-4 hidden md:block">
           <TertiaryButton
             onClick={myCoursesClickHandler}
-            text="My Courses"
+            text={props.admin?"Add Promotion":"My Courses"}
             state={active ? "My Courses" : ""}
           />
+          
         </div>
       </div>
       <div className="flex justify-center mb-2 md:hidden">

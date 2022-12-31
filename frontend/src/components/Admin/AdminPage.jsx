@@ -165,7 +165,7 @@ export default function AdminPage() {
           ""
         )}
         {isClickedUsers ? <div className="flex justify-center"><AdminAddNewUser /></div> : ""}
-        {isClickedCourses ? <div className=""><InstructorCoursesPage></InstructorCoursesPage></div> : ""}
+        {isClickedCourses ? <div className=""><InstructorCoursesPage admin="true"></InstructorCoursesPage></div> : ""}
       </div>
     </SnackbarProvider>
   );

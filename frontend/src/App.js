@@ -85,7 +85,7 @@ function App() {
           element={<InstructorDashboard></InstructorDashboard>}
         ></Route>
         <Route
-          path="instructorCourseDetails/:id"
+          path="instructorCourseDetails"
           element={<InstructorCourseDetails></InstructorCourseDetails>}
         ></Route>
         <Route

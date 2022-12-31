@@ -5,16 +5,12 @@ import { useNavigate } from "react-router-dom";
 
 const Search = (props) => {
   const navigate = useNavigate();
-  // if (!props.prevSearchState && props.prevmyCoursesState) {
-  //   inputRef.current.value = "";
-  // }
   const [searchState, setSearchState] = useState(
     props.searchState ? props.searchState : ""
   );
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    const instructorId = "6386427487d3f94e4cb7a28d";
-    navigate(`/searchresults/${instructorId}`, {
+    navigate(`/searchresults`, {
       state: searchState,
     });
     props.onChange(searchState);

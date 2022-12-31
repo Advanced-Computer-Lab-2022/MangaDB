@@ -1,11 +1,25 @@
 import React from "react";
 import PrimaryButton from "../PrimaryButton";
 import avatar from "../../../Assets/Images/blueAvatar.png";
+import { useNavigate } from "react-router-dom";
 
-const ProfileNavBar = () => {
+const ProfileNavBar = (props) => {
+  const navigate = useNavigate();
+
+  const onClickHandler = () => {
+    if (props.role === "TRAINEE" || props.role === "CORPORATE") {
+      navigate("/profileTrainee");
+    } else if (props.role === "INSTRUCTOR") {
+      navigate("/profileInstructor");
+    }
+  };
+
   return (
     <li>
-      <PrimaryButton className="flex space-x-4">
+      <PrimaryButton
+        onClick={!props.active ? onClickHandler : null}
+        className="flex space-x-4"
+      >
         <span className="md:w-10 w-[22px] rounded-full">
           <img src={avatar} alt="" />
         </span>

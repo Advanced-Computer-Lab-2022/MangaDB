@@ -284,7 +284,7 @@ const InstructorDashboard = () => {
   }
   return (
     <Fragment>
-      <NavBar></NavBar>
+      <NavBar currentTab="Dashboard" />
       <div className=" flex space-x-14 mt-4 items-center justify-center">
         <div className="font-semibold text-xl text-center text-gray-700 ">
           <p>Welcome Back,</p>

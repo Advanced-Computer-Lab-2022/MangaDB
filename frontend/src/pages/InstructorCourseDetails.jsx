@@ -1,12 +1,12 @@
 import React from "react";
 import { Fragment, useState, useEffect } from "react";
-import NavBar from "../components/UI/NavBar/NavBar";
 import CourseDetailsCard from "../components/CourseDetailsComp/CourseDetailsCard";
 import axios from "axios";
 import CourseContent from "../components/CourseDetailsComp/CourseContent";
 import InstructorCourseReviews from "../components/CourseDetailsComp/InstructorCourseReviews";
 import { useLocation } from "react-router-dom";
 import InstructorVideo from "../components/Video/InstructorVideo";
+import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 const InstructorCourseDetailsPage = () => {
   const location = useLocation();
   const [courseDetails, setCourseDetails] = useState({});
@@ -70,7 +70,7 @@ const InstructorCourseDetailsPage = () => {
   }, []);
   return (
     <Fragment>
-      <NavBar />
+      <NavBarSearch currentTab="My Courses" />
       <div className="bg-veryLightBlue py-4 px-6 flex justify-between">
         <CourseDetailsCard
           courseTitle={courseDetails.courseTitle}

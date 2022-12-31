@@ -1,6 +1,6 @@
 import { useState, useEffect, Fragment } from "react";
 import axios from "axios";
-import NavBar from "../components/UI/NavBar/NavBar";
+import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 import SecondaryButton from "../components/UI/SecondaryButton";
 import AverageSummary from "../components/Profile/Reviews/AverageSummary";
 import ReviewItem from "../components/CourseDetailsComp/ReviewItem";
@@ -182,7 +182,7 @@ const InstructorPage = () => {
 
   return (
     <Fragment>
-      <NavBar></NavBar>
+      <NavBarSearch />
       {!loading && (
         <div className="flex-col items-center justify-center">
           <p className=" flex items-center justify-center  font-semibold text-gray-500">

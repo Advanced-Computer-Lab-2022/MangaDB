@@ -206,7 +206,7 @@ const SearchResultsPage = () => {
   return (
     <SnackbarProvider maxSnack={3}>
       <Fragment>
-        <NavBar />
+        <NavBar currentTab="Home" />
         <div className="mt-4 flex justify-center space-x-4 mb-3 items-center">
           <Search
             searchState={searchState.search}

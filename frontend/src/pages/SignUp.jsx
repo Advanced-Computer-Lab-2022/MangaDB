@@ -37,7 +37,15 @@ export default function SignUp() {
   const [passwordMatch, setPasswordMatch] = useState(true);
   const [emailValid, setEmailValid] = useState(true);
   const [userNameValid, setUserNameValid] = useState(true);
+  const [showPolicy, setShowPolicy] = useState(false);
   const navigate = useNavigate();
+
+  const handleShowPolicy = () => {
+    setShowPolicy(true);
+  };
+  const handleFadePolicy = () => {
+    setShowPolicy(false);
+  };
 
   const [checked, setChecked] = useState(true);
   const handleChange = (event) => {
@@ -153,9 +161,9 @@ export default function SignUp() {
       axios
         .post("http://localhost:3000/user/register", sentData)
         .then((res) => {
-          //console.log(res);
+          console.log(res);
           setUserNameValid(true);
-          navigate(`/`, { state: res.data._id });
+          navigate(`/login`, { state: res.data._id });
         })
         .catch((err) => {
           if (
@@ -173,7 +181,7 @@ export default function SignUp() {
     //handle patch request
   };
   return (
-    <div class="">
+    <div class="relative">
       <div class="antialiased ">
         <div class="max-w-lg mx-auto my-10 bg-white p-8 rounded-xl shadow shadow-slate-300">
           <div className="flex justify-center">
@@ -192,7 +200,7 @@ export default function SignUp() {
             Already Have An Account?{" "}
             <button
               onClick={() => {
-                navigate("/");
+                navigate("/login");
               }}
               class="text-primaryBlue hover:opacity-70 ease-in-out duration-300 font-medium inline-flex space-x-1 items-center"
             >
@@ -363,10 +371,38 @@ export default function SignUp() {
                     onClick={() => {}}
                     class="text-primaryBlue hover:opacity-70 ease-in-out duration-300 font-medium inline-flex space-x-1 items-center"
                   >
-                    <span>terms and conditions </span>
+                    <span
+                      onMouseEnter={handleShowPolicy}
+                      onMouseLeave={handleFadePolicy}
+                    >
+                      terms and conditions{" "}
+                    </span>
                   </button>
                   {" *"}
                 </p>{" "}
+                {showPolicy && 
+                  <div class="ease-in-out duration-300 ">
+                    <div class="antialiased absolute bottom-16 max-w-sm">
+                      <div class=" mx-auto my-10 bg-white p-8 rounded-xl shadow shadow-slate-300">
+                        <h1 className="font-medium flex justify-center"></h1>
+                        <div className="flex flex-col justify-start mt-5">
+                          <ul className="list-disc list-inside  ">
+                            <li className="py-2 bg-slate-100 p-5 rounded-lg">
+                              By accepting this policy you agree to that you won't show any harmful behavior on the website.
+                            </li>
+                            <li className="py-2 my-2 bg-slate-100 p-5 rounded-lg">
+                            By accepting this policy you agree to that we collect certain information about your device, your interaction with the Site, and information necessary to process your purchases.
+                            </li>
+                            <li className="py-2 my-2 bg-slate-100 p-5 rounded-lg">
+                            By accepting this policy you agree to that you can refund a course that you have purchased only if you have not exceed 50% of the content of the course .
+                            </li>
+                            
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                }
               </div>
 
               <SecondaryButton

@@ -9,45 +9,22 @@ export default function Contract(props) {
           <div className="flex flex-col justify-start mt-5">
             <ul className="list-disc list-inside whitespace-nowrap ">
               <li className="py-2 bg-slate-100 p-5 rounded-lg">
-                By using this website, you agree to the terms and conditions of
+                By accepting this contract, you agree to the terms, conditions and payment policy of
                 this contract.
               </li>
               <li className="py-2 my-2 bg-slate-100 p-5 rounded-lg">
-                By using this website, you agree to the terms and conditions of
-                this contract.
+              By accepting this contract, you agree to that the website will have 10% on each bought course.
               </li>
               <li className="py-2 my-2 bg-slate-100 p-5 rounded-lg">
-                By using this website, you agree to the terms and conditions of
-                this contract.
+              By accepting this contract, you agree to that you will not show any harmful content on the website.
               </li>
               <li className="py-2 my-2 bg-slate-100 p-5 rounded-lg">
-                By using this website, you agree to the terms and conditions of
-                this contract.
+              By accepting this contract, you agree to that you have the legal right to sell the course.
               </li>
               <li className="py-2 my-2 bg-slate-100 p-5 rounded-lg">
-                By using this website, you agree to the terms and conditions of
-                this contract.
+              By accepting this contract, you agree to that you have the copy right to all the contents of your courses.
               </li>
-              <li className="py-2 my-2 bg-slate-100 p-5 rounded-lg">
-                By using this website, you agree to the terms and conditions of
-                this contract.
-              </li>
-              <li className="py-2 my-2 bg-slate-100 p-5 rounded-lg">
-                By using this website, you agree to the terms and conditions of
-                this contract.
-              </li>
-              <li className="py-2 my-2 bg-slate-100 p-5 rounded-lg">
-                By using this website, you agree to the terms and conditions of
-                this contract.
-              </li>
-              <li className="py-2 my-2 bg-slate-100 p-5 rounded-lg">
-                By using this website, you agree to the terms and conditions of
-                this contract.
-              </li>
-              <li className="py-2 my-2 bg-slate-100 p-5 rounded-lg">
-                By using this website, you agree to the terms and conditions of
-                this contract.
-              </li>
+             
             </ul>
             <SecondaryButton
               text="Accept Contract "

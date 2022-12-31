@@ -17,6 +17,7 @@ const DropDown = (props) => {
     } else {
       //handle the view course
       //navigate to course view
+      props.viewCourse();
     }
   };
 

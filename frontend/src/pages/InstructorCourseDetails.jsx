@@ -15,7 +15,7 @@ const InstructorCourseDetailsPage = () => {
   const [courseReviews, setCourseReviews] = useState([]);
   const [reviewsCount, setReviewsCount] = useState([]);
   useEffect(() => {
-    const courseId = "63a375f6b2ac097c6a3f7ed5";
+    const courseId = location.state.courseId;
     axios
       .get("http://localhost:3000/course/".concat(courseId), {
         headers: {

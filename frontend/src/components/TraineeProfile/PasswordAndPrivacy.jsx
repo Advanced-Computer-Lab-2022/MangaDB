@@ -422,75 +422,7 @@ const PasswordAndPrivacy = (props) => {
                     </div>
                   </div>
                 </div>
-                <div className=" py-6 px-4 sm:p-6 lg:pb-8">
-                  <RadioGroup value={selected} onChange={setSelected}>
-                    <h2 className=" text-lg leading-6 font-medium text-gray-900 mb-3">
-                      Email Privacy
-                    </h2>
-
-                    <div className="mt-1 bg-white rounded-md shadow-sm -space-y-px">
-                      {settings.map((setting, settingIdx) => (
-                        <RadioGroup.Option
-                          key={setting.name}
-                          value={setting}
-                          className={({ checked }) =>
-                            classNames(
-                              settingIdx === 0
-                                ? "rounded-tl-md rounded-tr-md"
-                                : "",
-                              settingIdx === settings.length - 1
-                                ? "rounded-bl-md rounded-br-md"
-                                : "",
-                              checked
-                                ? "bg-sky-50 border-sky-200 z-10"
-                                : "border-gray-200",
-                              "relative border p-4 flex cursor-pointer focus:outline-none"
-                            )
-                          }
-                        >
-                          {({ active, checked }) => (
-                            <>
-                              <span
-                                className={classNames(
-                                  checked
-                                    ? "bg-sky-600 border-transparent"
-                                    : "bg-white border-gray-300",
-                                  active
-                                    ? "ring-2 ring-offset-2 ring-sky-500"
-                                    : "",
-                                  "h-4 w-4 mt-0.5 cursor-pointer rounded-full border flex items-center justify-center"
-                                )}
-                                aria-hidden="true"
-                              >
-                                <span className="rounded-full bg-white w-1.5 h-1.5" />
-                              </span>
-                              <div className="ml-3 flex flex-col">
-                                <RadioGroup.Label
-                                  as="span"
-                                  className={classNames(
-                                    checked ? "text-sky-900" : "text-gray-900",
-                                    "block text-sm font-medium"
-                                  )}
-                                >
-                                  {setting.name}
-                                </RadioGroup.Label>
-                                <RadioGroup.Description
-                                  as="span"
-                                  className={classNames(
-                                    checked ? "text-sky-700" : "text-gray-500",
-                                    "block text-sm"
-                                  )}
-                                >
-                                  {setting.description}
-                                </RadioGroup.Description>
-                              </div>
-                            </>
-                          )}
-                        </RadioGroup.Option>
-                      ))}
-                    </div>
-                  </RadioGroup>
-                </div>
+                
                 <div className="mt-4 py-4 px-4 flex justify-end sm:px-6">
                   <SecondaryButton type="submit">Save</SecondaryButton>
                 </div>

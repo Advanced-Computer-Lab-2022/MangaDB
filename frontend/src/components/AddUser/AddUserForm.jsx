@@ -9,12 +9,6 @@ import userIcon from "../../Assets/Images/userIcon.svg";
 import PasswordField from "../Login-SignUp/PasswordField";
 import { useSnackbar } from "notistack";
 import logo from "../../Assets/Images/Logo.svg";
-const addUserReqBody = {
-  userName: "JHVJHVGH",
-  password: "JGYUGU",
-  role: "ADMIN",
-};
-
 export default function AddUserForm(props) {
   const [type, setType] = useState("ADMIN");
   const UserNameRef = useRef();
@@ -22,10 +16,8 @@ export default function AddUserForm(props) {
   const [emptyUserName, setEmptyUserName] = useState(false);
   const [emptyPassword, setEmptyPassword] = useState(false);
   const [warning, setWarning] = useState("");
-
   const setTypeHandler = (e) => {
-    addUserReqBody.role = e.target.value.toUpperCase().split(" ")[0];
-    setType(e.target.value);
+    setType(e.target.value.split(" ")[0].toUpperCase());
   };
   const { enqueueSnackbar } = useSnackbar();
   const handleClickVariant = (variant) => {
@@ -33,16 +25,13 @@ export default function AddUserForm(props) {
     // variant could be success, error, warning, info, or default
     enqueueSnackbar("User has been added successfuly  ", { variant });
   };
-
   const onSubmitHandler = (e) => {
     e.preventDefault();
     const sentData = {
       userName: UserNameRef.current.value,
       password: PasswordRef.current.value,
-      role: type
+      role: type,
     };
-     console.log(sentData);
-
     if (UserNameRef.current.value === "" || PasswordRef.current.value === "") {
       if (UserNameRef.current.value === "") {
         setEmptyUserName(true);
@@ -58,14 +47,20 @@ export default function AddUserForm(props) {
       }
       return;
     } else {
+      //console.log(sentData);
       axios
-        .post("http://localhost:3000/admin/adduser", sentData)
+        .post("http://localhost:3000/admin/addUser", sentData, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
         .then((res) => {
           handleClickVariant("success");
         })
         .catch((error) => {
           if (
-            +error.message.split(" ")[error.message.split(" ").length - 1] ===400
+            +error.message.split(" ")[error.message.split(" ").length - 1] ===
+            400
           ) {
             setEmptyUserName(true);
             setWarning("Username already exists");
@@ -73,14 +68,13 @@ export default function AddUserForm(props) {
         });
     }
   };
-
   return (
     <div className="flex justify-center items-center ">
       <form onSubmit={onSubmitHandler}>
         <Card className="flex flex-col space-y-12 justify-center items-center  outline-primaryBlue  p-16  rounded-3xl">
           <div
             class={
-              emptyPassword || emptyUserName 
+              emptyPassword || emptyUserName
                 ? "p-4 mt-3 text-red-900 bg-red-50 border rounded-md"
                 : "hidden"
             }

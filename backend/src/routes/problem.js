@@ -2,41 +2,26 @@ const router = require("express").Router();
 const auth = require("../middleware/auth");
 const problemController = require("../controllers/problem");
 
-router.post("/", problemController.createProblem);
 
-router.get("/", problemController.getProblems);
+router.get("/unresolvedProblem/:id", problemController.getUnresolvedUserProblems); //not used
 
-router.get("/:id", problemController.getProblem);
+router.post("/",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE","INSTRUCTOR"]), problemController.createProblem);
 
-router.get("/usercourseproblems/:id",problemController.getUserCourseProblems);
+router.get("/",auth.validateToken,auth.authenticateRole(["ADMIN"]), problemController.getProblems);
 
-router.delete("/:id", problemController.deleteProblem); 
-
-router.patch("/:id", problemController.updateProblem);
-
-router.patch("/followup/:id", problemController.followUpProblem);
-
-router.get("/user/:id", problemController.getUserProblems);
-
-router.get("/course/:id", problemController.getCourseProblems);
+router.get("/userCourseProblems/:id",auth.validateToken,auth.authenticateRole(["ADMIN","TRAINEE","CORPORATE","INSTRUCTOR"]),problemController.getUserCourseProblems);
 
 
-// router.post("/",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]), problemController.createProblem);
+router.delete("/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), problemController.deleteProblem); 
 
-// router.get("/",auth.validateToken,auth.authenticateRole(["ADMIN"]), problemController.getProblems);
+router.patch("/followUp/:id",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE","INSTRUCTOR"]), problemController.followUpProblem);
 
-// router.get("/:id",auth.validateToken,auth.authenticateRole(["ADMIN","TRAINEE","CORPORATE"]), problemController.getProblem);
+router.patch("/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), problemController.updateProblem);
 
-// router.delete("/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), problemController.deleteProblem); 
+router.get("/user",auth.validateToken,auth.authenticateRole(["ADMIN","TRAINEE","CORPORATE","INSTRUCTOR"]), problemController.getUserProblems);
 
-// router.patch("/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), problemController.updateProblem);
+router.get("/course/:id",auth.validateToken,auth.authenticateRole(["ADMIN","TRAINEE","CORPORATE","INSTRUCTOR"]), problemController.getCourseProblems);
 
-// router.patch("/followup/:id",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]), problemController.followUpProblem);
-
-// router.get("/user/:id",auth.validateToken,auth.authenticateRole(["ADMIN","TRAINEE","CORPORATE"]), problemController.getUserProblems);
-
-// router.get("/course/:id",auth.validateToken,auth.authenticateRole(["ADMIN","TRAINEE","CORPORATE"]), problemController.getCourseProblems);
+router.get("/:id",auth.validateToken,auth.authenticateRole(["ADMIN","TRAINEE","CORPORATE"]), problemController.getProblem);
 
 module.exports = router;
-
-

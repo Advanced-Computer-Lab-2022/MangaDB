@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState, Fragment } from "react";
 import SecondaryButton from "../UI/SecondaryButton";
 import reactImage from "../../Assets/Images/react.png";
@@ -6,8 +6,12 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../UI/Modal";
 import Divider from "@mui/material/Divider";
 import Video from "../Video/Video";
+import { useSnackbar } from "notistack";
+import axios from "axios";
 const AddToCartCard = (props) => {
   const [ModalShown, setModalShown] = useState(false);
+  const [buttonState, setButtonState] = useState(true);
+  const [buttonText, setButtonText] = useState("Buy Course");
   const hideModalHandler = () => {
     setModalShown(false);
   };
@@ -15,9 +19,81 @@ const AddToCartCard = (props) => {
     setModalShown(true);
   };
   const navigate = useNavigate();
-  const clickHandler = () => {
-    if (props.userRegister) navigate("/courseview/1", { state: props.id });
+  const { enqueueSnackbar } = useSnackbar();
+  const role = localStorage.getItem("role");
+  const handleClickVariant = (variant) => {
+    if (variant === "success") {
+      enqueueSnackbar("Course has been requested successfuly", { variant });
+    }
   };
+  useEffect(() => {
+    if (role === "TRAINEE") {
+      if (props.userRegister) {
+        setButtonText("Go To Course");
+        setButtonState(true);
+      }
+    } else if (role === "CORPORATE") {
+      if (!props.requested && !props.userRegister) {
+        setButtonText("Request Access");
+        setButtonState(true);
+      } else if (props.userRegister) {
+        setButtonText("Go To Course");
+        setButtonState(true);
+      } else {
+        setButtonText("Requested");
+        setButtonState(false);
+      }
+    }
+  }, [props.requested, props.userRegister,role]);
+  const clickHandler = () => {
+    //handle if user is a guest and navigate to login page
+    //case 1: Guest -> Buy Course -> navigate to login
+    //case 2: Unregistered Corporate Trainee -> Request Access -> feedback course successfully requested
+    //case 3: Unregistered Trainee -> Buy Course -> navigate to stripe
+    //case 4: Registered User -> Go To Course -> navigate to course view page
+    if (!role) {
+      navigate("/login");
+    } else if (role === "TRAINEE") {
+      if (props.userRegister) {
+        navigate("/courseview", { state: props.id });
+      } else {
+        axios
+          .post("http://localhost:3000/invoice/".concat(props.id), {}, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
+          .then((res) => {
+            localStorage.setItem("courseId", props.id);
+            window.location.href = res.data.link;
+            localStorage.setItem("invoiceId", res.data.invoiceId);
+          });
+      }
+    } else if (role === "CORPORATE") {
+      if (!props.requested && !props.userRegister) {
+        axios
+          .post(
+            "http://localhost:3000/request/access",
+            {
+              courseId: props.id,
+              reason: "I want this course",
+            },
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("token"),
+              },
+            }
+          )
+          .then((res) => {
+            setButtonState(false);
+            handleClickVariant("success");
+          });
+      } else if (props.userRegister) {
+        navigate("/courseview", { state: props.id });
+      }
+    }
+  };
+
   const displayedVideo = (
     <Fragment>
       <div className="grid grid-cols-3 pb-3 font-bold">
@@ -34,7 +110,11 @@ const AddToCartCard = (props) => {
       </div>
       <Divider variant="middle" />
       <div className="py-4">
-        <Video isVisible={true} playing={false} link={props.courseOverview}></Video>
+        <Video
+          isVisible={true}
+          playing={false}
+          link={props.courseOverview}
+        ></Video>
       </div>
     </Fragment>
   );
@@ -62,9 +142,10 @@ const AddToCartCard = (props) => {
         </svg>
 
         <SecondaryButton
-          onClick={clickHandler}
-          text={props.userRegister ? "Go To Course" : "Add To Cart"}
-          className="w-full"
+          onClick={buttonState ? clickHandler : null}
+          text={buttonText}
+          className="w-full "
+          disabled={!buttonState}
         />
       </div>
     </Fragment>

@@ -24,9 +24,15 @@ const InstructorPage = () => {
   const [loading, setLoading] = useState(true);
   //const [reviewedBefore,setReviewedBefore] =useState(false)
   //fetch the data at the start of the code ..
+  //navigation to get the id
   useEffect(() => {
+    const instructorId = "63a36fd41bd9f2e6163b0481";
     axios
-      .get("http://localhost:3000/instructor/63a36fd41bd9f2e6163b0481")
+      .get(`http://localhost:3000/instructor/${instructorId}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
       .then((res) => {
         setReceivedData(res.data);
         setReviews(res.data.instructor.reviews);
@@ -67,18 +73,22 @@ const InstructorPage = () => {
 
   //submit the instructor review
   const onClickHandler = () => {
+    const instructorId = "63a36fd41bd9f2e6163b0481";
     const reviewData = {
-      userId: "63a37e9688311fa832f43336",
       rating: enteredRating,
       review: enteredReview,
     };
     axios
       .post(
-        "http://localhost:3000/instructor/rate/63a36fd41bd9f2e6163b0481",
-        reviewData
+        `http://localhost:3000/instructor/rate/${instructorId}`,
+        reviewData,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
       )
       .then((res) => {
-        console.log(res.data.review);
         setReviews([...reviews, res.data.review]);
         setSummary(res.data.count);
         setStatsConf([

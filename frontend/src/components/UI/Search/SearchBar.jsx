@@ -11,10 +11,7 @@ const SearchBar = (props) => {
   }
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    const instructorId = "6386427487d3f94e4cb7a28d"
-    navigate( `/searchresults/${instructorId}`,{state:inputRef.current.value});
-    //props.onChange(inputRef.current.value);
-
+    navigate(`/searchresults`, {state:inputRef.current.value});
   };
 
   return (

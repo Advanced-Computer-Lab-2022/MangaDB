@@ -4,15 +4,30 @@ import CircularProgress from "@mui/material/CircularProgress";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import fail from "../../Assets/Images/fail.svg";
+import axios from "axios";
 
 export default function UnsuccessfulPayment() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    //call endpoint of payment
-    /*setTimeout(() => {
-      navigate('/home/1')
-    }, 5000)*/
+    axios
+      .delete(
+        "http://localhost:3000/invoice/" + localStorage.getItem("invoiceId"),
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
+      .then((res) => {
+        localStorage.removeItem("invoiceId");
+        setTimeout(() => {
+          navigate("/courseDetails", {
+            state: { courseId: localStorage.getItem("courseId") },
+          });
+          localStorage.removeItem("courseId");
+        }, 5000);
+      });
   }, []);
   return (
     <div className="flex flex-col space-y-5">

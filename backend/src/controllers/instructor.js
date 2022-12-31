@@ -3,7 +3,7 @@ const user = require('../models/user');
 const invoice = require('../models/invoice');
 
 exports.updateUser = (req, res) => {
-    const id = req.params.id;
+    const id = req.user.id;;
     user.findByIdAndUpdate(id, req.body
     , { useFindAndModify: false ,new: true})
     .then(data => {
@@ -23,7 +23,7 @@ exports.updateUser = (req, res) => {
 
 exports.rateInstructor = async (req, res) => {
     const instructorId = req.params.id;
-    const userId = req.body.userId;
+    const userId = req.user.id;;
     const rating = req.body.rating;
     const review = req.body.review;
     try {
@@ -132,7 +132,7 @@ exports.rateInstructor = async (req, res) => {
 
 exports.editRating = async (req, res) => {
     const instructorId = req.params.id;
-    const userId = req.body.userId;
+    const userId = req.user.id;
     const rating = req.body.rating;
     const review = req.body.review;
     try {
@@ -176,7 +176,7 @@ exports.editRating = async (req, res) => {
 
 exports.deleteRating = async (req, res) => {
     const instructorId = req.params.id;
-    const userId = req.body.userId;
+    const userId = req.user.id;
     try {
         let foundInstructor=await user
         .findById(instructorId)
@@ -213,7 +213,7 @@ exports.deleteRating = async (req, res) => {
 
 exports.getRating = async (req, res) => {
     const instructorId = req.params.id;
-    const userId = req.query.userId;
+    const userId = req.user.id;
     try {
         let foundInstructor=await user
         .findById(instructorId)
@@ -264,7 +264,7 @@ exports.setDiscount= async (req, res) => {
 
 
 exports.getMoneyOwed = async (req, res) => {
-    const instructorId=req.params.id;
+    const instructorId=req.user.id;
     try {
         const invoiceData=await invoice.find({instructor:instructorId}).sort({invoiceDate:1});
         let history=[];
@@ -280,7 +280,7 @@ exports.getMoneyOwed = async (req, res) => {
         let date =invoiceData[i].invoiceDate.toISOString().split('-');
          year = parseInt(date[0] ) ;
          month = date[1];
-        if(month!=prevMonth&&prevMonth!=0)
+        if((month!=prevMonth&&prevMonth!=0)||(prevYear!=year&&prevYear!=0))
         {
             history.push({month:prevMonth,year:prevYear,amount:total.toFixed(2)});
             total=0;
@@ -313,6 +313,7 @@ exports.getMoneyOwed = async (req, res) => {
 };
 
 exports.getInstructorRating = async (req, res) => {
+
     const instructorId=req.params.id;
     try {
         const instructorData=await user.findById(instructorId);
@@ -331,6 +332,7 @@ exports.getInstructorRating = async (req, res) => {
             message: err.message || "Some error occurred while getting instructor rating.",
         });
     }
+
 }
 
 
@@ -376,3 +378,41 @@ exports.viewInstructor=async (req, res) => {
     });
 
   }
+
+  //difference between this and viewInstructor is that this one is for instructor to view his own profile
+  exports.viewMyReviews=async (req, res) => {
+    const instructorId = req.user.id;
+    const instructorData = await
+    user.findById
+    (instructorId);
+    if (!instructorData) {
+      res.status(404).json({ message: "Instructor Not Found" });
+      return;
+    }
+    let rating1=0;
+    let rating2=0;
+    let rating3=0;
+    let rating4=0;
+    let rating5=0;
+    for (let i = 0; i < instructorData.reviews.length; i++) {
+      if (instructorData.reviews[i].rating == 1) {
+        rating1++;
+      }
+      if (instructorData.reviews[i].rating == 2) {
+        rating2++;
+      }
+      if (instructorData.reviews[i].rating == 3) {
+        rating3++;
+      }
+      if (instructorData.reviews[i].rating == 4) {
+        rating4++;
+      }
+      if (instructorData.reviews[i].rating == 5) {
+        rating5++;
+      }
+    }
+    let count=[{rating:1,count:rating1},{rating:2,count:rating2},{rating:3,count:rating3},{rating:4,count:rating4},{rating:5,count:rating5}];
+    res.status(200).json({ instructor: instructorData,
+      count:count
+    });
+}

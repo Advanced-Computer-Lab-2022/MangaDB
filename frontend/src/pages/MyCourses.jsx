@@ -5,23 +5,25 @@ import CourseCard from "../components/Course/CourseCard";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 import Navbar from "../components/UI/NavBar/NavBar";
+import { SnackbarProvider, useSnackbar } from "notistack";
 
 // pagination blue theme
+// pagination blue theme
 const theme = createTheme({
-  status: {
-    danger: "#e53e3e",
-  },
-  palette: {
-    primary: {
-      main: "#3970AC",
-      darker: "#053e85",
+    status: {
+      danger: "#e53e3e",
     },
-    neutral: {
-      main: "#64748B",
-      contrastText: "#fff",
+    palette: {
+      primary: {
+        main: "#3970AC",
+        darker: "#053e85",
+      },
+      neutral: {
+        main: "#64748B",
+        contrastText: "#fff",
+      },
     },
-  },
-});
+  });
 
 const MyCourses = () => {
   //replace the stub in the useState with an empty array
@@ -29,13 +31,24 @@ const MyCourses = () => {
   const [page, setPage] = useState(1);
   const [noOfPages, setNoOfPages] = useState(0);
 
+  const [myRequests, setMyRequests] = useState([]);
+  const [render, setRender] = useState(false);
+  
+  const [userRole, setUserRole] = useState(localStorage.getItem("role"));
+
   //funtion to handle the pagination
+
+  const renderHandler = () => {
+    setRender(!render);
+  };
+
   const onChangePageHandler = (event, value) => {
     setPage(value);
   };
 
   useEffect(() => {
     //fetch the courses of the trainee
+    
     axios
       .get(
         `http://localhost:3000/user/mycourses/63a37e9688311fa832f43336/?page=${page}`
@@ -44,12 +57,26 @@ const MyCourses = () => {
         setNoOfPages(res.data.count);
         setMyCourses(res.data.courses);
       });
-  }, [page]);
-  console.log(myCourses);
+
+      axios.get(`http://localhost:3000/request/user/63a37e9688311fa832f43336`).then((res)=>{
+        for(let i=0;i<res.data.requests.length;i++){
+          if(res.data.requests[i].type==="refund"){
+            //console.log(res.data.requests[i].course);  
+            setMyRequests([...myRequests,res.data.requests[i].course]);
+          }
+        }
+        //console.log(res.data.requests[1].type);
+      });
+  }, [page,render]);
+
+  
   // handle the small screen and big screen..
   var coursesListView;
   var coursesCardsView;
   coursesListView = myCourses.map((course) => {
+    console.log(course.course._id);
+    //console.log(myRequests);
+    //console.log(myRequests.includes(course._id));
     return (
       <CourseCardListView
         id={course.course._id}
@@ -63,8 +90,13 @@ const MyCourses = () => {
         discountedPrice={course.course.discountedPrice}
         discount={course.course.discount}
         rating={course.course.rating}
+        refundable={(course.totalSources/2)>=course.percentageCompleted && userRole=="TRAINEE"}
+        myCourses={true}
+        requested={myRequests.includes(course.course._id)}
+        renderHandler={renderHandler}
         // currencySymbol={currencySymbol}
       ></CourseCardListView>
+     
     );
   });
   coursesCardsView = myCourses.map((course) => {
@@ -114,4 +146,6 @@ const MyCourses = () => {
     </Fragment>
   );
 };
+
 export default MyCourses;
+

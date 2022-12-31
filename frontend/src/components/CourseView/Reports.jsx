@@ -13,7 +13,6 @@ const Reports = (props) => {
 
   const onClickHandler = () => {
     const reportData = {
-      userId: "63a37e9688311fa832f43336",
       courseId: props.courseId,
       type: props.selected.name,
       description: enteredReport,
@@ -59,6 +58,17 @@ const Reports = (props) => {
         index={index}
         date={fullDate}
         description={report.description}
+        followUp={report.followUpComment}
+        followUpDescriptionChangeHandler={
+          props.followUpDescriptionChangeHandler
+        }
+        followUpSubmitHandler={props.followUpSubmitHandler}
+        followUpDescription={props.followUpDescription}
+        followUpId={props.followUpId}
+        followUpProblem={props.followUpProblem}
+        showFollowUpModal={props.showFollowUpModal}
+        openFollowUpModal={props.openFollowUpModal}
+        closeFollowUpModal={props.closeFollowUpModal}
       />
     );
   });

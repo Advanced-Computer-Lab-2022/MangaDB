@@ -7,7 +7,7 @@ const invoice=require("../models/invoice");
 exports.requestRefund = async (req, res) => {
 
     const courseId = req.body.courseId;
-    const userId = req.body.userId;
+    const userId = req.user.id;
     const reason = req.body.reason;
 
     const foundRequest=await request.findOne({course:courseId,user:userId,type:"refund"})
@@ -56,6 +56,8 @@ exports.requestRefund = async (req, res) => {
       courseName:foundCourse.courseTitle,
       userName:foundUser.firstName+" "+foundUser.lastName,
       course: courseId,
+      courseName:foundCourse.courseTitle,
+      userName:foundUser.firstName+" "+foundUser.lastName,
       user: userId,
       reason: reason,
       type:"refund",
@@ -69,7 +71,7 @@ exports.requestRefund = async (req, res) => {
   exports.requestCourseAccess = async (req, res) => {
       
       const courseId = req.body.courseId;
-      const userId = req.body.userId;
+      const userId =req.user.id;
       const reason = req.body.reason;
       const foundRequest=await request.findOne({course:courseId,user:userId,type:"access"})
   
@@ -193,7 +195,8 @@ exports.requestRefund = async (req, res) => {
             const refundAmount = await invoice.findOneAndDelete({course:foundRequest.course,user:foundRequest.user}).then((invoice)=>{
                 return invoice.totalAmount;
             }).catch((err)=>{
-                console.log(err);
+            
+              
             });
 
             foundUser.courseDetails.splice(courseIndex,1);
@@ -214,6 +217,8 @@ exports.requestRefund = async (req, res) => {
     }
 
     exports.grantAccess = async (req, res) => {
+    
+      
         try{
             const requestId = req.params.id;
             const foundRequest = await request.findById
@@ -314,7 +319,7 @@ exports.requestRefund = async (req, res) => {
 };
 
 exports.getUserRequests= async (req, res) => {
-  const userId = req.params.id;
+  const userId = req.user.id;
   try {
    const foundRequests= await request.find({user:userId});
     if(foundRequests)

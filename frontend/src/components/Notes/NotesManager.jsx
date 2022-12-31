@@ -53,10 +53,12 @@ const NotesManager = (props) => {
       sourceDescription: `${props.sourceNo}. ${props.source}`,
     };
     var newNotes = [...props.notes, obj2];
-    axios.patch(
-      `http://localhost:3000/user/notes/${props.studentId}`,
-      sentData
-    );
+    console.log(sentData.notes);
+    axios.patch(`http://localhost:3000/user/notes`, sentData, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
     props.setNotes(newNotes);
   };
 
@@ -89,10 +91,11 @@ const NotesManager = (props) => {
       sourceId: sourceId,
       notes: temp,
     };
-    axios.patch(
-      `http://localhost:3000/user/notes/${props.studentId}`,
-      sentData
-    );
+    axios.patch(`http://localhost:3000/user/notes`, sentData, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
     props.setNotes(newNotes);
   };
 
@@ -119,10 +122,11 @@ const NotesManager = (props) => {
       sourceId: sourceId,
       notes: temp,
     };
-    axios.patch(
-      `http://localhost:3000/user/notes/${props.studentId}`,
-      sentData
-    );
+    axios.patch(`http://localhost:3000/user/notes`, sentData, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
     props.setNotes(newNotes);
   };
 
@@ -196,6 +200,14 @@ const NotesManager = (props) => {
             selectedChangeHandler={selectedReportsChangeHandler}
             courseId={props.courseId}
             reports={props.reports}
+            followUpDescriptionChangeHandler={props.followUpDescriptionChangeHandler}
+            followUpSubmitHandler={props.followUpSubmitHandler}
+            followUpDescription={props.followUpDescription}
+            followUpId={props.followUpId}
+            followUpProblem={props.followUpProblem}
+            showFollowUpModal={props.showFollowUpModal}
+            openFollowUpModal={props.openFollowUpModal}
+            closeFollowUpModal={props.closeFollowUpModal}
           />
         )}
         {props.certificateAlert ? (

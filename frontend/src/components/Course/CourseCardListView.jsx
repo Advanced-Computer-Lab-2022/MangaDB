@@ -4,14 +4,42 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Stars from "../UI/Stars";
 import SecondaryButton from "../UI/SecondaryButton";
 import { useNavigate } from "react-router-dom";
-
+import { SnackbarProvider, useSnackbar } from "notistack";
+import axios from "axios";
 const size = 5;
 
 const CourseCardListView = (props) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant) => {
+    //console.log("here");
+    // variant could be success, error, warning, info, or default
+    if (variant === "success") {
+      enqueueSnackbar("Refund has been requested successfuly", { variant });
+    }
+  };
   const navigate = useNavigate();
+  const refundClickHandler = (courseId) => {
+    axios
+      .post(
+        `http://localhost:3000/request/refund`,
+        {
+          courseId: courseId,
+          reason: "I don't like it",
+          //reason needs to be removed from front and back
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
+      .then((res) => {
+        props.renderHandler();
+        handleClickVariant("success");
+      });
+  };
   const clickHandler = () => {
-    const instructorId = "6386427487d3f94e4cb7a28d";
-    navigate(`/coursedetails/${instructorId}`, { state: {courseId:props.id, userId:props.userId}} );
+    navigate(`/coursedetails`, { state: { courseId: props.id } });
   };
   const totalDuration = Math.round(props.duration / 60);
   return (
@@ -56,7 +84,8 @@ const CourseCardListView = (props) => {
           <div className="flex justify-end items-center">
             {props.discount > 0 && (
               <div className="line-through decoration-1 text-lg font-thin mr-4">
-                {props.coursePrice}{props.currencySymbol}
+                {props.coursePrice}
+                {props.currencySymbol}
               </div>
             )}
             <h5 class="text-2xl font-bold tracking-tight text-gray-900">
@@ -64,14 +93,29 @@ const CourseCardListView = (props) => {
                 <div className="text-green-600 mr-6">FREE</div>
               )}
               {props.discountedPrice != 0 && (
-                <div className="mr-6">{props.discountedPrice}{props.currencySymbol}</div>
+                <div className="mr-6">
+                  {props.discountedPrice}
+                  {props.currencySymbol}
+                </div>
               )}
             </h5>
             <SecondaryButton
               onClick={clickHandler}
-              text="View"
-              className="text-md font-bold"
+              text={"View"}
+              className="text-md font-bold "
             />
+            {props.myCourses ? (
+              <SecondaryButton
+                onClick={
+                  props.refundable
+                    ? refundClickHandler.bind(null, props.id)
+                    : null
+                }
+                text={props.requested ? "Requested" : "Request Refund"}
+                className="text-md font-bold mx-2 "
+                disabled={props.requested || !props.refundable ? true : false}
+              />
+            ) : null}
           </div>
         </div>
       </div>

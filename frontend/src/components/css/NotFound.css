@@ -1,0 +1,65 @@
+.body {
+	background: #fff;
+	font-family: "Roboto", sans-serif;
+	width: 100%;
+	overflow: hidden;
+}
+.cloud-container {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+.cloud-container > svg {
+	display: block;
+	position: absolute;
+	width: 200px;
+	left: 0px;
+	fill: #1976d2;
+	opacity: 0.2;
+	transform: translateX(-100%);
+	animation: cloud-passover linear infinite;
+}
+.cloud-container > svg:nth-child(1) {
+	top: 20px;
+	animation-delay: 2s;
+	animation-duration: 12s;
+}
+.cloud-container > svg:nth-child(2) {
+	top: 160px;
+	animation-delay: 4s;
+	animation-duration: 13s;
+}
+.cloud-container > svg:nth-child(3) {
+	top: 280px;
+	animation-delay: 6s;
+	animation-duration: 11s;
+}
+@keyframes cloud-passover {
+	from {
+		transform: translateX(-100%);
+   }
+	to {
+		transform: translateX(100vw);
+   }
+}
+.contain {
+	display: flex;
+	width: 100vw;
+	height: 100vh;
+	align-items: center;
+	justify-content: center;
+}
+.content {
+	color: #1976d2;
+	width: 600px;
+}
+.heading {
+	font-size: 100px;
+	font-weight: 300;
+}
+.sorry {
+	margin-top: 20px;
+	font-size: 35px;
+	font-weight: 300;
+	line-height: 1.5;
+}

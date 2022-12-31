@@ -12,7 +12,9 @@ import SearchBar from "../components/UI/Search/SearchBar";
 import Cloud from "../components/HomeComponents/Cloud";
 import Testomonial from "../components/HomeComponents/Testomonial";
 import Incentives from "../components/HomeComponents/Incentives";
+import SaleCourseCard from "../components/Course/SaleCourseCard";
 import { useLocation } from "react-router-dom";
+
 const HomePage = () => {
   const [displayedCourses, setDisplayedCourses] = useState([]);
   const [discountedCourses, setDiscountedCourses] = useState([]);
@@ -28,13 +30,13 @@ const HomePage = () => {
   };
   useEffect(() => {
     axios
-      .get("http://localhost:3000/course/mostviewed/?CC=".concat(countryCode))
+      .get("http://localhost:3000/course/mostViewed/?CC=".concat(countryCode))
       .then((res) => {
         setDisplayedCourses(res.data.courses);
         setCurrencySymbol(res.data.symbol);
       });
 
-    axios.get("http://localhost:3000/course/discountedcourses/").then((res) => {
+    axios.get("http://localhost:3000/course/discountedCourses/").then((res) => {
       console.log(res.data);
       setDiscountedCourses(res.data);
     });
@@ -49,7 +51,6 @@ const HomePage = () => {
     return (
       <CourseCard
         id={course._id}
-        userId={location.state}
         duration={course.totalMins}
         title={course.courseTitle}
         instructorName={course.instructorName}
@@ -65,7 +66,7 @@ const HomePage = () => {
   });
   const displayedDiscountedCourses = discountedCourses.map((course) => {
     return (
-      <CourseCard
+      <SaleCourseCard
         id={course._id}
         userId={location.state}
         duration={course.totalMins}
@@ -78,7 +79,7 @@ const HomePage = () => {
         discount={course.discount}
         rating={course.rating}
         currencySymbol={currencySymbol}
-      ></CourseCard>
+      ></SaleCourseCard>
     );
   });
   return (

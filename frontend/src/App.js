@@ -7,7 +7,6 @@ import SearchResultsPage from "./pages/SearchResultsPage";
 import InstructorProfilePage from "./pages/InstructorProfilePage";
 import CourseDetailsPage from "./pages/CourseDetailsPage";
 import CourseViewPage from "./pages/CourseViewPage";
-import AdminAddNewUser from "./pages/AdminAddNewUser";
 import InstructorCoursesPage from "./pages/InstructorCoursesPage";
 import AddCoursePage from "./pages/AddCoursePage";
 import SignUp from "./pages/SignUp";
@@ -18,42 +17,48 @@ import InstructorWallet from "./pages/IntructorWallet";
 import PageNotFound from "./pages/PageNotFound";
 import UnAuthorizedPage from "./pages/UnAuthorizedPage";
 import MyCourses from "./pages/MyCourses";
+import TraineeProfilePage from "./pages/TraineeProfilePage";
 import AdminPage from "./components/Admin/AdminPage";
 import InstructorPage from "./pages/InstructorPage";
 import InstructorDashboard from "./pages/InstructorDashboard";
+import InstructorCourseDetails from "./pages/InstructorCourseDetails";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import SuccessfulPayment from "./components/Payment/SuccessfulPayment";
+import UnsuccessfulPayment from "./components/Payment/UnsuccessfulPayment";
 function App() {
   return (
     <Fragment>
       <Routes>
-        <Route path="/" element={<Login></Login>}></Route>
+        <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/signup" element={<SignUp></SignUp>}></Route>
         <Route
           path="/resetpassword"
           element={<ResetPassword></ResetPassword>}
         ></Route>
-        <Route path="/home/:id" element={<HomePage></HomePage>}></Route>
+        <Route path="/" element={<HomePage></HomePage>}></Route>
         <Route
-          path="/searchresults/:id"
+          path="/searchresults"
           element={<SearchResultsPage></SearchResultsPage>}
         ></Route>
         <Route
-          path="/coursedetails/:id"
+          path="/coursedetails"
           element={<CourseDetailsPage></CourseDetailsPage>}
         ></Route>
         <Route
-          path="/courseview/:id"
+          path="/courseview"
           element={<CourseViewPage></CourseViewPage>}
         ></Route>
         <Route
-          path="/profile/:id"
+          path="/profileInstructor/:id"
           element={<InstructorProfilePage></InstructorProfilePage>}
         ></Route>
         <Route
-          path="/admin/:id"
-          element={<AdminPage></AdminPage>}
+          path="/profileTrainee/:id"
+          element={<TraineeProfilePage></TraineeProfilePage>}
         ></Route>
+        <Route path="/admin" element={<AdminPage></AdminPage>}></Route>
         <Route
-          path="courses/:id"
+          path="courses"
           element={<InstructorCoursesPage></InstructorCoursesPage>}
         ></Route>
         <Route
@@ -75,9 +80,27 @@ function App() {
           path="InstructorPage"
           element={<InstructorPage></InstructorPage>}
         ></Route>
-        <Route path = "instructorDashboard" element={<InstructorDashboard></InstructorDashboard>}></Route>
+        <Route
+          path="instructorDashboard"
+          element={<InstructorDashboard></InstructorDashboard>}
+        ></Route>
+        <Route
+          path="instructorCourseDetails/:id"
+          element={<InstructorCourseDetails></InstructorCourseDetails>}
+        ></Route>
+        <Route
+          path="forgotPassword"
+          element={<ForgotPasswordPage></ForgotPasswordPage>}
+        ></Route>
+        <Route
+          path="successfulPayment"
+          element={<SuccessfulPayment></SuccessfulPayment>}
+        ></Route>
+        <Route
+          path="unsuccessfulPayment"
+          element={<UnsuccessfulPayment></UnsuccessfulPayment>}
+        ></Route>
       </Routes>
-
       <Footer></Footer>
     </Fragment>
   );

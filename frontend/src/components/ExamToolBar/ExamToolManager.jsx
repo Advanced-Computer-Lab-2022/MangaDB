@@ -46,10 +46,11 @@ const ExamToolManager = (props) => {
       sourceId: sourceId,
       notes: temp,
     };
-    axios.patch(
-      `http://localhost:3000/user/notes/${props.studentId}`,
-      sentData
-    );
+    axios.patch(`http://localhost:3000/user/notes/`, sentData, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
     props.setNotes(newNotes);
   };
 
@@ -76,10 +77,11 @@ const ExamToolManager = (props) => {
       sourceId: sourceId,
       notes: temp,
     };
-    axios.patch(
-      `http://localhost:3000/user/notes/${props.studentId}`,
-      sentData
-    );
+    axios.patch(`http://localhost:3000/user/notes/`, sentData, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
     props.setNotes(newNotes);
   };
 
@@ -89,12 +91,6 @@ const ExamToolManager = (props) => {
 
   const selectedReportsChangeHandler = (newSelected) => {
     props.changeReportsSelector(newSelected);
-  };
-
-  const submitReportHandler = (data) => {
-    axios.post("http://localhost:3000/problem/", data).then((res) => {
-      console.log(res);
-    });
   };
 
   return (
@@ -138,6 +134,14 @@ const ExamToolManager = (props) => {
             selectedChangeHandler={selectedReportsChangeHandler}
             courseId={props.courseId}
             reports={props.reports}
+            followUpDescriptionChangeHandler={props.followUpDescriptionChangeHandler}
+            followUpSubmitHandler={props.followUpSubmitHandler}
+            followUpDescription={props.followUpDescription}
+            followUpId={props.followUpId}
+            followUpProblem={props.followUpProblem}
+            showFollowUpModal={props.showFollowUpModal}
+            openFollowUpModal={props.openFollowUpModal}
+            closeFollowUpModal={props.closeFollowUpModal}
           />
         )}
         {props.certificateAlert ? (

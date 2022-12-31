@@ -3,6 +3,10 @@ import TertiaryButton from "../UI/TertiaryButton";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import SecondaryButton from "../UI/SecondaryButton";
+import Backdrop from "@mui/material/Backdrop";
+import Contract from "./Contract";
+import { useEffect } from "react";
+import axios from "axios";
 
 var toolbarOptions = [
   ["bold", "italic", "underline", "strike"],
@@ -27,6 +31,10 @@ function isYoutubeURL(str) {
 }
 
 const CreateCourseForm = (props) => {
+  const [openContract, setOpenContract] = useState(false);
+  const handleClose = () => {
+    setOpenContract(false);
+  };
   const [enteredCourseTitle, setEnteredCourseTitle] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("Beginner");
   const [enteredImageURL, setEnteredImageURL] = useState("");
@@ -44,6 +52,22 @@ const CreateCourseForm = (props) => {
   const [emptyCourseDescription, setEmptyCourseDescription] = useState(false);
   const [emptyOverviewURL, setEmptyOverviewURL] = useState(false);
   const [validOverviewURL, setValidOverviewURL] = useState(true);
+
+  const acceptContract = () => {
+    axios
+      .patch(
+        "http://localhost:3000/user/updateUser",
+        { agreedToTerms: true },
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
+      .then((response) => {
+        handleClose();
+      });
+  };
 
   const courseTitleChangeHandler = (event) => {
     setEnteredCourseTitle(event.target.value);
@@ -133,9 +157,25 @@ const CreateCourseForm = (props) => {
     return isValidForm;
   };
 
+  useEffect(() => {
+    //we need to check if this instructor already accepted the contract or not
+    //if not, we need to show the contract
+    //if yes, we need to show the form
+    axios
+      .get("http://localhost:3000/user/myProfile", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        if (res.data.agreedToTerms === false) {
+          setOpenContract(true);
+        }
+      });
+  });
+
   const submitHandler = (event) => {
     event.preventDefault();
-    //handleFormValidation();
     var data = {
       courseTitle: enteredCourseTitle,
       level: selectedLevel,
@@ -149,14 +189,19 @@ const CreateCourseForm = (props) => {
     };
     if (handleFormValidation()) {
       props.onSave(data);
-    }
-    else{
-      window.scrollTo(0, 0,"smooth");
+    } else {
+      window.scrollTo(0, 0, "smooth");
     }
   };
 
   return (
     <div>
+      <Backdrop
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={openContract}
+      >
+        <Contract acceptContract={acceptContract}></Contract>
+      </Backdrop>
       <div
         class={
           emptyCourseDescription ||

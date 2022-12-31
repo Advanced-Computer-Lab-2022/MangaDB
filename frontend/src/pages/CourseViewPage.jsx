@@ -42,14 +42,53 @@ const CourseViewPage = () => {
   const [certificateAlert, setCertificateAlert] = useState(false);
   const managerRef = useRef(null);
   const downloadRef = useRef(null);
+  const [showFollowUpModal, setShowFollowUpModal] = useState(false);
+  const [followUpId, setFollowUpId] = useState(-1);
+  const [followUpProblem, setFollowUpProblem] = useState("");
+  const [followUpDescription, setFollowUpDescription] = useState("");
+
+  const openFollowUpModal = (id, problem) => {
+    setShowFollowUpModal(true);
+    setFollowUpId(id);
+    setFollowUpProblem(problem);
+  };
+
+  const closeFollowUpModal = () => {
+    setShowFollowUpModal(false);
+    setFollowUpId(-1);
+  };
+
+  const followUpDescriptionChangeHandler = (event) => {
+    setFollowUpDescription(event.target.value);
+  };
+
+  const followUpSubmitHandler = () => {
+    closeFollowUpModal();
+    const data = {
+      followUpComment: followUpDescription,
+    };
+    axios
+      .post("http://localhost:3000/problem/followUp/" + followUpId, data, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      });
+  };
 
   useEffect(() => {
     const courseId = location.state;
-    const userid = "63a37e9688311fa832f43336";
     if (currentNotesFilter.name === "All Lessons") {
       axios
-        .get(`http://localhost:3000/user/coursenotes/${userid}?cid=${courseId}`)
+        .get(`http://localhost:3000/user/courseNotes?cid=${courseId}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
         .then((res) => {
+          console.log(res);
           var notesSet = [];
           for (var i = 0; i < res.data.noteData.length; i++) {
             if (res.data.noteData[i].notes.length !== 0) {
@@ -85,7 +124,12 @@ const CourseViewPage = () => {
       }
       axios
         .get(
-          `http://localhost:3000/user/subtitlenotes/${userid}?cid=${courseId}&sid=${subtitleId}`
+          `http://localhost:3000/user/subtitleNotes?cid=${courseId}&sid=${subtitleId}`,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
         )
         .then((res) => {
           var notesSet = [];
@@ -115,7 +159,12 @@ const CourseViewPage = () => {
     } else {
       axios
         .get(
-          `http://localhost:3000/user/sourcenotes/${userid}?cid=${courseId}&sid=${currentSource._id}`
+          `http://localhost:3000/user/sourceNotes?cid=${courseId}&sid=${currentSource._id}`,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
         )
         .then((res) => {
           var notesSet = [];
@@ -144,9 +193,11 @@ const CourseViewPage = () => {
         });
     }
     axios
-      .get(
-        `http://localhost:3000/problem/usercourseproblems/${courseId}?uId=${userid}`
-      )
+      .get(`http://localhost:3000/problem/userCourseProblems/${courseId}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
       .then((res) => {
         setReports(res.data);
       });
@@ -161,9 +212,11 @@ const CourseViewPage = () => {
     const courseId = location.state;
     //shouldnt we send the userId ??
     axios
-      .get(
-        `http://localhost:3000/course/${courseId}?uid=63a37e9688311fa832f43336`
-      )
+      .get(`http://localhost:3000/course/${courseId}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
       .then((res) => {
         setReceivedData(res.data.course);
         setQA(res.data.QA);
@@ -190,11 +243,10 @@ const CourseViewPage = () => {
   const onSolveExamHandler = (receivedSolution) => {
     //should mark this as visited in the back and store the data
     //send the sourceId , examId ,userid and courseId
-    var endPoint = `http://localhost:3000/user/solveexam/`;
+    var endPoint = `http://localhost:3000/user/solveExam/`;
 
     var sentData = {
       studentAnswers: receivedSolution,
-      userid: "63a37e9688311fa832f43336",
       courseid: receivedData._id,
       examid: currentSource.quiz._id,
     };
@@ -202,6 +254,7 @@ const CourseViewPage = () => {
       .post(endPoint, sentData, {
         headers: {
           "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
       .then((res) => {
@@ -284,26 +337,27 @@ const CourseViewPage = () => {
   const onWatchHandler = () => {
     //will need the userID , sourceId, courseId
     //the userID and courseid are given from the navigation
-    var endPoint = `http://localhost:3000/user/opensource/${receivedData._id}`;
-    const userId = "63a37e9688311fa832f43336";
+    var endPoint = `http://localhost:3000/user/openSource/${receivedData._id}`;
     const submittedData = {
-      userId: userId,
       sourceId: currentSource._id,
     };
     axios
       .patch(endPoint, submittedData, {
         headers: {
           "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {});
+
+    axios
+      .get(`http://localhost:3000/user/progress/${receivedData._id}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
       .then((res) => {
-        axios
-          .get(
-            `http://localhost:3000/user/progress/${receivedData._id}?uid=${userId}`
-          )
-          .then((res) => {
-            setProgress(res.data.percentage);
-          });
+        setProgress(res.data.percentage);
       });
   };
 
@@ -328,15 +382,18 @@ const CourseViewPage = () => {
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
     let currentDate = `${day}-${month}-${year}`;
-    const userId = "63a37e9688311fa832f43336";
     const sentData = {
-      userId: userId,
       question: recQuestion,
       date: currentDate,
     };
     axios.post(
-      `http://localhost:3000/course/askquestion/${receivedData._id}`,
-      sentData
+      `http://localhost:3000/course/askQuestion/${receivedData._id}`,
+      sentData,
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
     );
     setQA([...QA, { question: recQuestion, date: currentDate }]);
   };
@@ -345,9 +402,15 @@ const CourseViewPage = () => {
   };
 
   const submitReportHandler = (data) => {
-    axios.post("http://localhost:3000/problem/", data).then((res) => {
-      setReports([...reports, res.data]);
-    });
+    axios
+      .post("http://localhost:3000/problem/", data, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        setReports([...reports, res.data]);
+      });
   };
 
   const submitReviewHandler = (data) => {
@@ -356,7 +419,12 @@ const CourseViewPage = () => {
         "http://localhost:3000/course/rate/"
           .concat(receivedData._id)
           .concat("/"),
-        data
+        data,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
       )
       .then((res) => {});
   };
@@ -403,6 +471,14 @@ const CourseViewPage = () => {
           onTabChangeHandler={onTabChangeHandler}
           sourceNo={sourceNo}
           subtitleNo={subtitleNo}
+          followUpDescriptionChangeHandler={followUpDescriptionChangeHandler}
+          followUpSubmitHandler={followUpSubmitHandler}
+          followUpDescription={followUpDescription}
+          followUpId={followUpId}
+          followUpProblem={followUpProblem}
+          showFollowUpModal={showFollowUpModal}
+          openFollowUpModal={openFollowUpModal}
+          closeFollowUpModal={closeFollowUpModal}
         />
       );
     } else {
@@ -468,6 +544,14 @@ const CourseViewPage = () => {
             currentTab={currentTab}
             certificateAlert={certificateAlert}
             onTabChangeHandler={onTabChangeHandler}
+            followUpDescriptionChangeHandler={followUpDescriptionChangeHandler}
+            followUpSubmitHandler={followUpSubmitHandler}
+            followUpDescription={followUpDescription}
+            followUpId={followUpId}
+            followUpProblem={followUpProblem}
+            showFollowUpModal={showFollowUpModal}
+            openFollowUpModal={openFollowUpModal}
+            closeFollowUpModal={closeFollowUpModal}
           ></ExamToolManager>
         </Fragment>
       );

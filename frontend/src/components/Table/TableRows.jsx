@@ -1,15 +1,6 @@
-import { Modal } from "@mui/material";
-import React, { useState, useEffect } from "react";
 import DropDown from "../UI/DropDown";
-import PrimaryButton from "../UI/PrimaryButton";
 import Countdown from "react-countdown";
-
 const TableRows = (props) => {
-  useEffect(() => {}, []);
-
-  const [showPromotationModal, setShowPromotationModal] = useState(false);
-  const [showReportModal, setShowReportModal] = useState(false);
-
   const rows = props.rows.map((row, rowIdx) => {
     const totalHours = Math.round(+row.totalMins / 60);
     const items =
@@ -18,10 +9,9 @@ const TableRows = (props) => {
         : row.discount !== 0
         ? ["View Course", "Report a Problem"]
         : ["View Course", "Report a Problem", "Add Promotion"];
-    console.log(row.mine);
     return (
       <tr
-        key={row.courseId}
+        key={row._id}
         className={`w-full ${rowIdx % 2 === 0 ? "bg-white" : "bg-gray-50"}`}
       >
         <td className="text-center my-4 min-h-[47px] h-fit mx-auto max-w-[20rem] truncate px-2 font-medium">
@@ -83,16 +73,32 @@ const TableRows = (props) => {
             {""}
             {row.discount === 1 ? "" : "$"}
           </div>
-          <div className="text-sm">
-              Expires In: <span className=" text-red-600"> <Countdown date={row.discountEndDate} /> </span>
+          <div className="text-xs">
+            Expires In:{" "}
+            <span className=" text-red-600">
+                <Countdown date={row.discountEndDate} key={row.discountEndDate} />
+            </span>
           </div>
         </td>
         <td className="text-center my-4 px-2">{totalHours} hrs</td>
         <td className="text-center flex justify-center my-4 px-2">
-          <DropDown items={items} />
+          <DropDown
+            fill="currentColor"
+            items={items}
+            openPromotion={props.openPromotionModal.bind(
+              null,
+              row.courseId,
+              row.courseTitle
+            )}
+            closePromotion={props.closePromotionModal}
+            openReport={props.openReportModal.bind(
+              null,
+              row.courseId,
+              row.courseTitle
+            )}
+            closeReport={props.closeReportModal}
+          />
         </td>
-        {showPromotationModal && <Modal></Modal>}
-        {showReportModal && <Modal></Modal>}
       </tr>
     );
   });

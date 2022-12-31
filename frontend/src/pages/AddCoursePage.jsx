@@ -4,7 +4,6 @@ import NavBar from "../components/UI/NavBar/NavBar";
 import CreateCourseForm from "../components/CreateCourse/CreateCourseForm";
 import StepsBar from "../components/CreateCourse/StepsBar";
 import AddSubtitles from "../components/AddSubtitles/AddSubtitles";
-import CreateExam from "../components/Exam/CreateExam/CreateExam";
 const AddCoursePage = (props) => {
   const [steps, setSteps] = useState([
     {
@@ -40,21 +39,17 @@ const AddCoursePage = (props) => {
   };
   const secondDataHandler = (secondStepData) => {
     var secondData = { ...data, subtitles: secondStepData };
-    
-    console.log(secondData);
     axios
-      .post(
-        "http://localhost:3000/instructor/addcourse/63a36fd41bd9f2e6163b0481",
-        secondData
-      )
+      .post("http://localhost:3000/instructor/addCourse", secondData, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
       .then((res) => {
         console.log(res);
       });
- 
   };
 
- 
-  
   return (
     <Fragment>
       <NavBar></NavBar>
@@ -65,7 +60,6 @@ const AddCoursePage = (props) => {
       {steps[1].status === "current" && (
         <AddSubtitles onConfirm={secondDataHandler}></AddSubtitles>
       )}
-     
     </Fragment>
   );
 };

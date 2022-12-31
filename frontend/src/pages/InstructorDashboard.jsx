@@ -11,34 +11,10 @@ import ReportItem from "../components/CourseView/ReportItem";
 import { Divider } from "@mui/material";
 import InstructorQACard from "../components/QA/InstructorQACard";
 
-const questionsStub = [
-  {
-    _id: 1,
-    userName: "Omar Moataz",
-    date: "2022-12-27T10:15:58.506+00:00",
-    courseName: "React Redux hooks",
-    question:
-      "I don't understand the concept of forwarding props from parent to child",
-  },
-  {
-    _id: 2,
-    userName: "Marwan Ashaf",
-    date: "2022-12-27T10:15:58.506+00:00",
-    courseName: "React Redux hooks",
-    question: "What is the purpose of living",
-  },
-  {
-    _id: 3,
-    userName: "Michel Raouf",
-    date: "2022-12-27T10:15:58.506+00:00",
-    courseName: "React Redux hooks",
-    question: "I cant do anything please help",
-  },
-];
 const InstructorDashboard = () => {
   const [receivedData, setReceivedData] = useState({});
   const [reports, setReports] = useState([]);
-  const [questions, setQuestions] = useState(questionsStub);
+  const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState([]);
   const [loaded, setLoaded] = useState(false);
@@ -67,13 +43,15 @@ const InstructorDashboard = () => {
     const data = {
       followUpComment: followUpDescription,
     };
-    axios.post("http://localhost:3000/problem/followUp/" + followUpId, data, {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    }).then((res) => {
-      console.log(res);
-    });
+    axios
+      .post("http://localhost:3000/problem/followUp/" + followUpId, data, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      });
   };
 
   //loading as the endpoint contains a lot of data..
@@ -100,6 +78,14 @@ const InstructorDashboard = () => {
       .then((res) => {
         setReports(res.data);
       });
+
+    axios.get("http://localhost:3000/instructor/questions", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    }).then((res) => {
+      setQuestions(res.data);
+    });
   }, []);
 
   const onConfirmReplyHandler = (id, reply) => {
@@ -111,8 +97,6 @@ const InstructorDashboard = () => {
       }
     }
     setQuestions(temp);
-    console.log(id);
-    console.log(reply);
   };
 
   const stats = [
@@ -215,7 +199,7 @@ const InstructorDashboard = () => {
           date={fullDate}
           userName={question.userName}
           courseName={question.courseName}
-        ></InstructorQACard>
+        />
       );
     });
   } else {

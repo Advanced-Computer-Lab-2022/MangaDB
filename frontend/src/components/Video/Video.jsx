@@ -31,6 +31,7 @@ const Video = (props) => {
         onStart={props.onWatch }
         onReady={onReadyHandler}
         onProgress={progressHandler}
+    
       />
     </div>
   );

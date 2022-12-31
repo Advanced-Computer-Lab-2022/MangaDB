@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 import axios from "axios";
-import NavBar from "../components/UI/NavBar/NavBar";
+import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 import CreateCourseForm from "../components/CreateCourse/CreateCourseForm";
 import StepsBar from "../components/CreateCourse/StepsBar";
 import AddSubtitles from "../components/AddSubtitles/AddSubtitles";
@@ -52,7 +52,7 @@ const AddCoursePage = (props) => {
 
   return (
     <Fragment>
-      <NavBar></NavBar>
+      <NavBarSearch currentTab="Add Course"></NavBarSearch>
       <StepsBar steps={steps}></StepsBar>
       {steps[0].status === "current" && (
         <CreateCourseForm onSave={onSaveHandler}></CreateCourseForm>

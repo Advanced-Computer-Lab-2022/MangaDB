@@ -1,5 +1,4 @@
 import { useState, useEffect, Fragment, useRef } from "react";
-import NavBar from "../components/UI/NavBar/NavBar";
 import ExamManager from "../components/Exam/ExamManager";
 import NotesManager from "../components/Notes/NotesManager";
 import axios from "axios";
@@ -8,6 +7,7 @@ import WarningAlert from "../components/UI/WarningAlert";
 import ContentCourseView from "../components/CourseView/ContentCourseView";
 import ExamToolManager from "../components/ExamToolBar/ExamToolManager";
 import Certificate from "../components/Certificate/Certificate";
+import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 
 const CourseViewPage = () => {
   const location = useLocation();
@@ -559,7 +559,7 @@ const CourseViewPage = () => {
   }
   return (
     <Fragment>
-      <NavBar />
+      <NavBarSearch currentTab="My Courses" />
       <div className=" opacity-0 h-0 overflow-hidden w-full relative ">
         <Certificate ref={downloadRef}></Certificate>
       </div>

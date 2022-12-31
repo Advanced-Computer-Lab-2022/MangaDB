@@ -5,6 +5,7 @@ import Reviews from "../components/Profile/Reviews/Reviews";
 import Reqests from "../components/TraineeProfile/Requests";
 import axios from "axios";
 import { SnackbarProvider, useSnackbar } from "notistack";
+import NavBar from "../components/UI/NavBar/NavBar";
 //stub for the userPersonal Info Received
 const user = {
   email: "test@example.com",
@@ -136,6 +137,7 @@ const TraineeProfilePage = () => {
   }
   return (
     <SnackbarProvider maxSnack={3}>
+      <NavBar currentTab="Profile" />
       <div>{displayedStep}</div>
     </SnackbarProvider>
   );

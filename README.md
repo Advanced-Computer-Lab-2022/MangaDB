@@ -61,6 +61,72 @@
 - Create accounts for instructors.
 - Refund the courses for the students.
   
+## Screenshots
+
+<img src = "./Screenshots/homepage1.jpg">
+
+- This is the first part of the landing page of both guests and trainees , where users can search for courses based on the instructor name, course name or category, users can also see the companies that use Revamp.
+
+<img src = "./Screenshots/homepage2.jpg">
+
+- This is the second part of the landing page where users can see a testomonial of the ceo of Wuzzuf using revamp and the incentives of using the Revamp platform.
+
+<img src = "./Screenshots/homepage3.jpg">
+
+- This is the third part of the landing page where users can view and select the most popular courses to help them find what best suits them.
+
+<img src = "./Screenshots/SearchResults.jpg">
+
+- This is the search results page where users can search for courses or apply filters to narrow down their search, clicking on the view will navigate the user to the course details page where the user can view more information about the selected course.
+
+<img src = "./Screenshots/courseDetails1.jpg">
+
+- This is the first part of the course details page where the users can view information about the course like the content, title instructor etc., clicking on the youtube logo will allow the user to watch the course outline video and clicking on the go to course button will navigate the registered user to the course watch page.
+
+<img src = "./Screenshots/courseDetails2.jpg">
+
+-This is the second part of the course detailts page where the users can monitor the reviews or write a review about the course if they are registered in that course.
+
+<img src = "./Screenshots/courseView1.jpg">
+
+- This is the main part of the course watch page where users can watch the course content by selecting a view from the accordion on the right.
+
+<img src = "./Screenshots/courseView2.jpg">
+
+- This is the notes taking part while watching the video, this is done using the timestamp, so the user can recall in which lesson and they took the note.
+  
+<img src = "./Screenshots/courseView3.jpg">
+
+- This is the part where students can ask questions and wait for the instructor to reply.
+
+<img src = "./Screenshots/courseView4.jpg">
+
+- This is the part where students can report a problem they faced with that course, the problems can be technical or financial or others.
+
+<img src = "./Screenshots/courseView5.jpg">
+
+- This is the part where students can check their progress in that course.
+
+<img src = "./Screenshots/courseView6.jpg">
+
+- This is the part where students can start solving the quiz and they are given hints beforehand.
+
+<img src = "./Screenshots/courseView7.jpg">
+
+- This is how the exam process looks like.
+
+<img src = "./Screenshots/courseView8.jpg">
+
+- This is the immediate feedback the students are given upon submitting their quiz solution, following they can navigate through the questions again to learn from their mistakes.
+
+<img src = "./Screenshots/Faqs.jpg">
+
+-This is what the user views when they click on the FAQS tab, here they can find the most popular questions people ask when using Revamp.
+
+<img src = "./Screenshots/footer.jpg">
+
+-This is the website's footer where clicking on any field will navigate to the corresponding page in the canadian chamber website.
+
 ## Installation and Usage
 
 - clone the repository `git clone https://github.com/Advanced-Computer-Lab-2022/MangaDB.git` or kindly download the zip folder from the repository.

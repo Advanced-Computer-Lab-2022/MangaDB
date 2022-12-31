@@ -1,6 +1,5 @@
 import React from "react";
 import { Fragment, useState, useEffect } from "react";
-import NavBar from "../components/UI/NavBar/NavBar";
 import CourseDetailsCard from "../components/CourseDetailsComp/CourseDetailsCard";
 import axios from "axios";
 import CourseContent from "../components/CourseDetailsComp/CourseContent";

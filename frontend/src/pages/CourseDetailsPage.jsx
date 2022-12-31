@@ -1,6 +1,6 @@
 import React from "react";
 import { Fragment, useState, useEffect } from "react";
-import NavBar from "../components/UI/NavBar/NavBar";
+import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 import CourseDetailsCard from "../components/CourseDetailsComp/CourseDetailsCard";
 import axios from "axios";
 import AddToCartCard from "../components/CourseDetailsComp/AddToCartCard";
@@ -8,7 +8,6 @@ import CourseContent from "../components/CourseDetailsComp/CourseContent";
 import CourseReviews from "../components/CourseDetailsComp/CourseReviews";
 import { useLocation } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
-
 const CourseDetailsPage = () => {
   const location = useLocation();
   const [courseDetails, setCourseDetails] = useState({});
@@ -78,14 +77,13 @@ const CourseDetailsPage = () => {
         }
       )
       .then((res) => {
-        console.log(res);
       });
   };
 
   return (
     <SnackbarProvider maxSnack={3}>
       <Fragment>
-        <NavBar />
+        <NavBarSearch currentTab ="" />
         <div className="bg-veryLightBlue py-4 px-6 flex justify-between">
           <CourseDetailsCard
             courseTitle={courseDetails.courseTitle}

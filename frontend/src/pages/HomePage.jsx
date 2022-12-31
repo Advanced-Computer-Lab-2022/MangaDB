@@ -42,11 +42,10 @@ const HomePage = () => {
     });
   }, [countryCode]);
 
-  //should handle the catch with error state
   const onChangeHandler = (e) => {
-    console.log(e);
     setCountryCode(e);
   };
+
   const courses = displayedCourses.map((course) => {
     return (
       <CourseCard
@@ -85,7 +84,7 @@ const HomePage = () => {
   return (
     <Animate to="1" from="0" attributeName="opacity">
       <div data-carousel> </div>
-      <NavBar onChange={onChangeHandler}></NavBar>
+      <NavBar onChange={onChangeHandler} currentTab="Home"></NavBar>
       <div className="">
         <div className="md:flex justify-center items-center md:p-24 p-10">
           <div className="block md:hidden p-10">

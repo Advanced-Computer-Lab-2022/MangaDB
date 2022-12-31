@@ -44,7 +44,7 @@ const InstructorDashboard = () => {
       followUpComment: followUpDescription,
     };
     axios
-      .post("http://localhost:3000/problem/followUp/" + followUpId, data, {
+      .patch("http://localhost:3000/problem/followUp/" + followUpId, data, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -79,17 +79,27 @@ const InstructorDashboard = () => {
         setReports(res.data);
       });
 
-    axios.get("http://localhost:3000/instructor/questions", {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    }).then((res) => {
-      setQuestions(res.data);
-    });
+    axios
+      .get("http://localhost:3000/instructor/questions", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        setQuestions(res.data);
+      });
   }, []);
 
   const onConfirmReplyHandler = (id, reply) => {
-    //axios post
+    const sentData = {
+      questionId: id,
+      answer: reply,
+    };
+    axios.patch("http://localhost:3000/instructor/answerQuestion", sentData, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
     var temp = [];
     for (var i = 0; i < questions.length; i++) {
       if (questions[i]._id !== id) {
@@ -266,15 +276,19 @@ const InstructorDashboard = () => {
   } else {
     displayedReports = <div>No Reports Found.</div>;
   }
+  var name;
+  if (receivedData.firstName || receivedData.lastName) {
+    name = ` ${receivedData.firstName} ${receivedData.lastName} `;
+  } else {
+    name = "Instructor ";
+  }
   return (
     <Fragment>
       <NavBar></NavBar>
       <div className=" flex space-x-14 mt-4 items-center justify-center">
         <div className="font-semibold text-xl text-center text-gray-700 ">
           <p>Welcome Back,</p>
-          <p className="text-center text-3xl font-semibold">
-            {receivedData.firstName} {receivedData.lastName}!
-          </p>
+          <p className="text-center text-3xl font-semibold">{name}!</p>
           <p className="text-center mt-6 text-gray-500 flex space-x-2 items-center justify-center">
             <BellIcon className="fill-yellow-400 w-6 h-8 mr-2"></BellIcon>
             You have {questions.length} unanswered questions from your students

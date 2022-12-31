@@ -12,11 +12,13 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 import { SnackbarProvider, useSnackbar } from "notistack";
 const options = [
-  { id: 1, name: "Web Development" },
-  { id: 2, name: "Machine Learning" },
-  { id: 3, name: "Computer Science" },
-  { id: 4, name: "Database Administration" },
-  { id: 5, name: "Data Analysis" },
+  { id: 1, name: "Computer Hardware" },
+  { id: 2, name: "Data Structures" },
+  { id: 3, name: "Computer Architecture" },
+  { id: 4, name: "Programming Fundamentals" },
+  { id: 5, name: "Computer Organization" },
+  { id: 6, name: "Machine Learning" },
+  { id: 7, name: "Web Development" },
 ];
 const theme = createTheme({
   status: {

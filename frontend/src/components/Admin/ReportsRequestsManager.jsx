@@ -133,7 +133,6 @@ export default function ReportsRequestsManager(props) {
           .patch(`http://localhost:3000/request/access/${problemId}`,{}, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("token"),
-              'content-type': 'text/json'
             },
           })
           .then((res) => {

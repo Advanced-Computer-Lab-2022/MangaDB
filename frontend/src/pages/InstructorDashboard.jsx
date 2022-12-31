@@ -64,7 +64,16 @@ const InstructorDashboard = () => {
 
   const followUpSubmitHandler = () => {
     closeFollowUpModal();
-    //axios post
+    const data = {
+      followUpComment: followUpDescription,
+    };
+    axios.post("http://localhost:3000/problem/followUp/" + followUpId, data, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    }).then((res) => {
+      console.log(res);
+    });
   };
 
   //loading as the endpoint contains a lot of data..
@@ -216,7 +225,6 @@ const InstructorDashboard = () => {
       </div>
     );
   }
-  console.log(reports);
   var displayedReports;
   var index = 0;
   if (reports !== [] && loaded) {
@@ -259,6 +267,7 @@ const InstructorDashboard = () => {
           date={fullDate}
           description={report.description}
           courseName={report.courseName}
+          followUp={report.followUpComment}
           followUpDescriptionChangeHandler={followUpDescriptionChangeHandler}
           followUpSubmitHandler={followUpSubmitHandler}
           followUpDescription={followUpDescription}
@@ -273,7 +282,6 @@ const InstructorDashboard = () => {
   } else {
     displayedReports = <div>No Reports Found.</div>;
   }
-  console.log(reports);
   return (
     <Fragment>
       <NavBar></NavBar>

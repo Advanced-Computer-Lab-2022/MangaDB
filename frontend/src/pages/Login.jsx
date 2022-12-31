@@ -51,7 +51,11 @@ export default function Login() {
           localStorage.setItem("role", res.data.role);
           if (res.data.role === "ADMIN") {
             navigate(`/admin`);
-          } else {
+          } 
+          else if(res.data.role === "INSTRUCTOR"){
+            navigate(`/instructorDashboard`);
+          
+          }else {
             navigate(`/`);
           }
         })

@@ -25,8 +25,10 @@ router.get("/questions",auth.validateToken,auth.authenticateRole(["INSTRUCTOR"])
 
 router.patch("/answerQuestion",auth.validateToken,auth.authenticateRole(["INSTRUCTOR"]),courseController.answerQuestion);
 
+router.get("/myReviews",auth.validateToken,auth.authenticateRole(["INSTRUCTOR"]),instructorController.viewMyReviews);
+
 router.get("/:id",auth.validateToken,instructorController.viewInstructor);
 
-router.get("/myReviews",auth.validateToken,auth.authenticateRole(["INSTRUCTOR"]),instructorController.viewMyReviews);
+
 
 module.exports = router;

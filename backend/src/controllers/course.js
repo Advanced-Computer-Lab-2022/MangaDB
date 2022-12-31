@@ -96,14 +96,6 @@ exports.getAllCourses = async (req, res, next) => {
     course.coursePrice = (course.coursePrice * exchangeRate).toFixed(2);
     course.discountedPrice = (course.discountedPrice * exchangeRate).toFixed(2);
   });
-<<<<<<< HEAD
-  let instructorCourses=[];
-  if(iId && req.user.role=="INSTRUCTOR"){
-  for(let i=0;i<allCourses.length;i++){
-    if(allCourses[i].instructor==iId){
-      allCourses[i].mine=true;
-      instructorCourses.push({course:allCourses[i],mine:true});
-=======
   let instructorCourses = [];
   if (iId && req.user.role == "INSTRUCTOR") {
     for (let i = 0; i < allCourses.length; i++) {
@@ -114,7 +106,6 @@ exports.getAllCourses = async (req, res, next) => {
         allCourses[i].mine = false;
         instructorCourses.push({ course: allCourses[i], mine: false });
       }
->>>>>>> dev
     }
     return res.status(200).json({
       message: "Courses fetched successfully!",

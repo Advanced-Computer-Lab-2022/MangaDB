@@ -49,7 +49,10 @@ exports.issueInvoice = async (req, res) => {
             name: courseData.courseTitle,
             price: amount,
           };
-
+          let payByWallet = false;
+          if(userData.wallet>=amount){
+            payByWallet=true;
+          }
           const newInvoice = new invoice({
             user: userId,
             course: courseId,
@@ -58,13 +61,14 @@ exports.issueInvoice = async (req, res) => {
             totalAmount: amount,
           });
 
+          
           await newInvoice.save().catch((err) => {
            return  res.status(500).send({
                 message: "Error in issuing invoice",
                 });
             });
 
-          
+            if(!payByWallet){
           await payment.createPaymentIntent(info).then((data) => {
             if (!data) {
               res.status(500).send({
@@ -79,7 +83,15 @@ exports.issueInvoice = async (req, res) => {
               link: data,
               invoiceId: newInvoice._id
             });
-          });
+          });}
+          else{
+            await user.findByIdAndUpdate(userId,{$inc:{wallet:-amount}});
+            res.send({
+              message: "user undergoing payment, invoice will be issued",
+              link: "wallet",
+              invoiceId: newInvoice._id
+            });
+          }
         }
       }
     } catch (err) {

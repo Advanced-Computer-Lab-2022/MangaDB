@@ -58,7 +58,17 @@ const Reports = (props) => {
         index={index}
         date={fullDate}
         description={report.description}
-        isReport={true}
+        followUp={report.followUpComment}
+        followUpDescriptionChangeHandler={
+          props.followUpDescriptionChangeHandler
+        }
+        followUpSubmitHandler={props.followUpSubmitHandler}
+        followUpDescription={props.followUpDescription}
+        followUpId={props.followUpId}
+        followUpProblem={props.followUpProblem}
+        showFollowUpModal={props.showFollowUpModal}
+        openFollowUpModal={props.openFollowUpModal}
+        closeFollowUpModal={props.closeFollowUpModal}
       />
     );
   });

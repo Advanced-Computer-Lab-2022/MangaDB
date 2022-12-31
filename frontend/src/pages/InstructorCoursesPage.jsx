@@ -8,7 +8,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { Navbar } from "@material-tailwind/react";
+import NavBar from "../components/UI/NavBar/NavBar"
 const options = [
   { id: 1, name: "Computer Hardware" },
   { id: 2, name: "Data Structures" },
@@ -376,7 +376,7 @@ const IntructorCoursePage = (props) => {
 
   return (
     <Fragment>
-      <Navbar currentTab="My Courses" />
+      <NavBar currentTab="My Courses" />
       {showFilters && (
         <Filters
           prevState={searchState.filters}

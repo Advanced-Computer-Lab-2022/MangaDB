@@ -26,9 +26,8 @@ const InstructorPage = () => {
   //fetch the data at the start of the code ..
   //navigation to get the id
   useEffect(() => {
-    const instructorId = "63a36fd41bd9f2e6163b0481";
     axios
-      .get(`http://localhost:3000/instructor/${instructorId}`, {
+      .get(`http://localhost:3000/instructor`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -73,14 +72,13 @@ const InstructorPage = () => {
 
   //submit the instructor review
   const onClickHandler = () => {
-    const instructorId = "63a36fd41bd9f2e6163b0481";
     const reviewData = {
       rating: enteredRating,
       review: enteredReview,
     };
     axios
       .post(
-        `http://localhost:3000/instructor/rate/${instructorId}`,
+        `http://localhost:3000/instructor/rate`,
         reviewData,
         {
           headers: {

@@ -10,9 +10,13 @@ const Search = (props) => {
   );
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    navigate(`/searchresults`, {
-      state: searchState,
-    });
+    const role = localStorage.getItem("role");
+    if (role !== "INSTRUCTOR") {
+      navigate(`/searchresults`, {
+        state: searchState,
+      });
+    }
+
     props.onChange(searchState);
   };
   const searchChangeHandler = (event) => {

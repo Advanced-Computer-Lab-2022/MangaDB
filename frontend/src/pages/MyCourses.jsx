@@ -47,7 +47,6 @@ const MyCourses = () => {
 
   useEffect(() => {
     //fetch the courses of the trainee
-
     axios
       .get(`http://localhost:3000/user/mycourses/?page=${page}`, {
         headers: {

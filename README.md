@@ -65,15 +65,16 @@
 
 <img src = "./Screenshots/login.jpg">
 
--This is Revamp's login page where based on the stakeholder the navigation will differ.
+- This is Revamp's login page where based on the stakeholder the navigation will differ.
 
 <img src = "./Screenshots/login.jpg">
 
--This is Revamp's sign up page where the trainees can register to become part of the platform.
+- This is Revamp's sign up page where the trainees can register to become part of the platform.
 
-#### -Trainee
+#### - Trainee
 
 <img src = "./Screenshots/trainee Navbar.jpg">
+
 - This is the trainee's navabar where if he clicks home he gets navigated to the homepage, if he clicks on my courses he will be navigated to view his courses , if he click on the FAQS he will be navigated to the FAQs page , if he hovers on the wallet he will view his own wallet, if he clicks on the profile icon he will be navigated to view his profile.
    
 
@@ -99,7 +100,7 @@
 
 <img src = "./Screenshots/courseDetails2.jpg">
 
--This is the second part of the course detailts page where the users can monitor the reviews or write a review about the course if they are registered in that course.
+- This is the second part of the course detailts page where the users can monitor the reviews or write a review about the course if they are registered in that course.
 
 <img src = "./Screenshots/courseView1.jpg">
 
@@ -137,18 +138,18 @@
 
 - This the Trainee's profile where he can edit his information, change his password and finally view his previous reports and their status.
 
-
 <img src = "./Screenshots/Faqs.jpg">
 
--This is what the user views when they click on the FAQS tab, here they can find the most popular questions people ask when using Revamp.
+- This is what the user views when they click on the FAQS tab, here they can find the most popular questions people ask when using Revamp.
 
 <img src = "./Screenshots/footer.jpg">
 
--This is the website's footer where clicking on any field will navigate to the corresponding page in the canadian chamber website.
+- This is the website's footer where clicking on any field will navigate to the corresponding page in the canadian chamber website.
 
-#### -Instructor
+#### - Instructor
 
-<img src = "./Screenshots/instructorNavbar.jpg">
+<img src ="./Screenshots/instructorNavbar.jpg">
+
 - This is the instructors's navabar where if he clicks dashboard he/she gets navigated to his/her dashboard, if he/she clicks on courses he/she will be navigated to view all courses ,if he/she clicks on Add course he/she will be navigated to the add course page, if he/she clicks on the FAQS he/she will be navigated to the FAQs page , if he clicks on the wallet he/she will view his/her own wallet, if he/she clicks on the profile icon he/she will be navigated to view his/her profile.
 
 <img src = "./Screenshots/instructordash.jpg">

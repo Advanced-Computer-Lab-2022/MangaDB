@@ -8,9 +8,32 @@ import ContentCourseView from "../components/CourseView/ContentCourseView";
 import ExamToolManager from "../components/ExamToolBar/ExamToolManager";
 import Certificate from "../components/Certificate/Certificate";
 import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
+import { useSnackbar } from "notistack";
 
 const CourseViewPage = () => {
-  
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant) => {
+    if (variant === "success") {
+      enqueueSnackbar("Your report has been submitted successfully ", {
+        variant,
+      });
+    } else if (variant === "success1") {
+      variant = "success";
+      enqueueSnackbar("Your review has been submitted successfully ", {
+        variant,
+      });
+    }else if(variant === "success2"){
+      variant = "success";
+      enqueueSnackbar("Your follow up has been submitted successfully ", {
+        variant,
+      });
+    }
+     else {
+      enqueueSnackbar("You have already reviewd this course before ", {
+        variant,
+      });
+    }
+  };
   const location = useLocation();
   const [receivedData, setReceivedData] = useState({});
   const [currentSource, setCurrentSource] = useState("");
@@ -47,6 +70,7 @@ const CourseViewPage = () => {
   const [followUpId, setFollowUpId] = useState(-1);
   const [followUpProblem, setFollowUpProblem] = useState("");
   const [followUpDescription, setFollowUpDescription] = useState("");
+  const [render, setRender] = useState(false);
 
   const openFollowUpModal = (id, problem) => {
     setShowFollowUpModal(true);
@@ -74,10 +98,20 @@ const CourseViewPage = () => {
         },
       })
       .then((res) => {
+        handleClickVariant("success2");
+        setRender(prev => !prev);
       });
-      closeFollowUpModal();
+    closeFollowUpModal();
   };
 
+  const getReviewsAndRatings = () => {
+    const courseId = location.state;
+
+    axios.get(`http://localhost:3000/course/rate/${courseId}`).then((res) => {
+      setReviews(res.data.review);
+      setReviewsCount(res.data.count);
+    });
+  };
   useEffect(() => {
     window.scrollTo(0, 0, "smooth");
     const courseId = location.state;
@@ -201,11 +235,8 @@ const CourseViewPage = () => {
       .then((res) => {
         setReports(res.data);
       });
-    axios.get(`http://localhost:3000/course/rate/${courseId}`).then((res) => {
-      setReviews(res.data.review);
-      setReviewsCount(res.data.count);
-    });
-  }, [currentNotesFilter, location.state, receivedData, currentSource]);
+    getReviewsAndRatings();
+  }, [currentNotesFilter, location.state, receivedData, currentSource, render]);
 
   //useEffect at the start to receive the data
   useEffect(() => {
@@ -231,13 +262,13 @@ const CourseViewPage = () => {
       managerRef.current.refreshManager();
     }
     setCurrentSource(source);
-    if(source.sourceType === "Quiz"){
-      setCurrentTab("")
+    if (source.sourceType === "Quiz") {
+      setCurrentTab("");
       setCertificateAlert(false);
       setShowQA(false);
       setShowNotes(false);
       setShowReports(false);
-      setShowReviews(false)
+      setShowReviews(false);
     }
   };
   const changeNotesFilter = (data) => {
@@ -358,14 +389,14 @@ const CourseViewPage = () => {
       })
       .then((res) => {
         axios
-        .get(`http://localhost:3000/user/progress/${receivedData._id}`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        })
-        .then((res) => {
-          setProgress(res.data.percentage);
-        });
+          .get(`http://localhost:3000/user/progress/${receivedData._id}`, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
+          .then((res) => {
+            setProgress(res.data.percentage);
+          });
       });
   };
 
@@ -417,6 +448,8 @@ const CourseViewPage = () => {
         },
       })
       .then((res) => {
+        handleClickVariant("success");
+        setRender((prev) => !prev);
         setReports([...reports, res.data]);
       });
   };
@@ -434,7 +467,14 @@ const CourseViewPage = () => {
           },
         }
       )
-      .then((res) => {});
+      .then((res) => {
+        getReviewsAndRatings();
+        setRender((prev) => !prev);
+        handleClickVariant("success1");
+      })
+      .catch((err) => {
+        handleClickVariant("error");
+      });
   };
 
   //we will have an array of viewed sources

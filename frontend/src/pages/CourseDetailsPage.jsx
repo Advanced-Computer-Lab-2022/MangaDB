@@ -7,8 +7,23 @@ import AddToCartCard from "../components/CourseDetailsComp/AddToCartCard";
 import CourseContent from "../components/CourseDetailsComp/CourseContent";
 import CourseReviews from "../components/CourseDetailsComp/CourseReviews";
 import { useLocation } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 const CourseDetailsPage = () => {
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant) => {
+    if (variant === "error") {
+      enqueueSnackbar("You have already reviewd this course before ", {
+        variant,
+      });
+    }
+    else{
+      enqueueSnackbar("Your review has been submitted successfully ", {
+        variant,
+      });
+    }
+  };
+
   const location = useLocation();
   const [courseDetails, setCourseDetails] = useState({});
   const [loaded, setLoaded] = useState(false);
@@ -72,6 +87,7 @@ const CourseDetailsPage = () => {
         },
       })
       .then((res) => {
+        console.log(res.data.review);
         setCourseReviews(res.data.review);
         setReviewsCount(res.data.count);
       });
@@ -93,6 +109,10 @@ const CourseDetailsPage = () => {
         getReviewsAndRatings();
         setRenderHandler(render);
         setDisableButton(true);
+        handleClickVariant("success");
+      })
+      .catch((err) => {
+        handleClickVariant("error");
       });
   };
   return (

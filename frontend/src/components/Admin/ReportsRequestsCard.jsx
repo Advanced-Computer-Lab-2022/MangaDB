@@ -13,7 +13,7 @@ export default function ReportsRequestsCard(props) {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   return (
-    <div class={"p-2 w-[100%] relative ".concat(props.className)}>
+    <div class={"p-2 relative ".concat(props.reason?"w-[50%] ":"w-[100%]")}>
       <div
         class={"bg-white p-4 shadow-lg rounded-lg flex  items-center ".concat(
           props.reason ? "pt-10" : ""
@@ -42,8 +42,12 @@ export default function ReportsRequestsCard(props) {
           </div>
         </div>
         <div className="relative">
+          
           <p className="text-sm opacity-60 whitespace-normal   p-4">
-            {props.description} {props.reason}
+            {props.description?<span className="font-semibold">DESCRIPTION :</span>:null } {props.description} 
+          </p>
+          <p className="text-sm opacity-60 whitespace-normal   p-4">
+            {props.followUpComment?<span className="font-semibold">FOLLOW UP :</span>:null}  {props.followUpComment} 
           </p>
         </div>
         <div className="absolute right-5">
@@ -113,6 +117,7 @@ export default function ReportsRequestsCard(props) {
             </Popover>
           </div>
         </div>
+        
       </div>
     </div>
   );

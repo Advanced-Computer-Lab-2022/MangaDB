@@ -184,7 +184,7 @@ const AddSubtitles = (props) => {
         <SecondaryButton
           className="w-20"
           onClick={submitHandler}
-          text="Next"
+          text="Submit"
         />
       </div>
     </div>

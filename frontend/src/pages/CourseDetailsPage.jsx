@@ -92,7 +92,6 @@ const CourseDetailsPage = () => {
         },
       })
       .then((res) => {
-        console.log(res.data.review);
         setCourseReviews(res.data.review);
         setReviewsCount(res.data.count);
       });

@@ -42,7 +42,6 @@ const HomePage = () => {
       });
 
     axios.get("http://localhost:3000/course/discountedCourses/").then((res) => {
-      console.log(res.data);
       setDiscountedCourses(res.data);
     });
   }, [countryCode]);
@@ -51,8 +50,6 @@ const HomePage = () => {
     setCountryCode(e);
     localStorage.setItem("countryCode", e);
   };
-
-  console.log(countryCode);
 
   const courses = displayedCourses.map((course) => {
     return (

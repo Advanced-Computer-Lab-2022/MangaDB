@@ -8,7 +8,6 @@ import CourseCard from "../components/Course/CourseCard";
 import Carousel from "react-multi-carousel";
 import { useLocation } from "react-router-dom";
 import { useSnackbar } from "notistack";
-
 import {
   BookOpenIcon,
   CalendarIcon,
@@ -101,11 +100,15 @@ const InstructorPage = () => {
       review: enteredReview,
     };
     axios
-      .post(`http://localhost:3000/instructor/rate/`+location.state.instructorId, reviewData, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
+      .post(
+        `http://localhost:3000/instructor/rate/` + location.state.instructorId,
+        reviewData,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
       .then((res) => {
         setReviews([...reviews, res.data.review]);
         setSummary(res.data.count);
@@ -114,9 +117,10 @@ const InstructorPage = () => {
           receivedData.instructor.reviews.length + 1,
           receivedData.instructor.courseDetails.length,
         ]);
-        setRender(prev => !prev);
+        setRender((prev) => !prev);
         handleClickVariant("success");
-      }).catch((err) => {
+      })
+      .catch((err) => {
         console.log(err);
         handleClickVariant("error");
       });
@@ -271,22 +275,28 @@ const InstructorPage = () => {
               </dl>
             </div>
             <div className="m-4 mt-6">
-              <div className="md:flex md:justify-between items-center mb-2">
-                <div className="font-semibold text-xl">Leave a Review:</div>
-                <div className="md:w-[18vw] flex md:justify-end mt-4 md:mt-0 space-x-2">
-                  <div>Rating</div>
-                  <Rating onChange={ratingChangeHandler} />
+              {localStorage.getItem("role") !== null && (
+                <div className="md:flex md:justify-between items-center mb-2">
+                  <div className="font-semibold text-xl">Leave a Review:</div>
+                  <div className="md:w-[18vw] flex md:justify-end mt-4 md:mt-0 space-x-2">
+                    <div>Rating</div>
+                    <Rating onChange={ratingChangeHandler} />
+                  </div>
                 </div>
-              </div>
-              <textarea
-                reviewState={enteredReview}
-                onChange={reviewChangeHandler}
-                className="w-full bg-white border border-slate-300 rounded-md text-sm shadow-sm
+              )}
+              {localStorage.getItem("role") !== null && (
+                <textarea
+                  reviewState={enteredReview}
+                  onChange={reviewChangeHandler}
+                  className="w-full bg-white border border-slate-300 rounded-md text-sm shadow-sm
             focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
-              />
-              <div className="flex justify-end mb-4">
-                <SecondaryButton text="Submit" onClick={onClickHandler} />
-              </div>
+                />
+              )}
+              {localStorage.getItem("role") && (
+                <div className="flex justify-end mb-4">
+                  <SecondaryButton text="Submit" onClick={onClickHandler} />
+                </div>
+              )}
               <div>
                 <div className=" font-semibold text-xl mb-4">
                   Instructor Reviews:

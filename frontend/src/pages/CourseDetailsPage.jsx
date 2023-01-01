@@ -17,6 +17,7 @@ const CourseDetailsPage = () => {
   const [reviewsCount, setReviewsCount] = useState([]);
   const [requested, setRequested] = useState(false);
   useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
     const courseId = location.state.courseId;
     axios
       .get("http://localhost:3000/course/".concat(courseId), {

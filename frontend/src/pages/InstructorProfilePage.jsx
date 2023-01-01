@@ -71,6 +71,7 @@ const reviews = [
 const InstructorProfilePage = () => {
   const [receivedUserInfo, setReceivedUserInfo] = useState(user);
   const [selectedStage, setSelectedStage] = useState(1);
+  const [render, setRender] = useState(false);
 
   const managerRef = useRef();
   //gather the userInfo
@@ -78,6 +79,8 @@ const InstructorProfilePage = () => {
   //change it to auth later
 
   useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
+    setRender(true);
     //to be changed
     axios
       .get("http://localhost:3000/user/myProfile", {
@@ -91,7 +94,7 @@ const InstructorProfilePage = () => {
         setReceivedUserInfo(res.data);
         managerRef.current.handleRender();
       });
-  }, []);
+  }, [render]);
 
   //function to handle submitting changes to the personal info
   const personalInfoSaveHandler = (data) => {

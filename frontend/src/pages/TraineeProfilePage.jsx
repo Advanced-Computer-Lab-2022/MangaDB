@@ -69,12 +69,15 @@ const reviews = [
 const TraineeProfilePage = () => {
   const [receivedUserInfo, setReceivedUserInfo] = useState(user);
   const [selectedStage, setSelectedStage] = useState(1);
+  const [render, setRender] = useState(false);
 
   const managerRef = useRef();
 
   //gather the userInfo
 
   useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
+    setRender(true);
     axios
       .get("http://localhost:3000/user/myProfile", {
         headers: {
@@ -85,7 +88,7 @@ const TraineeProfilePage = () => {
         setReceivedUserInfo(res.data);
         managerRef.current.handleRender();
       });
-  }, []);
+  }, [render]);
   //function to handle submitting changes to the personal info
 
   //function to handle the change of password or privacy

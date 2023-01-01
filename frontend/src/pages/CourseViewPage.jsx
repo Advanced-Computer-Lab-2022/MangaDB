@@ -79,6 +79,7 @@ const CourseViewPage = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
     const courseId = location.state;
     if (currentNotesFilter.name === "All Lessons") {
       axios

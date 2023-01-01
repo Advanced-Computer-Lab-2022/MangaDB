@@ -95,6 +95,7 @@ export default function Login() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
     const initClient = () => {
       gapi.auth2.init({
         clientId: clientId,

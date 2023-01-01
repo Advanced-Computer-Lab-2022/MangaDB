@@ -4,7 +4,10 @@ import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 import CreateCourseForm from "../components/CreateCourse/CreateCourseForm";
 import StepsBar from "../components/CreateCourse/StepsBar";
 import AddSubtitles from "../components/AddSubtitles/AddSubtitles";
+import { useSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
 const AddCoursePage = (props) => {
+  const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0, "smooth");
   }, []);
@@ -50,7 +53,15 @@ const AddCoursePage = (props) => {
       })
       .then((res) => {
         console.log(res);
+        handleClickVariant("success");
+        setTimeout(() => {
+          navigate("/instructorCourseDetails",{state:{courseId:res.data.course.id}})
+        }, 2000);
       });
+  };
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant) => {
+    enqueueSnackbar("Course has been Added Successfully", { variant });
   };
 
   return (

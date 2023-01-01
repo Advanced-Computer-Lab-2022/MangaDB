@@ -11,6 +11,8 @@ import CourseCard from "../components/Course/CourseCard";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 import { SnackbarProvider, useSnackbar } from "notistack";
+import ReactLoading from "react-loading";
+
 const options = [
   { id: 1, name: "Computer Hardware" },
   { id: 2, name: "Data Structures" },
@@ -51,6 +53,7 @@ const SearchResultsPage = () => {
 
   const [page, setPage] = useState(1);
   const [noOfPages, setNoOfPages] = useState(1);
+  const [loaded, setLoaded] = useState(false);
   //funtion to handle the pagination
   const onChangePageHandler = (event, value) => {
     setPage(value);
@@ -127,6 +130,7 @@ const SearchResultsPage = () => {
       })
       .then((res) => {
         setNoOfPages(res.data.count);
+        setLoaded(true);
         dispatchSearch({ type: "COURSES", value: res.data.courses });
       });
   }, [searchState.search, searchState.filters, page]);
@@ -208,50 +212,70 @@ const SearchResultsPage = () => {
     <SnackbarProvider maxSnack={3}>
       <Fragment>
         <NavBar currentTab="Home" />
-        <div className="mt-4 flex justify-center space-x-4 mb-3 items-center">
-          <Search
-            searchState={searchState.search}
-            onChange={searchBarChangeHandler}
-            className="ml-4"
-          />
-          <SecondaryButton
-            className="mr-4 w-25 h-11"
-            text="Filter"
-            icon={icon}
-            onClick={showFiltersHandler}
-          ></SecondaryButton>
-        </div>
-        {showFilters && (
-          <Filters
-            prevState={searchState.filters}
-            onConfirm={filtersChangeHandler}
-            exchange={1}
-            options={options}
-            onClick={hideFiltersHandler}
-          />
-        )}
-
-        <div className="flex flex-col gap-y-4 mb-4">
-          <div className="font-bold text-2xl ml-24">Results:</div>
-          <div className="flex-col items-center gap-y-4 hidden lg:flex">
-            {coursesListView}
-          </div>
-          <div className="flex justify-around flex-wrap lg:hidden">
-            {coursesCardsView}
-          </div>
-        </div>
-        {searchState.displayedCourses.length !== 0 && (
-          <div className="flex items-center justify-center">
-            <ThemeProvider theme={theme}>
-              <Pagination
-                className="ml-2 mr-2"
-                count={Math.ceil(noOfPages / 10)}
-                color="primary"
-                page={page}
-                onChange={onChangePageHandler}
+        {!loaded ? (
+          <div className=" w-full h-full mt-12">
+            <div className="flex w-full h-full  justify-center items-center ">
+              <ReactLoading
+                type={"bars"}
+                color="#C6D8EC"
+                height={667}
+                width={375}
               />
-            </ThemeProvider>
+            </div>
+            <div className="flex items-center justify-center -mt-[275px]">
+              <h1 className="text-center text-darkBlue font-bold text-3xl ">
+                Loading...
+              </h1>
+            </div>
           </div>
+        ) : (
+          <Fragment>
+            <div className="mt-4 flex justify-center space-x-4 mb-3 items-center">
+              <Search
+                searchState={searchState.search}
+                onChange={searchBarChangeHandler}
+                className="ml-4"
+              />
+              <SecondaryButton
+                className="mr-4 w-25 h-11"
+                text="Filter"
+                icon={icon}
+                onClick={showFiltersHandler}
+              ></SecondaryButton>
+            </div>
+            {showFilters && (
+              <Filters
+                prevState={searchState.filters}
+                onConfirm={filtersChangeHandler}
+                exchange={1}
+                options={options}
+                onClick={hideFiltersHandler}
+              />
+            )}
+
+            <div className="flex flex-col gap-y-4 mb-4">
+              <div className="font-bold text-2xl ml-24">Results:</div>
+              <div className="flex-col items-center gap-y-4 hidden lg:flex">
+                {coursesListView}
+              </div>
+              <div className="flex justify-around flex-wrap lg:hidden">
+                {coursesCardsView}
+              </div>
+            </div>
+            {searchState.displayedCourses.length !== 0 && (
+              <div className="flex items-center justify-center">
+                <ThemeProvider theme={theme}>
+                  <Pagination
+                    className="ml-2 mr-2"
+                    count={Math.ceil(noOfPages / 10)}
+                    color="primary"
+                    page={page}
+                    onChange={onChangePageHandler}
+                  />
+                </ThemeProvider>
+              </div>
+            )}
+          </Fragment>
         )}
       </Fragment>
     </SnackbarProvider>

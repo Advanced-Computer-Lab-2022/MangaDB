@@ -34,8 +34,8 @@ const requestSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["pending", "accepted", "rejected","unseen"],
-        default: "unseen",
+        enum: ["Pending", "Accepted", "Rejected","Unseen"],
+        default: "Unseen",
     },
     date: {
         type: Date,

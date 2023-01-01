@@ -2,9 +2,7 @@ import DropDown from "../UI/DropDown";
 import Countdown from "react-countdown";
 import Checkbox from "@mui/material/Checkbox";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState } from "react";
 const TableRows = (props) => {
-
   const handleChange = (event,courseId) => {
 
     props.selectRowHandler(event.target.checked,courseId);    
@@ -28,7 +26,6 @@ const TableRows = (props) => {
   });
   //var anyBoxesChecked = new Array(numeroPerguntas).fill(false);
   const rows = props.rows.map((row, rowIdx) => {
-    console.log(props.selectedNow.includes(row.courseId));
     const totalHours = Math.round(+row.totalMins / 60);
     const items =
       row.mine === false

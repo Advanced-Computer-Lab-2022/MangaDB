@@ -10,6 +10,7 @@ import Certificate from "../components/Certificate/Certificate";
 import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 
 const CourseViewPage = () => {
+  
   const location = useLocation();
   const [receivedData, setReceivedData] = useState({});
   const [currentSource, setCurrentSource] = useState("");
@@ -229,6 +230,14 @@ const CourseViewPage = () => {
       managerRef.current.refreshManager();
     }
     setCurrentSource(source);
+    if(source.sourceType === "Quiz"){
+      setCurrentTab("")
+      setCertificateAlert(false);
+      setShowQA(false);
+      setShowNotes(false);
+      setShowReports(false);
+      setShowReviews(false)
+    }
   };
   const changeNotesFilter = (data) => {
     setCurrentNotesFilter(data);

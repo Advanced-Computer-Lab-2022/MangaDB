@@ -25,6 +25,7 @@ import InstructorCourseDetails from "./pages/InstructorCourseDetails";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import SuccessfulPayment from "./components/Payment/SuccessfulPayment";
 import UnsuccessfulPayment from "./components/Payment/UnsuccessfulPayment";
+import SuccessfulPaymentWallet from "./components/Payment/SuccessfulPaymentWallet";
 function App() {
   return (
     <Fragment>
@@ -100,6 +101,8 @@ function App() {
           path="/unsuccessfulPayment"
           element={<UnsuccessfulPayment></UnsuccessfulPayment>}
         ></Route>
+
+        <Route path="successwallet" element={<SuccessfulPaymentWallet></SuccessfulPaymentWallet>}></Route>
       </Routes>
       <Footer></Footer>
     </Fragment>

@@ -1,5 +1,5 @@
 import { Divider } from "@mui/material";
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import Modal from "../UI/Modal";
 import SecondaryButton from "../UI/SecondaryButton";
 

@@ -7,7 +7,7 @@ import AddToCartCard from "../components/CourseDetailsComp/AddToCartCard";
 import CourseContent from "../components/CourseDetailsComp/CourseContent";
 import CourseReviews from "../components/CourseDetailsComp/CourseReviews";
 import { useLocation } from "react-router-dom";
-import { SnackbarProvider } from "notistack";
+
 const CourseDetailsPage = () => {
   const location = useLocation();
   const [courseDetails, setCourseDetails] = useState({});
@@ -79,7 +79,7 @@ const CourseDetailsPage = () => {
       .then((res) => {});
   };
   return (
-    <SnackbarProvider maxSnack={3}>
+
       <Fragment>
         <NavBarSearch currentTab="" />
         <div className="bg-veryLightBlue py-4 px-6 flex justify-between">
@@ -137,7 +137,6 @@ const CourseDetailsPage = () => {
           />
         )}
       </Fragment>
-    </SnackbarProvider>
   );
 };
 

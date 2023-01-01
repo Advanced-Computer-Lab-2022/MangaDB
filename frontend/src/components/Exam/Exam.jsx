@@ -4,7 +4,6 @@ import ExamChoices from "./ExamChoices";
 import SecondaryButton from "../UI/SecondaryButton";
 import SolvedExamChoices from "./SolvedExamChoices";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Divider } from "@mui/material";
 const theme = createTheme({
   status: {
     danger: "#e53e3e",

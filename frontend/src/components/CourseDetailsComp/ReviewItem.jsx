@@ -1,6 +1,4 @@
-import React, { Fragment } from "react";
 import Stars from "../UI/Stars";
-import User from "../../Assets/Images/User.svg";
 import Avatar from "react-avatar";
 import { Divider } from "@mui/material";
 

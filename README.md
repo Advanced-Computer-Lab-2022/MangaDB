@@ -137,9 +137,6 @@
 
 - This the Trainee's profile where he can edit his information, change his password and finally view his previous reports and their status.
 
-<img src = "./Screenshots/AdminReports.jpg">
-
-   - This is the part where the admin can view all the reports made on the platform and resolve or hand them to the development team (pend the problems).
 
 <img src = "./Screenshots/Faqs.jpg">
 
@@ -196,6 +193,9 @@
 
 - This is the part where the admin can view all the requests made by users, he can also accept/reject them.
 
+<img src = "./Screenshots/adminreports.jpg">
+
+   - This is the part where the admin can view all the reports made on the platform and resolve or hand them to the development team (pend the problems).
 
 
 ## Database Models

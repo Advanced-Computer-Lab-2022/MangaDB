@@ -39,30 +39,25 @@ const theme = createTheme({
 const IntructorCoursePage = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const handleClickVariant = (variant) => {
-    if(variant === "error"){
-    enqueueSnackbar(
-      "One or more of the selected courses already have promotion  ",
-      {
-        variant,
-      }
-    );}
-    else if(variant === "success"){
+    if (variant === "error") {
       enqueueSnackbar(
-        "Your report has been submitted successfully  ",
+        "One or more of the selected courses already have promotion  ",
         {
           variant,
         }
       );
+    } else if (variant === "success") {
+      enqueueSnackbar("Your report has been submitted successfully  ", {
+        variant,
+      });
     }
-    
-
   };
 
   const location = useLocation();
   const navigate = useNavigate();
   const defaultState = {
     displayedCourses: [],
-    search: location.state? location.state : "",
+    search: location.state ? location.state : "",
     filters: {
       price: null,
       subjects: [],
@@ -234,23 +229,23 @@ const IntructorCoursePage = (props) => {
         .then((res) => {
           let coursesAdmin = [];
           for (var i = 0; i < searchState.displayedCourses.length; i++) {
-            for (var j = 0; j < res.data.Ids.length; j++) {
-              if (
-                searchState.displayedCourses[i].course._id != res.data.Ids[j]
-              ) {
-                coursesAdmin.push(searchState.displayedCourses[i]);
-              } else {
-                var newCourse = JSON.parse(
-                  JSON.stringify(searchState.displayedCourses[i])
-                );
-                newCourse.course.discountedPrice =
-                  (1 - +res.data.discount) * +newCourse.course.coursePrice;
-                newCourse.course.discountEndDate = res.data.endDate;
-                newCourse.course.discount = res.data.discount;
-                coursesAdmin.push(newCourse);
-              }
+ 
+            if (
+              res.data.Ids.includes(searchState.displayedCourses[i].course._id)
+            ) {
+              var newCourse = JSON.parse(
+                JSON.stringify(searchState.displayedCourses[i])
+              );
+              newCourse.course.discountedPrice =
+                (1 - +res.data.discount) * +newCourse.course.coursePrice;
+              newCourse.course.discountEndDate = res.data.endDate;
+              newCourse.course.discount = res.data.discount;
+              coursesAdmin.push(newCourse);
+            } else {
+              coursesAdmin.push(searchState.displayedCourses[i]);
             }
           }
+
           dispatchSearch({ type: "COURSES", value: coursesAdmin });
         })
         .catch((err) => {

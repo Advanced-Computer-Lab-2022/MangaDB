@@ -139,7 +139,8 @@ const Reviews = (props) => {
                         <h2 className="text-2xl font-bold tracking-tight text-gray-900">
                           Average Ratings
                         </h2>
-                        <AverageSummary></AverageSummary>
+                        <div className="mt-3"><AverageSummary></AverageSummary></div>
+                        
                       </div>
                     </div>
                   </div>

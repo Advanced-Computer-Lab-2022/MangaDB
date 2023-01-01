@@ -246,7 +246,7 @@ const InstructorPage = () => {
               <div className=" font-semibold text-xl mb-4">
                 Instructor Reviews:
               </div>
-              <div className=" mb-6 mx-12">
+              <div className=" mb-6 mx-12 mt-3">
                 <AverageSummary count={summary} />
               </div>
               <div className=" mx-8">{displayedReviews}</div>

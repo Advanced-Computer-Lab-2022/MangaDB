@@ -348,7 +348,7 @@ const InstructorDashboard = () => {
       <div className="m-4 mt-6">
         <div>
           <div className=" font-semibold text-xl mb-4">Instructor Reviews:</div>
-          <div className=" mb-6 mx-12">
+          <div className=" mb-6 mx-12 mt-3">
             {loaded && <AverageSummary count={count} />}
           </div>
           <div className=" mx-8">{displayedReviews}</div>

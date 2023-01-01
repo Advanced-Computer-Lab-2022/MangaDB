@@ -5,7 +5,6 @@ import CourseCard from "../components/Course/CourseCard";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 import Navbar from "../components/UI/NavBar/NavBar";
-import { SnackbarProvider, useSnackbar } from "notistack";
 
 // pagination blue theme
 const theme = createTheme({
@@ -121,7 +120,7 @@ const MyCourses = () => {
   });
 
   return (
-    <SnackbarProvider maxSnack={3}>
+   
       <Fragment>
         <Navbar currentTab="My Courses" />
         <div className="flex flex-col gap-y-4 mb-4">
@@ -147,7 +146,7 @@ const MyCourses = () => {
           )}
         </div>
       </Fragment>
-    </SnackbarProvider>
+ 
   );
 };
 

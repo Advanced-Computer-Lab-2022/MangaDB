@@ -1,4 +1,3 @@
-import success from "../../Assets/Images/success.svg";
 import Alert from "@mui/material/Alert";
 import CircularProgress from "@mui/material/CircularProgress";
 import React, { useEffect } from "react";

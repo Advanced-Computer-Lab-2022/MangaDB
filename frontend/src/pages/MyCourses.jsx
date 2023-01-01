@@ -92,6 +92,8 @@ const MyCourses = () => {
         discountedPrice={course.course.discountedPrice}
         discount={course.course.discount}
         rating={course.course.rating}
+        percentageCompleted= {course.percentageCompleted}
+        totalSources = {course.totalSources}
         refundable={
           course.totalSources / 2 >= course.percentageCompleted &&
           userRole == "TRAINEE"

@@ -50,7 +50,7 @@ const Subtitle = (props) => {
 
   var totalDuration = 0;
   for (var i = 0; i < props.sources.length; i++) {
-    totalDuration += +props.sources[i].duration;
+    totalDuration += +(props.sources[i].sourceDuration);
   }
   if (props.sources) {
     var Body = props.sources.map((source, index) => {

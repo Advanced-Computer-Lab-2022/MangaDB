@@ -16,6 +16,9 @@ const CourseDetailsPage = () => {
   const [courseReviews, setCourseReviews] = useState([]);
   const [reviewsCount, setReviewsCount] = useState([]);
   const [requested, setRequested] = useState(false);
+  const [render, setRender] = useState(false);
+  const [disableButton, setDisableButton] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0, "smooth");
     const courseId = location.state.courseId;
@@ -35,16 +38,7 @@ const CourseDetailsPage = () => {
         }
       });
 
-    axios
-      .get("http://localhost:3000/course/rate/".concat(courseId), {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
-      .then((res) => {
-        setCourseReviews(res.data.review);
-        setReviewsCount(res.data.count);
-      });
+    getReviewsAndRatings();
 
     //get the requests of the user and check if the course is requested before
     axios
@@ -63,7 +57,25 @@ const CourseDetailsPage = () => {
           }
         }
       });
-  }, []);
+  }, [render]);
+
+  const setRenderHandler = (prevRender) => {
+    setRender(!prevRender);
+  };
+
+  const getReviewsAndRatings = () => {
+    const courseId = location.state.courseId;
+    axios
+      .get("http://localhost:3000/course/rate/".concat(courseId), {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        setCourseReviews(res.data.review);
+        setReviewsCount(res.data.count);
+      });
+  };
 
   const submitReviewHandler = (data) => {
     const courseId = location.state.courseId;
@@ -77,67 +89,71 @@ const CourseDetailsPage = () => {
           },
         }
       )
-      .then((res) => {});
+      .then((res) => {
+        getReviewsAndRatings();
+        setRenderHandler(render);
+        setDisableButton(true);
+      });
   };
   return (
-
-      <Fragment>
-        <NavBarSearch currentTab="" />
-        <div className="bg-veryLightBlue py-4 px-6 flex justify-between">
-          <CourseDetailsCard
-            courseTitle={courseDetails.courseTitle}
-            level={courseDetails.level}
-            instructorName={courseDetails.instructorName}
-            id={courseDetails.instructor}
-            subject={courseDetails.subject}
-            courseDescription={courseDetails.courseDescription}
-            rating={courseDetails.rating}
-            discount={courseDetails.discount}
-            coursePrice={courseDetails.coursePrice}
-            discountedPrice={courseDetails.discountedPrice}
-            currencySymbol="$"
-          />
-        </div>
-        <AddToCartCard
-          courseOverview={courseDetails.courseOverview}
-          id={location.state.courseId}
-          userRegister={userRegistered}
-          courseImage={courseDetails.courseImage}
-          requested={requested}
+    <Fragment>
+      <NavBarSearch currentTab="" />
+      <div className="bg-veryLightBlue py-4 px-6 flex justify-between">
+        <CourseDetailsCard
+          courseTitle={courseDetails.courseTitle}
+          level={courseDetails.level}
+          instructorName={courseDetails.instructorName}
+          id={courseDetails.instructor}
+          subject={courseDetails.subject}
+          courseDescription={courseDetails.courseDescription}
+          rating={courseDetails.rating}
+          discount={courseDetails.discount}
+          coursePrice={courseDetails.coursePrice}
+          discountedPrice={courseDetails.discountedPrice}
+          currencySymbol="$"
         />
-        <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
-          <div className="mb-3">Course Summary</div>
-          <section>
-            <div
-              className="ml-10 align-middle font-normal"
-              dangerouslySetInnerHTML={{ __html: courseDetails.summary }}
-            ></div>
-          </section>
-        </div>
-        {loaded && (
-          <CourseContent
-            content={courseDetails.subtitles}
-            courseDuration={courseDetails.totalMins}
-          />
-        )}
-        <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
-          <div className="mb-3">Course Requirements</div>
-          <section>
-            <div
-              className="ml-10 font-normal"
-              dangerouslySetInnerHTML={{ __html: courseDetails.requirements }}
-            ></div>
-          </section>
-        </div>
-        {loaded && (
-          <CourseReviews
-            reviews={courseReviews}
-            reviewsCount={reviewsCount}
-            onSubmit={submitReviewHandler}
-            userRegister={userRegistered}
-          />
-        )}
-      </Fragment>
+      </div>
+      <AddToCartCard
+        courseOverview={courseDetails.courseOverview}
+        id={location.state.courseId}
+        userRegister={userRegistered}
+        courseImage={courseDetails.courseImage}
+        requested={requested}
+      />
+      <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
+        <div className="mb-3">Course Summary</div>
+        <section>
+          <div
+            className="ml-10 align-middle font-normal"
+            dangerouslySetInnerHTML={{ __html: courseDetails.summary }}
+          ></div>
+        </section>
+      </div>
+      {loaded && (
+        <CourseContent
+          content={courseDetails.subtitles}
+          courseDuration={courseDetails.totalMins}
+        />
+      )}
+      <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
+        <div className="mb-3">Course Requirements</div>
+        <section>
+          <div
+            className="ml-10 font-normal"
+            dangerouslySetInnerHTML={{ __html: courseDetails.requirements }}
+          ></div>
+        </section>
+      </div>
+      {loaded && (
+        <CourseReviews
+          reviews={courseReviews}
+          reviewsCount={reviewsCount}
+          onSubmit={submitReviewHandler}
+          userRegister={userRegistered}
+          disableButton={disableButton}
+        />
+      )}
+    </Fragment>
   );
 };
 

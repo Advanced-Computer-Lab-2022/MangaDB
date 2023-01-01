@@ -10,6 +10,7 @@ const AddSubtitles = (props) => {
     var newSubtitles = [];
     for (var i = 0; i < subtitles.length; i++) {
       if (subtitles[i].id === subtitleId) {
+        console.log(data)
         subtitles[i].sources.push(data);
         newSubtitles.push(subtitles[i]);
         continue;

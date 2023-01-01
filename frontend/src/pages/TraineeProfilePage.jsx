@@ -84,11 +84,7 @@ const TraineeProfilePage = () => {
         },
       })
       .then((res) => {
-        //console.log(res.data);
-        //console.log(user);
-        //console.log(localStorage.getItem("token"));
         setReceivedUserInfo(res.data);
-        console.log(res.data);
         managerRef.current.handleRender();
       });
   }, []);
@@ -109,7 +105,6 @@ const TraineeProfilePage = () => {
   };
   const reviewReportHandler = (reviewId) => {
     //sprint 3
-    console.log(reviewId);
   };
 
   var displayedStep;

@@ -53,7 +53,9 @@ const AddCoursePage = (props) => {
   return (
     <Fragment>
       <NavBarSearch currentTab="Add Course"></NavBarSearch>
-      <StepsBar steps={steps}></StepsBar>
+      <div className=" mt-[4.5rem]">
+        <StepsBar steps={steps}></StepsBar>
+      </div>
       {steps[0].status === "current" && (
         <CreateCourseForm onSave={onSaveHandler}></CreateCourseForm>
       )}

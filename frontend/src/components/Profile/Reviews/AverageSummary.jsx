@@ -13,11 +13,11 @@ const AverageSummary = (props) => {
     props.count[4].count;
 
   const weightedSum =
-    (+props.count[0].rating * +props.count[0].count) +
-    (+props.count[1].rating * +props.count[1].count) +
-    (+props.count[2].rating * +props.count[2].count) + 
-    (+props.count[3].rating * +props.count[3].count) + 
-    (+props.count[4].rating * +props.count[4].count);
+    +props.count[0].rating * +props.count[0].count +
+    +props.count[1].rating * +props.count[1].count +
+    +props.count[2].rating * +props.count[2].count +
+    +props.count[3].rating * +props.count[3].count +
+    +props.count[4].rating * +props.count[4].count;
 
   const weightedAvergae = weightedSum / totalCount;
 
@@ -32,9 +32,7 @@ const AverageSummary = (props) => {
               <Star
                 key={rating}
                 className={classNames(
-                  avgRating > rating
-                    ? "text-yellow-400"
-                    : "text-gray-300",
+                  avgRating > rating ? "text-yellow-400" : "text-gray-300",
                   "flex-shrink-0 h-5 w-5"
                 )}
                 aria-hidden="true"
@@ -78,7 +76,7 @@ const AverageSummary = (props) => {
                 </div>
               </dt>
               <dd className="ml-3 w-10 text-right tabular-nums text-sm text-gray-900">
-                {Math.round((count.count / totalCount) * 100)}%
+                {!isNaN(Math.round((count.count / totalCount) * 100)) ? Math.round((count.count / totalCount) * 100) : 0}%
               </dd>
             </div>
           ))}

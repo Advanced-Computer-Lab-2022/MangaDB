@@ -14,6 +14,7 @@ import {
   UsersIcon,
 } from "@heroicons/react/outline";
 import Rating from "@mui/material/Rating";
+import ReactLoading from "react-loading";
 
 const InstructorPage = () => {
   const location = useLocation();
@@ -23,7 +24,8 @@ const InstructorPage = () => {
   const [summary, setSummary] = useState([]);
   const [statsConf, setStatsConf] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loaded, setLoaded] = useState(false);
+
   //const [reviewedBefore,setReviewedBefore] =useState(false)
   //fetch the data at the start of the code ..
   useEffect(() => {
@@ -44,7 +46,7 @@ const InstructorPage = () => {
           res.data.instructor.courseDetails.length,
         ]);
         setSummary(res.data.count);
-        setLoading(false);
+        setLoaded(true);
       });
   }, []);
 
@@ -80,15 +82,11 @@ const InstructorPage = () => {
       review: enteredReview,
     };
     axios
-      .post(
-        `http://localhost:3000/instructor/rate`,
-        reviewData,
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      )
+      .post(`http://localhost:3000/instructor/rate`, reviewData, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
       .then((res) => {
         setReviews([...reviews, res.data.review]);
         setSummary(res.data.count);
@@ -158,7 +156,7 @@ const InstructorPage = () => {
     );
   }
   //handle the displayed instructor courses
-  if (!loading) {
+  if (loaded) {
     var displayedCourses = receivedData.instructor.courseDetails.map(
       (course) => {
         return (
@@ -184,121 +182,139 @@ const InstructorPage = () => {
   return (
     <Fragment>
       <NavBarSearch />
-      {!loading && (
-        <div className="flex-col items-center justify-center mt-24">
-          <p className=" flex items-center justify-center  font-semibold text-gray-500">
-            INSTRUCTOR
-          </p>
-          <p className=" flex items-center justify-center font-bold text-4xl">
-            {receivedData.instructor.firstName}
-            {receivedData.instructor.lastName}
-          </p>
-          <p className="flex items-center justify-center text-gray-500">
-            About Me
-          </p>
-          <p className="flex items-center justify-center text-center">
-            {receivedData.instructor.biography}
-          </p>
-          <div className="ml-2">
-            <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {stats.map((item) => (
-                <div
-                  key={item.id}
-                  className="relative bg-white pt-5 px-4 sm:pt-6 sm:px-6 shadow rounded-lg overflow-hidden"
-                >
-                  <dt>
-                    <div className="absolute bg-primaryBlue rounded-md p-3">
-                      <item.icon
-                        className="h-6 w-6 text-white"
-                        aria-hidden="true"
-                      />
-                    </div>
-                    <p className="ml-16 text-sm font-medium text-gray-500 truncate">
-                      {item.name}
-                    </p>
-                  </dt>
-                  <dd className="ml-16 pb-6 flex items-baseline sm:pb-7">
-                    <p className="text-2xl font-semibold text-gray-900">
-                      {item.stat}
-                    </p>
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-          <div className="m-4 mt-6">
-            <div className="md:flex md:justify-between items-center mb-2">
-              <div className="font-semibold text-xl">Leave a Review:</div>
-              <div className="md:w-[18vw] flex md:justify-end mt-4 md:mt-0 space-x-2">
-                <div>Rating</div>
-                <Rating onChange={ratingChangeHandler} />
-              </div>
-            </div>
-            <textarea
-              reviewState={enteredReview}
-              onChange={reviewChangeHandler}
-              className="w-full bg-white border border-slate-300 rounded-md text-sm shadow-sm
-            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
+      {!loaded ? (
+        <div className=" w-full h-full mt-12">
+          <div className="flex w-full h-full  justify-center items-center ">
+            <ReactLoading
+              type={"bars"}
+              color="#C6D8EC"
+              height={667}
+              width={375}
             />
-            <div className="flex justify-end mb-4">
-              <SecondaryButton text="Submit" onClick={onClickHandler} />
+          </div>
+          <div className="flex items-center justify-center -mt-[275px]">
+            <h1 className="text-center text-darkBlue font-bold text-3xl ">
+              Loading...
+            </h1>
+          </div>
+        </div>
+      ) : (
+        <Fragment>
+          <div className="flex-col items-center justify-center mt-24">
+            <p className=" flex items-center justify-center  font-semibold text-gray-500">
+              INSTRUCTOR
+            </p>
+            <p className=" flex items-center justify-center font-bold text-4xl">
+              {receivedData.instructor.firstName}
+              {receivedData.instructor.lastName}
+            </p>
+            <p className="flex items-center justify-center text-gray-500">
+              About Me
+            </p>
+            <p className="flex items-center justify-center text-center">
+              {receivedData.instructor.biography}
+            </p>
+            <div className="ml-2">
+              <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {stats.map((item) => (
+                  <div
+                    key={item.id}
+                    className="relative bg-white pt-5 px-4 sm:pt-6 sm:px-6 shadow rounded-lg overflow-hidden"
+                  >
+                    <dt>
+                      <div className="absolute bg-primaryBlue rounded-md p-3">
+                        <item.icon
+                          className="h-6 w-6 text-white"
+                          aria-hidden="true"
+                        />
+                      </div>
+                      <p className="ml-16 text-sm font-medium text-gray-500 truncate">
+                        {item.name}
+                      </p>
+                    </dt>
+                    <dd className="ml-16 pb-6 flex items-baseline sm:pb-7">
+                      <p className="text-2xl font-semibold text-gray-900">
+                        {item.stat}
+                      </p>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+            <div className="m-4 mt-6">
+              <div className="md:flex md:justify-between items-center mb-2">
+                <div className="font-semibold text-xl">Leave a Review:</div>
+                <div className="md:w-[18vw] flex md:justify-end mt-4 md:mt-0 space-x-2">
+                  <div>Rating</div>
+                  <Rating onChange={ratingChangeHandler} />
+                </div>
+              </div>
+              <textarea
+                reviewState={enteredReview}
+                onChange={reviewChangeHandler}
+                className="w-full bg-white border border-slate-300 rounded-md text-sm shadow-sm
+            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
+              />
+              <div className="flex justify-end mb-4">
+                <SecondaryButton text="Submit" onClick={onClickHandler} />
+              </div>
+              <div>
+                <div className=" font-semibold text-xl mb-4">
+                  Instructor Reviews:
+                </div>
+                <div className=" mb-6 mx-12 mt-3">
+                  <AverageSummary count={summary} />
+                </div>
+                <div className=" mx-8">{displayedReviews}</div>
+              </div>
             </div>
             <div>
               <div className=" font-semibold text-xl mb-4">
-                Instructor Reviews:
+                Instructor Courses:
               </div>
-              <div className=" mb-6 mx-12 mt-3">
-                <AverageSummary count={summary} />
+              <div>
+                <Carousel
+                  rewind={true}
+                  pauseOnHover
+                  infinite
+                  autoPlaySpeed={1500}
+                  autoPlay={true}
+                  rewindWithAnimation={true}
+                  itemClass="ml-2"
+                  draggable={false}
+                  responsive={{
+                    desktop: {
+                      breakpoint: {
+                        max: 3000,
+                        min: 1024,
+                      },
+                      items: 3,
+                      partialVisibilityGutter: 40,
+                    },
+                    mobile: {
+                      breakpoint: {
+                        max: 464,
+                        min: 0,
+                      },
+                      items: 1,
+                      partialVisibilityGutter: 30,
+                    },
+                    tablet: {
+                      breakpoint: {
+                        max: 1024,
+                        min: 464,
+                      },
+                      items: 2,
+                      partialVisibilityGutter: 30,
+                    },
+                  }}
+                >
+                  {displayedCourses}
+                </Carousel>
               </div>
-              <div className=" mx-8">{displayedReviews}</div>
             </div>
           </div>
-          <div>
-            <div className=" font-semibold text-xl mb-4">
-              Instructor Courses:
-            </div>
-            <div>
-              <Carousel
-                rewind={true}
-                pauseOnHover
-                infinite
-                autoPlaySpeed={1500}
-                autoPlay={true}
-                rewindWithAnimation={true}
-                itemClass="ml-2"
-                draggable={false}
-                responsive={{
-                  desktop: {
-                    breakpoint: {
-                      max: 3000,
-                      min: 1024,
-                    },
-                    items: 3,
-                    partialVisibilityGutter: 40,
-                  },
-                  mobile: {
-                    breakpoint: {
-                      max: 464,
-                      min: 0,
-                    },
-                    items: 1,
-                    partialVisibilityGutter: 30,
-                  },
-                  tablet: {
-                    breakpoint: {
-                      max: 1024,
-                      min: 464,
-                    },
-                    items: 2,
-                    partialVisibilityGutter: 30,
-                  },
-                }}
-              >
-                {displayedCourses}
-              </Carousel>
-            </div>
-          </div>
-        </div>
+        </Fragment>
       )}
     </Fragment>
   );

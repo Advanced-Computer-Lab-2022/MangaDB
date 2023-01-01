@@ -77,6 +77,7 @@ const IntructorCoursePage = (props) => {
   };
 
   const selectRowHandler = (isSelected, courseId) => {
+    console.log(courseId)
     if (isSelected) {
       setSelectedNow([...selectedNow, courseId]);
     } else {
@@ -219,6 +220,7 @@ const IntructorCoursePage = (props) => {
           },
         })
         .then((res) => {
+          console.log(res.data)
           var courses = [];
           for (var i = 0; i < searchState.displayedCourses.length; i++) {
             if (searchState.displayedCourses[i].course._id !== res.data._id) {

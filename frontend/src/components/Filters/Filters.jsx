@@ -65,6 +65,7 @@ const Filters = (props) => {
     dispatchFilter({ type: "SUBJECT", value: Array });
   };
   const priceChangeHandler = (Range) => {
+    console.log(Range)
     dispatchFilter({ type: "PRICE", value: Range });
   };
   const ratingChangeHandler = (Rating) => {

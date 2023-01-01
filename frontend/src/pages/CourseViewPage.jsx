@@ -8,10 +8,11 @@ import ContentCourseView from "../components/CourseView/ContentCourseView";
 import ExamToolManager from "../components/ExamToolBar/ExamToolManager";
 import Certificate from "../components/Certificate/Certificate";
 import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
+import ReactLoading from "react-loading";
 
 const CourseViewPage = () => {
-  
   const location = useLocation();
+  const [loaded, setLoaded] = useState(false);
   const [receivedData, setReceivedData] = useState({});
   const [currentSource, setCurrentSource] = useState("");
   const [studentSolutions, setStudentSolutions] = useState([]);
@@ -73,9 +74,8 @@ const CourseViewPage = () => {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
-      .then((res) => {
-      });
-      closeFollowUpModal();
+      .then((res) => {});
+    closeFollowUpModal();
   };
 
   useEffect(() => {
@@ -210,7 +210,6 @@ const CourseViewPage = () => {
   //useEffect at the start to receive the data
   useEffect(() => {
     const courseId = location.state;
-    //shouldnt we send the userId ??
     axios
       .get(`http://localhost:3000/course/${courseId}`, {
         headers: {
@@ -224,6 +223,7 @@ const CourseViewPage = () => {
         setCurrentSource(res.data.course.subtitles[0].sources[0]);
         setProgress(res.data.userData.percentageCompleted);
         setTotalSources(res.data.userData.totalSources);
+        setLoaded(true);
       });
   }, [location.state]);
   const onSourceChangeHandler = (source) => {
@@ -231,13 +231,13 @@ const CourseViewPage = () => {
       managerRef.current.refreshManager();
     }
     setCurrentSource(source);
-    if(source.sourceType === "Quiz"){
-      setCurrentTab("")
+    if (source.sourceType === "Quiz") {
+      setCurrentTab("");
       setCertificateAlert(false);
       setShowQA(false);
       setShowNotes(false);
       setShowReports(false);
-      setShowReviews(false)
+      setShowReviews(false);
     }
   };
   const changeNotesFilter = (data) => {
@@ -358,14 +358,14 @@ const CourseViewPage = () => {
       })
       .then((res) => {
         axios
-        .get(`http://localhost:3000/user/progress/${receivedData._id}`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        })
-        .then((res) => {
-          setProgress(res.data.percentage);
-        });
+          .get(`http://localhost:3000/user/progress/${receivedData._id}`, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
+          .then((res) => {
+            setProgress(res.data.percentage);
+          });
       });
   };
 
@@ -568,27 +568,47 @@ const CourseViewPage = () => {
   return (
     <Fragment>
       <NavBarSearch currentTab="My Courses" />
-      <div className=" opacity-0 h-0 overflow-hidden w-full relative ">
-        <Certificate ref={downloadRef}></Certificate>
-      </div>
-      {/* <ProgressManager progress={progress} totalSources={totalSources} /> */}
-      <div className="py-4 flex justify-center font-medium text-xl bg-gray-50 z-20 mt-[4.5rem]">
-        {receivedData.courseTitle}: {currentSource.description}
-      </div>
-      <div className="md:flex z-50">
-        <div className="video/exam md:w-[70%] w-full mb-4 md:mb-0">
-          {displayedSource}
+      {!loaded ? (
+        <div className=" w-full h-full mt-12">
+          <div className="flex w-full h-full  justify-center items-center ">
+            <ReactLoading
+              type={"bars"}
+              color="#C6D8EC"
+              height={667}
+              width={375}
+            />
+          </div>
+          <div className="flex items-center justify-center -mt-[275px]">
+            <h1 className="text-center text-darkBlue font-bold text-3xl ">
+              Loading...
+            </h1>
+          </div>
         </div>
-        <div className="md:w-[30%]">
-          <ContentCourseView
-            progress={progress}
-            totalSources={totalSources}
-            courseDuration={receivedData.totalMins}
-            content={receivedData.subtitles}
-            onClick={onSourceChangeHandler}
-          />
-        </div>
-      </div>
+      ) : (
+        <Fragment>
+          <div className=" opacity-0 h-0 overflow-hidden w-full relative ">
+            <Certificate ref={downloadRef}></Certificate>
+          </div>
+
+          <div className="py-4 flex justify-center font-medium text-xl bg-gray-50 z-20 mt-[4.5rem]">
+            {receivedData.courseTitle}: {currentSource.description}
+          </div>
+          <div className="md:flex z-50">
+            <div className="video/exam md:w-[70%] w-full mb-4 md:mb-0">
+              {displayedSource}
+            </div>
+            <div className="md:w-[30%]">
+              <ContentCourseView
+                progress={progress}
+                totalSources={totalSources}
+                courseDuration={receivedData.totalMins}
+                content={receivedData.subtitles}
+                onClick={onSourceChangeHandler}
+              />
+            </div>
+          </div>
+        </Fragment>
+      )}
     </Fragment>
   );
 };

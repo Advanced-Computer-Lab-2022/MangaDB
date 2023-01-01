@@ -5,6 +5,7 @@ import CourseCard from "../components/Course/CourseCard";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 import Navbar from "../components/UI/NavBar/NavBar";
+import ReactLoading from "react-loading";
 
 // pagination blue theme
 const theme = createTheme({
@@ -31,7 +32,7 @@ const MyCourses = () => {
 
   const [myRequests, setMyRequests] = useState([]);
   const [render, setRender] = useState(false);
-
+  const [loaded, setLoaded] = useState(false);
   const [userRole, setUserRole] = useState(localStorage.getItem("role"));
 
   //funtion to handle the pagination
@@ -56,6 +57,7 @@ const MyCourses = () => {
       .then((res) => {
         setNoOfPages(res.data.count);
         setMyCourses(res.data.courses);
+        setLoaded(true);
       });
 
     axios
@@ -121,33 +123,51 @@ const MyCourses = () => {
   });
 
   return (
-   
-      <Fragment>
-        <Navbar currentTab="My Courses" />
-        <div className="flex flex-col gap-y-4 mb-4">
-          <div className="font-bold text-2xl ml-24 mt-4">Results:</div>
-          <div className="flex-col items-center gap-y-4 hidden lg:flex">
-            {coursesListView}
+    <Fragment>
+      <Navbar currentTab="My Courses" />
+      {!loaded ? (
+        <div className=" w-full h-full mt-12">
+          <div className="flex w-full h-full  justify-center items-center ">
+            <ReactLoading
+              type={"bars"}
+              color="#C6D8EC"
+              height={667}
+              width={375}
+            />
           </div>
-          <div className="flex justify-around flex-wrap lg:hidden">
-            {coursesCardsView}
+          <div className="flex items-center justify-center -mt-[275px]">
+            <h1 className="text-center text-darkBlue font-bold text-3xl ">
+              Loading...
+            </h1>
           </div>
         </div>
-        <div className="flex justify-center items-center mt-4">
-          {myCourses.length !== 0 && (
-            <ThemeProvider theme={theme}>
-              <Pagination
-                className="ml-2 mr-2"
-                count={Math.ceil(noOfPages / 10)}
-                color="primary"
-                page={page}
-                onChange={onChangePageHandler}
-              />
-            </ThemeProvider>
-          )}
-        </div>
-      </Fragment>
- 
+      ) : (
+        <Fragment>
+          <div className="flex flex-col gap-y-4 mb-4">
+            <div className="font-bold text-2xl ml-24 mt-4">Results:</div>
+            <div className="flex-col items-center gap-y-4 hidden lg:flex">
+              {coursesListView}
+            </div>
+            <div className="flex justify-around flex-wrap lg:hidden">
+              {coursesCardsView}
+            </div>
+          </div>
+          <div className="flex justify-center items-center mt-4">
+            {myCourses.length !== 0 && (
+              <ThemeProvider theme={theme}>
+                <Pagination
+                  className="ml-2 mr-2"
+                  count={Math.ceil(noOfPages / 10)}
+                  color="primary"
+                  page={page}
+                  onChange={onChangePageHandler}
+                />
+              </ThemeProvider>
+            )}
+          </div>
+        </Fragment>
+      )}
+    </Fragment>
   );
 };
 

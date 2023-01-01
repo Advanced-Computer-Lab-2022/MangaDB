@@ -95,7 +95,7 @@ const CourseReviews = (props) => {
             </div>
           </div>
         )}
-        <div className="px-8 mb-4">
+        <div className="px-8 mb-4 mt-2">
           <AverageSummary count={props.reviewsCount} />
         </div>
         <div className="py-2 px-8">{reviews}</div>

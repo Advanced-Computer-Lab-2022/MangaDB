@@ -70,6 +70,10 @@ const IntructorCoursePage = (props) => {
 
   const [selectedNow, setSelectedNow] = useState([]);
 
+  const role = localStorage.getItem("role");
+  if(role !== "INSTRUCTOR" && role!== "ADMIN"){
+    navigate('/403')
+  }
   const selectAllHandler = (selectRows) => {
     if (selectRows) {
       const temp = [];

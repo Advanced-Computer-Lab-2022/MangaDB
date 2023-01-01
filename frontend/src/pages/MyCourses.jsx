@@ -6,7 +6,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 import Navbar from "../components/UI/NavBar/NavBar";
 import ReactLoading from "react-loading";
-
+import { useNavigate } from "react-router-dom";
 // pagination blue theme
 const theme = createTheme({
   status: {
@@ -35,6 +35,7 @@ const MyCourses = () => {
   const [loaded, setLoaded] = useState(false);
   const [userRole, setUserRole] = useState(localStorage.getItem("role"));
 
+  const navigate = useNavigate();
   //funtion to handle the pagination
 
   const renderHandler = () => {
@@ -48,6 +49,10 @@ const MyCourses = () => {
   useEffect(() => {
     window.scrollTo(0, 0, "smooth");
     //fetch the courses of the trainee
+    const role = localStorage.getItem("role");
+    if (role !== "TRAINEE" || role !=="CORPORATE") {
+      navigate("/403");
+    }
     axios
       .get(`http://localhost:3000/user/mycourses/?page=${page}`, {
         headers: {

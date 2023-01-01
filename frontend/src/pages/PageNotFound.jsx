@@ -1,5 +1,23 @@
 import { Fragment } from "react";
+import { useNavigate } from "react-router-dom";
 const PageNotFound = () => {
+  const navigate = useNavigate();
+  const onClickHandler = () => {
+    const role = localStorage.getItem('role');
+    if(role === 'TRAINEE' || role === 'CORPORATE'){
+      navigate("/")
+    }
+    else if (role === 'INSTRUCTOR'){
+      navigate('/instructorDashboard');
+    }
+    else if(role === 'ADMIN') {
+      navigate('/admin');
+    }
+    else{
+      navigate('/')
+    }
+
+  }
   return (
     <Fragment>
         <div className="h-[48vw] relative overflow-clip -mb-4">
@@ -20,12 +38,12 @@ const PageNotFound = () => {
             It looks like the page you’re looking for doesn't exist.
           </p>
           <div className="mt-6">
-            <a
-              href="#"
+            <button
+              onClick={onClickHandler}
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-black text-opacity-75 bg-white bg-opacity-75 sm:bg-opacity-25 sm:hover:bg-opacity-50"
             >
               Go back home
-            </a>
+            </button>
           </div>
         </div>
     </Fragment>

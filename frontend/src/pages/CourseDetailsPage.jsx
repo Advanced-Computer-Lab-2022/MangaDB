@@ -8,9 +8,10 @@ import CourseContent from "../components/CourseDetailsComp/CourseContent";
 import CourseReviews from "../components/CourseDetailsComp/CourseReviews";
 import { useLocation } from "react-router-dom";
 import ReactLoading from "react-loading";import { useSnackbar } from "notistack";
-
+import { useNavigate } from "react-router-dom";
 const CourseDetailsPage = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
   const handleClickVariant = (variant) => {
     if (variant === "error") {
       enqueueSnackbar("You have already reviewd this course before ", {
@@ -34,7 +35,12 @@ const CourseDetailsPage = () => {
   const [render, setRender] = useState(false);
   const [disableButton, setDisableButton] = useState(false);
 
+  const role = localStorage.getItem("role");
+ 
   useEffect(() => {
+    if(role === "INSTRUCTOR" || role === "ADMIN"){
+      navigate('/403')
+    }
     window.scrollTo(0, 0, "smooth");
     const courseId = location.state.courseId;
     axios

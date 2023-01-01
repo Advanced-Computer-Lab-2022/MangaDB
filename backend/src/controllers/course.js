@@ -146,7 +146,7 @@ exports.getCourse = async (req, res) => {
     });
 
     // to  be changed to false and uncomment for loop when token added
-
+    
     for (let i = 0; i < foundUser.courseDetails.length; i++) {
       if (foundUser.courseDetails[i].course == courseId) {
         userCourseData = foundUser.courseDetails[i];
@@ -861,7 +861,18 @@ exports.getInstructorQuestions = async (req, res, next) => {
 };
 
 exports.getDiscountedCourses = async (req, res, next) => {
+  const countryCode = req.query.CC || "US";
+  let countryDetails = await currencyConverter.convertCurrency(
+    "US",
+    countryCode
+  );
+  let exchangeRate = countryDetails.rate;
+  let symbol = countryDetails.symbol;
   let courses = await course.find({ discount: { $gt: 0 } }).limit(9);
-
-  res.status(200).send(courses);
+  courses.forEach((course) => {
+    course.coursePrice = (course.coursePrice * exchangeRate).toFixed(2);
+    course.discountedPrice = (course.discountedPrice * exchangeRate).toFixed(2);
+  });
+  
+  res.status(200).send({courses:courses,symbol:symbol});
 };

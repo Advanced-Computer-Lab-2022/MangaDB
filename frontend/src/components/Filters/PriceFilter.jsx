@@ -1,10 +1,33 @@
 import { Fragment } from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Checkbox from "@mui/material/Checkbox";
+
+const theme = createTheme({
+  status: {
+    danger: "#e53e3e",
+  },
+  palette: {
+    primary: {
+      main: "#3970AC",
+      darker: "#053e85",
+    },
+    neutral: {
+      main: "#64748B",
+      contrastText: "#fff",
+    },
+  },
+});
 const PriceFilter = (props) => {
   const endValueExchange = +props.exchange * 500;
   var minValue = props.defaultState ? props.defaultState.minValue : 0;
   var maxValue = props.defaultState
     ? props.defaultState.maxValue
     : endValueExchange;
+
+  var checked = false;
+  if(+minValue === 0 && +maxValue === 0){
+    checked = true
+  }
   const minChangeHandler = (event) => {
     const range = {
       minValue: +event.target.value,
@@ -19,6 +42,24 @@ const PriceFilter = (props) => {
     };
     props.onChange(range);
   };
+
+  const freeChangeHandler = (event) => {
+    var range;
+    if(event.target.checked){
+      range = {
+        minValue : 0,
+        maxValue : 0
+      }
+    }
+    else{
+      range = {
+        minValue: minValue,
+        maxValue: 500,
+      };
+    }
+   
+    props.onChange(range);
+  }
 
   return (
     <Fragment>
@@ -47,6 +88,17 @@ const PriceFilter = (props) => {
             value={maxValue.toString()}
             onChange={maxChangeHandler}
           />
+        </div>
+        <div>
+          <label>Free</label>
+          <ThemeProvider theme={theme}>
+            <Checkbox
+              color="primary"
+              checked={checked}
+              onChange={freeChangeHandler}
+              inputProps={{ "aria-label": "controlled" }}
+            />
+          </ThemeProvider>
         </div>
       </div>
     </Fragment>

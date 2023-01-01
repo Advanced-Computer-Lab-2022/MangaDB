@@ -77,7 +77,7 @@ const CourseReviews = (props) => {
                 <div>Rating</div>
                 <div>
                   <Rating
-                    onChange={!props.disableButton ? ratingChangeHandler : null}
+                    onChange={ ratingChangeHandler }
                   />
                 </div>
               </div>
@@ -87,13 +87,12 @@ const CourseReviews = (props) => {
                 onChange={reviewChangeHandler}
                 className="w-full bg-white border border-slate-300 rounded-md text-sm shadow-sm
             focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
-                readOnly={props.disableButton}
+                
               />
             </div>
             <div className="flex justify-end px-8">
               <SecondaryButton
                 className="mb-4 "
-                disabled={props.disableButton}
                 onClick={onClickHandler}
               >
                 Submit

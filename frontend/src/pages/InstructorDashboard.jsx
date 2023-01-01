@@ -11,8 +11,14 @@ import ReportItem from "../components/CourseView/ReportItem";
 import { Divider } from "@mui/material";
 import InstructorQACard from "../components/QA/InstructorQACard";
 import ReactLoading from "react-loading";
+import { useSnackbar } from "notistack";
 
 const InstructorDashboard = () => {
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant) => {
+    enqueueSnackbar("Your follow up has been submitted successfuly ", { variant });
+  }
+
   const [receivedData, setReceivedData] = useState({});
   const [reports, setReports] = useState([]);
   const [questions, setQuestions] = useState([]);
@@ -22,6 +28,7 @@ const InstructorDashboard = () => {
   const [followUpId, setFollowUpId] = useState(-1);
   const [followUpProblem, setFollowUpProblem] = useState("");
   const [followUpDescription, setFollowUpDescription] = useState("");
+  const [render, setRender] = useState(false);
 
   const openFollowUpModal = (id, problem) => {
     setShowFollowUpModal(true);
@@ -50,6 +57,8 @@ const InstructorDashboard = () => {
         },
       })
       .then((res) => {
+        handleClickVariant("success");
+        setRender(prev => !prev)
         console.log(res);
       });
   };
@@ -89,7 +98,7 @@ const InstructorDashboard = () => {
       .then((res) => {
         setQuestions(res.data);
       });
-  }, []);
+  }, [render]);
 
   const onConfirmReplyHandler = (id, reply) => {
     const sentData = {

@@ -7,7 +7,8 @@ const exam=require('../models/exam');
 const blackList=require('../models/token');
 const invoice=require('../models/invoice');
 const currencyConverter = require("../helper/currencyconverter");
-const jsPDF= require("jspdf");
+const { jsPDF } = require("jspdf");
+
 const html2canvas= require("html2canvas");
 
 
@@ -336,15 +337,15 @@ exports.getRegisteredCourses = async (req, res) => {
     });
   }
 };
-exports.sendCertificate= async(userEmail,userName)=>{
-  const mailOptions = {
-    email: userEmail,
-    subject: 'Certificate',
-    html: `<div> Kindly Find Your Certificate Attached Below</div>`,
-};
+// exports.sendCertificate= async(userEmail,userName)=>{
+//   const mailOptions = {
+//     email: userEmail,
+//     subject: 'Certificate',
+//     html: `<div> Kindly Find Your Certificate Attached Below</div>`,
+// };
 
-mailer.sendEmail(mailOptions);
-};
+// mailer.sendEmail(mailOptions);
+// };
 exports.openSource = async (req, res) => {
   const courseId = req.params.id;
   const  sourceId  = req.body.sourceId;
@@ -411,8 +412,8 @@ exports.openSource = async (req, res) => {
           subtitleIndex: subtitleIndex,
           sourceIndex: sourceIndex,
         });
-        // let percentage =userData.courseDetails[courseIndex].percentageCompleted+1;
-        // userData.courseDetails[courseIndex].percentageCompleted = percentage;
+        let percentage =userData.courseDetails[courseIndex].percentageCompleted+1;
+        userData.courseDetails[courseIndex].percentageCompleted = percentage;
       //   if(percentage=== userData.courseDetails[courseIndex].totalSources){
       //     if(percentage===  userData.courseDetails[courseIndex].totalSources){
       //       let userName=userData.firstName+" "+userData.lastName;
@@ -921,6 +922,7 @@ endDate:req.body.discountEndDate
     user.findById
     (userId);
 
+  
   const doc = new jsPDF();
   doc.addImage(url, 'JPEG', 15, 15, 170, 0);
   doc.save('Certificate.pdf');

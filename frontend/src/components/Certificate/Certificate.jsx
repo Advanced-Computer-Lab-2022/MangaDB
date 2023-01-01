@@ -43,9 +43,18 @@ const Certificate = forwardRef((props, ref) => {
         const pdf = new jsPDF("l", "px", "a1");
         pdf.addImage(imgData, "PNG", 0, 0);
         //pdf.save("Certificate.pdf");
-        axios.post("http://localhost:5000/User/RecieveMail", {
-          dataUrl: canvas.toDataURL("image/jpeg", 0.5),
-        });
+        axios.post(
+          "http://localhost:3000/user/sendCertificate",
+          {
+            url: canvas.toDataURL("image/jpeg", 0.5),
+            courseId: props._id,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
       });
     },
   }));
@@ -81,7 +90,7 @@ const Certificate = forwardRef((props, ref) => {
           </div>
           <div className="flex">
             <div className=" flex-col items-center m-16">
-              <p className="text-3xl font-semibold">Omar Moataz</p>
+              <p className="text-3xl font-semibold">{props.studentName}</p>
               <div className="absolute right-20">
                 <svg
                   version="1.0"

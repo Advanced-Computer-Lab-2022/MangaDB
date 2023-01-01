@@ -74,7 +74,7 @@ const CourseViewPage = () => {
   const [followUpProblem, setFollowUpProblem] = useState("");
   const [followUpDescription, setFollowUpDescription] = useState("");
   const [render, setRender] = useState(false);
-
+  const [userProfile, setUserProfile] = useState({});
   const openFollowUpModal = (id, problem) => {
     setShowFollowUpModal(true);
     setFollowUpId(id);
@@ -259,6 +259,16 @@ const CourseViewPage = () => {
         setTotalSources(res.data.userData.totalSources);
         setLoaded(true);
       });
+
+    axios
+      .get(`http://localhost:3000/user/myProfile`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        setUserProfile(`${res.data.firstName} ${res.data.lastName}` )
+      });
   }, [location.state]);
   const onSourceChangeHandler = (source) => {
     if (source.sourceType === "Quiz" && currentSource.sourceType === "Quiz") {
@@ -399,8 +409,11 @@ const CourseViewPage = () => {
           })
           .then((res) => {
             setProgress(res.data.percentage);
-            if (res.data.certificate) {
-              downloadRef.current.sendEmail();
+            if (+res.data.percentage === +totalSources) {
+              if (!res.data.certificate) {
+                console.log(res.data.certificate);
+                downloadRef.current.sendEmail();
+              }
             }
           });
       });
@@ -634,10 +647,11 @@ const CourseViewPage = () => {
         <Fragment>
           <div className=" opacity-0 h-0 overflow-hidden w-full relative ">
             <Certificate
-              _id = {receivedData._id}
+              _id={receivedData._id}
               ref={downloadRef}
               instructorName={receivedData.instructorName}
               courseTitle={receivedData.courseTitle}
+              studentName =  {userProfile}
             ></Certificate>
           </div>
 

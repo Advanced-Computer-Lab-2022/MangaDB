@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
           ref: "Course",
         },
         certificate: {
-          type: boolean,
+          type: Boolean,
           default: false,
         },
         viewedSources: {

@@ -194,6 +194,7 @@ export default function ReportsRequestsManager(props) {
           },
         })
         .then((res) => {
+          console.log(res.data);
           setData(res.data);
         })
         .catch((err) => {
@@ -221,7 +222,7 @@ export default function ReportsRequestsManager(props) {
           handleClickVariant("success");
         });
     } else {
-      if (problemStatus !== "accepted") {
+      if (problemStatus !== "Accepted") {
         axios
           .patch(`http://localhost:3000/request/reject/${problemId}`,{}, {
             headers: {
@@ -247,7 +248,7 @@ export default function ReportsRequestsManager(props) {
   }
   function thirdAction(problemId, problemType, problemStatus) {
     console.log(problemStatus);
-    if (problemStatus !== "accepted") {
+    if (problemStatus !== "Accepted") {
       axios
         .patch(`http://localhost:3000/request/pend/${problemId}`,{}, {
           headers: {
@@ -372,9 +373,9 @@ export default function ReportsRequestsManager(props) {
               requestStatusFilter === "all")) ? (
             <ReportsRequestsCard
               alreadyHandled={
-                problem.status === "accepted" ||
-                problem.status === "rejected" ||
-                problem.status === "resolved"
+                problem.status === "Accepted" ||
+                problem.status === "Rejected" ||
+                problem.status === "Resolved"
               }
               userName={problem.userName}
               courseName={problem.courseName}

@@ -56,6 +56,11 @@ export default function AddUserForm(props) {
         })
         .then((res) => {
           handleClickVariant("success");
+          console.log(UserNameRef.current.onload);
+          UserNameRef.current.value="";
+          PasswordRef.current.value="";
+          setEmptyUserName(false);
+
         })
         .catch((error) => {
           if (

@@ -16,6 +16,9 @@ const CourseDetailsPage = () => {
   const [courseReviews, setCourseReviews] = useState([]);
   const [reviewsCount, setReviewsCount] = useState([]);
   const [requested, setRequested] = useState(false);
+  const [render, setRender] = useState(false);
+  const [disableButton, setDisableButton] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0, "smooth");
     const courseId = location.state.courseId;
@@ -35,16 +38,7 @@ const CourseDetailsPage = () => {
         }
       });
 
-    axios
-      .get("http://localhost:3000/course/rate/".concat(courseId), {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
-      .then((res) => {
-        setCourseReviews(res.data.review);
-        setReviewsCount(res.data.count);
-      });
+    getReviewsAndRatings();
 
     //get the requests of the user and check if the course is requested before
     axios
@@ -63,7 +57,25 @@ const CourseDetailsPage = () => {
           }
         }
       });
-  }, []);
+  }, [render]);
+
+  const setRenderHandler = (prevRender) => {
+    setRender(!prevRender);
+  };
+
+  const getReviewsAndRatings = () => {
+    const courseId = location.state.courseId;
+    axios
+      .get("http://localhost:3000/course/rate/".concat(courseId), {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        setCourseReviews(res.data.review);
+        setReviewsCount(res.data.count);
+      });
+  };
 
   const submitReviewHandler = (data) => {
     const courseId = location.state.courseId;
@@ -77,7 +89,11 @@ const CourseDetailsPage = () => {
           },
         }
       )
-      .then((res) => {});
+      .then((res) => {
+        getReviewsAndRatings();
+        setRenderHandler(render);
+        setDisableButton(true);
+      });
   };
   return (
     <Fragment>

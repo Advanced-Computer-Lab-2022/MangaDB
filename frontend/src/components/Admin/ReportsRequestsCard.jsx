@@ -24,7 +24,7 @@ export default function ReportsRequestsCard(props) {
             <div className="p-2 w-full ">
               <div className="flex justify-between whitespace-nowrap">
                 <h4 class="text-base font-semibold text-gray-700">
-                  {props.userName?props.userName:""}
+                  {props.userName!=="undefined undefined"?props.userName:"Anonymous User"}
                 </h4>
                 <p class="text-gray-400 text-sm font-semibold ml-4">{props.date}</p>
               </div>

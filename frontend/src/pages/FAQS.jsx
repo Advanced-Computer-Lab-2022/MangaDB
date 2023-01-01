@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 
 const faqs = [
@@ -36,6 +36,9 @@ const faqs = [
   },
 ];
 const FAQS = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
+  }, []);
   return (
     <Fragment>
       <NavBarSearch currentTab="FAQs" />

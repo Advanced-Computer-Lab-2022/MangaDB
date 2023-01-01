@@ -91,6 +91,7 @@ const InstructorWallet = () => {
       : "decrease";
 
   useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
     //axios to get the data..
     axios
       .get("http://localhost:3000/instructor/amountOwed", {

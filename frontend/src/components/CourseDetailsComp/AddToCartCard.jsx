@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useState, Fragment } from "react";
 import SecondaryButton from "../UI/SecondaryButton";
-import reactImage from "../../Assets/Images/react.png";
 import { useNavigate } from "react-router-dom";
 import Modal from "../UI/Modal";
 import Divider from "@mui/material/Divider";
@@ -130,7 +129,7 @@ const AddToCartCard = (props) => {
         <img
           onClick={showModalHandler}
           className="cursor-pointer"
-          src={reactImage}
+          src={props.courseImage}
           alt=""
         />
         <svg

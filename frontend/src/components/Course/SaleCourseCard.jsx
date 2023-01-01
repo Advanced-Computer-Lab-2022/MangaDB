@@ -1,5 +1,4 @@
 import React from "react";
-import reactImg from "../../Assets/Images/react.png";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Stars from "../UI/Stars";
 import { useNavigate } from "react-router-dom";
@@ -25,7 +24,7 @@ const SaleCourseCard = (props) => {
     >
       <div class=" relative bg-white border border-gray-200 shadow-md w-80">
         <div className={"h-48 w-80  "}>
-          <img className="" src={reactImg} alt=""></img>
+          <img className="" src={props.courseImage} alt=""></img>
         </div>
         <div className="bg-white px-2 py-1 text-xs font-semibold rounded-full absolute top-3 left-3">
           <AccessTimeIcon className="-mt-[3px]" fontSize="inherit" />{" "}

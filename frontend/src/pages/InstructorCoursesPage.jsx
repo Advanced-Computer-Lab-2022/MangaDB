@@ -229,7 +229,6 @@ const IntructorCoursePage = (props) => {
         .then((res) => {
           let coursesAdmin = [];
           for (var i = 0; i < searchState.displayedCourses.length; i++) {
- 
             if (
               res.data.Ids.includes(searchState.displayedCourses[i].course._id)
             ) {

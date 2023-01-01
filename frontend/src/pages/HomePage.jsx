@@ -57,6 +57,7 @@ const HomePage = () => {
         subject={course.subject}
         level={course.level}
         coursePrice={course.coursePrice}
+        courseImage={course.courseImage}
         discountedPrice={course.discountedPrice}
         discount={course.discount}
         rating={course.rating}
@@ -74,6 +75,7 @@ const HomePage = () => {
         instructorName={course.instructorName}
         subject={course.subject}
         level={course.level}
+        courseImage={course.courseImage}
         coursePrice={course.coursePrice}
         discountedPrice={course.discountedPrice}
         discount={course.discount}

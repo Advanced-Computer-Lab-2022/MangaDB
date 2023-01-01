@@ -180,6 +180,7 @@ const SearchResultsPage = () => {
           subject={course.subject}
           level={course.level}
           description={course.courseDescription}
+          courseImage={course.courseImage}
           coursePrice={course.coursePrice}
           discountedPrice={course.discountedPrice}
           discount={course.discount}

@@ -31,6 +31,11 @@ function isYoutubeURL(str) {
   return str.match(p);
 }
 
+function isValidImageURL(str) {
+  var p = /(http(s?):)([/|.|\w|\s|-])*.(?:jpg|gif|png)/;
+  return str.match(p);
+}
+
 const CreateCourseForm = (props) => {
   const [openContract, setOpenContract] = useState(false);
   const handleClose = () => {
@@ -56,6 +61,7 @@ const CreateCourseForm = (props) => {
   const [emptyCourseDescription, setEmptyCourseDescription] = useState(false);
   const [emptyOverviewURL, setEmptyOverviewURL] = useState(false);
   const [validOverviewURL, setValidOverviewURL] = useState(true);
+  const [validImageURL, setValidImageURL] = useState(true);
 
   const acceptContract = () => {
     axios
@@ -120,14 +126,6 @@ const CreateCourseForm = (props) => {
       setEmptyCourseTitle(false);
     }
 
-    // if (enteredSubject === "") {
-    //   setEmptyCourseSubject(true);
-    //   setWarning("Please fill in all the required fields");
-    //   isValidForm = false;
-    // } else {
-    //   setEmptyCourseSubject(false);
-    // }
-
     if (enteredCoursePrice === "") {
       setEmptyCoursePrice(true);
       setWarning("Please fill in all the required fields");
@@ -135,7 +133,6 @@ const CreateCourseForm = (props) => {
     } else {
       setEmptyCoursePrice(false);
     }
-
     if (enteredCourseDescription === "") {
       setEmptyCourseDescription(true);
       setWarning("Please fill in all the required fields");
@@ -157,7 +154,13 @@ const CreateCourseForm = (props) => {
     } else {
       setValidOverviewURL(true);
     }
-
+    if (!isValidImageURL(enteredImageURL) && enteredImageURL !== "") {
+      setValidImageURL(false);
+      setWarning("Please enter a valid Image URL (.jpg, .png, .gif)");
+      isValidForm = false;
+    } else {
+      setValidImageURL(true);
+    }
     return isValidForm;
   };
 
@@ -183,7 +186,10 @@ const CreateCourseForm = (props) => {
     var data = {
       courseTitle: enteredCourseTitle,
       level: selectedLevel,
-      courseImage: enteredImageURL,
+      courseImage:
+        enteredImageURL === ""
+          ? "https://elearningindustry.com/wp-content/uploads/2020/08/5-ways-to-improve-your-course-cover-design.png"
+          : enteredImageURL,
       courseOverview: enteredOverviewURL,
       subject: currentReportsSelector.name,
       coursePrice: enteredCoursePrice,
@@ -213,7 +219,8 @@ const CreateCourseForm = (props) => {
           emptyCourseSubject ||
           emptyCourseTitle ||
           emptyOverviewURL ||
-          !validOverviewURL
+          !validOverviewURL ||
+          !validImageURL
             ? "p-4 mt-3 text-red-900 bg-red-50 border rounded-md mx-8"
             : "hidden"
         }
@@ -282,8 +289,9 @@ const CreateCourseForm = (props) => {
             <div className="flex justify-center items-center">
               <label className="w-32">Image URL</label>
               <input
-                className="w-[60vw] md:w-[27vw] px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
-            focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
+                className={"w-[60vw] md:w-[27vw] px-3 py-1 bg-white border  rounded-md text-sm shadow-sm focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue ".concat(
+                  !validImageURL ? "border-red-200" : "border-slate-300"
+                )}
                 onChange={imageURLChangeHandler}
                 type="text"
               />

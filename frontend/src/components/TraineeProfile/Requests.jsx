@@ -19,11 +19,10 @@ function classNames(...classes) {
 
 const Requests = (props) => {
   const [requests, setRequests] = useState([]);
-  const userId = "63a41b632334fd21e6fab392";
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/request", {
+      .get("http://localhost:3000/request/user", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -36,7 +35,8 @@ const Requests = (props) => {
         }
       }
       */
-        setRequests(res.data);
+     console.log(res.data.requests);
+        setRequests(res.data.requests);
       });
   }, []);
   return (

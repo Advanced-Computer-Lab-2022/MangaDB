@@ -14,7 +14,13 @@ const SearchBar = (props) => {
     const role = localStorage.getItem("role");
     if (role !== "INSTRUCTOR" && role !== "ADMIN") {
     navigate(`/searchresults`, {state:inputRef.current.value});
-  };
+    }
+    if (role === "INSTRUCTOR") {
+      navigate(`/courses`, {
+        state: inputRef.current.value,
+      });
+    }
+
   }
   return (
     <div

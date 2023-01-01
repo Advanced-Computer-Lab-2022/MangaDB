@@ -51,7 +51,7 @@ const IntructorCoursePage = (props) => {
   const navigate = useNavigate();
   const defaultState = {
     displayedCourses: [],
-    search: "",
+    search: location.state? location.state : "",
     filters: {
       price: null,
       subjects: [],

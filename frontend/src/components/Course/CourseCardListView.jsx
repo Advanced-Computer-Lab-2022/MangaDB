@@ -3,8 +3,10 @@ import reactImg from "../../Assets/Images/react.png";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Stars from "../UI/Stars";
 import SecondaryButton from "../UI/SecondaryButton";
+import ProgressBar from "@ramonak/react-progress-bar";
+
 import { useNavigate } from "react-router-dom";
-import {  useSnackbar } from "notistack";
+import { useSnackbar } from "notistack";
 import axios from "axios";
 const size = 5;
 
@@ -42,8 +44,8 @@ const CourseCardListView = (props) => {
   };
   const totalDuration = Math.round(props.duration / 60);
   return (
-    <div class="relative w-4/5 flex items-center bg-white border border-gray-200 shadow-md rounded-md">
-      <img class="max-w-xs h-full" src={reactImg} alt=""></img>
+    <div className="relative w-4/5 flex items-center bg-white border border-gray-200 shadow-md rounded-md">
+      <img className="max-w-xs h-full" src={reactImg} alt=""></img>
 
       <div className="px-5 py-3 space-y-2 w-full">
         <h5 className="flex text-lg items-center font-bold tracking-tight text-gray-900">
@@ -80,23 +82,35 @@ const CourseCardListView = (props) => {
         <div className="bg-white  py-1 text-sm font-semibold rounded-full">
           <AccessTimeIcon className="-mt-[3px]" fontSize="inherit" />{" "}
           {totalDuration} {"hrs"}
+          {props.myCourses && (
+            <div className="mt-2 absolute mb-1 ">
+              <ProgressBar
+                width="300px"
+                bgColor="#3970AC"
+                completed={(+props.percentageCompleted/+props.totalSources)*100}
+              ></ProgressBar>
+            </div>
+          )}
           <div className="flex justify-end items-center">
-            {props.discount > 0 && localStorage.getItem("role") !== "CORPORATE" &&  (
-              <div className="line-through decoration-1 text-lg font-thin mr-4">
-                {props.coursePrice}
-                {props.currencySymbol}
-              </div>
-            )}
-            <h5 class="text-2xl font-bold tracking-tight text-gray-900">
-              {props.discountedPrice === 0 && localStorage.getItem("role") !== "CORPORATE" && (
-                <div className="text-green-600 mr-6">FREE</div>
-              )}
-              {props.discountedPrice != 0 && localStorage.getItem("role") !== "CORPORATE" && (
-                <div className="mr-6">
-                  {props.discountedPrice}
+            {props.discount > 0 &&
+              localStorage.getItem("role") !== "CORPORATE" && (
+                <div className="line-through decoration-1 text-lg font-thin mr-4">
+                  {props.coursePrice}
                   {props.currencySymbol}
                 </div>
               )}
+            <h5 class="text-2xl font-bold tracking-tight text-gray-900">
+              {props.discountedPrice === 0 &&
+                localStorage.getItem("role") !== "CORPORATE" && (
+                  <div className="text-green-600 mr-6">FREE</div>
+                )}
+              {props.discountedPrice != 0 &&
+                localStorage.getItem("role") !== "CORPORATE" && (
+                  <div className="mr-6">
+                    {props.discountedPrice}
+                    {props.currencySymbol}
+                  </div>
+                )}
             </h5>
             <SecondaryButton
               onClick={clickHandler}

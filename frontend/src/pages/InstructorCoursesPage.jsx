@@ -267,16 +267,15 @@ const IntructorCoursePage = (props) => {
         }
       )
       .then((res) => {
+        console.log(res.data);
         var courses = [];
         for (var i = 0; i < searchState.displayedCourses.length; i++) {
-          console.log(searchState.displayedCourses[i].course._id);
-          console.log(
-            searchState.displayedCourses[i].course._id !== res.data._id
-          );
           if (searchState.displayedCourses[i].course._id !== res.data._id) {
             courses.push(searchState.displayedCourses[i]);
           } else {
-            var temp = { course: res.data, mine: true };
+            var newCourse = JSON.parse(JSON.stringify(res.data));
+            newCourse.discountedPrice = (1 - (+res.data.discount)) * (+res.data.coursePrice);
+            var temp = { course: newCourse, mine: true };
             courses.push(temp);
           }
         }
@@ -362,8 +361,6 @@ const IntructorCoursePage = (props) => {
       mine: course.mine,
     };
   });
-  console.log(rows)
-
   var cards = rows.map((row) => {
     return (
       <TableListViewCard

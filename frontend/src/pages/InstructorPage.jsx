@@ -39,6 +39,11 @@ const InstructorPage = () => {
   const [reviews, setReviews] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [render, setRender] = useState(false);
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
 
   //const [reviewedBefore,setReviewedBefore] =useState(false)
   //fetch the data at the start of the code ..

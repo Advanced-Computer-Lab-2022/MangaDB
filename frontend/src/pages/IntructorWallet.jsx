@@ -29,6 +29,11 @@ const InstructorWallet = () => {
   const [data2, setData2] = useState([{ x: 1, y: 2, label: "Jan" }]);
   const [receivedData, setReceivedData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
 
   // for the bottom stats
   var monthRevenue = 0;

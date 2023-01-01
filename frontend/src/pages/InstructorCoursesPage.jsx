@@ -69,6 +69,11 @@ const IntructorCoursePage = (props) => {
   const [noOfPages, setNoOfPages] = useState(1);
 
   const [selectedNow, setSelectedNow] = useState([]);
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
 
   const selectAllHandler = (selectRows) => {
     if (selectRows) {

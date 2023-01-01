@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 
 const faqs = [
@@ -39,6 +39,11 @@ const FAQS = () => {
   useEffect(() => {
     window.scrollTo(0, 0, "smooth");
   }, []);
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
   return (
     <Fragment>
       <NavBarSearch currentTab="FAQs" />

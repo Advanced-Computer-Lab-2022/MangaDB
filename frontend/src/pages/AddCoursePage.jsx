@@ -26,6 +26,11 @@ const AddCoursePage = (props) => {
     },
   ]);
   const [data, setData] = useState({});
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
   const onSaveHandler = (data) => {
     setData({ ...data }); //remove the totalHours and the price
     var newSteps = [];

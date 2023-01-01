@@ -33,6 +33,11 @@ const CourseDetailsPage = () => {
   const [requested, setRequested] = useState(false);
   const [render, setRender] = useState(false);
   const [disableButton, setDisableButton] = useState(false);
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
 
   useEffect(() => {
     window.scrollTo(0, 0, "smooth");

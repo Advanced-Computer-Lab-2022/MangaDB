@@ -16,6 +16,11 @@ const InstructorCourseDetailsPage = () => {
   const [userRegistered, setUserRegistered] = useState(false);
   const [courseReviews, setCourseReviews] = useState([]);
   const [reviewsCount, setReviewsCount] = useState([]);
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
   useEffect(() => {
     window.scrollTo(0, 0, "smooth");
     const courseId = location.state.courseId;

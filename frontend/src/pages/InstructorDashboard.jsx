@@ -29,6 +29,11 @@ const InstructorDashboard = () => {
   const [followUpProblem, setFollowUpProblem] = useState("");
   const [followUpDescription, setFollowUpDescription] = useState("");
   const [render, setRender] = useState(false);
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
 
   const openFollowUpModal = (id, problem) => {
     setShowFollowUpModal(true);

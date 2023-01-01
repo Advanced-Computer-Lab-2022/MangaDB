@@ -54,6 +54,11 @@ const SearchResultsPage = () => {
   const [page, setPage] = useState(1);
   const [noOfPages, setNoOfPages] = useState(1);
   const [loaded, setLoaded] = useState(false);
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
   //funtion to handle the pagination
   const onChangePageHandler = (event, value) => {
     setPage(value);

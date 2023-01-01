@@ -75,6 +75,11 @@ const CourseViewPage = () => {
   const [followUpDescription, setFollowUpDescription] = useState("");
   const [render, setRender] = useState(false);
   const [userProfile, setUserProfile] = useState({});
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
   const openFollowUpModal = (id, problem) => {
     setShowFollowUpModal(true);
     setFollowUpId(id);

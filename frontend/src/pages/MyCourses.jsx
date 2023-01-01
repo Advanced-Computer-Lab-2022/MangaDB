@@ -34,6 +34,11 @@ const MyCourses = () => {
   const [render, setRender] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [userRole, setUserRole] = useState(localStorage.getItem("role"));
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
 
   //funtion to handle the pagination
 

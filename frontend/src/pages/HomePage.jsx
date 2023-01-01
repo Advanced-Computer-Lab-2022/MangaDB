@@ -19,7 +19,11 @@ const HomePage = () => {
   const [displayedCourses, setDisplayedCourses] = useState([]);
   const [discountedCourses, setDiscountedCourses] = useState([]);
   const [currencySymbol, setCurrencySymbol] = useState("");
-  const [countryCode, setCountryCode] = useState("US");
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
   const location = useLocation();
   const appear = {
     opacity: 0,
@@ -155,47 +159,51 @@ const HomePage = () => {
         >
           {courses}
         </Carousel>
-        {localStorage.getItem("role") !== "CORPORATE" && <div className="font-bold text-2xl mt-8 mb-4 flex justify-start mx-12 w-max">
-          On Sale Right Now!  
-        </div>}
-        {localStorage.getItem("role") !== "CORPORATE" && <Carousel
-          rewind={true}
-          pauseOnHover
-          infinite
-          autoPlaySpeed={1500}
-          autoPlay={true}
-          rewindWithAnimation={true}
-          itemClass="ml-3"
-          draggable={false}
-          responsive={{
-            desktop: {
-              breakpoint: {
-                max: 3000,
-                min: 1240,
+        {localStorage.getItem("role") !== "CORPORATE" && (
+          <div className="font-bold text-2xl mt-8 mb-4 flex justify-start mx-12 w-max">
+            On Sale Right Now!
+          </div>
+        )}
+        {localStorage.getItem("role") !== "CORPORATE" && (
+          <Carousel
+            rewind={true}
+            pauseOnHover
+            infinite
+            autoPlaySpeed={1500}
+            autoPlay={true}
+            rewindWithAnimation={true}
+            itemClass="ml-3"
+            draggable={false}
+            responsive={{
+              desktop: {
+                breakpoint: {
+                  max: 3000,
+                  min: 1240,
+                },
+                items: 3,
+                partialVisibilityGutter: 40,
               },
-              items: 3,
-              partialVisibilityGutter: 40,
-            },
-            tablet: {
-              breakpoint: {
-                max: 1239,
-                min: 850,
+              tablet: {
+                breakpoint: {
+                  max: 1239,
+                  min: 850,
+                },
+                items: 2,
+                partialVisibilityGutter: 30,
               },
-              items: 2,
-              partialVisibilityGutter: 30,
-            },
-            mobile: {
-              breakpoint: {
-                max: 849,
-                min: 0,
+              mobile: {
+                breakpoint: {
+                  max: 849,
+                  min: 0,
+                },
+                items: 1,
+                partialVisibilityGutter: 30,
               },
-              items: 1,
-              partialVisibilityGutter: 30,
-            },
-          }}
-        >
-          {displayedDiscountedCourses}
-        </Carousel>}
+            }}
+          >
+            {displayedDiscountedCourses}
+          </Carousel>
+        )}
       </div>
     </Animate>
   );

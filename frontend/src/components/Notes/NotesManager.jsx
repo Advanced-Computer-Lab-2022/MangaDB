@@ -53,7 +53,6 @@ const NotesManager = (props) => {
       sourceDescription: `${props.sourceNo}. ${props.source}`,
     };
     var newNotes = [...props.notes, obj2];
-    console.log(sentData.notes);
     axios.patch(`http://localhost:3000/user/notes`, sentData, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),

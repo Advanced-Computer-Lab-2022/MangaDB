@@ -196,12 +196,12 @@
 
 <img src = "./Screenshots/adminreports.jpg">
 
-   - This is the part where the admin can view all the reports made on the platform and resolve or hand them to the development team (pend the problems).
+- This is the part where the admin can view all the reports made on the platform and resolve or hand them to the development team (pend the problems).
 
 
 ## Database Models
 
- - The First model is the user with 4 available roles 1.Trainee , 2.Corporate Trainee, 3.Instructor, this model holds all the information regarding that model like the name email password(hashed) etc.
+- The First model is the user with 4 available roles 1.Trainee , 2.Corporate Trainee, 3.Instructor, this model holds all the information regarding that model like the name email password(hashed) etc.
 
 - The Second model is the course which holds all the sections , excersises  and lessons that course has. Moreover, holds statistical information like the duration of each lesson and the duration of the whole course.
 

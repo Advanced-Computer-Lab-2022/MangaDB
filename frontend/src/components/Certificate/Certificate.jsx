@@ -4,7 +4,7 @@ import { Fragment } from "react";
 import ribbonn from "../../Assets/Images/ribbonn.png";
 import { forwardRef } from "react";
 import { useImperativeHandle } from "react";
-
+import axios from "axios";
 const Certificate = forwardRef((props, ref) => {
   useImperativeHandle(ref, () => ({
     generatePDF2() {
@@ -14,8 +14,8 @@ const Certificate = forwardRef((props, ref) => {
         onclone: function (doc) {
           const hiddenDiv = doc.getElementById("contentt");
           hiddenDiv.style.display = "block";
-          hiddenDiv.style.zIndex="0"
-          hiddenDiv.style.position="fixed"
+          hiddenDiv.style.zIndex = "0";
+          hiddenDiv.style.position = "fixed";
         },
         useCORS: true,
         allowTaint: true,
@@ -26,21 +26,39 @@ const Certificate = forwardRef((props, ref) => {
         pdf.save("Certificate.pdf");
       });
     },
+    sendEmail() {
+      html2canvas(document.querySelector("#contentt"), {
+        logging: true,
+        profile: true,
+        onclone: function (doc) {
+          const hiddenDiv = doc.getElementById("contentt");
+          hiddenDiv.style.display = "block";
+          hiddenDiv.style.zIndex = "0";
+          hiddenDiv.style.position = "fixed";
+        },
+        useCORS: true,
+        allowTaint: true,
+      }).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("l", "px", "a1");
+        pdf.addImage(imgData, "PNG", 0, 0);
+        //pdf.save("Certificate.pdf");
+        axios.post(
+          "http://localhost:3000/user/sendCertificate",
+          {
+            url: canvas.toDataURL("image/jpeg", 0.5),
+            courseId: props._id,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+      });
+    },
   }));
 
-  // const generatePDF2 = () => {
-  //   html2canvas(document.querySelector("#content"), {
-  //     logging: true,
-  //     profile: true,
-  //     useCORS: true,
-  //     allowTaint: true,
-  //   }).then((canvas) => {
-  //     const imgData = canvas.toDataURL("image/png");
-  //     const pdf = new jsPDF("l", "px", "a2");
-  //     pdf.addImage(imgData, "PNG", 0, 0);
-  //     pdf.save("Certificate.pdf");
-  //   });
-  //};
   return (
     <Fragment>
       <div className="p-4 absolute -z-50 w-full" id="contentt">
@@ -72,7 +90,7 @@ const Certificate = forwardRef((props, ref) => {
           </div>
           <div className="flex">
             <div className=" flex-col items-center m-16">
-              <p className="text-3xl font-semibold">Omar Moataz</p>
+              <p className="text-3xl font-semibold">{props.studentName}</p>
               <div className="absolute right-20">
                 <svg
                   version="1.0"
@@ -162,13 +180,11 @@ const Certificate = forwardRef((props, ref) => {
               <p className="text-sm text-gray-700 mt-4 font-medium">
                 has successfully completed the course
               </p>
-              <p className="mt-4 text-lg font-medium">
-                Introduction To The Theory Of Computation
-              </p>
+              <p className="mt-4 text-lg font-medium">{props.courseTitle}</p>
               <p className="text-sm text-gray-700 mt-4 font-medium">
                 Offered By
               </p>
-              <p className="mt-4 text-lg font-medium">Haytham Osman</p>
+              <p className="mt-4 text-lg font-medium">{props.instructorName}</p>
 
               <p className="text-sm text-gray-700 mt-4 font-medium"> On </p>
               <div className="mt-4 text-lg font-medium">January 21, 2022</div>

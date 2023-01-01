@@ -179,7 +179,7 @@
 
 - This is the part wher the instructor can view his performance and the money the company (revamp) owes him (the percentage of sales).
 
-#### -Admin 
+#### -Admin
 
 <img src = "./Screenshots/AdminAddUser.jpg">
 

@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema({
           type: mongoose.Schema.Types.ObjectId,
           ref: "Course",
         },
+        certificate: {
+          type: Boolean,
+          default: false,
+        },
         viewedSources: {
           
         type:[{ sourceId: {

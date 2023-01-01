@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import axios from "axios";
 import TextField from "./TextField";
 import userIcon from "../../Assets/Images/userIcon.svg";
-import { SnackbarProvider, useSnackbar } from "notistack";
+import {  useSnackbar } from "notistack";
 
 export default function ForgotPassword() {
   const UserNameRef = useRef();

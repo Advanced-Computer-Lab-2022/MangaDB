@@ -2,14 +2,12 @@ import { Fragment, useState } from "react";
 import SecondaryButton from "../UI/SecondaryButton";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Disclosure, RadioGroup } from "@headlessui/react";
+import { Disclosure } from "@headlessui/react";
 import { useSnackbar } from "notistack";
 import axios from "axios";
 import {
-  CreditCardIcon,
   KeyIcon,
   UserCircleIcon,
-  StarIcon,
   ExclamationIcon
 } from "@heroicons/react/outline";
 

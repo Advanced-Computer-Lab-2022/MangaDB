@@ -1,10 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 import PersonalInfoForm from "../components/TraineeProfile/PersonalInfoForm";
 import PasswordAndPrivacy from "../components/TraineeProfile/PasswordAndPrivacy";
-import Reviews from "../components/Profile/Reviews/Reviews";
 import Reqests from "../components/TraineeProfile/Requests";
 import axios from "axios";
-import { SnackbarProvider, useSnackbar } from "notistack";
 import NavBar from "../components/UI/NavBar/NavBar";
 //stub for the userPersonal Info Received
 const user = {
@@ -131,10 +129,10 @@ const TraineeProfilePage = () => {
     displayedStep = <Reqests changeStageHandler={changeStageHandler}></Reqests>;
   }
   return (
-    <SnackbarProvider maxSnack={3}>
+    <Fragment>
       <NavBar currentTab="Profile" />
       <div>{displayedStep}</div>
-    </SnackbarProvider>
+    </Fragment>
   );
 };
 export default TraineeProfilePage;

@@ -7,6 +7,7 @@ import Backdrop from "@mui/material/Backdrop";
 import Contract from "./Contract";
 import { useEffect } from "react";
 import axios from "axios";
+import CourseSubjectSelector from "./CourseSubjectSelector";
 
 var toolbarOptions = [
   ["bold", "italic", "underline", "strike"],
@@ -39,7 +40,10 @@ const CreateCourseForm = (props) => {
   const [selectedLevel, setSelectedLevel] = useState("Beginner");
   const [enteredImageURL, setEnteredImageURL] = useState("");
   const [enteredOverviewURL, setEnteredOverviewURL] = useState("");
-  const [enteredSubject, setEnteredSubject] = useState("");
+  const [currentReportsSelector, setCurrentReportsSelector] = useState({
+    id: 1,
+    name: "Computer Hardware",
+  });
   const [enteredCoursePrice, setEnteredCoursePrice] = useState("");
   const [enteredCourseDescription, setEnteredCourseDescription] = useState("");
   const [summaryValue, setSummaryValue] = useState("");
@@ -93,8 +97,8 @@ const CreateCourseForm = (props) => {
     setEnteredOverviewURL(event.target.value);
   };
 
-  const subjectChangeHandler = (event) => {
-    setEnteredSubject(event.target.value);
+  const reportSelectorChangeHandler = (data) => {
+    setCurrentReportsSelector(data);
   };
 
   const coursePriceChangeHandler = (event) => {
@@ -116,13 +120,13 @@ const CreateCourseForm = (props) => {
       setEmptyCourseTitle(false);
     }
 
-    if (enteredSubject === "") {
-      setEmptyCourseSubject(true);
-      setWarning("Please fill in all the required fields");
-      isValidForm = false;
-    } else {
-      setEmptyCourseSubject(false);
-    }
+    // if (enteredSubject === "") {
+    //   setEmptyCourseSubject(true);
+    //   setWarning("Please fill in all the required fields");
+    //   isValidForm = false;
+    // } else {
+    //   setEmptyCourseSubject(false);
+    // }
 
     if (enteredCoursePrice === "") {
       setEmptyCoursePrice(true);
@@ -181,7 +185,7 @@ const CreateCourseForm = (props) => {
       level: selectedLevel,
       courseImage: enteredImageURL,
       courseOverview: enteredOverviewURL,
-      subject: enteredSubject,
+      subject: currentReportsSelector.name,
       coursePrice: enteredCoursePrice,
       courseDescription: enteredCourseDescription,
       summary: summaryValue,
@@ -302,13 +306,12 @@ const CreateCourseForm = (props) => {
               <label className="w-32">
                 Subject <span className="text-red-600"> *</span>
               </label>
-              <input
-                className={"w-[60vw] md:w-[27vw] px-3 py-1 bg-white border rounded-md text-sm shadow-sm focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue ".concat(
-                  emptyCourseSubject ? "border-red-200" : "border-slate-300"
-                )}
-                onChange={subjectChangeHandler}
-                type="text"
-              />
+              <div className="w-[60vw] md:w-[27vw]">
+                <CourseSubjectSelector
+                  selected={currentReportsSelector}
+                  selectedChangeHandler={reportSelectorChangeHandler}
+                />
+              </div>
             </div>
             <div className="flex justify-center items-center">
               <label className="w-32">

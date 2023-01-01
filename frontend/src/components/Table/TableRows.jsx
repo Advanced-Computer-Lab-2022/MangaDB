@@ -4,11 +4,9 @@ import Checkbox from "@mui/material/Checkbox";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 const TableRows = (props) => {
-  //const [checked, setChecked] = useState(false);
 
   const handleChange = (event,courseId) => {
-    //console.log(event.target.checked);
-    //console.log(courseId);
+
     props.selectRowHandler(event.target.checked,courseId);    
     
   };

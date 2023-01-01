@@ -8,7 +8,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import NavBar from "../components/UI/NavBar/NavBar"
+import NavBar from "../components/UI/NavBar/NavBar";
 import { useSnackbar } from "notistack";
 
 const options = [
@@ -37,16 +37,15 @@ const theme = createTheme({
 });
 
 const IntructorCoursePage = (props) => {
-
-
   const { enqueueSnackbar } = useSnackbar();
   const handleClickVariant = (variant) => {
-    //console.log("here");
-    enqueueSnackbar("One or more of the selected courses already have promotion  ", {
-      variant,
-    });
+    enqueueSnackbar(
+      "One or more of the selected courses already have promotion  ",
+      {
+        variant,
+      }
+    );
   };
-
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -68,11 +67,9 @@ const IntructorCoursePage = (props) => {
   const selectAllHandler = (selectRows) => {
     if (selectRows) {
       const temp = [];
-     // console.log(searchState.displayedCourses);
       for (let i = 0; i < searchState.displayedCourses.length; i++) {
         temp.push(searchState.displayedCourses[i].course._id);
       }
-      //console.log(temp[0]);
       setSelectedNow(temp);
     } else {
       setSelectedNow([]);
@@ -80,10 +77,9 @@ const IntructorCoursePage = (props) => {
   };
 
   const selectRowHandler = (isSelected, courseId) => {
-    if (isSelected){ 
+    if (isSelected) {
       setSelectedNow([...selectedNow, courseId]);
-    }
-    else{
+    } else {
       const index = selectedNow.indexOf(courseId);
       setSelectedNow(selectedNow.filter((_, i) => i !== index));
     }
@@ -91,7 +87,7 @@ const IntructorCoursePage = (props) => {
 
   const adminAddPromotionHandler = () => {
     setShowPromotationModal(true);
-  }
+  };
 
   const ReducerFunction = (state, action) => {
     if (action.type === "SEARCH") {
@@ -208,8 +204,8 @@ const IntructorCoursePage = (props) => {
   };
   const promotionSubmitHandler = () => {
     closePromotionModal();
-    
-    if(props.admin){
+
+    if (props.admin) {
       const data = {
         courses: selectedNow,
         discount: +promotionAmount / 100,
@@ -217,70 +213,64 @@ const IntructorCoursePage = (props) => {
         discountEndDate: promotionEndDate,
       };
       axios
-      .patch(
-        "http://localhost:3000/admin/createDiscount/" ,
-        data,
-        {
+        .patch("http://localhost:3000/admin/createDiscount/", data, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
-        }
-      )
-      .then((res) => {
-        var courses = [];
-        for (var i = 0; i < searchState.displayedCourses.length; i++) {
-          console.log(searchState.displayedCourses[i].course._id);
-          console.log(
-            searchState.displayedCourses[i].course._id !== res.data._id
-          );
-          if (searchState.displayedCourses[i].course._id !== res.data._id) {
-            courses.push(searchState.displayedCourses[i]);
-          } else {
-            var temp = { course: res.data, mine: true };
-            courses.push(temp);
+        })
+        .then((res) => {
+          var courses = [];
+          for (var i = 0; i < searchState.displayedCourses.length; i++) {
+            if (searchState.displayedCourses[i].course._id !== res.data._id) {
+              courses.push(searchState.displayedCourses[i]);
+            } else {
+              var newCourse = JSON.parse(JSON.stringify(res.data));
+              newCourse.discountedPrice =
+                (1 - +res.data.discount) * +res.data.coursePrice;
+              var temp = { course: newCourse, mine: true };
+              courses.push(temp);
+            }
           }
-        }
-        dispatchSearch({ type: "COURSES", value: courses });
-      }).catch((err) => {
-        console.log(err.message.split(" ")[err.message.split(" ").length - 1]);
-        if(err.message.split(" ")[err.message.split(" ").length - 1]==="400"){
-          handleClickVariant("error")
-
-        }
-
-      });
-    }
-    else{
+          dispatchSearch({ type: "COURSES", value: courses });
+        })
+        .catch((err) => {
+          if (
+            err.message.split(" ")[err.message.split(" ").length - 1] === "400"
+          ) {
+            handleClickVariant("error");
+          }
+        });
+    } else {
       const data = {
         discount: +promotionAmount / 100,
         discountStartDate: new Date().toISOString(),
         discountEndDate: promotionEndDate,
       };
       axios
-      .patch(
-        "http://localhost:3000/instructor/createDiscount/" + promotionId,
-        data,
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      )
-      .then((res) => {
-        console.log(res.data);
-        var courses = [];
-        for (var i = 0; i < searchState.displayedCourses.length; i++) {
-          if (searchState.displayedCourses[i].course._id !== res.data._id) {
-            courses.push(searchState.displayedCourses[i]);
-          } else {
-            var newCourse = JSON.parse(JSON.stringify(res.data));
-            newCourse.discountedPrice = (1 - (+res.data.discount)) * (+res.data.coursePrice);
-            var temp = { course: newCourse, mine: true };
-            courses.push(temp);
+        .patch(
+          "http://localhost:3000/instructor/createDiscount/" + promotionId,
+          data,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
           }
-        }
-        dispatchSearch({ type: "COURSES", value: courses });
-      });
+        )
+        .then((res) => {
+          var courses = [];
+          for (var i = 0; i < searchState.displayedCourses.length; i++) {
+            if (searchState.displayedCourses[i].course._id !== res.data._id) {
+              courses.push(searchState.displayedCourses[i]);
+            } else {
+              var newCourse = JSON.parse(JSON.stringify(res.data));
+              newCourse.discountedPrice =
+                (1 - +res.data.discount) * +res.data.coursePrice;
+              var temp = { course: newCourse, mine: true };
+              courses.push(temp);
+            }
+          }
+          dispatchSearch({ type: "COURSES", value: courses });
+        });
     }
   };
   const searchBarChangeHandler = (searchValue) => {
@@ -331,7 +321,6 @@ const IntructorCoursePage = (props) => {
         })
         .then((res) => {
           dispatchSearch({ type: "COURSES", value: res.data.courses });
-          console.log(res.data.courses);
         });
     } else {
       axios
@@ -344,7 +333,12 @@ const IntructorCoursePage = (props) => {
           dispatchSearch({ type: "COURSES", value: res.data.courses });
         });
     }
-  }, [searchState.search, searchState.filters, searchState.myCourses,selectedNow]);
+  }, [
+    searchState.search,
+    searchState.filters,
+    searchState.myCourses,
+    selectedNow,
+  ]);
   var rows = searchState.displayedCourses.map((course) => {
     return {
       courseId: course.course._id,
@@ -396,7 +390,7 @@ const IntructorCoursePage = (props) => {
 
   return (
     <Fragment>
-      {!props.admin&&<NavBar currentTab="My Courses" />}
+      {!props.admin && <NavBar currentTab="My Courses" />}
       {showFilters && (
         <Filters
           prevState={searchState.filters}

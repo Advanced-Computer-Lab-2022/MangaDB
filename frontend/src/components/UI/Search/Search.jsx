@@ -17,6 +17,12 @@ const Search = (props) => {
       });
     }
 
+    if (role === "INSTRUCTOR") {
+      navigate(`/courses`, {
+        state: searchState,
+      });
+    }
+
     props.onChange(searchState);
   };
   const searchChangeHandler = (event) => {

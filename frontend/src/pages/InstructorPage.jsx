@@ -7,6 +7,7 @@ import ReviewItem from "../components/CourseDetailsComp/ReviewItem";
 import CourseCard from "../components/Course/CourseCard";
 import Carousel from "react-multi-carousel";
 import { useLocation } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 import {
   BookOpenIcon,
@@ -17,6 +18,18 @@ import Rating from "@mui/material/Rating";
 import ReactLoading from "react-loading";
 
 const InstructorPage = () => {
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant) => {
+    if (variant === "error") {
+      enqueueSnackbar("You have already reviewd this instructor before ", {
+        variant,
+      });
+    } else {
+      enqueueSnackbar("Your review has been submitted successfully ", {
+        variant,
+      });
+    }
+  };
   const location = useLocation();
   const [receivedData, setReceivedData] = useState({});
   const [enteredReview, setEnteredReview] = useState("");
@@ -25,6 +38,7 @@ const InstructorPage = () => {
   const [statsConf, setStatsConf] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const [render, setRender] = useState(false);
 
   //const [reviewedBefore,setReviewedBefore] =useState(false)
   //fetch the data at the start of the code ..
@@ -48,7 +62,7 @@ const InstructorPage = () => {
         setSummary(res.data.count);
         setLoaded(true);
       });
-  }, []);
+  }, [render]);
 
   //stats for the performance thinggy
   var stats;
@@ -82,7 +96,7 @@ const InstructorPage = () => {
       review: enteredReview,
     };
     axios
-      .post(`http://localhost:3000/instructor/rate`, reviewData, {
+      .post(`http://localhost:3000/instructor/rate/`+location.state.instructorId, reviewData, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -95,6 +109,11 @@ const InstructorPage = () => {
           receivedData.instructor.reviews.length + 1,
           receivedData.instructor.courseDetails.length,
         ]);
+        setRender(prev => !prev);
+        handleClickVariant("success");
+      }).catch((err) => {
+        console.log(err);
+        handleClickVariant("error");
       });
   };
 

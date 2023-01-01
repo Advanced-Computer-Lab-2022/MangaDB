@@ -39,19 +39,30 @@ const theme = createTheme({
 const IntructorCoursePage = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const handleClickVariant = (variant) => {
+    if(variant === "error"){
     enqueueSnackbar(
       "One or more of the selected courses already have promotion  ",
       {
         variant,
       }
-    );
+    );}
+    else if(variant === "success"){
+      enqueueSnackbar(
+        "Your report has been submitted successfully  ",
+        {
+          variant,
+        }
+      );
+    }
+    
+
   };
 
   const location = useLocation();
   const navigate = useNavigate();
   const defaultState = {
     displayedCourses: [],
-    search: "",
+    search: location.state? location.state : "",
     filters: {
       price: null,
       subjects: [],
@@ -170,6 +181,7 @@ const IntructorCoursePage = (props) => {
         },
       })
       .then((res) => {
+        handleClickVariant("success");
         console.log("report submitted successfully");
       });
   };

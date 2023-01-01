@@ -27,6 +27,7 @@ const InstructorPage = () => {
   //const [reviewedBefore,setReviewedBefore] =useState(false)
   //fetch the data at the start of the code ..
   useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
     const instructorId = location.state.instructorId;
     axios
       .get(`http://localhost:3000/instructor/` + instructorId, {

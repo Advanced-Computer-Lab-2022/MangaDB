@@ -295,6 +295,7 @@ const IntructorCoursePage = (props) => {
     dispatchSearch({ type: "MYCOURSES" });
   };
   useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
     var param = "";
     if (searchState.search !== "")
       param = param + "?search=" + searchState.search;
@@ -361,6 +362,8 @@ const IntructorCoursePage = (props) => {
       mine: course.mine,
     };
   });
+  console.log(rows)
+
   var cards = rows.map((row) => {
     return (
       <TableListViewCard

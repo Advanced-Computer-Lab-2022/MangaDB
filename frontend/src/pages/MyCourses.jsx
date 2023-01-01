@@ -45,6 +45,7 @@ const MyCourses = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
     //fetch the courses of the trainee
     axios
       .get(`http://localhost:3000/user/mycourses/?page=${page}`, {

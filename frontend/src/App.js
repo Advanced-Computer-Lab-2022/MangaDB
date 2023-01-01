@@ -93,6 +93,7 @@ function App() {
           path="/forgotPassword"
           element={<ForgotPasswordPage></ForgotPasswordPage>}
         ></Route>
+
         <Route
           path="/successfulPayment"
           element={<SuccessfulPayment></SuccessfulPayment>}
@@ -101,7 +102,7 @@ function App() {
           path="/unsuccessfulPayment"
           element={<UnsuccessfulPayment></UnsuccessfulPayment>}
         ></Route>
-
+        <Route path="/resetpassword" element={<ResetPassword></ResetPassword>}></Route>
         <Route path="successwallet" element={<SuccessfulPaymentWallet></SuccessfulPaymentWallet>}></Route>
       </Routes>
       <Footer></Footer>

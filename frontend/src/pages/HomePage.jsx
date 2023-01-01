@@ -29,6 +29,7 @@ const HomePage = () => {
     },
   };
   useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
     axios
       .get("http://localhost:3000/course/mostViewed/?CC=".concat(countryCode))
       .then((res) => {

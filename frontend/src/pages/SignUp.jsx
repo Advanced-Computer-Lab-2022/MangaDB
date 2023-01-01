@@ -2,7 +2,7 @@ import logo from "../Assets/Images/Logo.svg";
 import userIcon from "../Assets/Images/userIcon.svg";
 import PasswordField from "../components/Login-SignUp/PasswordField";
 import SecondaryButton from "../components/UI/SecondaryButton";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import TextField from "../components/Login-SignUp/TextField";
 import nameTag from "../Assets/Images/nameTag.svg";
@@ -180,6 +180,9 @@ export default function SignUp() {
 
     //handle patch request
   };
+  useEffect(() => {
+  window.scrollTo(0, 0, "smooth");
+  }, []);
   return (
     <div class="relative">
       <div class="antialiased ">

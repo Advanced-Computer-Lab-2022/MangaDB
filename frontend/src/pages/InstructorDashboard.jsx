@@ -57,6 +57,7 @@ const InstructorDashboard = () => {
   //loading as the endpoint contains a lot of data..
   //fetch the data as soon as he logs in..
   useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
     axios
       .get("http://localhost:3000/instructor/myReviews", {
         headers: {

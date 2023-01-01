@@ -39,8 +39,8 @@ router.get('/myCourses',auth.validateToken,auth.authenticateRole(["TRAINEE","COR
 
 router.get('/wallet',auth.validateToken,auth.authenticateRole(["TRAINEE"]),userController.getWallet);
 
-router.get("/certificate", userController.testCertificate); //not used
-
 router.get("/myProfile",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE","INSTRUCTOR"]),userController.viewProfile);
+
+router.post("/sendCertificate",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE"]),userController.sendCertificate);
 
 module.exports=router;

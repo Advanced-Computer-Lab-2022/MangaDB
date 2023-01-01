@@ -11,9 +11,11 @@ const SearchBar = (props) => {
   }
   const onSubmitHandler = (event) => {
     event.preventDefault();
+    const role = localStorage.getItem("role");
+    if (role !== "INSTRUCTOR" && role !== "ADMIN") {
     navigate(`/searchresults`, {state:inputRef.current.value});
   };
-
+  }
   return (
     <div
       className={` right-3 w-[60vw] max-w-4xl ${props.className} `}

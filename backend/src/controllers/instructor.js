@@ -382,9 +382,7 @@ exports.viewInstructor=async (req, res) => {
   //difference between this and viewInstructor is that this one is for instructor to view his own profile
   exports.viewMyReviews=async (req, res) => {
     const instructorId = req.user.id;
-    const instructorData = await
-    user.findById
-    (instructorId);
+    const instructorData = await user.findById(instructorId);
     if (!instructorData) {
       res.status(404).json({ message: "Instructor Not Found" });
       return;

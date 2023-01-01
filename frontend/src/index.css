@@ -5,3 +5,7 @@
 .font {
     font-family: 'Montserrat', sans-serif;
 }
+
+section div ul li {
+    list-style-type: disc;
+}

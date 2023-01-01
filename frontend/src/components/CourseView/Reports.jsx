@@ -1,5 +1,4 @@
-import React, { Fragment, useState } from "react";
-import Review from "../Profile/Reviews/Review";
+import {  useState } from "react";
 import SecondaryButton from "../UI/SecondaryButton";
 import ReportItem from "./ReportItem";
 import ReportTypeSelector from "./ReportTypeSelector";
@@ -53,6 +52,7 @@ const Reports = (props) => {
     const fullDate = month + " " + day + ", " + year;
     return (
       <ReportItem
+        id={report._id}
         type={report.type}
         status={report.status}
         index={index}

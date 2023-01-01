@@ -8,8 +8,12 @@ import PsychologyAltOutlinedIcon from '@mui/icons-material/PsychologyAltOutlined
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import AdminAddNewUser from "../../pages/AdminAddNewUser";
 import InstructorCoursesPage from "../../pages/InstructorCoursesPage";
+import LogoutIcon from '@mui/icons-material/Logout';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminPage() {
+  const navigate = useNavigate();
   const [isClickedUsers, setIsClickedUsers] = useState(true);
  
   const [isClickedReportedProblems, setIsClickedReportedProblems] =
@@ -17,6 +21,22 @@ export default function AdminPage() {
   const [isClickedRequests, setIsClickedRequests] = useState(false);
   const [isClickedCourses, setIsClickedCourses] = useState(false);
 
+  const logoutHandler = () => {
+    axios
+      .post("http://localhost:3000/user/logout",{}, {
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(localStorage.getItem("token"));
+      });
+  };
   return (
     <SnackbarProvider maxSnack={3}>
       <div class="flex">
@@ -150,6 +170,37 @@ export default function AdminPage() {
                   <span class="text-sm font-medium">Reported Problems</span>
                 </a>
               </button>
+
+
+
+              <button
+                className="relative "
+                onClick={() => {
+                  logoutHandler();
+                }}
+              >
+                {isClickedReportedProblems ? (
+                  <span className="h-full w-[1%] bg-slate-600 pl-1 ml-1 absolute left-0 rounded-md"></span>
+                ) : (
+                  ""
+                )}
+                <a
+                  href="#"
+                  class={"flex flex-row items-center h-12 transform  transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800 ".concat(
+                    isClickedReportedProblems
+                      ? "translate-x-4 text-gray-800"
+                      : "hover:translate-x-2"
+                  )}
+                >
+                  <span class="inline-flex items-center justify-center h-12 w-12 text-lg ">
+                    <LogoutIcon className="" />
+                  </span>
+                  <span class="text-sm font-medium">Logout</span>
+                </a>
+              </button>
+
+
+
               
             </ul>
           </div>
@@ -165,7 +216,7 @@ export default function AdminPage() {
           ""
         )}
         {isClickedUsers ? <div className="flex justify-center"><AdminAddNewUser /></div> : ""}
-        {isClickedCourses ? <div className=""><InstructorCoursesPage></InstructorCoursesPage></div> : ""}
+        {isClickedCourses ? <div className=""><InstructorCoursesPage admin="true"></InstructorCoursesPage></div> : ""}
       </div>
     </SnackbarProvider>
   );

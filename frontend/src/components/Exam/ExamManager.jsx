@@ -58,7 +58,7 @@ const ExamManager = forwardRef((props, ref) => {
     ) {
       message = (
         <p>
-          You Passed, but there is always better , you got
+          {`You Passed, but there is always better , you got `}
           <strong>
             {props.grade} out of {examQuestionsWithAnswers.length}
           </strong>

@@ -1,5 +1,4 @@
 import { useState, useEffect, Fragment, useRef } from "react";
-import NavBar from "../components/UI/NavBar/NavBar";
 import ExamManager from "../components/Exam/ExamManager";
 import NotesManager from "../components/Notes/NotesManager";
 import axios from "axios";
@@ -8,8 +7,10 @@ import WarningAlert from "../components/UI/WarningAlert";
 import ContentCourseView from "../components/CourseView/ContentCourseView";
 import ExamToolManager from "../components/ExamToolBar/ExamToolManager";
 import Certificate from "../components/Certificate/Certificate";
+import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 
 const CourseViewPage = () => {
+  
   const location = useLocation();
   const [receivedData, setReceivedData] = useState({});
   const [currentSource, setCurrentSource] = useState("");
@@ -63,22 +64,22 @@ const CourseViewPage = () => {
   };
 
   const followUpSubmitHandler = () => {
-    closeFollowUpModal();
     const data = {
       followUpComment: followUpDescription,
     };
     axios
-      .post("http://localhost:3000/problem/followUp/" + followUpId, data, {
+      .patch("http://localhost:3000/problem/followUp/" + followUpId, data, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
       .then((res) => {
-        console.log(res);
       });
+      closeFollowUpModal();
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
     const courseId = location.state;
     if (currentNotesFilter.name === "All Lessons") {
       axios
@@ -88,7 +89,6 @@ const CourseViewPage = () => {
           },
         })
         .then((res) => {
-          console.log(res);
           var notesSet = [];
           for (var i = 0; i < res.data.noteData.length; i++) {
             if (res.data.noteData[i].notes.length !== 0) {
@@ -231,6 +231,14 @@ const CourseViewPage = () => {
       managerRef.current.refreshManager();
     }
     setCurrentSource(source);
+    if(source.sourceType === "Quiz"){
+      setCurrentTab("")
+      setCertificateAlert(false);
+      setShowQA(false);
+      setShowNotes(false);
+      setShowReports(false);
+      setShowReviews(false)
+    }
   };
   const changeNotesFilter = (data) => {
     setCurrentNotesFilter(data);
@@ -348,16 +356,16 @@ const CourseViewPage = () => {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
-      .then((res) => {});
-
-    axios
-      .get(`http://localhost:3000/user/progress/${receivedData._id}`, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
       .then((res) => {
-        setProgress(res.data.percentage);
+        axios
+        .get(`http://localhost:3000/user/progress/${receivedData._id}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          setProgress(res.data.percentage);
+        });
       });
   };
 
@@ -559,12 +567,12 @@ const CourseViewPage = () => {
   }
   return (
     <Fragment>
-      <NavBar />
+      <NavBarSearch currentTab="My Courses" />
       <div className=" opacity-0 h-0 overflow-hidden w-full relative ">
         <Certificate ref={downloadRef}></Certificate>
       </div>
       {/* <ProgressManager progress={progress} totalSources={totalSources} /> */}
-      <div className="py-4 flex justify-center font-medium text-xl bg-gray-50 z-20">
+      <div className="py-4 flex justify-center font-medium text-xl bg-gray-50 z-20 mt-[4.5rem]">
         {receivedData.courseTitle}: {currentSource.description}
       </div>
       <div className="md:flex z-50">

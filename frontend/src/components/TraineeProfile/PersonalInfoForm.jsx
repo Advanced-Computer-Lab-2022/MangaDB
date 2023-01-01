@@ -46,7 +46,6 @@ for (var i = 0; i < countryLabels.length; i++) {
 const PersonalInfoForm = forwardRef((props, ref) => {
   const defaultGender = props.gender ? props.gender : "Male";
   const defaultEmail = props.email ? props.email : "";
-  const defaultBiography = props.biography ? props.biography : "";
   const defaultFirstName = props.firstName ? props.firstName : "";
   const defaultLastName = props.lastName ? props.lastName : "";
 
@@ -56,7 +55,6 @@ const PersonalInfoForm = forwardRef((props, ref) => {
 
   const [selectedGender, setSelectedGender] = useState(defaultGender);
   const [email, setEmail] = useState(defaultEmail);
-  const [biography, setBiography] = useState(defaultBiography);
   const [firstName, setFirstName] = useState(defaultFirstName);
   const [lastName, setLastName] = useState(defaultLastName);
   const [emptyEmail, setEmptyEmail] = useState(false);
@@ -80,9 +78,6 @@ const PersonalInfoForm = forwardRef((props, ref) => {
   const emailChangeHandler = (event) => {
     setEmail(event.target.value);
   };
-  const biographyChangeHandler = (event) => {
-    setBiography(event.target.value);
-  };
   const firstNameChangeHandler = (event) => {
     setFirstName(event.target.value);
   };
@@ -92,7 +87,6 @@ const PersonalInfoForm = forwardRef((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     handleRender() {
-      setBiography(defaultBiography);
       setFirstName(defaultFirstName);
       setLastName(defaultLastName);
       setEmail(defaultEmail);
@@ -137,7 +131,6 @@ const PersonalInfoForm = forwardRef((props, ref) => {
       email: email,
       firstName: firstName,
       lastName: lastName,
-      biography: biography,
       gender: selectedGender,
     };
 
@@ -322,27 +315,7 @@ const PersonalInfoForm = forwardRef((props, ref) => {
                           />
                         </div>
                       </div>
-                      <div>
-                        <label
-                          htmlFor="about"
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Biography
-                        </label>
-                        <div className="mt-1">
-                          <textarea
-                            value={biography}
-                            onChange={biographyChangeHandler}
-                            id="about"
-                            name="about"
-                            rows={3}
-                            className="shadow-sm focus:ring-sky-500 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
-                          />
-                        </div>
-                        <p className="mt-2 text-sm text-gray-500">
-                          Brief description for your profile.
-                        </p>
-                      </div>
+                      
                     </div>
                   </div>
 

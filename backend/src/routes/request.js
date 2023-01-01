@@ -7,7 +7,9 @@ router.post("/refund",auth.validateToken,auth.authenticateRole(["TRAINEE"]), req
 
 router.post("/access",auth.validateToken,auth.authenticateRole(["CORPORATE"]), requestController.requestCourseAccess);
 
-router.get("/",auth.validateToken,auth.authenticateRole(["ADMIN"]),requestController.getRequests);
+router.get("/",auth.validateToken,auth.authenticateRole([ 'ADMIN' ]),requestController.getRequests);
+
+router.get("/user",auth.validateToken,auth.authenticateRole(["TRAINEE", "CORPORATE"]), requestController.getUserRequests);
 
 router.get("/user",auth.validateToken,auth.authenticateRole(["TRAINEE", "CORPORATE"]), requestController.getUserRequests);
 

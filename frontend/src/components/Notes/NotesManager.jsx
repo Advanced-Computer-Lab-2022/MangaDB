@@ -10,7 +10,7 @@ import ReviewsCourseView from "../CourseView/ReviewsCourseView";
 
 const NotesManager = (props) => {
   const [timestamp, setTimeStamp] = useState(0);
-  const [playing, setPlaying] = useState(true);
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     if (
@@ -53,7 +53,6 @@ const NotesManager = (props) => {
       sourceDescription: `${props.sourceNo}. ${props.source}`,
     };
     var newNotes = [...props.notes, obj2];
-    console.log(sentData.notes);
     axios.patch(`http://localhost:3000/user/notes`, sentData, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),

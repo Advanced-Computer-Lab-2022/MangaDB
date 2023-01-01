@@ -1,10 +1,18 @@
 import React from "react";
 import SecondaryButton from "../SecondaryButton";
+import { useNavigate } from "react-router-dom";
 
-const SignInNavBar = () => {
+const SignInNavBar = (props) => {
+
+  const navigate = useNavigate();
+
+  const onClickHandler = () => {
+    navigate('/login');
+  };
+
   return (
     <li>
-      <SecondaryButton text="Sign In" />
+      <SecondaryButton onClick={onClickHandler} text="Sign In" />
     </li>
   );
 };

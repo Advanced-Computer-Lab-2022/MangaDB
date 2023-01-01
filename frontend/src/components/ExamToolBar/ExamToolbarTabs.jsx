@@ -4,9 +4,10 @@ function classNames(...classes) {
 
 const ExamToolbarTabs = (props) => {
   const tabs = [
-    { name: "Notes", current: props.currentTab === "Notes" ? true : false },
-    { name: "Q&A", current: props.currentTab === "Q&A" ? true : false },
     { name: "Reviews", current: props.currentTab === "Reviews" ? true : false },
+
+    { name: "Q&A", current: props.currentTab === "Q&A" ? true : false },
+    { name: "Notes", current: props.currentTab === "Notes" ? true : false },
     { name: "Reports", current: props.currentTab === "Reports" ? true : false },
     {
       name: "Download Certificate",

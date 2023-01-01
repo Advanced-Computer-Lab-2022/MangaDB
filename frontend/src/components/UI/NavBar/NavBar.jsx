@@ -29,37 +29,37 @@ const NavBar = (props) => {
   if (localStorage.getItem("role") === null) {
     //guest
     navButtons = [
-      { name: "Home", active: {}, role: "GUEST" },
-      { name: "My Courses", active: {}, role: "GUEST" },
-      { name: "FAQs", active: {}, role: "GUEST" },
-      { name: "Sign In", active: {}, role: "GUEST" },
+      { name: "Home", current: props.currentTab === "Home" ? true : false, role: "GUEST" },
+      { name: "My Courses", current: props.currentTab === "My Courses" ? true : false , role: "GUEST" },
+      { name: "FAQs", current: props.currentTab === "FAQs" ? true : false, role: "GUEST" },
+      { name: "Sign In", current: props.currentTab === "Sign In" ? true : false, role: "GUEST" },
     ];
   } else if (localStorage.getItem("role") === "TRAINEE") {
     navButtons = [
-      { name: "Home", active: {}, role: "TRAINEE" },
-      { name: "My Courses", active: {}, role: "TRAINEE" },
-      { name: "FAQs", active: {}, role: "TRAINEE" },
-      { name: "Wallet", active: {}, role: "TRAINEE" },
-      { name: "Profile", active: {}, role: "TRAINEE" },
-      { name: "Logout", active: {}, role: "TRAINEE" },
+      { name: "Home", current: props.currentTab === "Home" ? true : false, role: "TRAINEE" },
+      { name: "My Courses", current: props.currentTab === "My Courses" ? true : false, role: "TRAINEE" },
+      { name: "FAQs", current: props.currentTab === "FAQs" ? true : false, role: "TRAINEE" },
+      { name: "Wallet", current: props.currentTab === "Wallet" ? true : false, role: "TRAINEE" },
+      { name: "Profile", current: props.currentTab === "Profile" ? true : false, role: "TRAINEE" },
+      { name: "Logout", current: props.currentTab === "Logout" ? true : false, role: "TRAINEE" },
     ];
   } else if (localStorage.getItem("role") === "CORPORATE") {
     navButtons = [
-      { name: "Home", active: {}, role: "CORPORATE" },
-      { name: "My Courses", active: {}, role: "CORPORATE" },
-      { name: "FAQs", active: {}, role: "CORPORATE" },
-      { name: "Profile", active: {}, role: "CORPORATE" },
-      { name: "Logout", active: {}, role: "CORPORATE" },
+      { name: "Home", current: props.currentTab === "Home" ? true : false, role: "CORPORATE" },
+      { name: "My Courses", current: props.currentTab === "My Courses" ? true : false, role: "CORPORATE" },
+      { name: "FAQs", current: props.currentTab === "FAQs" ? true : false, role: "CORPORATE" },
+      { name: "Profile", current: props.currentTab === "Profile" ? true : false, role: "CORPORATE" },
+      { name: "Logout", current: props.currentTab === "Logout" ? true : false, role: "CORPORATE" },
     ];
   } else if (localStorage.getItem("role") === "INSTRUCTOR") {
     navButtons = [
-      { name: "Dashboard", active: {}, role: "INSTRUCTOR" },
-      { name: "My Courses", active: {}, role: "INSTRUCTOR" },
-      { name: "Add Course", active: {}, role: "INSTRUCTOR" },
-      { name: "FAQs", active: {}, role: "INSTRUCTOR" },
-      { name: "Wallet", active: {}, role: "INSTRUCTOR" },
-      { name: "Profile", active: {}, role: "INSTRUCTOR" },
-      { name: "Logout", active: {}, role: "INSTRUCTOR" },
+      { name: "Dashboard", current: props.currentTab === "Dashboard" ? true : false, role: "INSTRUCTOR" },
+      { name: "My Courses", current: props.currentTab === "My Courses" ? true : false, role: "INSTRUCTOR" },
+      { name: "Add Course", current: props.currentTab === "Add Course" ? true : false, role: "INSTRUCTOR" },
+      { name: "FAQs", current: props.currentTab === "FAQs" ? true : false, role: "INSTRUCTOR" },
+      { name: "Wallet", current: props.currentTab === "Wallet" ? true : false, role: "INSTRUCTOR" },
+      { name: "Profile", current: props.currentTab === "Profile" ? true : false, role: "INSTRUCTOR" },
+      { name: "Logout", current: props.currentTab === "Logout" ? true : false, role: "INSTRUCTOR" },
     ];
   }
 
@@ -124,7 +124,7 @@ const NavBar = (props) => {
             if (navButton.name === "Home") {
               return (
                 <HomeNavBar
-                  active={navButton.active}
+                  active={navButton.current}
                   search={false}
                   role={navButton.role}
                 />
@@ -132,7 +132,7 @@ const NavBar = (props) => {
             } else if (navButton.name === "My Courses") {
               return (
                 <MyCoursesNavBar
-                  active={navButton.active}
+                  active={navButton.current}
                   search={false}
                   role={navButton.role}
                 />
@@ -140,7 +140,7 @@ const NavBar = (props) => {
             } else if (navButton.name === "FAQs") {
               return (
                 <FAQsNavBar
-                  active={navButton.active}
+                  active={navButton.current}
                   search={false}
                   role={navButton.role}
                 />
@@ -148,7 +148,7 @@ const NavBar = (props) => {
             } else if (navButton.name === "Cart") {
               return (
                 <CartNavBar
-                  active={navButton.active}
+                  active={navButton.current}
                   search={false}
                   role={navButton.role}
                 />
@@ -156,7 +156,7 @@ const NavBar = (props) => {
             } else if (navButton.name === "Profile") {
               return (
                 <ProfileNavBar
-                  active={navButton.active}
+                  active={navButton.current}
                   search={false}
                   role={navButton.role}
                 />
@@ -164,7 +164,7 @@ const NavBar = (props) => {
             } else if (navButton.name === "Request Course") {
               return (
                 <RequestCourseNavBar
-                  active={navButton.active}
+                  active={navButton.current}
                   search={false}
                   role={navButton.role}
                 />
@@ -172,7 +172,7 @@ const NavBar = (props) => {
             } else if (navButton.name === "Sign In") {
               return (
                 <SignInNavBar
-                  active={navButton.active}
+                  active={navButton.current}
                   search={false}
                   role={navButton.role}
                 />
@@ -180,7 +180,7 @@ const NavBar = (props) => {
             } else if (navButton.name === "Dashboard") {
               return (
                 <DashboardNavBar
-                  active={navButton.active}
+                  active={navButton.current}
                   search={false}
                   role={navButton.role}
                 />
@@ -188,7 +188,7 @@ const NavBar = (props) => {
             } else if (navButton.name === "Add Course") {
               return (
                 <AddCourseNavBar
-                  active={navButton.active}
+                  active={navButton.current}
                   search={false}
                   role={navButton.role}
                 />
@@ -196,7 +196,7 @@ const NavBar = (props) => {
             } else if (navButton.name === "Add User") {
               return (
                 <AddUserNavBar
-                  active={navButton.active}
+                  active={navButton.current}
                   search={false}
                   role={navButton.role}
                 />
@@ -204,7 +204,7 @@ const NavBar = (props) => {
             } else if (navButton.name === "Requested Courses") {
               return (
                 <RequestedCoursesNavBar
-                  active={navButton.active}
+                  active={navButton.current}
                   search={false}
                   role={navButton.role}
                 />
@@ -212,13 +212,13 @@ const NavBar = (props) => {
             } else if (navButton.name === "Logout") {
               return (
                 <LogoutNavBAr
-                  active={navButton.active}
+                  active={navButton.current}
                   search={false}
                   role={navButton.role}
                 />
               );
             } else if (navButton.name === "Wallet") {
-              return <TraineeWallet role={navButton.role} />;
+              return <TraineeWallet active={navButton.current} role={navButton.role} />;
             }
           })}
           <li className="cursor-pointer">

@@ -27,9 +27,10 @@ export default function SuccessfulPayment() {
       .then((res) => {
         localStorage.removeItem("invoiceId");
         setTimeout(() => {
-          navigate("/courseDetails", {
-            state: { courseId: localStorage.getItem("courseId") },
-          });
+          //const courseId = localStorage.getItem("courseId");
+          console.log(localStorage.getItem("courseId"));
+          navigate(`/coursedetails`, { state: { courseId: localStorage.getItem("courseId") } });
+
           localStorage.removeItem("courseId");
         }, 5000);
       }, []);
@@ -47,7 +48,7 @@ export default function SuccessfulPayment() {
       </div>
       <div className="flex justify-center items-center">
         <p className="text-gray-400 text-sm font-semibold ">
-          You will be redirected to home page shortly
+          You will be redirected to course page shortly
         </p>
         <CircularProgress disableShrink className="mx-5" />
       </div>

@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 import PersonalInfoForm from "../components/Profile/PersonalInfoForm";
 import PasswordAndPrivacy from "../components/Profile/PasswordAndPrivacy";
 import Billing from "../components/Profile/Billing";
 import Reviews from "../components/Profile/Reviews/Reviews";
 import axios from "axios";
-import { SnackbarProvider, useSnackbar } from "notistack";
+
+import NavBar from "../components/UI/NavBar/NavBar";
 //stub for the userPersonal Info Received
 const user = {
   email: "test@example.com",
@@ -70,6 +71,7 @@ const reviews = [
 const InstructorProfilePage = () => {
   const [receivedUserInfo, setReceivedUserInfo] = useState(user);
   const [selectedStage, setSelectedStage] = useState(1);
+  const [render, setRender] = useState(false);
 
   const managerRef = useRef();
   //gather the userInfo
@@ -77,6 +79,8 @@ const InstructorProfilePage = () => {
   //change it to auth later
 
   useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
+    setRender(true);
     //to be changed
     axios
       .get("http://localhost:3000/user/myProfile", {
@@ -90,7 +94,7 @@ const InstructorProfilePage = () => {
         setReceivedUserInfo(res.data);
         managerRef.current.handleRender();
       });
-  }, []);
+  }, [render]);
 
   //function to handle submitting changes to the personal info
   const personalInfoSaveHandler = (data) => {
@@ -177,9 +181,10 @@ const InstructorProfilePage = () => {
     );
   }
   return (
-    <SnackbarProvider maxSnack={3}>
+    <Fragment>
+      <NavBar currentTab="Profile" />
       <div>{displayedStep}</div>
-    </SnackbarProvider>
+    </Fragment>
   );
 };
 export default InstructorProfilePage;

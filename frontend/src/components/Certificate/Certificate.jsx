@@ -21,7 +21,7 @@ const Certificate = forwardRef((props, ref) => {
         allowTaint: true,
       }).then((canvas) => {
         const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF("l", "px", "a2");
+        const pdf = new jsPDF("l", "px", "a1");
         pdf.addImage(imgData, "PNG", 0, 0);
         pdf.save("Certificate.pdf");
       });

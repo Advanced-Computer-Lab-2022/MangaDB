@@ -1,10 +1,13 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
-import NavBar from "../components/UI/NavBar/NavBar";
+import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 import CreateCourseForm from "../components/CreateCourse/CreateCourseForm";
 import StepsBar from "../components/CreateCourse/StepsBar";
 import AddSubtitles from "../components/AddSubtitles/AddSubtitles";
 const AddCoursePage = (props) => {
+  useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
+  }, []);
   const [steps, setSteps] = useState([
     {
       name: "Course Details",
@@ -52,8 +55,10 @@ const AddCoursePage = (props) => {
 
   return (
     <Fragment>
-      <NavBar></NavBar>
-      <StepsBar steps={steps}></StepsBar>
+      <NavBarSearch currentTab="Add Course"></NavBarSearch>
+      <div className=" mt-[4.5rem]">
+        <StepsBar steps={steps}></StepsBar>
+      </div>
       {steps[0].status === "current" && (
         <CreateCourseForm onSave={onSaveHandler}></CreateCourseForm>
       )}

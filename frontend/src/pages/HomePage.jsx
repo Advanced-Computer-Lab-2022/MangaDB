@@ -29,6 +29,7 @@ const HomePage = () => {
     },
   };
   useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
     axios
       .get("http://localhost:3000/course/mostViewed/?CC=".concat(countryCode))
       .then((res) => {
@@ -42,11 +43,10 @@ const HomePage = () => {
     });
   }, [countryCode]);
 
-  //should handle the catch with error state
   const onChangeHandler = (e) => {
-    console.log(e);
     setCountryCode(e);
   };
+
   const courses = displayedCourses.map((course) => {
     return (
       <CourseCard
@@ -85,7 +85,7 @@ const HomePage = () => {
   return (
     <Animate to="1" from="0" attributeName="opacity">
       <div data-carousel> </div>
-      <NavBar onChange={onChangeHandler}></NavBar>
+      <NavBar onChange={onChangeHandler} currentTab="Home"></NavBar>
       <div className="">
         <div className="md:flex justify-center items-center md:p-24 p-10">
           <div className="block md:hidden p-10">
@@ -153,10 +153,10 @@ const HomePage = () => {
         >
           {courses}
         </Carousel>
-        <div className="font-bold text-2xl mt-8 mb-4 flex justify-start mx-12 w-max">
+        {localStorage.getItem("role") !== "CORPORATE" && <div className="font-bold text-2xl mt-8 mb-4 flex justify-start mx-12 w-max">
           On Sale Right Now!  
-        </div>
-        <Carousel
+        </div>}
+        {localStorage.getItem("role") !== "CORPORATE" && <Carousel
           rewind={true}
           pauseOnHover
           infinite
@@ -193,7 +193,7 @@ const HomePage = () => {
           }}
         >
           {displayedDiscountedCourses}
-        </Carousel>
+        </Carousel>}
       </div>
     </Animate>
   );

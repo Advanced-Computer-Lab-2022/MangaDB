@@ -1,7 +1,5 @@
-import { Fragment } from "react";
 import SecondaryButton from "../../UI/SecondaryButton";
 import CreateExamChoices from "./CreateExamChoices";
-import Divider from "@mui/material/Divider";
 import QuestionSolution from "./QuestionSolution";
 
 const defaultChoicesState = [

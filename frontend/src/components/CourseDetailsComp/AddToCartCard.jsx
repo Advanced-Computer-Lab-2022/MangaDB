@@ -65,8 +65,13 @@ const AddToCartCard = (props) => {
           })
           .then((res) => {
             localStorage.setItem("courseId", props.id);
-            window.location.href = res.data.link;
             localStorage.setItem("invoiceId", res.data.invoiceId);
+            if(res.data.link==="wallet"){
+              navigate("/successwallet");
+              return;
+            }
+            window.location.href = res.data.link;
+            
           });
       }
     } else if (role === "CORPORATE") {

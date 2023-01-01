@@ -51,6 +51,7 @@
     "react-draft-wysiwyg": "^1.15.0",
     "react-google-login": "^5.2.2",
     "react-icons": "^4.6.0",
+    "react-loading": "^2.0.3",
     "react-multi-carousel": "^2.8.2",
     "react-player": "^2.11.0",
     "react-quill": "^2.0.0",

@@ -218,7 +218,7 @@ const NavBar = (props) => {
                 />
               );
             } else if (navButton.name === "Wallet") {
-              return <TraineeWallet role={navButton.role} />;
+              return <TraineeWallet active={navButton.current} role={navButton.role} />;
             }
           })}
           <li className="cursor-pointer">

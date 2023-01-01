@@ -67,7 +67,7 @@ function App() {
           element={<AddCoursePage></AddCoursePage>}
         ></Route>
         <Route
-          path="/myWallet/:id"
+          path="/myWallet"
           element={<InstructorWallet></InstructorWallet>}
         ></Route>
         <Route path="/FAQS" element={<FAQS></FAQS>}></Route>

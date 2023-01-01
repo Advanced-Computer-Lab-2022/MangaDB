@@ -90,10 +90,12 @@ const InstructorCourseDetailsPage = () => {
       </div>
       <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
         <div className="mb-3">Course Summary</div>
-        <div
-          className="ml-10 align-middle font-normal"
-          dangerouslySetInnerHTML={{ __html: courseDetails.summary }}
-        ></div>
+        <section>
+          <div
+            className="ml-10 align-middle font-normal"
+            dangerouslySetInnerHTML={{ __html: courseDetails.summary }}
+          ></div>
+        </section>
       </div>
       {loaded && (
         <CourseContent
@@ -103,10 +105,12 @@ const InstructorCourseDetailsPage = () => {
       )}
       <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
         <div className="mb-3">Course Requirements</div>
-        <div
-          className="ml-10 font-normal"
-          dangerouslySetInnerHTML={{ __html: courseDetails.requirements }}
-        ></div>
+        <section>
+          <div
+            className="ml-10 font-normal"
+            dangerouslySetInnerHTML={{ __html: courseDetails.requirements }}
+          ></div>
+        </section>
       </div>
       {loaded && (
         <InstructorCourseReviews

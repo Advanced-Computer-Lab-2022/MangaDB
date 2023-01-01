@@ -1,4 +1,3 @@
-import NavBar from "../components/UI/NavBar/NavBar";
 import InstructorWalletCard from "../components/Wallet/InstructorWalletCard";
 import Stats from "../components/Wallet/Statistics/Stats";
 import axios from "axios";
@@ -14,6 +13,7 @@ import {
 import { motion } from "framer-motion";
 import { Fragment } from "react";
 import { useState, useEffect } from "react";
+import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 
 //the dots animation
 const appear = {
@@ -205,93 +205,95 @@ const InstructorWallet = () => {
 
   return (
     <Fragment>
-      <NavBar></NavBar>
-      <div className="flex-col items-center justify-center mt-8">
-        <div className="w-[100%] flex items-center justify-center ">
-          <p className="md:text-5xl text-4xl uppercase tracking-widest font-semibold max-w-2xl">
-            Your Total Earnings So Far
-            <motion.span initial={{ opacity: 1 }} animate={appear}>
-              ...
-            </motion.span>
-          </p>
-        </div>
-        <div className="flex items-center justify-center">
-          <VictoryChart
-            colorScale={"blue"}
-            theme={VictoryTheme.material}
-            domainPadding={20}
-            containerComponent={
-              <VictoryContainer
-                className="-ml-4"
-                style={{ height: "20%", width: "50%" }}
-              ></VictoryContainer>
-            }
-          >
-            <VictoryAxis
-              tickValues={[1, 2, 3, 4, 5]}
-              tickFormat={["2019", "2020", "2021", "2022", "2023"]}
-            />
-            <VictoryAxis
-              dependentAxis
-              tickFormat={(x) => `$${x / 1000}k`}
-              animate={{
-                duration: 1000,
-                easing: "bounce",
-              }}
-            />
-            <VictoryBar
-              style={{
-                data: {
-                  fill: "#74a0d1",
-                },
-              }}
-              animate={{
-                onExit: {
-                  duration: 500,
-                },
-              }}
-              labelComponent={<VictoryTooltip />}
-              data={data}
-              x="quarter"
-              y="earnings"
-            />
-          </VictoryChart>
-          <VictoryPie
-            animate={{
-              duration: 500,
-              easing: "circleInOut",
-            }}
-            containerComponent={
-              <VictoryContainer
-                className="-ml-4"
-                style={{ height: "20%", width: "40%" }}
-              ></VictoryContainer>
-            }
-            colorScale={"blue"}
-            data={data2}
-          ></VictoryPie>
-        </div>
-      </div>
-      {!loading && (
-        <Fragment>
-          <Stats
-            purchasesChange={purchasesChange}
-            purchasesDirection={purchaseDirection}
-            yearPurchases={receivedData.currentYearPurchases}
-            monthChange={monthChange}
-            monthDirection={monthDirection}
-            yearChange={yearChange}
-            yearDirection={yearDirection}
-            yearRevenue={yearRevenue}
-            monthRevenue={monthRevenue}
-          ></Stats>
-          <div>
-            <InstructorWalletCard
-              data={receivedData.history}
-            ></InstructorWalletCard>
+      <NavBarSearch currentTab="Wallet" />
+      <div className="mt-24">
+        <div className="flex-col items-center justify-center mt-8">
+          <div className="w-[100%] flex items-center justify-center ">
+            <p className="md:text-5xl text-4xl uppercase tracking-widest font-semibold max-w-2xl">
+              Your Total Earnings So Far
+              <motion.span initial={{ opacity: 1 }} animate={appear}>
+                ...
+              </motion.span>
+            </p>
           </div>
-        </Fragment>
-      )}
+          <div className="flex items-center justify-center">
+            <VictoryChart
+              colorScale={"blue"}
+              theme={VictoryTheme.material}
+              domainPadding={20}
+              containerComponent={
+                <VictoryContainer
+                  className="-ml-4"
+                  style={{ height: "20%", width: "50%" }}
+                ></VictoryContainer>
+              }
+            >
+              <VictoryAxis
+                tickValues={[1, 2, 3, 4, 5]}
+                tickFormat={["2019", "2020", "2021", "2022", "2023"]}
+              />
+              <VictoryAxis
+                dependentAxis
+                tickFormat={(x) => `$${x / 1000}k`}
+                animate={{
+                  duration: 1000,
+                  easing: "bounce",
+                }}
+              />
+              <VictoryBar
+                style={{
+                  data: {
+                    fill: "#74a0d1",
+                  },
+                }}
+                animate={{
+                  onExit: {
+                    duration: 500,
+                  },
+                }}
+                labelComponent={<VictoryTooltip />}
+                data={data}
+                x="quarter"
+                y="earnings"
+              />
+            </VictoryChart>
+            <VictoryPie
+              animate={{
+                duration: 500,
+                easing: "circleInOut",
+              }}
+              containerComponent={
+                <VictoryContainer
+                  className="-ml-4"
+                  style={{ height: "20%", width: "40%" }}
+                ></VictoryContainer>
+              }
+              colorScale={"blue"}
+              data={data2}
+            ></VictoryPie>
+          </div>
+        </div>
+        {!loading && (
+          <Fragment>
+            <Stats
+              purchasesChange={purchasesChange}
+              purchasesDirection={purchaseDirection}
+              yearPurchases={receivedData.currentYearPurchases}
+              monthChange={monthChange}
+              monthDirection={monthDirection}
+              yearChange={yearChange}
+              yearDirection={yearDirection}
+              yearRevenue={yearRevenue}
+              monthRevenue={monthRevenue}
+            ></Stats>
+            <div>
+              <InstructorWalletCard
+                data={receivedData.history}
+              ></InstructorWalletCard>
+            </div>
+          </Fragment>
+        )}
+      </div>
     </Fragment>
   );
 };

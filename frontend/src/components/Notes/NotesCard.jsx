@@ -77,11 +77,12 @@ const NotesCard = (props) => {
             </svg>
           </div>
         </div>
-        <div
-          className="bg-gray-100 mx-4 p-6"
-          dangerouslySetInnerHTML={{ __html: props.note }}
-        ></div>
-      
+        <section>
+          <div
+            className="bg-gray-100 mx-4 p-6"
+            dangerouslySetInnerHTML={{ __html: props.note }}
+          ></div>
+        </section>
       </Fragment>
     );
   }

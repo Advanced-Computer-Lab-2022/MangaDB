@@ -118,15 +118,18 @@ exports.updateUser = async (req, res) => {
   }
   const id = req.user.id;
   try {
-    await user
-      .findByIdAndUpdate(id, req.body, { useFindAndModify: false, new: true })
-      .then((data) => {
-        if (!data) {
-          res.status(404).send({
-            message: `Cannot update user with id=${id}. Maybe user was not found!`,
-          });
-        } else res.send({ message: "user was updated successfully.", data });
+   const foundUser= await user
+    .findByIdAndUpdate(id, req.body, { useFindAndModify: false, new: true });
+    if(!foundUser){
+      res.status(404).send({
+        message: `Cannot update user with id=${id}. Maybe user was not found!`,
       });
+    }
+      if((req.body.firstName || req.body.lastName) && req.user.role=="INSTRUCTOR" ){
+        
+        await course.updateMany({instructor:id},{$set:{instructorName:req.body.firstName+" "+req.body.lastName}});
+      }
+      res.status(200).send({message:"user updated successfully",data:foundUser});
   } catch (err) {
     res.status(500).send({
       message: "Error updating user with id=" + id,

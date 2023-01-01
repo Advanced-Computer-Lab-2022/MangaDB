@@ -5,7 +5,6 @@ import logo from "../Assets/Images/Logo.svg";
 import userIcon from "../Assets/Images/userIcon.svg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
 
 export default function Login() {
@@ -48,11 +47,16 @@ export default function Login() {
         })
         .then((res) => {
           localStorage.setItem("token", res.data.token);
-          window.location.href = "/home";
-          localStorage.setItem("token", res.data.token);
           localStorage.setItem("role", res.data.role);
-          console.log(res.data.token);
-          navigate(`/home`, { state: res.data.token });
+          if (res.data.role === "ADMIN") {
+            navigate(`/admin`);
+          } 
+          else if(res.data.role === "INSTRUCTOR"){
+            navigate(`/instructorDashboard`);
+          
+          }else {
+            navigate(`/`);
+          }
         })
         .catch((error) => {
           if (
@@ -91,6 +95,7 @@ export default function Login() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
     const initClient = () => {
       gapi.auth2.init({
         clientId: clientId,
@@ -144,7 +149,7 @@ export default function Login() {
               </div>
             </div>
           </div>
-          <form action="" class="my-10">
+          <form action="" class="my-10" onSubmit={onSubmitHandler}>
             <div class="flex flex-col space-y-5">
               <div className="relative">
                 <label for="UserName">
@@ -183,22 +188,10 @@ export default function Login() {
                 type="submit"
                 className="flex space-x-2 items-center justify-center py-3 font-semibold hover: "
                 text="Sign In"
-                onClick={onSubmitHandler}
+                //onClick={onSubmitHandler}
               ></SecondaryButton>
               <hr className=" opacity-75" />
-              <div className="flex justify-center">
-                <h2 className="opacity-50">OR</h2>
-              </div>
 
-              <GoogleLogin
-                className="flex space-x-0 items-center justify-center p-3 font-semibold hover:opacity-80  hover:text-black ease-in-out duration-300 border-2 rounded-lg hover:shadow-md text-indigo-500"
-                clientId={clientId}
-                buttonText="Sign in with Google"
-                onSuccess={onSuccess}
-                onFailure={onFailure}
-                cookiePolicy={"single_host_origin"}
-                isSignedIn={true}
-              />
             </div>
           </form>
           <p class="text-center">

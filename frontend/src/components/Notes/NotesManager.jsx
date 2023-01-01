@@ -10,7 +10,7 @@ import ReviewsCourseView from "../CourseView/ReviewsCourseView";
 
 const NotesManager = (props) => {
   const [timestamp, setTimeStamp] = useState(0);
-  const [playing, setPlaying] = useState(true);
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     if (
@@ -53,7 +53,6 @@ const NotesManager = (props) => {
       sourceDescription: `${props.sourceNo}. ${props.source}`,
     };
     var newNotes = [...props.notes, obj2];
-    console.log(sentData.notes);
     axios.patch(`http://localhost:3000/user/notes`, sentData, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -149,19 +148,6 @@ const NotesManager = (props) => {
     props.changeReportsSelector(newSelected);
   };
 
-  //not used????
-  const submitReportHandler = (data) => {
-    axios
-      .post("http://localhost:3000/problem/", data, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
-      .then((res) => {
-        console.log(res);
-      });
-  };
-
   return (
     <Fragment>
       <Video
@@ -213,6 +199,14 @@ const NotesManager = (props) => {
             selectedChangeHandler={selectedReportsChangeHandler}
             courseId={props.courseId}
             reports={props.reports}
+            followUpDescriptionChangeHandler={props.followUpDescriptionChangeHandler}
+            followUpSubmitHandler={props.followUpSubmitHandler}
+            followUpDescription={props.followUpDescription}
+            followUpId={props.followUpId}
+            followUpProblem={props.followUpProblem}
+            showFollowUpModal={props.showFollowUpModal}
+            openFollowUpModal={props.openFollowUpModal}
+            closeFollowUpModal={props.closeFollowUpModal}
           />
         )}
         {props.certificateAlert ? (

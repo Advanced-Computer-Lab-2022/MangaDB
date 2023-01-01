@@ -4,14 +4,13 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Stars from "../UI/Stars";
 import SecondaryButton from "../UI/SecondaryButton";
 import { useNavigate } from "react-router-dom";
-import { SnackbarProvider, useSnackbar } from "notistack";
+import {  useSnackbar } from "notistack";
 import axios from "axios";
 const size = 5;
 
 const CourseCardListView = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const handleClickVariant = (variant) => {
-    //console.log("here");
     // variant could be success, error, warning, info, or default
     if (variant === "success") {
       enqueueSnackbar("Refund has been requested successfuly", { variant });
@@ -39,8 +38,7 @@ const CourseCardListView = (props) => {
       });
   };
   const clickHandler = () => {
-    const instructorId = "6386427487d3f94e4cb7a28d";
-    navigate(`/coursedetails/${instructorId}`, { state: props.id });
+    navigate(`/coursedetails`, { state: { courseId: props.id } });
   };
   const totalDuration = Math.round(props.duration / 60);
   return (
@@ -83,17 +81,17 @@ const CourseCardListView = (props) => {
           <AccessTimeIcon className="-mt-[3px]" fontSize="inherit" />{" "}
           {totalDuration} {"hrs"}
           <div className="flex justify-end items-center">
-            {props.discount > 0 && (
+            {props.discount > 0 && localStorage.getItem("role") !== "CORPORATE" &&  (
               <div className="line-through decoration-1 text-lg font-thin mr-4">
                 {props.coursePrice}
                 {props.currencySymbol}
               </div>
             )}
             <h5 class="text-2xl font-bold tracking-tight text-gray-900">
-              {props.discountedPrice === 0 && (
+              {props.discountedPrice === 0 && localStorage.getItem("role") !== "CORPORATE" && (
                 <div className="text-green-600 mr-6">FREE</div>
               )}
-              {props.discountedPrice != 0 && (
+              {props.discountedPrice != 0 && localStorage.getItem("role") !== "CORPORATE" && (
                 <div className="mr-6">
                   {props.discountedPrice}
                   {props.currencySymbol}

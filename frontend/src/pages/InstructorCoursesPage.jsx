@@ -1,18 +1,24 @@
 import { Fragment, useState, useEffect, useReducer } from "react";
 import axios from "axios";
 import Table from "../components/Table/Table";
-import NavBar from "../components/UI/NavBar/NavBar";
 import InstructorControls from "../components/Table/InstructorControls";
 import Filters from "../components/Filters/Filters";
 import TableListViewCard from "../components/Table/TableListViewCard";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import NavBar from "../components/UI/NavBar/NavBar";
+import { useSnackbar } from "notistack";
+
 const options = [
-  { id: 1, name: "Web Development" },
-  { id: 2, name: "Machine Learning" },
-  { id: 3, name: "Computer Science" },
-  { id: 4, name: "Database Administration" },
-  { id: 5, name: "Data Analysis" },
+  { id: 1, name: "Computer Hardware" },
+  { id: 2, name: "Data Structures" },
+  { id: 3, name: "Computer Architecture" },
+  { id: 4, name: "Programming Fundamentals" },
+  { id: 5, name: "Computer Organization" },
+  { id: 6, name: "Machine Learning" },
+  { id: 7, name: "Web Development" },
 ];
 const theme = createTheme({
   status: {
@@ -31,6 +37,18 @@ const theme = createTheme({
 });
 
 const IntructorCoursePage = (props) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant) => {
+    enqueueSnackbar(
+      "One or more of the selected courses already have promotion  ",
+      {
+        variant,
+      }
+    );
+  };
+
+  const location = useLocation();
+  const navigate = useNavigate();
   const defaultState = {
     displayedCourses: [],
     search: "",
@@ -43,6 +61,34 @@ const IntructorCoursePage = (props) => {
   };
   const [page, setPage] = useState(1);
   const [noOfPages, setNoOfPages] = useState(1);
+
+  const [selectedNow, setSelectedNow] = useState([]);
+
+  const selectAllHandler = (selectRows) => {
+    if (selectRows) {
+      const temp = [];
+      for (let i = 0; i < searchState.displayedCourses.length; i++) {
+        temp.push(searchState.displayedCourses[i].course._id);
+      }
+      setSelectedNow(temp);
+    } else {
+      setSelectedNow([]);
+    }
+  };
+
+  const selectRowHandler = (isSelected, courseId) => {
+    if (isSelected) {
+      setSelectedNow([...selectedNow, courseId]);
+    } else {
+      const index = selectedNow.indexOf(courseId);
+      setSelectedNow(selectedNow.filter((_, i) => i !== index));
+    }
+  };
+
+  const adminAddPromotionHandler = () => {
+    setShowPromotationModal(true);
+  };
+
   const ReducerFunction = (state, action) => {
     if (action.type === "SEARCH") {
       const newState = { ...state, search: action.value };
@@ -82,6 +128,11 @@ const IntructorCoursePage = (props) => {
     name: "Technical",
   });
   const [enteredReport, setEnteredReport] = useState("");
+  const [selected, setSelected] = useState(false);
+
+  const viewCourse = (courseId) => {
+    navigate("/instructorCourseDetails", { state: { courseId: courseId } });
+  };
 
   const openReportModal = (id, course) => {
     setShowReportModal(true);
@@ -131,7 +182,6 @@ const IntructorCoursePage = (props) => {
     setShowPromotationModal(true);
     setPromotionId(id);
     setPromotionCourse(course);
-    //console.log(showPromotationModal);
   };
 
   const closePromotionModal = () => {
@@ -154,37 +204,74 @@ const IntructorCoursePage = (props) => {
   };
   const promotionSubmitHandler = () => {
     closePromotionModal();
-    const data = {
-      discount: +promotionAmount / 100,
-      discountStartDate: new Date().toISOString(),
-      discountEndDate: promotionEndDate,
-    };
-    axios
-      .patch(
-        "http://localhost:3000/instructor/createDiscount/" + promotionId,
-        data,
-        {
+
+    if (props.admin) {
+      const data = {
+        courses: selectedNow,
+        discount: +promotionAmount / 100,
+        discountStartDate: new Date().toISOString(),
+        discountEndDate: promotionEndDate,
+      };
+      axios
+        .patch("http://localhost:3000/admin/createDiscount/", data, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
-        }
-      )
-      .then((res) => {
-        var courses = [];
-        for (var i = 0; i < searchState.displayedCourses.length; i++) {
-          console.log(searchState.displayedCourses[i].course._id);
-          console.log(
-            searchState.displayedCourses[i].course._id !== res.data._id
-          );
-          if (searchState.displayedCourses[i].course._id !== res.data._id) {
-            courses.push(searchState.displayedCourses[i]);
-          } else {
-            var temp = { course: res.data, mine: true };
-            courses.push(temp);
+        })
+        .then((res) => {
+          var courses = [];
+          for (var i = 0; i < searchState.displayedCourses.length; i++) {
+            if (searchState.displayedCourses[i].course._id !== res.data._id) {
+              courses.push(searchState.displayedCourses[i]);
+            } else {
+              var newCourse = JSON.parse(JSON.stringify(res.data));
+              newCourse.discountedPrice =
+                (1 - +res.data.discount) * +res.data.coursePrice;
+              var temp = { course: newCourse, mine: true };
+              courses.push(temp);
+            }
           }
-        }
-        dispatchSearch({ type: "COURSES", value: courses });
-      });
+          dispatchSearch({ type: "COURSES", value: courses });
+        })
+        .catch((err) => {
+          if (
+            err.message.split(" ")[err.message.split(" ").length - 1] === "400"
+          ) {
+            handleClickVariant("error");
+          }
+        });
+    } else {
+      const data = {
+        discount: +promotionAmount / 100,
+        discountStartDate: new Date().toISOString(),
+        discountEndDate: promotionEndDate,
+      };
+      axios
+        .patch(
+          "http://localhost:3000/instructor/createDiscount/" + promotionId,
+          data,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        )
+        .then((res) => {
+          var courses = [];
+          for (var i = 0; i < searchState.displayedCourses.length; i++) {
+            if (searchState.displayedCourses[i].course._id !== res.data._id) {
+              courses.push(searchState.displayedCourses[i]);
+            } else {
+              var newCourse = JSON.parse(JSON.stringify(res.data));
+              newCourse.discountedPrice =
+                (1 - +res.data.discount) * +res.data.coursePrice;
+              var temp = { course: newCourse, mine: true };
+              courses.push(temp);
+            }
+          }
+          dispatchSearch({ type: "COURSES", value: courses });
+        });
+    }
   };
   const searchBarChangeHandler = (searchValue) => {
     dispatchSearch({ type: "SEARCH", value: searchValue });
@@ -197,6 +284,7 @@ const IntructorCoursePage = (props) => {
     dispatchSearch({ type: "MYCOURSES" });
   };
   useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
     var param = "";
     if (searchState.search !== "")
       param = param + "?search=" + searchState.search;
@@ -245,7 +333,12 @@ const IntructorCoursePage = (props) => {
           dispatchSearch({ type: "COURSES", value: res.data.courses });
         });
     }
-  }, [searchState.search, searchState.filters, searchState.myCourses]);
+  }, [
+    searchState.search,
+    searchState.filters,
+    searchState.myCourses,
+    selectedNow,
+  ]);
   var rows = searchState.displayedCourses.map((course) => {
     return {
       courseId: course.course._id,
@@ -262,7 +355,6 @@ const IntructorCoursePage = (props) => {
       mine: course.mine,
     };
   });
-
   var cards = rows.map((row) => {
     return (
       <TableListViewCard
@@ -298,6 +390,7 @@ const IntructorCoursePage = (props) => {
 
   return (
     <Fragment>
+      {!props.admin && <NavBar currentTab="My Courses" />}
       {showFilters && (
         <Filters
           prevState={searchState.filters}
@@ -313,6 +406,8 @@ const IntructorCoursePage = (props) => {
         onCoursesClick={viewMyCoursesHandler}
         prevmyCoursesState={searchState.myCourses}
         prevSearchState={searchState.search}
+        admin={props.admin}
+        adminAddPromotionHandler={adminAddPromotionHandler}
       />
       <div className="hidden xl:block">
         <Table
@@ -337,6 +432,12 @@ const IntructorCoursePage = (props) => {
           enteredReport={enteredReport}
           openReportModal={openReportModal}
           closeReportModal={closeReportModal}
+          viewCourse={viewCourse}
+          admin={props.admin}
+          selectAllHandler={selectAllHandler}
+          selectRowHandler={selectRowHandler}
+          selected={selected}
+          selectedNow={selectedNow}
         />
       </div>
       <div className="flex justify-around flex-wrap xl:hidden">{cards}</div>

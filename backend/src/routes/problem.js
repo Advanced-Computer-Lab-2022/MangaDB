@@ -11,16 +11,17 @@ router.get("/",auth.validateToken,auth.authenticateRole(["ADMIN"]), problemContr
 
 router.get("/userCourseProblems/:id",auth.validateToken,auth.authenticateRole(["ADMIN","TRAINEE","CORPORATE","INSTRUCTOR"]),problemController.getUserCourseProblems);
 
-router.get("/:id",auth.validateToken,auth.authenticateRole(["ADMIN","TRAINEE","CORPORATE"]), problemController.getProblem);
 
 router.delete("/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), problemController.deleteProblem); 
 
-router.patch("/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), problemController.updateProblem);
-
 router.patch("/followUp/:id",auth.validateToken,auth.authenticateRole(["TRAINEE","CORPORATE","INSTRUCTOR"]), problemController.followUpProblem);
+
+router.patch("/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), problemController.updateProblem);
 
 router.get("/user",auth.validateToken,auth.authenticateRole(["ADMIN","TRAINEE","CORPORATE","INSTRUCTOR"]), problemController.getUserProblems);
 
 router.get("/course/:id",auth.validateToken,auth.authenticateRole(["ADMIN","TRAINEE","CORPORATE","INSTRUCTOR"]), problemController.getCourseProblems);
+
+router.get("/:id",auth.validateToken,auth.authenticateRole(["ADMIN","TRAINEE","CORPORATE"]), problemController.getProblem);
 
 module.exports = router;

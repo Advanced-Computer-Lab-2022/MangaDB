@@ -1,11 +1,11 @@
 import SecondaryButton from "../components/UI/SecondaryButton";
 import { useRef, useState } from "react";
-import { EyeIcon } from "@heroicons/react/solid";
-import { EyeOffIcon } from "@heroicons/react/solid";
 import PasswordField from "../components/Login-SignUp/PasswordField";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 export default function ResetPassword() {
+  const navigate = useNavigate();
   const newPasswordRef = useRef();
   const confirmNewPasswordRef = useRef();
   const [emptyPassword, setEmptyPassword] = useState(false);
@@ -43,11 +43,14 @@ export default function ResetPassword() {
     }
 
     if (!warning) {
+      setEmptyPassword(false);
+      setEmptyConfirmPassword(false);
+      setPasswordMatch(true);
       console.log("here");
       axios
         .patch(
           "http://localhost:3000/user/resetPassword",
-          { password: newPasswordRef },
+          { password: newPasswordRef.current.value },
           {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("token"),
@@ -55,12 +58,22 @@ export default function ResetPassword() {
           }
         )
         .then((res) => {
-          //console.log("here");
+          handleClickVariant("success");
+          setTimeout(() => {
+            navigate("/login");
+          }, 2000);
           localStorage.removeItem("token");
         });
     }
 
     //handle patch request
+  };
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant) => {
+    //console.log("here");
+    enqueueSnackbar("your password has been changed successfully  ", {
+      variant,
+    });
   };
   return (
     <div class="mt-[10%]">
@@ -138,7 +151,7 @@ export default function ResetPassword() {
             </div>
           </form>
           <p class="text-center">
-            Dont't have an account?{" "}
+            Dont't have an account?
             <a
               href="#"
               class="text-primaryBlue hover:opacity-70 ease-in-out duration-300 font-medium inline-flex space-x-1 items-center"

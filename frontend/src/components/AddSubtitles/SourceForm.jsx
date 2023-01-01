@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import Divider from "@mui/material/Divider";
 import Video from "../Video/Video";
 import PrimaryButton from "../UI/PrimaryButton";
-import RadioTypes from "./RadioTypes";
 import CreateExamManager from "./CreateQuestion/CreateExamManager";
 import TertiaryButton from "../UI/TertiaryButton";
 const SourceForm = (props) => {

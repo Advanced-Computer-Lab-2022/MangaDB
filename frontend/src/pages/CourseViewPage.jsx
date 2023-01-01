@@ -1,5 +1,4 @@
 import { useState, useEffect, Fragment, useRef } from "react";
-import NavBar from "../components/UI/NavBar/NavBar";
 import ExamManager from "../components/Exam/ExamManager";
 import NotesManager from "../components/Notes/NotesManager";
 import axios from "axios";
@@ -8,8 +7,10 @@ import WarningAlert from "../components/UI/WarningAlert";
 import ContentCourseView from "../components/CourseView/ContentCourseView";
 import ExamToolManager from "../components/ExamToolBar/ExamToolManager";
 import Certificate from "../components/Certificate/Certificate";
+import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 
 const CourseViewPage = () => {
+  
   const location = useLocation();
   const [receivedData, setReceivedData] = useState({});
   const [currentSource, setCurrentSource] = useState("");
@@ -42,8 +43,43 @@ const CourseViewPage = () => {
   const [certificateAlert, setCertificateAlert] = useState(false);
   const managerRef = useRef(null);
   const downloadRef = useRef(null);
+  const [showFollowUpModal, setShowFollowUpModal] = useState(false);
+  const [followUpId, setFollowUpId] = useState(-1);
+  const [followUpProblem, setFollowUpProblem] = useState("");
+  const [followUpDescription, setFollowUpDescription] = useState("");
+
+  const openFollowUpModal = (id, problem) => {
+    setShowFollowUpModal(true);
+    setFollowUpId(id);
+    setFollowUpProblem(problem);
+  };
+
+  const closeFollowUpModal = () => {
+    setShowFollowUpModal(false);
+    setFollowUpId(-1);
+  };
+
+  const followUpDescriptionChangeHandler = (event) => {
+    setFollowUpDescription(event.target.value);
+  };
+
+  const followUpSubmitHandler = () => {
+    const data = {
+      followUpComment: followUpDescription,
+    };
+    axios
+      .patch("http://localhost:3000/problem/followUp/" + followUpId, data, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+      });
+      closeFollowUpModal();
+  };
 
   useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
     const courseId = location.state;
     if (currentNotesFilter.name === "All Lessons") {
       axios
@@ -53,7 +89,6 @@ const CourseViewPage = () => {
           },
         })
         .then((res) => {
-          console.log(res);
           var notesSet = [];
           for (var i = 0; i < res.data.noteData.length; i++) {
             if (res.data.noteData[i].notes.length !== 0) {
@@ -196,6 +231,14 @@ const CourseViewPage = () => {
       managerRef.current.refreshManager();
     }
     setCurrentSource(source);
+    if(source.sourceType === "Quiz"){
+      setCurrentTab("")
+      setCertificateAlert(false);
+      setShowQA(false);
+      setShowNotes(false);
+      setShowReports(false);
+      setShowReviews(false)
+    }
   };
   const changeNotesFilter = (data) => {
     setCurrentNotesFilter(data);
@@ -313,16 +356,16 @@ const CourseViewPage = () => {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
-      .then((res) => {});
-
-    axios
-      .get(`http://localhost:3000/user/progress/${receivedData._id}`, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
       .then((res) => {
-        setProgress(res.data.percentage);
+        axios
+        .get(`http://localhost:3000/user/progress/${receivedData._id}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          setProgress(res.data.percentage);
+        });
       });
   };
 
@@ -436,6 +479,14 @@ const CourseViewPage = () => {
           onTabChangeHandler={onTabChangeHandler}
           sourceNo={sourceNo}
           subtitleNo={subtitleNo}
+          followUpDescriptionChangeHandler={followUpDescriptionChangeHandler}
+          followUpSubmitHandler={followUpSubmitHandler}
+          followUpDescription={followUpDescription}
+          followUpId={followUpId}
+          followUpProblem={followUpProblem}
+          showFollowUpModal={showFollowUpModal}
+          openFollowUpModal={openFollowUpModal}
+          closeFollowUpModal={closeFollowUpModal}
         />
       );
     } else {
@@ -501,6 +552,14 @@ const CourseViewPage = () => {
             currentTab={currentTab}
             certificateAlert={certificateAlert}
             onTabChangeHandler={onTabChangeHandler}
+            followUpDescriptionChangeHandler={followUpDescriptionChangeHandler}
+            followUpSubmitHandler={followUpSubmitHandler}
+            followUpDescription={followUpDescription}
+            followUpId={followUpId}
+            followUpProblem={followUpProblem}
+            showFollowUpModal={showFollowUpModal}
+            openFollowUpModal={openFollowUpModal}
+            closeFollowUpModal={closeFollowUpModal}
           ></ExamToolManager>
         </Fragment>
       );
@@ -508,12 +567,12 @@ const CourseViewPage = () => {
   }
   return (
     <Fragment>
-      <NavBar />
+      <NavBarSearch currentTab="My Courses" />
       <div className=" opacity-0 h-0 overflow-hidden w-full relative ">
         <Certificate ref={downloadRef}></Certificate>
       </div>
       {/* <ProgressManager progress={progress} totalSources={totalSources} /> */}
-      <div className="py-4 flex justify-center font-medium text-xl bg-gray-50 z-20">
+      <div className="py-4 flex justify-center font-medium text-xl bg-gray-50 z-20 mt-[4.5rem]">
         {receivedData.courseTitle}: {currentSource.description}
       </div>
       <div className="md:flex z-50">

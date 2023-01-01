@@ -130,7 +130,7 @@ export default function ReportsRequestsManager(props) {
     } else {
       if (problemType === "access") {
         axios
-          .patch(`http://localhost:3000/request/access/${problemId}`, {
+          .patch(`http://localhost:3000/request/access/${problemId}`,{}, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
@@ -150,7 +150,7 @@ export default function ReportsRequestsManager(props) {
       } else {
         if (problemType === "refund") {
           axios
-            .patch(`http://localhost:3000/request/refund/${problemId}`, {
+            .patch(`http://localhost:3000/request/refund/${problemId}`,{}, {
               headers: {
                 Authorization: "Bearer " + localStorage.getItem("token"),
               },
@@ -223,7 +223,7 @@ export default function ReportsRequestsManager(props) {
     } else {
       if (problemStatus !== "accepted") {
         axios
-          .patch(`http://localhost:3000/request/reject/${problemId}`, {
+          .patch(`http://localhost:3000/request/reject/${problemId}`,{}, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
@@ -249,7 +249,7 @@ export default function ReportsRequestsManager(props) {
     console.log(problemStatus);
     if (problemStatus !== "accepted") {
       axios
-        .patch(`http://localhost:3000/request/pend/${problemId}`, {
+        .patch(`http://localhost:3000/request/pend/${problemId}`,{}, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },

@@ -30,5 +30,4 @@ router.get("/myReviews",auth.validateToken,auth.authenticateRole(["INSTRUCTOR"])
 router.get("/:id",auth.validateToken,instructorController.viewInstructor);
 
 
-
 module.exports = router;

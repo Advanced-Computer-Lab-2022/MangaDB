@@ -11,6 +11,8 @@ router.get("/",auth.validateToken,auth.authenticateRole([ 'ADMIN' ]),requestCont
 
 router.get("/user",auth.validateToken,auth.authenticateRole(["TRAINEE", "CORPORATE"]), requestController.getUserRequests);
 
+router.get("/user",auth.validateToken,auth.authenticateRole(["TRAINEE", "CORPORATE"]), requestController.getUserRequests);
+
 router.get("/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]),requestController.getRequest);
 
 router.patch("/refund/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), requestController.approveRefund);
@@ -20,8 +22,6 @@ router.patch("/access/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), 
 router.patch("/reject/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), requestController.declineRequest);
 
 router.patch("/pend/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), requestController.pendRequest);
-
-router.get("/user",auth.validateToken,auth.authenticateRole(["TRAINEE", "CORPORATE"]), requestController.getUserRequests);
 
 router.delete("/:id",auth.validateToken,auth.authenticateRole(["ADMIN"]), requestController.deleteRequest);
 

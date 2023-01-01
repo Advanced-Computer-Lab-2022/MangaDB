@@ -1,7 +1,5 @@
-
-
 import { Divider } from "@mui/material";
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import Modal from "../UI/Modal";
 import SecondaryButton from "../UI/SecondaryButton";
 
@@ -28,9 +26,7 @@ const ReportItem = (props) => {
             <Divider />
             <div className="mt-4">
               <div className="items-center">
-                <div className=" font-medium">
-                  Follow Up Description:
-                </div>
+                <div className=" font-medium">Follow Up Description:</div>
                 <div>
                   <textarea
                     className="w-full px-3 py-1 bg-white border border-slate-300 rounded-md text-sm shadow-sm
@@ -102,8 +98,11 @@ const ReportItem = (props) => {
           <></>
         )}
         <div className="lg:flex lg:justify-between items-center mb-2">
-          <div className="mb-2 lg:mb-0 truncate">{props.description}</div>
-          {props.status !== "Resolved" && (
+          <div className="mb-2 lg:mb-0 truncate">
+            <div>{props.description}</div>
+            {props.followUp && <div>Follow Up: {props.followUp}</div>}
+          </div>
+          {(props.status !== "Resolved" && !props.followUp) && (
             <div>
               <SecondaryButton
                 text="Follow Up"

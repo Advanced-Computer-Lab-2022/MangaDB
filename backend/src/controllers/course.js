@@ -97,7 +97,7 @@ exports.getAllCourses = async (req, res, next) => {
     course.discountedPrice = (course.discountedPrice * exchangeRate).toFixed(2);
   });
   let instructorCourses = [];
-  if (iId && req.user.role == "INSTRUCTOR") {
+  if (iId && (req.user.role == "INSTRUCTOR" || req.user.role == "ADMIN")) {
     for (let i = 0; i < allCourses.length; i++) {
       if (allCourses[i].instructor == iId) {
         allCourses[i].mine = true;
@@ -322,7 +322,7 @@ exports.searchCoursesByInstructor = async (req, res, next) => {
   let minPrice = req.query.minPrice || 0;
   let maxPrice = req.query.maxPrice || Number.MAX_VALUE;
   const subjects = req.query.subject;
-  const iId = req.params.id;
+  const iId = req.user.id;
   let query = {};
   if (subjects) {
     query = { subject: { $in: subjects } };

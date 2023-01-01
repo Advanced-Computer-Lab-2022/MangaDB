@@ -11,34 +11,10 @@ import ReportItem from "../components/CourseView/ReportItem";
 import { Divider } from "@mui/material";
 import InstructorQACard from "../components/QA/InstructorQACard";
 
-const questionsStub = [
-  {
-    _id: 1,
-    userName: "Omar Moataz",
-    date: "2022-12-27T10:15:58.506+00:00",
-    courseName: "React Redux hooks",
-    question:
-      "I don't understand the concept of forwarding props from parent to child",
-  },
-  {
-    _id: 2,
-    userName: "Marwan Ashaf",
-    date: "2022-12-27T10:15:58.506+00:00",
-    courseName: "React Redux hooks",
-    question: "What is the purpose of living",
-  },
-  {
-    _id: 3,
-    userName: "Michel Raouf",
-    date: "2022-12-27T10:15:58.506+00:00",
-    courseName: "React Redux hooks",
-    question: "I cant do anything please help",
-  },
-];
 const InstructorDashboard = () => {
   const [receivedData, setReceivedData] = useState({});
   const [reports, setReports] = useState([]);
-  const [questions, setQuestions] = useState(questionsStub);
+  const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState([]);
   const [loaded, setLoaded] = useState(false);
@@ -64,12 +40,24 @@ const InstructorDashboard = () => {
 
   const followUpSubmitHandler = () => {
     closeFollowUpModal();
-    //axios post
+    const data = {
+      followUpComment: followUpDescription,
+    };
+    axios
+      .patch("http://localhost:3000/problem/followUp/" + followUpId, data, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      });
   };
 
   //loading as the endpoint contains a lot of data..
   //fetch the data as soon as he logs in..
   useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
     axios
       .get("http://localhost:3000/instructor/myReviews", {
         headers: {
@@ -91,10 +79,28 @@ const InstructorDashboard = () => {
       .then((res) => {
         setReports(res.data);
       });
+
+    axios
+      .get("http://localhost:3000/instructor/questions", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        setQuestions(res.data);
+      });
   }, []);
 
   const onConfirmReplyHandler = (id, reply) => {
-    //axios post
+    const sentData = {
+      questionId: id,
+      answer: reply,
+    };
+    axios.patch("http://localhost:3000/instructor/answerQuestion", sentData, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
     var temp = [];
     for (var i = 0; i < questions.length; i++) {
       if (questions[i]._id !== id) {
@@ -102,8 +108,6 @@ const InstructorDashboard = () => {
       }
     }
     setQuestions(temp);
-    console.log(id);
-    console.log(reply);
   };
 
   const stats = [
@@ -206,7 +210,7 @@ const InstructorDashboard = () => {
           date={fullDate}
           userName={question.userName}
           courseName={question.courseName}
-        ></InstructorQACard>
+        />
       );
     });
   } else {
@@ -216,7 +220,6 @@ const InstructorDashboard = () => {
       </div>
     );
   }
-  console.log(reports);
   var displayedReports;
   var index = 0;
   if (reports !== [] && loaded) {
@@ -259,6 +262,7 @@ const InstructorDashboard = () => {
           date={fullDate}
           description={report.description}
           courseName={report.courseName}
+          followUp={report.followUpComment}
           followUpDescriptionChangeHandler={followUpDescriptionChangeHandler}
           followUpSubmitHandler={followUpSubmitHandler}
           followUpDescription={followUpDescription}
@@ -273,16 +277,19 @@ const InstructorDashboard = () => {
   } else {
     displayedReports = <div>No Reports Found.</div>;
   }
-  console.log(reports);
+  var name;
+  if (receivedData.firstName || receivedData.lastName) {
+    name = ` ${receivedData.firstName} ${receivedData.lastName} `;
+  } else {
+    name = "Instructor ";
+  }
   return (
     <Fragment>
-      <NavBar></NavBar>
+      <NavBar currentTab="Dashboard" />
       <div className=" flex space-x-14 mt-4 items-center justify-center">
         <div className="font-semibold text-xl text-center text-gray-700 ">
           <p>Welcome Back,</p>
-          <p className="text-center text-3xl font-semibold">
-            {receivedData.firstName} {receivedData.lastName}!
-          </p>
+          <p className="text-center text-3xl font-semibold">{name}!</p>
           <p className="text-center mt-6 text-gray-500 flex space-x-2 items-center justify-center">
             <BellIcon className="fill-yellow-400 w-6 h-8 mr-2"></BellIcon>
             You have {questions.length} unanswered questions from your students
@@ -342,7 +349,7 @@ const InstructorDashboard = () => {
       <div className="m-4 mt-6">
         <div>
           <div className=" font-semibold text-xl mb-4">Instructor Reviews:</div>
-          <div className=" mb-6 mx-12">
+          <div className=" mb-6 mx-12 mt-3">
             {loaded && <AverageSummary count={count} />}
           </div>
           <div className=" mx-8">{displayedReviews}</div>

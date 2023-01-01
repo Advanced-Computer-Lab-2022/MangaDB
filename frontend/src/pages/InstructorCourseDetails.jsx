@@ -1,12 +1,12 @@
 import React from "react";
 import { Fragment, useState, useEffect } from "react";
-import NavBar from "../components/UI/NavBar/NavBar";
 import CourseDetailsCard from "../components/CourseDetailsComp/CourseDetailsCard";
 import axios from "axios";
 import CourseContent from "../components/CourseDetailsComp/CourseContent";
 import InstructorCourseReviews from "../components/CourseDetailsComp/InstructorCourseReviews";
 import { useLocation } from "react-router-dom";
 import InstructorVideo from "../components/Video/InstructorVideo";
+import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 const InstructorCourseDetailsPage = () => {
   const location = useLocation();
   const [courseDetails, setCourseDetails] = useState({});
@@ -15,7 +15,8 @@ const InstructorCourseDetailsPage = () => {
   const [courseReviews, setCourseReviews] = useState([]);
   const [reviewsCount, setReviewsCount] = useState([]);
   useEffect(() => {
-    const courseId = "63a375f6b2ac097c6a3f7ed5";
+    window.scrollTo(0, 0, "smooth");
+    const courseId = location.state.courseId;
     axios
       .get("http://localhost:3000/course/".concat(courseId), {
         headers: {
@@ -70,7 +71,7 @@ const InstructorCourseDetailsPage = () => {
   }, []);
   return (
     <Fragment>
-      <NavBar />
+      <NavBarSearch currentTab="My Courses" />
       <div className="bg-veryLightBlue py-4 px-6 flex justify-between">
         <CourseDetailsCard
           courseTitle={courseDetails.courseTitle}
@@ -90,10 +91,12 @@ const InstructorCourseDetailsPage = () => {
       </div>
       <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
         <div className="mb-3">Course Summary</div>
-        <div
-          className="ml-10 align-middle font-normal"
-          dangerouslySetInnerHTML={{ __html: courseDetails.summary }}
-        ></div>
+        <section>
+          <div
+            className="ml-10 align-middle font-normal"
+            dangerouslySetInnerHTML={{ __html: courseDetails.summary }}
+          ></div>
+        </section>
       </div>
       {loaded && (
         <CourseContent
@@ -103,10 +106,12 @@ const InstructorCourseDetailsPage = () => {
       )}
       <div className="text-xl font-semibold py-4 mx-10 md:w-7/12">
         <div className="mb-3">Course Requirements</div>
-        <div
-          className="ml-10 font-normal"
-          dangerouslySetInnerHTML={{ __html: courseDetails.requirements }}
-        ></div>
+        <section>
+          <div
+            className="ml-10 font-normal"
+            dangerouslySetInnerHTML={{ __html: courseDetails.requirements }}
+          ></div>
+        </section>
       </div>
       {loaded && (
         <InstructorCourseReviews

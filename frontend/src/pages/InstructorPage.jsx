@@ -1,11 +1,12 @@
 import { useState, useEffect, Fragment } from "react";
 import axios from "axios";
-import NavBar from "../components/UI/NavBar/NavBar";
+import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 import SecondaryButton from "../components/UI/SecondaryButton";
 import AverageSummary from "../components/Profile/Reviews/AverageSummary";
 import ReviewItem from "../components/CourseDetailsComp/ReviewItem";
 import CourseCard from "../components/Course/CourseCard";
 import Carousel from "react-multi-carousel";
+import { useLocation } from "react-router-dom";
 
 import {
   BookOpenIcon,
@@ -15,6 +16,7 @@ import {
 import Rating from "@mui/material/Rating";
 
 const InstructorPage = () => {
+  const location = useLocation();
   const [receivedData, setReceivedData] = useState({});
   const [enteredReview, setEnteredReview] = useState("");
   const [enteredRating, setEnteredRating] = useState("");
@@ -24,11 +26,11 @@ const InstructorPage = () => {
   const [loading, setLoading] = useState(true);
   //const [reviewedBefore,setReviewedBefore] =useState(false)
   //fetch the data at the start of the code ..
-  //navigation to get the id
   useEffect(() => {
-    const instructorId = "63a36fd41bd9f2e6163b0481";
+    window.scrollTo(0, 0, "smooth");
+    const instructorId = location.state.instructorId;
     axios
-      .get(`http://localhost:3000/instructor/${instructorId}`, {
+      .get(`http://localhost:3000/instructor/` + instructorId, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -73,14 +75,13 @@ const InstructorPage = () => {
 
   //submit the instructor review
   const onClickHandler = () => {
-    const instructorId = "63a36fd41bd9f2e6163b0481";
     const reviewData = {
       rating: enteredRating,
       review: enteredReview,
     };
     axios
       .post(
-        `http://localhost:3000/instructor/rate/${instructorId}`,
+        `http://localhost:3000/instructor/rate`,
         reviewData,
         {
           headers: {
@@ -163,7 +164,7 @@ const InstructorPage = () => {
         return (
           <CourseCard
             id={course.course._id}
-            duration={course.course.totalHours}
+            duration={course.course.totalMins}
             title={course.course.courseTitle}
             instructorName={course.course.instructorName}
             subject={course.course.subject}
@@ -182,9 +183,9 @@ const InstructorPage = () => {
 
   return (
     <Fragment>
-      <NavBar></NavBar>
+      <NavBarSearch />
       {!loading && (
-        <div className="flex-col items-center justify-center">
+        <div className="flex-col items-center justify-center mt-24">
           <p className=" flex items-center justify-center  font-semibold text-gray-500">
             INSTRUCTOR
           </p>
@@ -246,7 +247,7 @@ const InstructorPage = () => {
               <div className=" font-semibold text-xl mb-4">
                 Instructor Reviews:
               </div>
-              <div className=" mb-6 mx-12">
+              <div className=" mb-6 mx-12 mt-3">
                 <AverageSummary count={summary} />
               </div>
               <div className=" mx-8">{displayedReviews}</div>

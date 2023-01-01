@@ -1,10 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 import PersonalInfoForm from "../components/TraineeProfile/PersonalInfoForm";
 import PasswordAndPrivacy from "../components/TraineeProfile/PasswordAndPrivacy";
-import Reviews from "../components/Profile/Reviews/Reviews";
 import Reqests from "../components/TraineeProfile/Requests";
 import axios from "axios";
-import { SnackbarProvider, useSnackbar } from "notistack";
+import NavBar from "../components/UI/NavBar/NavBar";
 //stub for the userPersonal Info Received
 const user = {
   email: "test@example.com",
@@ -70,12 +69,15 @@ const reviews = [
 const TraineeProfilePage = () => {
   const [receivedUserInfo, setReceivedUserInfo] = useState(user);
   const [selectedStage, setSelectedStage] = useState(1);
+  const [render, setRender] = useState(false);
 
   const managerRef = useRef();
 
   //gather the userInfo
 
   useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
+    setRender(true);
     axios
       .get("http://localhost:3000/user/myProfile", {
         headers: {
@@ -83,14 +85,10 @@ const TraineeProfilePage = () => {
         },
       })
       .then((res) => {
-        //console.log(res.data);
-        //console.log(user);
-        //console.log(localStorage.getItem("token"));
         setReceivedUserInfo(res.data);
-        console.log(res.data);
         managerRef.current.handleRender();
       });
-  }, []);
+  }, [render]);
   //function to handle submitting changes to the personal info
 
   //function to handle the change of password or privacy
@@ -108,7 +106,6 @@ const TraineeProfilePage = () => {
   };
   const reviewReportHandler = (reviewId) => {
     //sprint 3
-    console.log(reviewId);
   };
 
   var displayedStep;
@@ -135,9 +132,10 @@ const TraineeProfilePage = () => {
     displayedStep = <Reqests changeStageHandler={changeStageHandler}></Reqests>;
   }
   return (
-    <SnackbarProvider maxSnack={3}>
+    <Fragment>
+      <NavBar currentTab="Profile" />
       <div>{displayedStep}</div>
-    </SnackbarProvider>
+    </Fragment>
   );
 };
 export default TraineeProfilePage;

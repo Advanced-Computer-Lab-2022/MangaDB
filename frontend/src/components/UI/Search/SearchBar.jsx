@@ -11,12 +11,11 @@ const SearchBar = (props) => {
   }
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    const instructorId = "6386427487d3f94e4cb7a28d"
-    navigate( `/searchresults/${instructorId}`,{state:inputRef.current.value});
-    //props.onChange(inputRef.current.value);
-
+    const role = localStorage.getItem("role");
+    if (role !== "INSTRUCTOR" && role !== "ADMIN") {
+    navigate(`/searchresults`, {state:inputRef.current.value});
   };
-
+  }
   return (
     <div
       className={` right-3 w-[60vw] max-w-4xl ${props.className} `}

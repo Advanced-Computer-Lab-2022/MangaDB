@@ -1,5 +1,4 @@
-import React, { Fragment, useState } from "react";
-import Review from "../Profile/Reviews/Review";
+import {  useState } from "react";
 import SecondaryButton from "../UI/SecondaryButton";
 import ReportItem from "./ReportItem";
 import ReportTypeSelector from "./ReportTypeSelector";
@@ -53,12 +52,23 @@ const Reports = (props) => {
     const fullDate = month + " " + day + ", " + year;
     return (
       <ReportItem
+        id={report._id}
         type={report.type}
         status={report.status}
         index={index}
         date={fullDate}
         description={report.description}
-        isReport={true}
+        followUp={report.followUpComment}
+        followUpDescriptionChangeHandler={
+          props.followUpDescriptionChangeHandler
+        }
+        followUpSubmitHandler={props.followUpSubmitHandler}
+        followUpDescription={props.followUpDescription}
+        followUpId={props.followUpId}
+        followUpProblem={props.followUpProblem}
+        showFollowUpModal={props.showFollowUpModal}
+        openFollowUpModal={props.openFollowUpModal}
+        closeFollowUpModal={props.closeFollowUpModal}
       />
     );
   });

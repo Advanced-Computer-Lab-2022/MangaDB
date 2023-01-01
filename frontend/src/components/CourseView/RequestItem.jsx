@@ -7,18 +7,18 @@ const RequestItem = (props) => {
     <div className="m-4">
       <div className="md:flex hidden justify-between">
         <div className="font-medium text-lg">Requested on: {props.date}</div>
-        {props.status === "accepted" && (
+        {props.status === "Accepted" && (
           <div class="inline-flex items-center py-1 px-2 text-xs font-medium text-center border-2 border-green-400 text-green-500 bg-green-100 rounded-full">
             {props.status}
           </div>
         )}
-        {(props.status === "unseen" ||
-          props.status === "rejected" )&& (
+        {(props.status === "Unseen" ||
+          props.status === "Rejected" )&& (
             <div class="inline-flex items-center py-1 px-2 text-xs font-medium text-center border-2 border-red-400 text-red-500 bg-red-100 rounded-full">
               {props.status}
             </div>
           )}
-          {props.status === "pending"  && (
+          {props.status === "Pending"  && (
             <div class="inline-flex items-center py-1 px-2 text-xs font-medium text-center border-2 border-red-400 text-red-500 bg-red-100 rounded-full">
               {props.status}
             </div>
@@ -26,13 +26,13 @@ const RequestItem = (props) => {
       </div>
       <div className="md:hidden space-y-2">
         <div className="font-medium text-lg">Requested on: {props.date}</div>
-        {props.status === "accepted" && (
+        {props.status === "Accepted" && (
           <div class="inline-flex items-center py-1 px-2 text-xs font-medium text-center border-2 border-green-400 text-green-500 bg-green-100 rounded-full">
             {props.status}
           </div>
         )}
-        {props.status === "unseen" ||
-          (props.status === "rejected" && (
+        {(props.status === "Unseen" ||
+          props.status === "Rejected") && ((
             <div class="inline-flex items-center py-1 px-2 text-xs font-medium text-center border-2 border-red-400 text-red-500 bg-red-100 rounded-full">
               {props.status}
             </div>

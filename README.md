@@ -137,6 +137,9 @@
 
 - This the Trainee's profile where he can edit his information, change his password and finally view his previous reports and their status.
 
+<img src = "./Screenshots/AdminReports.jpg">
+
+   - This is the part where the admin can view all the reports made on the platform and resolve or hand them to the development team (pend the problems).
 
 <img src = "./Screenshots/Faqs.jpg">
 
@@ -179,9 +182,9 @@
 
 - This is the part wher the instructor can view his performance and the money the company (revamp) owes him (the percentage of sales).
 
-#### -Admin
+#### - Admin
 
-<img src = "./Screenshots/AdminAddUser.jpg">
+<img src = "./Screenshots/adminadduser.jpg">
 
 - This is the part where the admin can add users to the platform based on agreements done.
   
@@ -193,9 +196,6 @@
 
 - This is the part where the admin can view all the requests made by users, he can also accept/reject them.
 
-<img src = "./Screenshots/AdminReports.jpg">
-
-   - This is the part where the admin can view all the reports made on the platform and resolve or hand them to the development team (pend the problems).
 
 
 ## Database Models
@@ -206,9 +206,9 @@
 
 - The Third model is the Problems Model which holds all the information regarding the problems like the description  , date of submittion and the user who submitted that problem and finally the follow up if done by the user.
 
--The Fourth model is the Requests Model which holds all the information regarding the request like ths user who submitted that report , the date and the type of that request.
+- The Fourth model is the Requests Model which holds all the information regarding the request like ths user who submitted that report , the date and the type of that request.
 
--The Fifth model is the invoice model which holds all the transaction information like the date and the user who issued that invoice and the the course related to that invoice.
+- The Fifth model is the invoice model which holds all the transaction information like the date and the user who issued that invoice and the the course related to that invoice.
 
 ## Installation and Usage
 

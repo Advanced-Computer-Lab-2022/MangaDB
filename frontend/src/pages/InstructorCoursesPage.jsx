@@ -88,7 +88,7 @@ const IntructorCoursePage = (props) => {
   };
 
   const selectRowHandler = (isSelected, courseId) => {
-    console.log(courseId)
+    console.log(courseId);
     if (isSelected) {
       setSelectedNow([...selectedNow, courseId]);
     } else {
@@ -232,20 +232,26 @@ const IntructorCoursePage = (props) => {
           },
         })
         .then((res) => {
-          console.log(res.data)
-          var courses = [];
+          let coursesAdmin = [];
           for (var i = 0; i < searchState.displayedCourses.length; i++) {
-            if (searchState.displayedCourses[i].course._id !== res.data._id) {
-              courses.push(searchState.displayedCourses[i]);
-            } else {
-              var newCourse = JSON.parse(JSON.stringify(res.data));
-              newCourse.discountedPrice =
-                (1 - +res.data.discount) * +res.data.coursePrice;
-              var temp = { course: newCourse, mine: true };
-              courses.push(temp);
+            for (var j = 0; j < res.data.Ids.length; j++) {
+              if (
+                searchState.displayedCourses[i].course._id != res.data.Ids[j]
+              ) {
+                coursesAdmin.push(searchState.displayedCourses[i]);
+              } else {
+                var newCourse = JSON.parse(
+                  JSON.stringify(searchState.displayedCourses[i])
+                );
+                newCourse.course.discountedPrice =
+                  (1 - +res.data.discount) * +newCourse.course.coursePrice;
+                newCourse.course.discountEndDate = res.data.endDate;
+                newCourse.course.discount = res.data.discount;
+                coursesAdmin.push(newCourse);
+              }
             }
           }
-          dispatchSearch({ type: "COURSES", value: courses });
+          dispatchSearch({ type: "COURSES", value: coursesAdmin });
         })
         .catch((err) => {
           if (
@@ -273,14 +279,19 @@ const IntructorCoursePage = (props) => {
         .then((res) => {
           var courses = [];
           for (var i = 0; i < searchState.displayedCourses.length; i++) {
-            if (searchState.displayedCourses[i].course._id !== res.data._id) {
+            if (
+              searchState.displayedCourses[i].course._id !== res.data.Ids[0]
+            ) {
               courses.push(searchState.displayedCourses[i]);
             } else {
-              var newCourse = JSON.parse(JSON.stringify(res.data));
-              newCourse.discountedPrice =
-                (1 - +res.data.discount) * +res.data.coursePrice;
-              var temp = { course: newCourse, mine: true };
-              courses.push(temp);
+              var newCourse = JSON.parse(
+                JSON.stringify(searchState.displayedCourses[i])
+              );
+              newCourse.course.discountedPrice =
+                (1 - +res.data.discount) * +newCourse.course.coursePrice;
+              newCourse.course.discountEndDate = res.data.endDate;
+              newCourse.course.discount = res.data.discount;
+              courses.push(newCourse);
             }
           }
           dispatchSearch({ type: "COURSES", value: courses });

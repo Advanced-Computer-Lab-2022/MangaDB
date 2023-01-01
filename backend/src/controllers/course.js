@@ -25,7 +25,7 @@ exports.getAllCourses = async (req, res, next) => {
   let maxPrice = req.query.maxPrice || Number.MAX_VALUE;
   const rating = req.query.rating || 0;
   const subjects = req.query.subject;
-  const iId = req.user.id;
+  const iId = req.user? req.user.id:undefined;
   let query = {};
   if (subjects) {
     query = { subject: { $in: subjects } };
@@ -124,7 +124,7 @@ exports.getAllCourses = async (req, res, next) => {
 
 exports.getCourse = async (req, res) => {
   const courseId = req.params.id;
-  const userId = req.user.id;
+  const userId = req.user?req.user.id:undefined;
   let foundCourse = await course.findById(courseId).catch((error) => {
     res.status(500).json({
       message: "Fetching course failed!",

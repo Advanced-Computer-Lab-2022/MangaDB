@@ -209,9 +209,14 @@ const InstructorWallet = () => {
       });
   }, []);
 
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      <NavBarSearch currentTab="Wallet" />
+      <NavBarSearch onChange={onChangeHandler} currentTab="Wallet" />
       <div className="mt-24">
         <div className="flex-col items-center justify-center mt-8">
           <div className="w-[100%] flex items-center justify-center ">

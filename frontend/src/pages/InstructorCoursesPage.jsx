@@ -412,9 +412,14 @@ const IntructorCoursePage = (props) => {
     );
   });
 
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      {!props.admin && <NavBar currentTab="My Courses" />}
+      {!props.admin && <NavBar onChange={onChangeHandler} currentTab="My Courses" />}
       {showFilters && (
         <Filters
           prevState={searchState.filters}

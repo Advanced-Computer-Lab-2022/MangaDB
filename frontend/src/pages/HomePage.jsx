@@ -20,7 +20,7 @@ const HomePage = () => {
   const [discountedCourses, setDiscountedCourses] = useState([]);
   const [currencySymbol, setCurrencySymbol] = useState("");
   const [countryCode, setCountryCode] = useState(
-    localStorage.getItem("countryCode") === null
+    !localStorage.getItem("countryCode")
       ? "US"
       : localStorage.getItem("countryCode")
   );
@@ -49,7 +49,10 @@ const HomePage = () => {
 
   const onChangeHandler = (e) => {
     setCountryCode(e);
+    localStorage.setItem("countryCode", e);
   };
+
+  console.log(countryCode);
 
   const courses = displayedCourses.map((course) => {
     return (
@@ -88,6 +91,7 @@ const HomePage = () => {
       ></SaleCourseCard>
     );
   });
+
   return (
     <Animate to="1" from="0" attributeName="opacity">
       <div data-carousel> </div>

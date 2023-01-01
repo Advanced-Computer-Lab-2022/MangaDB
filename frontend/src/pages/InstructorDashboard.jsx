@@ -297,9 +297,15 @@ const InstructorDashboard = () => {
   } else {
     name = "Instructor ";
   }
+
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      <NavBar currentTab="Dashboard" />
+      <NavBar onChange={onChangeHandler} currentTab="Dashboard" />
       {!loaded ? (
         <div className=" w-full h-full mt-12">
           <div className="flex w-full h-full  justify-center items-center ">

@@ -629,9 +629,15 @@ const CourseViewPage = () => {
       );
     }
   }
+
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      <NavBarSearch currentTab="My Courses" />
+      <NavBarSearch onChange={onChangeHandler} currentTab="My Courses" />
       {!loaded ? (
         <div className=" w-full h-full mt-12">
           <div className="flex w-full h-full  justify-center items-center ">

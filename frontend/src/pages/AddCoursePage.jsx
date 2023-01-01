@@ -69,9 +69,14 @@ const AddCoursePage = (props) => {
     enqueueSnackbar("Course has been Added Successfully", { variant });
   };
 
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      <NavBarSearch currentTab="Add Course"></NavBarSearch>
+      <NavBarSearch onChange={onChangeHandler} currentTab="Add Course"></NavBarSearch>
       <div className=" mt-[4.5rem]">
         <StepsBar steps={steps}></StepsBar>
       </div>

@@ -65,9 +65,15 @@ const TraineeProfilePage = () => {
   } else {
     displayedStep = <Reqests changeStageHandler={changeStageHandler}></Reqests>;
   }
+
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      <NavBar currentTab="Profile" />
+      <NavBar onChange={onChangeHandler} currentTab="Profile" />
       <div>{displayedStep}</div>
     </Fragment>
   );

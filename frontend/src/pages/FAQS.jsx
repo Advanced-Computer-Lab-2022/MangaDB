@@ -44,9 +44,15 @@ const FAQS = () => {
       ? "US"
       : localStorage.getItem("countryCode")
   );
+
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      <NavBarSearch currentTab="FAQs" />
+      <NavBarSearch onChange={onChangeHandler} currentTab="FAQs" />
       <div className="bg-white">
         <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
           <div className="max-w-2xl lg:mx-auto lg:text-center">

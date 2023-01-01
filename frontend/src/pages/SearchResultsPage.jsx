@@ -214,10 +214,16 @@ const SearchResultsPage = () => {
       );
     });
   }
+
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <SnackbarProvider maxSnack={3}>
       <Fragment>
-        <NavBar currentTab="Home" />
+        <NavBar onChange={onChangeHandler} currentTab="Home" />
         {!loaded ? (
           <div className=" w-full h-full mt-12">
             <div className="flex w-full h-full  justify-center items-center ">

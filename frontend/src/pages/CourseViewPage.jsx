@@ -564,7 +564,7 @@ const CourseViewPage = () => {
         <Certificate ref={downloadRef}></Certificate>
       </div>
       {/* <ProgressManager progress={progress} totalSources={totalSources} /> */}
-      <div className="py-4 flex justify-center font-medium text-xl bg-gray-50 z-20">
+      <div className="py-4 flex justify-center font-medium text-xl bg-gray-50 z-20 mt-[4.5rem]">
         {receivedData.courseTitle}: {currentSource.description}
       </div>
       <div className="md:flex z-50">

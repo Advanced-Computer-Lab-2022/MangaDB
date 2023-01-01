@@ -104,6 +104,7 @@ function App() {
         ></Route>
         <Route path="/resetpassword" element={<ResetPassword></ResetPassword>}></Route>
         <Route path="successwallet" element={<SuccessfulPaymentWallet></SuccessfulPaymentWallet>}></Route>
+        <Route path="*" element= {<PageNotFound></PageNotFound>}></Route>
       </Routes>
       <Footer></Footer>
     </Fragment>

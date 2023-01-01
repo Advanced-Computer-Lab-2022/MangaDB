@@ -4,6 +4,7 @@ import PasswordAndPrivacy from "../components/TraineeProfile/PasswordAndPrivacy"
 import Reqests from "../components/TraineeProfile/Requests";
 import axios from "axios";
 import NavBar from "../components/UI/NavBar/NavBar";
+import { useNavigate } from "react-router-dom";
 //stub for the userPersonal Info Received
 const user = {
   email: "test@example.com",
@@ -70,12 +71,16 @@ const TraineeProfilePage = () => {
   const [receivedUserInfo, setReceivedUserInfo] = useState(user);
   const [selectedStage, setSelectedStage] = useState(1);
   const [render, setRender] = useState(false);
-
+  const navigate = useNavigate();
   const managerRef = useRef();
 
   //gather the userInfo
 
   useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role !== "TRAINEE" && role !=="CORPORATE") {
+      navigate("/403");
+    }
     window.scrollTo(0, 0, "smooth");
     setRender(true);
     axios

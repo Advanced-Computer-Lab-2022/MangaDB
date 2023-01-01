@@ -16,8 +16,9 @@ import {
 } from "@heroicons/react/outline";
 import Rating from "@mui/material/Rating";
 import ReactLoading from "react-loading";
-
+import { useNavigate } from "react-router-dom";
 const InstructorPage = () => {
+  const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const handleClickVariant = (variant) => {
     if (variant === "error") {
@@ -43,6 +44,10 @@ const InstructorPage = () => {
   //const [reviewedBefore,setReviewedBefore] =useState(false)
   //fetch the data at the start of the code ..
   useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role === "INSTRUCTOR" || role ==="ADMIN") {
+      navigate("/403");
+    }
     window.scrollTo(0, 0, "smooth");
     const instructorId = location.state.instructorId;
     axios

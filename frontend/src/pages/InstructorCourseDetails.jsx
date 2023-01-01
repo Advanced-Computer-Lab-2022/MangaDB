@@ -8,8 +8,9 @@ import { useLocation } from "react-router-dom";
 import InstructorVideo from "../components/Video/InstructorVideo";
 import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 import ReactLoading from "react-loading";
-
+import { useNavigate } from "react-router-dom";
 const InstructorCourseDetailsPage = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const [courseDetails, setCourseDetails] = useState({});
   const [loaded, setLoaded] = useState(false);
@@ -17,6 +18,10 @@ const InstructorCourseDetailsPage = () => {
   const [courseReviews, setCourseReviews] = useState([]);
   const [reviewsCount, setReviewsCount] = useState([]);
   useEffect(() => {
+    const role = localStorage.getItem("role");
+    if(role !== "INSTRUCTOR"){
+      navigate('/403')
+    }
     window.scrollTo(0, 0, "smooth");
     const courseId = location.state.courseId;
     axios

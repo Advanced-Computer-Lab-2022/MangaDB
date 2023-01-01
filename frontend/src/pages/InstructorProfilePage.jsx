@@ -4,7 +4,7 @@ import PasswordAndPrivacy from "../components/Profile/PasswordAndPrivacy";
 import Billing from "../components/Profile/Billing";
 import Reviews from "../components/Profile/Reviews/Reviews";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 import NavBar from "../components/UI/NavBar/NavBar";
 //stub for the userPersonal Info Received
 const user = {
@@ -72,13 +72,17 @@ const InstructorProfilePage = () => {
   const [receivedUserInfo, setReceivedUserInfo] = useState(user);
   const [selectedStage, setSelectedStage] = useState(1);
   const [render, setRender] = useState(false);
-
+  const navigate = useNavigate();
   const managerRef = useRef();
   //gather the userInfo
 
   //change it to auth later
 
   useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role !== "INSTRUCTOR") {
+      navigate("/403");
+    }
     window.scrollTo(0, 0, "smooth");
     setRender(true);
     //to be changed

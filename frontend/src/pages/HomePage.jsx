@@ -14,8 +14,9 @@ import Testomonial from "../components/HomeComponents/Testomonial";
 import Incentives from "../components/HomeComponents/Incentives";
 import SaleCourseCard from "../components/Course/SaleCourseCard";
 import { useLocation } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 const HomePage = () => {
+  const navigate = useNavigate();
   const [displayedCourses, setDisplayedCourses] = useState([]);
   const [discountedCourses, setDiscountedCourses] = useState([]);
   const [currencySymbol, setCurrencySymbol] = useState("");
@@ -29,6 +30,10 @@ const HomePage = () => {
     },
   };
   useEffect(() => {
+    const role = localStorage.getItem("role");
+    if(role === "INSTRUCTOR" || role === "ADMIN"){
+      navigate('/403')
+    }
     window.scrollTo(0, 0, "smooth");
     axios
       .get("http://localhost:3000/course/mostViewed/?CC=".concat(countryCode))
@@ -38,7 +43,6 @@ const HomePage = () => {
       });
 
     axios.get("http://localhost:3000/course/discountedCourses/").then((res) => {
-      console.log(res.data);
       setDiscountedCourses(res.data);
     });
   }, [countryCode]);

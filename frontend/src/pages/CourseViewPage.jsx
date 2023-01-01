@@ -10,6 +10,7 @@ import Certificate from "../components/Certificate/Certificate";
 import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 
 const CourseViewPage = () => {
+  
   const location = useLocation();
   const [receivedData, setReceivedData] = useState({});
   const [currentSource, setCurrentSource] = useState("");
@@ -74,7 +75,6 @@ const CourseViewPage = () => {
         },
       })
       .then((res) => {
-        console.log(res);
       });
   };
 
@@ -355,7 +355,6 @@ const CourseViewPage = () => {
           },
         })
         .then((res) => {
-          console.log(res.data.percentage)
           setProgress(res.data.percentage);
         });
       });

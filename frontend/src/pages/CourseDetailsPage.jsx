@@ -100,7 +100,7 @@ const CourseDetailsPage = () => {
         </div>
         <AddToCartCard
           courseOverview={courseDetails.courseOverview}
-          id={courseDetails._id}
+          id={location.state.courseId}
           userRegister={userRegistered}
           courseImage={courseDetails.courseImage}
           requested={requested}

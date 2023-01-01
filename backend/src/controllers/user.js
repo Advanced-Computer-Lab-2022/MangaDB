@@ -875,14 +875,20 @@ exports.setDiscount= async (req, res) => {
     res.status(400).json({message:"cannot set more than discount for same course"});
     return;
   }
+  let updatedCourses=[];
   for(let i=0;i<courses.length;i++){
     let currentCourse=courses[i];
    currentCourse.discount=req.body.discount;
    currentCourse.discountStartDate=req.body.discountStartDate;
    currentCourse.discountEndDate=req.body.discountEndDate;
    await currentCourse.save();
+   updatedCourses.push(currentCourse._id);
   }
-  res.status(200).json({message:"All Discounts Set Successfully"});
+  res.status(200).json({message:"All Discounts Set Successfully"
+,Ids:updatedCourses,
+discount:req.body.discount,
+endDate:req.body.discountEndDate
+});
   };
 
   exports.getWallet=async (req, res) => {

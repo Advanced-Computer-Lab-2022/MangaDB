@@ -259,7 +259,9 @@ exports.setDiscount= async (req, res) => {
     currentCourse.discountStartDate=discountStartDate;
     currentCourse.discountEndDate=discountEndDate;
     await currentCourse.save();
-    res.status(200).json(currentCourse);
+    res.status(200).json({message:"Discount set successfully"
+,discount:currentCourse.discount,endDate:currentCourse.discountEndDate
+,Ids:[currentCourse._id]});
     };
 
 

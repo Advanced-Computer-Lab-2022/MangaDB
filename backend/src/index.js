@@ -11,8 +11,11 @@ const courseController = require("./controllers/course");
 
 app.use(cors());
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended : true}));
+app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
+app.use(bodyParser.json({ limit: '5mb' }));
 app.use(express.json());
+
+
 
 app.use('/instructor', require('./routes/instructor'));
 app.use('/course', require('./routes/course'));

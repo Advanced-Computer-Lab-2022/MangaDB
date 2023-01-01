@@ -11,7 +11,6 @@ import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 import { useSnackbar } from "notistack";
 import ReactLoading from "react-loading";
 
-
 const CourseViewPage = () => {
   const { enqueueSnackbar } = useSnackbar();
   const handleClickVariant = (variant) => {
@@ -24,13 +23,12 @@ const CourseViewPage = () => {
       enqueueSnackbar("Your review has been submitted successfully ", {
         variant,
       });
-    }else if(variant === "success2"){
+    } else if (variant === "success2") {
       variant = "success";
       enqueueSnackbar("Your follow up has been submitted successfully ", {
         variant,
       });
-    }
-     else {
+    } else {
       enqueueSnackbar("You have already reviewd this course before ", {
         variant,
       });
@@ -40,6 +38,7 @@ const CourseViewPage = () => {
   const location = useLocation();
   const [loaded, setLoaded] = useState(false);
   const [receivedData, setReceivedData] = useState({});
+  console.log(receivedData);
   const [currentSource, setCurrentSource] = useState("");
   const [studentSolutions, setStudentSolutions] = useState([]);
   const [showNextLessonAlert, setShowNextLessonAlert] = useState(false);
@@ -75,7 +74,7 @@ const CourseViewPage = () => {
   const [followUpProblem, setFollowUpProblem] = useState("");
   const [followUpDescription, setFollowUpDescription] = useState("");
   const [render, setRender] = useState(false);
-
+  const [userProfile, setUserProfile] = useState({});
   const openFollowUpModal = (id, problem) => {
     setShowFollowUpModal(true);
     setFollowUpId(id);
@@ -103,7 +102,7 @@ const CourseViewPage = () => {
       })
       .then((res) => {
         handleClickVariant("success2");
-        setRender(prev => !prev);
+        setRender((prev) => !prev);
       });
     closeFollowUpModal();
   };
@@ -260,6 +259,16 @@ const CourseViewPage = () => {
         setTotalSources(res.data.userData.totalSources);
         setLoaded(true);
       });
+
+    axios
+      .get(`http://localhost:3000/user/myProfile`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        setUserProfile(`${res.data.firstName} ${res.data.lastName}` )
+      });
   }, [location.state]);
   const onSourceChangeHandler = (source) => {
     if (source.sourceType === "Quiz" && currentSource.sourceType === "Quiz") {
@@ -400,6 +409,12 @@ const CourseViewPage = () => {
           })
           .then((res) => {
             setProgress(res.data.percentage);
+            if (+res.data.percentage === +totalSources) {
+              if (!res.data.certificate) {
+                console.log(res.data.certificate);
+                downloadRef.current.sendEmail();
+              }
+            }
           });
       });
   };
@@ -631,7 +646,13 @@ const CourseViewPage = () => {
       ) : (
         <Fragment>
           <div className=" opacity-0 h-0 overflow-hidden w-full relative ">
-            <Certificate ref={downloadRef}></Certificate>
+            <Certificate
+              _id={receivedData._id}
+              ref={downloadRef}
+              instructorName={receivedData.instructorName}
+              courseTitle={receivedData.courseTitle}
+              studentName =  {userProfile}
+            ></Certificate>
           </div>
 
           <div className="py-4 flex justify-center font-medium text-xl bg-gray-50 z-20 mt-[4.5rem]">

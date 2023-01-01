@@ -6,7 +6,6 @@ import {
 } from "@material-tailwind/react";
 import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
-import SubtitleBody from "../CourseDetailsComp/SubtitleBody";
 import SubtitleBodyCourseView from "./SubtitleBodyCourseView";
 
 const SubtitleAccordionCourseView = (props) => {
@@ -24,7 +23,7 @@ const SubtitleAccordionCourseView = (props) => {
     <KeyboardArrowDownRoundedIcon />
   );
   var description;
-  var sourceIndex = 1;
+ 
   var sourceCount = 0;
   const sources = props.sources.map((source, index) => {
     description = `${index + 1 }. `.concat(

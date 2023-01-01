@@ -2,7 +2,10 @@ import { Tooltip } from "@material-tailwind/react";
 import { useState } from "react";
 import axios from "axios";
 import PrimaryButton from "../UI/PrimaryButton";
+import { useNavigate } from "react-router-dom";
+
 const TraineeWallet = (props) => {
+  const navigate = useNavigate();
   const [hovered, setHovered] = useState(false);
   const [balance, setBalance] = useState(0);
   const [symbol, setSymbol] = useState("$");
@@ -23,6 +26,10 @@ const TraineeWallet = (props) => {
     setHovered(false);
   };
 
+  const onClickHandler = () => {
+    navigate('/myWallet');
+  };
+
   const content = (
     <p>
       Your Current Balance is
@@ -33,11 +40,11 @@ const TraineeWallet = (props) => {
   );
   return (
     <li
-      onMouseOver={hoverHandler}
-      onMouseLeave={leaveHandler}
+      onMouseOver={localStorage.getItem("role") === "TRAINEE" ? hoverHandler : null}
+      onMouseLeave={localStorage.getItem("role") === "TRAINEE" ? leaveHandler : null}
       className="w-fit"
     >
-      <PrimaryButton
+      <PrimaryButton onClick={localStorage.getItem("role") === "INSTRUCTOR" ? onClickHandler : null}
         className={`flex space-x-4 ${
           props.active
             ? "underline decoration-primaryBlue font-medium decoration-4 underline-offset-8"
@@ -67,7 +74,7 @@ const TraineeWallet = (props) => {
             </svg>
           </Tooltip>
           {props.active && (
-            <div className="md:w-[30px] md:h-1 md:bg-primaryBlue md:absolute md:top-6 md:-left-1"></div>
+            <div className="md:w-[30px] md:h-1 md:bg-primaryBlue md:absolute md:top-8 md:-left-0"></div>
           )}
         </span>
         <span className="md:hidden mt-1">Wallet</span>

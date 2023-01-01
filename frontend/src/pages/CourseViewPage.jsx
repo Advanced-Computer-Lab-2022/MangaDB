@@ -64,18 +64,18 @@ const CourseViewPage = () => {
   };
 
   const followUpSubmitHandler = () => {
-    closeFollowUpModal();
     const data = {
       followUpComment: followUpDescription,
     };
     axios
-      .post("http://localhost:3000/problem/followUp/" + followUpId, data, {
+      .patch("http://localhost:3000/problem/followUp/" + followUpId, data, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
       .then((res) => {
       });
+      closeFollowUpModal();
   };
 
   useEffect(() => {

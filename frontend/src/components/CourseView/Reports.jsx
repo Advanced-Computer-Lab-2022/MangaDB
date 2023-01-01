@@ -52,6 +52,7 @@ const Reports = (props) => {
     const fullDate = month + " " + day + ", " + year;
     return (
       <ReportItem
+        id={report._id}
         type={report.type}
         status={report.status}
         index={index}

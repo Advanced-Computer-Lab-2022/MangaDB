@@ -17,7 +17,6 @@ export default function ReportsRequestsManager(props) {
   const [data, setData] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
   const handleClickVariant = (variant) => {
-    //console.log("here");
     // variant could be success, error, warning, info, or default
     if (variant === "success") {
       if (variant === "success") {
@@ -181,10 +180,10 @@ export default function ReportsRequestsManager(props) {
           },
         })
         .then((res) => {
+          console.log(res.data);
           setData(res.data);
         })
         .catch((err) => {
-          console.log(err);
         });
     } else {
       axios
@@ -197,7 +196,6 @@ export default function ReportsRequestsManager(props) {
           setData(res.data);
         })
         .catch((err) => {
-          console.log(err);
         });
     }
   }
@@ -221,7 +219,7 @@ export default function ReportsRequestsManager(props) {
           handleClickVariant("success");
         });
     } else {
-      if (problemStatus !== "accepted") {
+      if (problemStatus !== "Accepted") {
         axios
           .patch(`http://localhost:3000/request/reject/${problemId}`,{}, {
             headers: {
@@ -246,8 +244,7 @@ export default function ReportsRequestsManager(props) {
     }
   }
   function thirdAction(problemId, problemType, problemStatus) {
-    console.log(problemStatus);
-    if (problemStatus !== "accepted") {
+    if (problemStatus !== "Accepted") {
       axios
         .patch(`http://localhost:3000/request/pend/${problemId}`,{}, {
           headers: {
@@ -358,7 +355,7 @@ export default function ReportsRequestsManager(props) {
           </Tabs>
         </div>
       )}
-      <div className="flex justify-around flex-wrap pt-5">
+      <div className="flex justify-around flex-wrap pt-5 ">
         {data.map((problem) =>
           (props.type === "problem" &&
             (problem.type === problemTypeFilter ||
@@ -372,9 +369,9 @@ export default function ReportsRequestsManager(props) {
               requestStatusFilter === "all")) ? (
             <ReportsRequestsCard
               alreadyHandled={
-                problem.status === "accepted" ||
-                problem.status === "rejected" ||
-                problem.status === "resolved"
+                problem.status === "Accepted" ||
+                problem.status === "Rejected" ||
+                problem.status === "Resolved"
               }
               userName={problem.userName}
               courseName={problem.courseName}
@@ -383,6 +380,7 @@ export default function ReportsRequestsManager(props) {
               type={problem.type}
               status={problem.status}
               description={problem.description}
+              followUpComment={problem.followUpComment}
               firstActionClickHandler={firstAction.bind(
                 null,
                 problem._id,

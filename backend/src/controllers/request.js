@@ -150,7 +150,7 @@ exports.requestRefund = async (req, res) => {
                     message: "Request not found!",
                 });
                 }
-            foundRequest.status="rejected";
+            foundRequest.status="Rejected";
             await foundRequest.save();
             res.status(200).json({
                 message: "Request rejected successfully!",
@@ -173,7 +173,7 @@ exports.requestRefund = async (req, res) => {
                     message: "Request not found!",
                 });
                 }
-                if(foundRequest.status=="accepted"){
+                if(foundRequest.status=="Accepted"){
                   return res.status(400).json({message: "Request already accepted!"});
               }
             const foundUser = await user.findById(foundRequest.user);
@@ -203,7 +203,7 @@ exports.requestRefund = async (req, res) => {
             foundUser.wallet+=refundAmount;
             
             await foundUser.save();
-            foundRequest.status="accepted";
+            foundRequest.status="Accepted";
             await foundRequest.save();
             res.status(200).json({
                 message: "Refund accepted successfully!",
@@ -228,7 +228,7 @@ exports.requestRefund = async (req, res) => {
                     message: "Request not found!",
                 });
                 }
-            if(foundRequest.status=="accepted"){
+            if(foundRequest.status=="Accepted"){
                 return res.status(400).json({message: "Request already accepted!"});
             }
             const foundUser = await user.findById(foundRequest.user);
@@ -244,7 +244,7 @@ exports.requestRefund = async (req, res) => {
         
             await foundUser.save();
          
-            foundRequest.status="accepted";
+            foundRequest.status="Accepted";
             await foundRequest.save();
             res.status(200).json({
                 message: "Access granted successfully!",
@@ -300,7 +300,7 @@ exports.requestRefund = async (req, res) => {
       .findById
       (requestId);
       if(foundRequest){
-      foundRequest.status="pending";
+      foundRequest.status="Pending";
       await foundRequest.save();
       res.status(200).json({
         message: "Request pended successfully!",

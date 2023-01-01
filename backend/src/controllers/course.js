@@ -781,6 +781,8 @@ exports.updateDiscountedPrice = async () => {
       await course.save();
     }
     if (endDate && endDate <= currentDate) {
+      course.discountStartDate = null;
+      course.discountEndDate = null;
       course.discount = 0;
       course.discountedPrice = course.coursePrice;
       await course.save();

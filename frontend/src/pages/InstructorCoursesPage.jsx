@@ -39,19 +39,25 @@ const theme = createTheme({
 const IntructorCoursePage = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const handleClickVariant = (variant) => {
-    enqueueSnackbar(
-      "One or more of the selected courses already have promotion  ",
-      {
+    if (variant === "error") {
+      enqueueSnackbar(
+        "One or more of the selected courses already have promotion  ",
+        {
+          variant,
+        }
+      );
+    } else if (variant === "success") {
+      enqueueSnackbar("Your report has been submitted successfully  ", {
         variant,
-      }
-    );
+      });
+    }
   };
 
   const location = useLocation();
   const navigate = useNavigate();
   const defaultState = {
     displayedCourses: [],
-    search: "",
+    search: location.state ? location.state : "",
     filters: {
       price: null,
       subjects: [],
@@ -77,6 +83,7 @@ const IntructorCoursePage = (props) => {
   };
 
   const selectRowHandler = (isSelected, courseId) => {
+    console.log(courseId);
     if (isSelected) {
       setSelectedNow([...selectedNow, courseId]);
     } else {
@@ -169,6 +176,7 @@ const IntructorCoursePage = (props) => {
         },
       })
       .then((res) => {
+        handleClickVariant("success");
         console.log("report submitted successfully");
       });
   };
@@ -219,19 +227,26 @@ const IntructorCoursePage = (props) => {
           },
         })
         .then((res) => {
-          var courses = [];
+          let coursesAdmin = [];
           for (var i = 0; i < searchState.displayedCourses.length; i++) {
-            if (searchState.displayedCourses[i].course._id !== res.data._id) {
-              courses.push(searchState.displayedCourses[i]);
+ 
+            if (
+              res.data.Ids.includes(searchState.displayedCourses[i].course._id)
+            ) {
+              var newCourse = JSON.parse(
+                JSON.stringify(searchState.displayedCourses[i])
+              );
+              newCourse.course.discountedPrice =
+                (1 - +res.data.discount) * +newCourse.course.coursePrice;
+              newCourse.course.discountEndDate = res.data.endDate;
+              newCourse.course.discount = res.data.discount;
+              coursesAdmin.push(newCourse);
             } else {
-              var newCourse = JSON.parse(JSON.stringify(res.data));
-              newCourse.discountedPrice =
-                (1 - +res.data.discount) * +res.data.coursePrice;
-              var temp = { course: newCourse, mine: true };
-              courses.push(temp);
+              coursesAdmin.push(searchState.displayedCourses[i]);
             }
           }
-          dispatchSearch({ type: "COURSES", value: courses });
+
+          dispatchSearch({ type: "COURSES", value: coursesAdmin });
         })
         .catch((err) => {
           if (
@@ -259,14 +274,19 @@ const IntructorCoursePage = (props) => {
         .then((res) => {
           var courses = [];
           for (var i = 0; i < searchState.displayedCourses.length; i++) {
-            if (searchState.displayedCourses[i].course._id !== res.data._id) {
+            if (
+              searchState.displayedCourses[i].course._id !== res.data.Ids[0]
+            ) {
               courses.push(searchState.displayedCourses[i]);
             } else {
-              var newCourse = JSON.parse(JSON.stringify(res.data));
-              newCourse.discountedPrice =
-                (1 - +res.data.discount) * +res.data.coursePrice;
-              var temp = { course: newCourse, mine: true };
-              courses.push(temp);
+              var newCourse = JSON.parse(
+                JSON.stringify(searchState.displayedCourses[i])
+              );
+              newCourse.course.discountedPrice =
+                (1 - +res.data.discount) * +newCourse.course.coursePrice;
+              newCourse.course.discountEndDate = res.data.endDate;
+              newCourse.course.discount = res.data.discount;
+              courses.push(newCourse);
             }
           }
           dispatchSearch({ type: "COURSES", value: courses });

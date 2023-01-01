@@ -370,9 +370,9 @@ export default function SignUp() {
                 />
                 <p class="text-center ">
                   Agree to our{" "}
-                  <button
-                    onClick={() => {}}
-                    class="text-primaryBlue hover:opacity-70 ease-in-out duration-300 font-medium inline-flex space-x-1 items-center"
+                  <div
+                    
+                    class="text-primaryBlue hover:opacity-70 ease-in-out duration-300 font-medium inline-flex space-x-1 items-center cursor-pointer"
                   >
                     <span
                       onMouseEnter={handleShowPolicy}
@@ -380,7 +380,7 @@ export default function SignUp() {
                     >
                       terms and conditions{" "}
                     </span>
-                  </button>
+                  </div>
                   {" *"}
                 </p>{" "}
                 {showPolicy && 

@@ -8,11 +8,37 @@ import ContentCourseView from "../components/CourseView/ContentCourseView";
 import ExamToolManager from "../components/ExamToolBar/ExamToolManager";
 import Certificate from "../components/Certificate/Certificate";
 import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
+import { useSnackbar } from "notistack";
+import ReactLoading from "react-loading";
 
 const CourseViewPage = () => {
-  
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant) => {
+    if (variant === "success") {
+      enqueueSnackbar("Your report has been submitted successfully ", {
+        variant,
+      });
+    } else if (variant === "success1") {
+      variant = "success";
+      enqueueSnackbar("Your review has been submitted successfully ", {
+        variant,
+      });
+    } else if (variant === "success2") {
+      variant = "success";
+      enqueueSnackbar("Your follow up has been submitted successfully ", {
+        variant,
+      });
+    } else {
+      enqueueSnackbar("You have already reviewd this course before ", {
+        variant,
+      });
+    }
+  };
+
   const location = useLocation();
+  const [loaded, setLoaded] = useState(false);
   const [receivedData, setReceivedData] = useState({});
+  console.log(receivedData);
   const [currentSource, setCurrentSource] = useState("");
   const [studentSolutions, setStudentSolutions] = useState([]);
   const [showNextLessonAlert, setShowNextLessonAlert] = useState(false);
@@ -47,7 +73,8 @@ const CourseViewPage = () => {
   const [followUpId, setFollowUpId] = useState(-1);
   const [followUpProblem, setFollowUpProblem] = useState("");
   const [followUpDescription, setFollowUpDescription] = useState("");
-
+  const [render, setRender] = useState(false);
+  const [userProfile, setUserProfile] = useState({});
   const openFollowUpModal = (id, problem) => {
     setShowFollowUpModal(true);
     setFollowUpId(id);
@@ -74,10 +101,20 @@ const CourseViewPage = () => {
         },
       })
       .then((res) => {
+        handleClickVariant("success2");
+        setRender((prev) => !prev);
       });
-      closeFollowUpModal();
+    closeFollowUpModal();
   };
 
+  const getReviewsAndRatings = () => {
+    const courseId = location.state;
+
+    axios.get(`http://localhost:3000/course/rate/${courseId}`).then((res) => {
+      setReviews(res.data.review);
+      setReviewsCount(res.data.count);
+    });
+  };
   useEffect(() => {
     window.scrollTo(0, 0, "smooth");
     const courseId = location.state;
@@ -201,16 +238,12 @@ const CourseViewPage = () => {
       .then((res) => {
         setReports(res.data);
       });
-    axios.get(`http://localhost:3000/course/rate/${courseId}`).then((res) => {
-      setReviews(res.data.review);
-      setReviewsCount(res.data.count);
-    });
-  }, [currentNotesFilter, location.state, receivedData, currentSource]);
+    getReviewsAndRatings();
+  }, [currentNotesFilter, location.state, receivedData, currentSource, render]);
 
   //useEffect at the start to receive the data
   useEffect(() => {
     const courseId = location.state;
-    //shouldnt we send the userId ??
     axios
       .get(`http://localhost:3000/course/${courseId}`, {
         headers: {
@@ -224,6 +257,17 @@ const CourseViewPage = () => {
         setCurrentSource(res.data.course.subtitles[0].sources[0]);
         setProgress(res.data.userData.percentageCompleted);
         setTotalSources(res.data.userData.totalSources);
+        setLoaded(true);
+      });
+
+    axios
+      .get(`http://localhost:3000/user/myProfile`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        setUserProfile(`${res.data.firstName} ${res.data.lastName}` )
       });
   }, [location.state]);
   const onSourceChangeHandler = (source) => {
@@ -231,13 +275,13 @@ const CourseViewPage = () => {
       managerRef.current.refreshManager();
     }
     setCurrentSource(source);
-    if(source.sourceType === "Quiz"){
-      setCurrentTab("")
+    if (source.sourceType === "Quiz") {
+      setCurrentTab("");
       setCertificateAlert(false);
       setShowQA(false);
       setShowNotes(false);
       setShowReports(false);
-      setShowReviews(false)
+      setShowReviews(false);
     }
   };
   const changeNotesFilter = (data) => {
@@ -358,14 +402,20 @@ const CourseViewPage = () => {
       })
       .then((res) => {
         axios
-        .get(`http://localhost:3000/user/progress/${receivedData._id}`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        })
-        .then((res) => {
-          setProgress(res.data.percentage);
-        });
+          .get(`http://localhost:3000/user/progress/${receivedData._id}`, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
+          .then((res) => {
+            setProgress(res.data.percentage);
+            if (+res.data.percentage === +totalSources) {
+              if (!res.data.certificate) {
+                console.log(res.data.certificate);
+                downloadRef.current.sendEmail();
+              }
+            }
+          });
       });
   };
 
@@ -417,6 +467,8 @@ const CourseViewPage = () => {
         },
       })
       .then((res) => {
+        handleClickVariant("success");
+        setRender((prev) => !prev);
         setReports([...reports, res.data]);
       });
   };
@@ -434,7 +486,14 @@ const CourseViewPage = () => {
           },
         }
       )
-      .then((res) => {});
+      .then((res) => {
+        getReviewsAndRatings();
+        setRender((prev) => !prev);
+        handleClickVariant("success1");
+      })
+      .catch((err) => {
+        handleClickVariant("error");
+      });
   };
 
   //we will have an array of viewed sources
@@ -568,27 +627,53 @@ const CourseViewPage = () => {
   return (
     <Fragment>
       <NavBarSearch currentTab="My Courses" />
-      <div className=" opacity-0 h-0 overflow-hidden w-full relative ">
-        <Certificate ref={downloadRef}></Certificate>
-      </div>
-      {/* <ProgressManager progress={progress} totalSources={totalSources} /> */}
-      <div className="py-4 flex justify-center font-medium text-xl bg-gray-50 z-20 mt-[4.5rem]">
-        {receivedData.courseTitle}: {currentSource.description}
-      </div>
-      <div className="md:flex z-50">
-        <div className="video/exam md:w-[70%] w-full mb-4 md:mb-0">
-          {displayedSource}
+      {!loaded ? (
+        <div className=" w-full h-full mt-12">
+          <div className="flex w-full h-full  justify-center items-center ">
+            <ReactLoading
+              type={"bars"}
+              color="#C6D8EC"
+              height={667}
+              width={375}
+            />
+          </div>
+          <div className="flex items-center justify-center -mt-[275px]">
+            <h1 className="text-center text-darkBlue font-bold text-3xl ">
+              Loading...
+            </h1>
+          </div>
         </div>
-        <div className="md:w-[30%]">
-          <ContentCourseView
-            progress={progress}
-            totalSources={totalSources}
-            courseDuration={receivedData.totalMins}
-            content={receivedData.subtitles}
-            onClick={onSourceChangeHandler}
-          />
-        </div>
-      </div>
+      ) : (
+        <Fragment>
+          <div className=" opacity-0 h-0 overflow-hidden w-full relative ">
+            <Certificate
+              _id={receivedData._id}
+              ref={downloadRef}
+              instructorName={receivedData.instructorName}
+              courseTitle={receivedData.courseTitle}
+              studentName =  {userProfile}
+            ></Certificate>
+          </div>
+
+          <div className="py-4 flex justify-center font-medium text-xl bg-gray-50 z-20 mt-[4.5rem]">
+            {receivedData.courseTitle}: {currentSource.description}
+          </div>
+          <div className="md:flex z-50">
+            <div className="video/exam md:w-[70%] w-full mb-4 md:mb-0">
+              {displayedSource}
+            </div>
+            <div className="md:w-[30%]">
+              <ContentCourseView
+                progress={progress}
+                totalSources={totalSources}
+                courseDuration={receivedData.totalMins}
+                content={receivedData.subtitles}
+                onClick={onSourceChangeHandler}
+              />
+            </div>
+          </div>
+        </Fragment>
+      )}
     </Fragment>
   );
 };

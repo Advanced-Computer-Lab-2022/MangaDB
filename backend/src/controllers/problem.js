@@ -114,7 +114,7 @@ exports.followUpProblem = async (req, res) => {
     if (!foundProblem) {
       return res.status(400).send("Problem doesn't belong to user");
     }
-    if (foundProblem.status == "resolved") {
+    if (foundProblem.status == "Resolved") {
       return res.status(400).send({ message: "Problem already resolved" });
     }
     foundProblem.followUpComment = followUpComment;

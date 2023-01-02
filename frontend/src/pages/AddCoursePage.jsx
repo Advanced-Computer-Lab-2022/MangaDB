@@ -1,11 +1,20 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
-import NavBar from "../components/NavBar";
+import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 import CreateCourseForm from "../components/CreateCourse/CreateCourseForm";
 import StepsBar from "../components/CreateCourse/StepsBar";
 import AddSubtitles from "../components/AddSubtitles/AddSubtitles";
-
+import { useSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
 const AddCoursePage = (props) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    window.scrollTo(0, 0, "smooth");
+    const role = localStorage.getItem("role");
+    if(role !== "INSTRUCTOR"){
+      navigate('/403')
+    }
+  }, []);
   const [steps, setSteps] = useState([
     {
       name: "Course Details",
@@ -21,8 +30,13 @@ const AddCoursePage = (props) => {
     },
   ]);
   const [data, setData] = useState({});
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
   const onSaveHandler = (data) => {
-    setData({...data,totalHours:10,coursePrice:10});
+    setData({ ...data }); //remove the totalHours and the price
     var newSteps = [];
     var flag = false;
     for (var i = 0; i < steps.length; i++) {
@@ -33,34 +47,48 @@ const AddCoursePage = (props) => {
         flag = true;
       } else if (flag) {
         newSteps.push({ ...steps[i], status: "current" });
+        flag = false;
       }
     }
     setSteps(newSteps);
   };
-  const onSubmitHandler = (secondStepData) => {
-    var sentData = { ...data, subtitles: secondStepData };
-    console.log(sentData);
+  const secondDataHandler = (secondStepData) => {
+    var secondData = { ...data, subtitles: secondStepData };
     axios
-      .post(
-        "http://localhost:3000/instructor/addcourse/635bf48c56673b3f80ac2dff",
-        sentData,
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-          },
-        }
-      )
-      .then((res) => {});
+      .post("http://localhost:3000/instructor/addCourse", secondData, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        handleClickVariant("success");
+        setTimeout(() => {
+          navigate("/instructorCourseDetails",{state:{courseId:res.data.course.id}})
+        }, 2000);
+      });
   };
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant) => {
+    enqueueSnackbar("Course has been Added Successfully", { variant });
+  };
+
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      <NavBar></NavBar>
-      <StepsBar steps={steps}></StepsBar>
+      <NavBarSearch onChange={onChangeHandler} currentTab="Add Course"></NavBarSearch>
+      <div className=" mt-[4.5rem]">
+        <StepsBar steps={steps}></StepsBar>
+      </div>
       {steps[0].status === "current" && (
         <CreateCourseForm onSave={onSaveHandler}></CreateCourseForm>
       )}
       {steps[1].status === "current" && (
-        <AddSubtitles onConfirm={onSubmitHandler}></AddSubtitles>
+        <AddSubtitles onConfirm={secondDataHandler}></AddSubtitles>
       )}
     </Fragment>
   );

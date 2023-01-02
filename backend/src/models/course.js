@@ -9,9 +9,11 @@ const courseSchema = new mongoose.Schema({
   courseDescription: {
     type: String,
   },
-  totalHours: {
+  courseOverview: {
+    type: String,
+  },
+  totalMins: {
     type: Number,
-    required: true,
   },
   courseImage: {
     type: String,
@@ -22,7 +24,7 @@ const courseSchema = new mongoose.Schema({
   },
   instructor: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Instructor",
+    ref: "User",
     required: true,
   },
   instructorName: {
@@ -36,8 +38,33 @@ const courseSchema = new mongoose.Schema({
     type: Number,
     default: 5,
   },
+  finalExam: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Exam",
+    required: false,
+  },
   reviews: {
-    type: [String],
+    type: [
+      {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        userName: {
+          type: String,
+        },
+        review: {
+          type: String,
+        },
+        rating: {
+          type: Number,
+        },
+        date: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
   },
   requirements: {
     type: [String],
@@ -57,40 +84,51 @@ const courseSchema = new mongoose.Schema({
   discountedPrice: {
     type: Number,
   },
-  // exams: {
-  //     type: [ExamSchema.schema],
-  // },
+  discountStartDate: {
+    type: Date,
+  },
+  discountEndDate: {
+    type: Date,
+  },
+  summary: {
+    type: String,
+  },
+  level: {
+    type: String,
+    enum: ["Beginner", "Intermediate", "Advanced"],
+    default: "Beginner",
+  },
+
   subtitles: {
     type: [
       {
-        subtitle: {
-          type: String,
-    
-        },
-        subtitleTime: {
-          type: String,
+        subtitleDuration: {
+          type: Number,
         },
         introductionVideo: {
+          type: String,
+        },
+        introductionVideoDescription: {
           type: String,
         },
         description: {
           type: String,
         },
-        exercises: {
-          type: [
-            {
-              question: { type: String },
-              answer: { type: String },
-              options: { type: [String] },
-            },
-          ],
-        },
+
         sources: {
           type: [
             {
               sourceType: {
                 type: String,
-                enum: ["Video", "Audio", "Text"],
+                enum: ["Video", "Quiz"],
+              },
+              sourceDuration: {
+                type: Number,
+              },
+
+              quiz: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Exam",
               },
               link: {
                 type: String,

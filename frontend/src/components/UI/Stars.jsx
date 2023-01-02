@@ -21,7 +21,7 @@ const Stars = (props) => {
   const yellowStar = (
     <svg
       aria-hidden="true"
-      className={`w-${props.size} h-${props.size} text-yellow-500`}
+      className={`w-${props.size} h-${props.size} text-yellow-400`}
       fill="currentColor"
       viewBox="0 0 20 20"
       xmlns="http://www.w3.org/2000/svg"

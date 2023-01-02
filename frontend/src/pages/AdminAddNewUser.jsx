@@ -1,24 +1,8 @@
-import AddUserForm from "../components/AddUserForm";
-import NavBar from "../components/NavBar";
+import AddUserForm from "../components/AddUser/AddUserForm";
 
 export default function AdminAddNewUser() {
-/*
-const onSubmitHandler=(e)=>{
-e.preventDefault();
-console.log("Submitted");
-console.log(e.target[4].value);
-}
-
-const toggleonChangeHandler=(e)=>{
-console.log(e.target.value);
-
-}
-*/
-
   return (
-    <div>
-      <NavBar />
-      {/*<AddUserForm onSubmit={onSubmitHandler} toggleOnChange={toggleonChangeHandler}/>*/}
+    <div className="flex justify-center items-center">
       <AddUserForm />
     </div>
   );

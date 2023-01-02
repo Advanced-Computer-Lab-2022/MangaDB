@@ -1,17 +1,52 @@
 import React from "react";
-import reactImg from "../../Assets/Images/react.png";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Stars from "../UI/Stars";
-import SecondaryButton from "../SecondaryButton";
+import SecondaryButton from "../UI/SecondaryButton";
+import ProgressBar from "@ramonak/react-progress-bar";
 
+import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
+import axios from "axios";
 const size = 5;
 
 const CourseCardListView = (props) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant) => {
+    // variant could be success, error, warning, info, or default
+    if (variant === "success") {
+      enqueueSnackbar("Refund has been requested successfuly", { variant });
+    }
+  };
+  const navigate = useNavigate();
+  const refundClickHandler = (courseId) => {
+    axios
+      .post(
+        `http://localhost:3000/request/refund`,
+        {
+          courseId: courseId,
+          reason: "I don't like it",
+          //reason needs to be removed from front and back
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
+      .then((res) => {
+        props.renderHandler();
+        handleClickVariant("success");
+      });
+  };
+  const clickHandler = () => {
+    navigate(`/coursedetails`, { state: { courseId: props.id } });
+  };
+  const totalDuration = Math.round(props.duration / 60);
   return (
-    <div class="relative w-4/5 flex items-center bg-white border border-gray-200 shadow-md rounded-md">
-      <img class="max-w-xs h-full" src={reactImg} alt=""></img>
+    <div className="relative w-4/5 flex items-center bg-white border border-gray-200 shadow-md rounded-md">
+      <img className="max-w-xs h-full" src={props.courseImage} alt=""></img>
 
-      <div className="px-5 py-3 space-y-2">
+      <div className="px-5 py-3 space-y-2 w-full">
         <h5 className="flex text-lg items-center font-bold tracking-tight text-gray-900">
           <p className="pr-3">{props.title} </p>
           {props.level === "Beginner" && (
@@ -30,9 +65,9 @@ const CourseCardListView = (props) => {
             </div>
           )}
         </h5>
-        <p className=" text-xs font-normal text-gray-500">
+        <div className=" text-xs font-normal text-gray-500 w-full">
           {props.description}
-        </p>
+        </div>
 
         <div class="text-lightBlue flex justify-items-center text-[9px]">
           <Stars size={size} rating={props.rating} />
@@ -45,15 +80,56 @@ const CourseCardListView = (props) => {
         </p>
         <div className="bg-white  py-1 text-sm font-semibold rounded-full">
           <AccessTimeIcon className="-mt-[3px]" fontSize="inherit" />{" "}
-          {props.duration} {"hrs"}
+          {totalDuration} {"hrs"}
+          {props.myCourses && (
+            <div className="mt-2 absolute mb-1 ">
+              <ProgressBar
+                width="300px"
+                bgColor="#3970AC"
+                completed={
+                  (+props.percentageCompleted / +props.totalSources) * 100
+                }
+              ></ProgressBar>
+            </div>
+          )}
           <div className="flex justify-end items-center">
-            <h5 class="absolute bottom-3 right-32 text-3xl font-bold tracking-tight text-gray-900">
-              {props.price} $
+            {props.discount > 0 &&
+              localStorage.getItem("role") !== "CORPORATE" && (
+                <div className="line-through decoration-1 text-lg font-thin mr-4">
+                  {props.coursePrice}
+                  {props.currencySymbol}
+                </div>
+              )}
+            <h5 class="text-2xl font-bold tracking-tight text-gray-900">
+              {props.discountedPrice === 0 &&
+                localStorage.getItem("role") !== "CORPORATE" && (
+                  <div className="text-green-600 mr-6">FREE</div>
+                )}
+              {props.discountedPrice != 0 &&
+                localStorage.getItem("role") !== "CORPORATE" && (
+                  <div className="mr-6">
+                    {props.discountedPrice}
+                    {props.currencySymbol}
+                  </div>
+                )}
             </h5>
             <SecondaryButton
-              text="View"
-              className="absolute right-7 bottom-2 text-lg font-bold"
+              onClick={clickHandler}
+              text={"View"}
+              className="text-md font-bold "
             />
+            {props.myCourses ? (
+              <SecondaryButton
+                onClick={
+                  props.refundable
+                    ? refundClickHandler.bind(null, props.id)
+                    : null
+                }
+                text={props.requested ? "Requested" : "Request Refund"}
+                className="text-md font-bold mx-2 "
+                disabled={props.requested || !props.refundable ? true : false}
+              />
+            ) : null}
           </div>
         </div>
       </div>

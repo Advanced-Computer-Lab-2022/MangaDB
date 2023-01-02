@@ -1,31 +1,113 @@
 import "./App.css";
-import CourseCard from "./components/Course/CourseCard";
-import NavBar from "./components/NavBar";
-import PrimaryButton from "./components/PrimaryButton";
-import Subtitle from "./components/CourseSubtitles/Subtitle";
-import CountryManager from "./components/CountryManager";
+import { Routes, Route } from "react-router-dom";
+import { Fragment } from "react";
+import Login from "./pages/Login";
 import HomePage from "./pages/HomePage";
-import AddUserForm from "./components/AddUserForm";
-import Filters from "./components/Filters/Filters";
-import SubjectFilter from "./components/Filters/SubjectFilter";
-import Modal from "./components/UI/Modal";
-import CourseDetailsPage from "./pages/CourseDetailsPage";
-import CourseCardListView from "./components/Course/CourseCardListView";
 import SearchResultsPage from "./pages/SearchResultsPage";
-import Filter from "./components/Filters/Filters";
-import Table from "./components/Table/Table";
-import Search from "./components/Search";
-import SecondaryButton from "./components/SecondaryButton";
-import TertiaryButton from "./components/TertiaryButton";
-import InstructorControls from "./components/Table/InstructorControls";
-import AddSubtitles from "./components/AddSubtitles/AddSubtitles"
-import IntructorCoursePage from "./pages/InstructorCoursesPage";
-import AddCoursePage from "./pages/AddCoursePage";
-import AdminAddNewUser from "./pages/AdminAddNewUser";
+import InstructorProfilePage from "./pages/InstructorProfilePage";
+import CourseDetailsPage from "./pages/CourseDetailsPage";
+import CourseViewPage from "./pages/CourseViewPage";
 import InstructorCoursesPage from "./pages/InstructorCoursesPage";
-
+import AddCoursePage from "./pages/AddCoursePage";
+import SignUp from "./pages/SignUp";
+import ResetPassword from "./pages/ResetPassword";
+import Footer from "./components/UI/Footer/Footer";
+import FAQS from "./pages/FAQS";
+import InstructorWallet from "./pages/IntructorWallet";
+import PageNotFound from "./pages/PageNotFound";
+import UnAuthorizedPage from "./pages/UnAuthorizedPage";
+import MyCourses from "./pages/MyCourses";
+import TraineeProfilePage from "./pages/TraineeProfilePage";
+import AdminPage from "./components/Admin/AdminPage";
+import InstructorPage from "./pages/InstructorPage";
+import InstructorDashboard from "./pages/InstructorDashboard";
+import InstructorCourseDetails from "./pages/InstructorCourseDetails";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import SuccessfulPayment from "./components/Payment/SuccessfulPayment";
+import UnsuccessfulPayment from "./components/Payment/UnsuccessfulPayment";
+import SuccessfulPaymentWallet from "./components/Payment/SuccessfulPaymentWallet";
 function App() {
-  return  <AdminAddNewUser />
-}
+  return (
+    <Fragment>
+      <Routes>
+        <Route path="/login" element={<Login></Login>}></Route>
+        <Route path="/signup" element={<SignUp></SignUp>}></Route>
+        <Route
+          path="/resetpassword"
+          element={<ResetPassword></ResetPassword>}
+        ></Route>
+        <Route path="/" element={<HomePage></HomePage>}></Route>
+        <Route
+          path="/searchresults"
+          element={<SearchResultsPage></SearchResultsPage>}
+        ></Route>
+        <Route
+          path="/coursedetails"
+          element={<CourseDetailsPage></CourseDetailsPage>}
+        ></Route>
+        <Route
+          path="/courseview"
+          element={<CourseViewPage></CourseViewPage>}
+        ></Route>
+        <Route
+          path="/profileInstructor"
+          element={<InstructorProfilePage></InstructorProfilePage>}
+        ></Route>
+        <Route
+          path="/profileTrainee"
+          element={<TraineeProfilePage></TraineeProfilePage>}
+        ></Route>
+        <Route path="/admin" element={<AdminPage></AdminPage>}></Route>
+        <Route
+          path="/courses"
+          element={<InstructorCoursesPage></InstructorCoursesPage>}
+        ></Route>
+        <Route
+          path="/addcourse"
+          element={<AddCoursePage></AddCoursePage>}
+        ></Route>
+        <Route
+          path="/myWallet"
+          element={<InstructorWallet></InstructorWallet>}
+        ></Route>
+        <Route path="/FAQS" element={<FAQS></FAQS>}></Route>
+        <Route path="/404" element={<PageNotFound></PageNotFound>}></Route>
+        <Route
+          path="/403"
+          element={<UnAuthorizedPage></UnAuthorizedPage>}
+        ></Route>
+        <Route path="/myCourses" element={<MyCourses></MyCourses>}></Route>
+        <Route
+          path="/InstructorPage"
+          element={<InstructorPage></InstructorPage>}
+        ></Route>
+        <Route
+          path="/instructorDashboard"
+          element={<InstructorDashboard></InstructorDashboard>}
+        ></Route>
+        <Route
+          path="instructorCourseDetails"
+          element={<InstructorCourseDetails></InstructorCourseDetails>}
+        ></Route>
+        <Route
+          path="/forgotPassword"
+          element={<ForgotPasswordPage></ForgotPasswordPage>}
+        ></Route>
 
+        <Route
+          path="/successfulPayment"
+          element={<SuccessfulPayment></SuccessfulPayment>}
+        ></Route>
+        <Route
+          path="/unsuccessfulPayment"
+          element={<UnsuccessfulPayment></UnsuccessfulPayment>}
+        ></Route>
+        <Route path="/resetpassword" element={<ResetPassword></ResetPassword>}></Route>
+        <Route path="successwallet" element={<SuccessfulPaymentWallet></SuccessfulPaymentWallet>}></Route>
+        <Route path="*" element= {<PageNotFound></PageNotFound>}></Route>
+      </Routes>
+      <Footer></Footer>
+    </Fragment>
+  );
+}
 export default App;

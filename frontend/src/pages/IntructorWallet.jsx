@@ -233,6 +233,14 @@ const InstructorWallet = () => {
               </motion.span>
             </p>
           </div>
+          <div className="flex justify-around mt-10 -mb-16">
+          <div className="font-semibold text-3xl">
+            Previous Years
+          </div>
+          <div className="font-semibold text-3xl">
+            Previous Year
+          </div>
+          </div>
           <div className="flex items-center justify-center">
             <VictoryChart
               colorScale={"blue"}

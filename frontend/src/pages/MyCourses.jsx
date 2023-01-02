@@ -54,7 +54,7 @@ const MyCourses = () => {
     window.scrollTo(0, 0, "smooth");
     //fetch the courses of the trainee
     const role = localStorage.getItem("role");
-    if (role !== "TRAINEE" || role !=="CORPORATE") {
+    if (role !== "TRAINEE" && role !=="CORPORATE") {
       navigate("/403");
     }
     axios

@@ -211,6 +211,17 @@
 
 - The Fifth model is the invoice model which holds all the transaction information like the date and the user who issued that invoice and the the course related to that invoice.
 
+## API Documentation
+
+- The following links are for our API documentations
+- https://www.postman.com/winter-crescent-614567/workspace/my-workspace/collection/22892151-70a82e2d-655a-4212-bd3f-dd34a108de46?action=share&creator=24106838&ctx=documentation
+- https://www.postman.com/winter-crescent-614567/workspace/my-workspace/collection/22892151-837a7360-758a-47e4-92fd-683fc36d7d81?action=share&creator=24106838
+- https://www.postman.com/winter-crescent-614567/workspace/my-workspace/collection/22892151-4090c077-8ea0-4be2-8729-1e2fe24865f8?action=share&creator=24106838
+- https://www.postman.com/winter-crescent-614567/workspace/my-workspace/collection/22892151-feceb125-dcdc-440a-96fc-4efa2e83abf5?action=share&creator=24106838
+- https://www.postman.com/winter-crescent-614567/workspace/my-workspace/collection/22892151-e5b4386a-bd53-46ce-93cd-7587384f2b8a?action=share&creator=24106838
+- https://www.postman.com/winter-crescent-614567/workspace/my-workspace/collection/22892151-2e1331d8-c256-49af-9b2b-2e86bc9d9a1e?action=share&creator=24106838
+- https://www.postman.com/winter-crescent-614567/workspace/my-workspace/collection/22892151-29b28c7b-f73c-4b0d-a8db-60e59890af26?action=share&creator=24106838
+
 ## Installation and Usage
 
 - clone the repository `git clone https://github.com/Advanced-Computer-Lab-2022/MangaDB.git` or kindly download the zip folder from the repository.

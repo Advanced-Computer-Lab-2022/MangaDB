@@ -59,6 +59,7 @@ const SearchResultsPage = () => {
       ? "US"
       : localStorage.getItem("countryCode")
   );
+  const [currencySymbol, setCurrencySymbol] = useState("$");
   //funtion to handle the pagination
   const onChangePageHandler = (event, value) => {
     setPage(value);
@@ -127,6 +128,7 @@ const SearchResultsPage = () => {
         searchState.filters.price.maxValue;
     }
     param = param + (param ? "&" : "?") + "page=" + page;
+    param = param + (param ? "&" : "?") + "CC=" + countryCode;
     axios
       .get("http://localhost:3000/course/" + param, {
         headers: {
@@ -137,8 +139,9 @@ const SearchResultsPage = () => {
         setNoOfPages(res.data.count);
         setLoaded(true);
         dispatchSearch({ type: "COURSES", value: res.data.courses });
+        setCurrencySymbol(res.data.symbol);
       });
-  }, [searchState.search, searchState.filters, page]);
+  }, [searchState.search, searchState.filters, page, countryCode]);
   var coursesListView;
   var coursesCardsView;
   if (searchState.displayedCourses.length === 0) {
@@ -190,8 +193,7 @@ const SearchResultsPage = () => {
           discountedPrice={course.discountedPrice}
           discount={course.discount}
           rating={course.rating}
-          currencySymbol="$"
-          // currencySymbol={currencySymbol}
+          currencySymbol={currencySymbol}
         ></CourseCardListView>
       );
     });

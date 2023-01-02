@@ -1,6 +1,7 @@
 const course=require('../models/course');
 const user = require('../models/user');
 const invoice = require('../models/invoice');
+const currencyConverter = require("../helper/currencyconverter");
 
 exports.updateUser = (req, res) => {
     const id = req.user.id;;

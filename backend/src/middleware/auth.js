@@ -25,7 +25,7 @@ exports.validateToken = async (req, res, next) => {
 
 exports.authenticateRole = (roles) => {
   return (req, res, next) => {
-    if(!req.user) {
+    if(req.user) {
     if (roles.includes(req.user.role)) {
       next();
     } 

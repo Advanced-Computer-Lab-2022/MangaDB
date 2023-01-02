@@ -29,7 +29,7 @@ const MyCourses = () => {
   const [myCourses, setMyCourses] = useState([]);
   const [page, setPage] = useState(1);
   const [noOfPages, setNoOfPages] = useState(0);
-
+  const [currencySymbol, setCurrencySymbol] = useState("$");
   const [myRequests, setMyRequests] = useState([]);
   const [render, setRender] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -41,7 +41,6 @@ const MyCourses = () => {
   );
 
   //funtion to handle the pagination
-
   const renderHandler = () => {
     setRender(!render);
   };
@@ -54,7 +53,7 @@ const MyCourses = () => {
     window.scrollTo(0, 0, "smooth");
     //fetch the courses of the trainee
     axios
-      .get(`http://localhost:3000/user/mycourses/?page=${page}`, {
+      .get(`http://localhost:3000/user/myCourses/?page=${page}&CC=`.concat(countryCode), {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -62,6 +61,7 @@ const MyCourses = () => {
       .then((res) => {
         setNoOfPages(res.data.count);
         setMyCourses(res.data.courses);
+        setCurrencySymbol(res.data.symbol)
         setLoaded(true);
       });
 
@@ -78,7 +78,7 @@ const MyCourses = () => {
           }
         }
       });
-  }, [page, render]);
+  }, [page, render,countryCode]);
 
   // handle the small screen and big screen..
   var coursesListView;
@@ -106,7 +106,7 @@ const MyCourses = () => {
         myCourses={true}
         requested={myRequests.includes(course.course._id)}
         renderHandler={renderHandler}
-        // currencySymbol={currencySymbol}
+        currencySymbol={currencySymbol}
       ></CourseCardListView>
     );
   });

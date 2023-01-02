@@ -43,19 +43,26 @@ const InstructorPage = () => {
       ? "US"
       : localStorage.getItem("countryCode")
   );
+  const [currencySymbol, setCurrencySymbol] = useState("$");
 
-  //const [reviewedBefore,setReviewedBefore] =useState(false)
   //fetch the data at the start of the code ..
   useEffect(() => {
     window.scrollTo(0, 0, "smooth");
     const instructorId = location.state.instructorId;
     axios
-      .get(`http://localhost:3000/instructor/` + instructorId, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
+      .get(
+        `http://localhost:3000/instructor/` +
+          instructorId +
+          "?CC=" +
+          countryCode,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
       .then((res) => {
+        console.log(res.data);
         setReceivedData(res.data);
         setReviews(res.data.instructor.reviews);
         setStatsConf([
@@ -64,9 +71,10 @@ const InstructorPage = () => {
           res.data.instructor.courseDetails.length,
         ]);
         setSummary(res.data.count);
+        setCurrencySymbol(res.data.symbol);
         setLoaded(true);
       });
-  }, [render]);
+  }, [render, countryCode]);
 
   //stats for the performance thinggy
   var stats;
@@ -194,13 +202,13 @@ const InstructorPage = () => {
             title={course.course.courseTitle}
             instructorName={course.course.instructorName}
             subject={course.course.subject}
-            level={course.courselevel}
+            level={course.course.level}
             description={course.course.courseDescription}
             coursePrice={course.course.coursePrice}
             discountedPrice={course.course.discountedPrice}
             discount={course.course.discount}
             rating={course.course.rating}
-            currencySymbol="$"
+            currencySymbol={currencySymbol}
           ></CourseCard>
         );
       }
@@ -238,7 +246,7 @@ const InstructorPage = () => {
               INSTRUCTOR
             </p>
             <p className=" flex items-center justify-center font-bold text-4xl">
-              {receivedData.instructor.firstName}
+              {receivedData.instructor.firstName}{" "}
               {receivedData.instructor.lastName}
             </p>
             <p className="flex items-center justify-center text-gray-500">

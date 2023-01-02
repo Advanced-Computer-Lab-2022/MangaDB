@@ -41,9 +41,15 @@ const HomePage = () => {
         setCurrencySymbol(res.data.symbol);
       });
 
-    axios.get("http://localhost:3000/course/discountedCourses/").then((res) => {
-      setDiscountedCourses(res.data);
-    });
+    axios
+      .get(
+        "http://localhost:3000/course/discountedCourses/?CC=".concat(
+          countryCode
+        )
+      )
+      .then((res) => {
+        setDiscountedCourses(res.data.courses);
+      });
   }, [countryCode]);
 
   const onChangeHandler = (e) => {

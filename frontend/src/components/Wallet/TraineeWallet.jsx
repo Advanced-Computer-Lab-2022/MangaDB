@@ -12,7 +12,7 @@ const TraineeWallet = (props) => {
   //handle the mouseOver and mouseLeave functions..
   const hoverHandler = (e) => {
     axios
-    .get("http://localhost:3000/user/wallet" ,{
+    .get("http://localhost:3000/user/wallet" + "?CC=" + localStorage.getItem("countryCode") ,{
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },

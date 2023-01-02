@@ -335,7 +335,6 @@ const IntructorCoursePage = (props) => {
         "maxPrice=" +
         searchState.filters.price.maxValue;
     }
-    var param2 = param; //will change iId
     if (!searchState.myCourses) {
       axios
         .get("http://localhost:3000/course/" + param, {

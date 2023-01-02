@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 import { useNavigate } from "react-router-dom";
 const faqs = [
@@ -44,9 +44,20 @@ const FAQS = () => {
     }
     window.scrollTo(0, 0, "smooth");
   }, []);
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
+
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      <NavBarSearch currentTab="FAQs" />
+      <NavBarSearch onChange={onChangeHandler} currentTab="FAQs" />
       <div className="bg-white">
         <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
           <div className="max-w-2xl lg:mx-auto lg:text-center">

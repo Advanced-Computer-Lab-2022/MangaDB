@@ -54,6 +54,12 @@ const SearchResultsPage = () => {
   const [page, setPage] = useState(1);
   const [noOfPages, setNoOfPages] = useState(1);
   const [loaded, setLoaded] = useState(false);
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
+  const [currencySymbol, setCurrencySymbol] = useState("$");
   //funtion to handle the pagination
   const onChangePageHandler = (event, value) => {
     setPage(value);
@@ -122,6 +128,7 @@ const SearchResultsPage = () => {
         searchState.filters.price.maxValue;
     }
     param = param + (param ? "&" : "?") + "page=" + page;
+    param = param + (param ? "&" : "?") + "CC=" + countryCode;
     axios
       .get("http://localhost:3000/course/" + param, {
         headers: {
@@ -132,8 +139,9 @@ const SearchResultsPage = () => {
         setNoOfPages(res.data.count);
         setLoaded(true);
         dispatchSearch({ type: "COURSES", value: res.data.courses });
+        setCurrencySymbol(res.data.symbol);
       });
-  }, [searchState.search, searchState.filters, page]);
+  }, [searchState.search, searchState.filters, page, countryCode]);
   var coursesListView;
   var coursesCardsView;
   if (searchState.displayedCourses.length === 0) {
@@ -180,12 +188,12 @@ const SearchResultsPage = () => {
           subject={course.subject}
           level={course.level}
           description={course.courseDescription}
+          courseImage={course.courseImage}
           coursePrice={course.coursePrice}
           discountedPrice={course.discountedPrice}
           discount={course.discount}
           rating={course.rating}
-          currencySymbol="$"
-          // currencySymbol={currencySymbol}
+          currencySymbol={currencySymbol}
         ></CourseCardListView>
       );
     });
@@ -208,10 +216,16 @@ const SearchResultsPage = () => {
       );
     });
   }
+
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <SnackbarProvider maxSnack={3}>
       <Fragment>
-        <NavBar currentTab="Home" />
+        <NavBar onChange={onChangeHandler} currentTab="Home" />
         {!loaded ? (
           <div className=" w-full h-full mt-12">
             <div className="flex w-full h-full  justify-center items-center ">

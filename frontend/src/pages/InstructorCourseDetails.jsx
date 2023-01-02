@@ -17,6 +17,11 @@ const InstructorCourseDetailsPage = () => {
   const [userRegistered, setUserRegistered] = useState(false);
   const [courseReviews, setCourseReviews] = useState([]);
   const [reviewsCount, setReviewsCount] = useState([]);
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
   useEffect(() => {
     const role = localStorage.getItem("role");
     if(role !== "INSTRUCTOR"){
@@ -52,9 +57,15 @@ const InstructorCourseDetailsPage = () => {
         setReviewsCount(res.data.count);
       });
   }, []);
+
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      <NavBarSearch currentTab="My Courses" />
+      <NavBarSearch onChange={onChangeHandler} currentTab="My Courses" />
       {!loaded ? (
         <div className=" w-full h-full mt-12">
           <div className="flex w-full h-full  justify-center items-center ">

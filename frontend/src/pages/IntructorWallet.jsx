@@ -29,6 +29,12 @@ const InstructorWallet = () => {
   const [data2, setData2] = useState([{ x: 1, y: 2, label: "Jan" }]);
   const [receivedData, setReceivedData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
+
   const navigate = useNavigate();
   
   // for the bottom stats
@@ -209,9 +215,14 @@ const InstructorWallet = () => {
       });
   }, []);
 
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      <NavBarSearch currentTab="Wallet" />
+      <NavBarSearch onChange={onChangeHandler} currentTab="Wallet" />
       <div className="mt-24">
         <div className="flex-col items-center justify-center mt-8">
           <div className="w-[100%] flex items-center justify-center ">

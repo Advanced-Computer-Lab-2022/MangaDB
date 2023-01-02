@@ -69,6 +69,11 @@ const IntructorCoursePage = (props) => {
   const [noOfPages, setNoOfPages] = useState(1);
 
   const [selectedNow, setSelectedNow] = useState([]);
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
 
   const role = localStorage.getItem("role");
   if(role !== "INSTRUCTOR" && role!== "ADMIN"){
@@ -233,7 +238,6 @@ const IntructorCoursePage = (props) => {
         .then((res) => {
           let coursesAdmin = [];
           for (var i = 0; i < searchState.displayedCourses.length; i++) {
- 
             if (
               res.data.Ids.includes(searchState.displayedCourses[i].course._id)
             ) {
@@ -335,7 +339,6 @@ const IntructorCoursePage = (props) => {
         "maxPrice=" +
         searchState.filters.price.maxValue;
     }
-    var param2 = param; //will change iId
     if (!searchState.myCourses) {
       axios
         .get("http://localhost:3000/course/" + param, {
@@ -412,9 +415,14 @@ const IntructorCoursePage = (props) => {
     );
   });
 
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      {!props.admin && <NavBar currentTab="My Courses" />}
+      {!props.admin && <NavBar onChange={onChangeHandler} currentTab="My Courses" />}
       {showFilters && (
         <Filters
           prevState={searchState.filters}

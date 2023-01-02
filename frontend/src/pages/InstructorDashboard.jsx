@@ -32,6 +32,11 @@ const InstructorDashboard = () => {
   const [followUpProblem, setFollowUpProblem] = useState("");
   const [followUpDescription, setFollowUpDescription] = useState("");
   const [render, setRender] = useState(false);
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
 
   const openFollowUpModal = (id, problem) => {
     setShowFollowUpModal(true);
@@ -299,9 +304,15 @@ const InstructorDashboard = () => {
   } else {
     name = "Instructor ";
   }
+
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      <NavBar currentTab="Dashboard" />
+      <NavBar onChange={onChangeHandler} currentTab="Dashboard" />
       {!loaded ? (
         <div className=" w-full h-full mt-12">
           <div className="flex w-full h-full  justify-center items-center ">

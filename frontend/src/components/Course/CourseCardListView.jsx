@@ -1,5 +1,4 @@
 import React from "react";
-import reactImg from "../../Assets/Images/react.png";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Stars from "../UI/Stars";
 import SecondaryButton from "../UI/SecondaryButton";
@@ -45,7 +44,7 @@ const CourseCardListView = (props) => {
   const totalDuration = Math.round(props.duration / 60);
   return (
     <div className="relative w-4/5 flex items-center bg-white border border-gray-200 shadow-md rounded-md">
-      <img className="max-w-xs h-full" src={reactImg} alt=""></img>
+      <img className="max-w-xs h-full" src={props.courseImage} alt=""></img>
 
       <div className="px-5 py-3 space-y-2 w-full">
         <h5 className="flex text-lg items-center font-bold tracking-tight text-gray-900">
@@ -87,7 +86,9 @@ const CourseCardListView = (props) => {
               <ProgressBar
                 width="300px"
                 bgColor="#3970AC"
-                completed={(+props.percentageCompleted/+props.totalSources)*100}
+                completed={
+                  (+props.percentageCompleted / +props.totalSources) * 100
+                }
               ></ProgressBar>
             </div>
           )}

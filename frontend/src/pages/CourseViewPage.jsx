@@ -77,6 +77,11 @@ const CourseViewPage = () => {
   const [followUpDescription, setFollowUpDescription] = useState("");
   const [render, setRender] = useState(false);
   const [userProfile, setUserProfile] = useState({});
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
   const openFollowUpModal = (id, problem) => {
     setShowFollowUpModal(true);
     setFollowUpId(id);
@@ -640,9 +645,15 @@ const CourseViewPage = () => {
       );
     }
   }
+
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      <NavBarSearch currentTab="My Courses" />
+      <NavBarSearch onChange={onChangeHandler} currentTab="My Courses" />
       {!loaded ? (
         <div className=" w-full h-full mt-12">
           <div className="flex w-full h-full  justify-center items-center ">

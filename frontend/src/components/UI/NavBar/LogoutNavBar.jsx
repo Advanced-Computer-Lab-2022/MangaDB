@@ -16,6 +16,7 @@ export default function LogoutNavBAr(props) {
       .then((res) => {
         localStorage.removeItem("token");
         localStorage.removeItem("role");
+        localStorage.removeItem("countryCode");
         navigate("/");
       })
       .catch((err) => {

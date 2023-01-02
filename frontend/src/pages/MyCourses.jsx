@@ -29,15 +29,19 @@ const MyCourses = () => {
   const [myCourses, setMyCourses] = useState([]);
   const [page, setPage] = useState(1);
   const [noOfPages, setNoOfPages] = useState(0);
-
+  const [currencySymbol, setCurrencySymbol] = useState("$");
   const [myRequests, setMyRequests] = useState([]);
   const [render, setRender] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [userRole, setUserRole] = useState(localStorage.getItem("role"));
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
 
   const navigate = useNavigate();
   //funtion to handle the pagination
-
   const renderHandler = () => {
     setRender(!render);
   };
@@ -54,7 +58,7 @@ const MyCourses = () => {
       navigate("/403");
     }
     axios
-      .get(`http://localhost:3000/user/mycourses/?page=${page}`, {
+      .get(`http://localhost:3000/user/myCourses/?page=${page}&CC=`.concat(countryCode), {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -62,6 +66,7 @@ const MyCourses = () => {
       .then((res) => {
         setNoOfPages(res.data.count);
         setMyCourses(res.data.courses);
+        setCurrencySymbol(res.data.symbol)
         setLoaded(true);
       });
 
@@ -78,7 +83,7 @@ const MyCourses = () => {
           }
         }
       });
-  }, [page, render]);
+  }, [page, render,countryCode]);
 
   // handle the small screen and big screen..
   var coursesListView;
@@ -106,7 +111,7 @@ const MyCourses = () => {
         myCourses={true}
         requested={myRequests.includes(course.course._id)}
         renderHandler={renderHandler}
-        // currencySymbol={currencySymbol}
+        currencySymbol={currencySymbol}
       ></CourseCardListView>
     );
   });
@@ -129,9 +134,14 @@ const MyCourses = () => {
     );
   });
 
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      <Navbar currentTab="My Courses" />
+      <Navbar onChange={onChangeHandler} currentTab="My Courses" />
       {!loaded ? (
         <div className=" w-full h-full mt-12">
           <div className="flex w-full h-full  justify-center items-center ">

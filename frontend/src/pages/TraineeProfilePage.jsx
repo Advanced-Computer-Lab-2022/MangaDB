@@ -4,6 +4,7 @@ import PasswordAndPrivacy from "../components/TraineeProfile/PasswordAndPrivacy"
 import Reqests from "../components/TraineeProfile/Requests";
 import axios from "axios";
 import NavBar from "../components/UI/NavBar/NavBar";
+import { useNavigate } from "react-router-dom";
 
 const TraineeProfilePage = () => {
   const [receivedUserInfo, setReceivedUserInfo] = useState({});

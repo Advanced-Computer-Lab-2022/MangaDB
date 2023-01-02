@@ -152,23 +152,23 @@ const InstructorDashboard = () => {
       const formattedDate = review.date.substring(0, 10).split("-");
       const year = formattedDate[0];
       const month =
-        formattedDate[1] === "1"
+        formattedDate[1] === "01"
           ? "January"
-          : formattedDate[1] === "2"
+          : formattedDate[1] === "02"
           ? "February"
-          : formattedDate[1] === "3"
+          : formattedDate[1] === "03"
           ? "March"
-          : formattedDate[1] === "4"
+          : formattedDate[1] === "04"
           ? "April"
-          : formattedDate[1] === "5"
+          : formattedDate[1] === "05"
           ? "May"
-          : formattedDate[1] === "6"
+          : formattedDate[1] === "06"
           ? "June"
-          : formattedDate[1] === "7"
+          : formattedDate[1] === "07"
           ? "July"
-          : formattedDate[1] === "8"
+          : formattedDate[1] === "08"
           ? "August"
-          : formattedDate[1] === "9"
+          : formattedDate[1] === "09"
           ? "September"
           : formattedDate[1] === "10"
           ? "October"
@@ -249,23 +249,23 @@ const InstructorDashboard = () => {
       const formattedDate = report.date.substring(0, 10).split("-");
       const year = formattedDate[0];
       const month =
-        formattedDate[1] === "1"
+        formattedDate[1] === "01"
           ? "January"
-          : formattedDate[1] === "2"
+          : formattedDate[1] === "02"
           ? "February"
-          : formattedDate[1] === "3"
+          : formattedDate[1] === "03"
           ? "March"
-          : formattedDate[1] === "4"
+          : formattedDate[1] === "04"
           ? "April"
-          : formattedDate[1] === "5"
+          : formattedDate[1] === "05"
           ? "May"
-          : formattedDate[1] === "6"
+          : formattedDate[1] === "06"
           ? "June"
-          : formattedDate[1] === "7"
+          : formattedDate[1] === "07"
           ? "July"
-          : formattedDate[1] === "8"
+          : formattedDate[1] === "08"
           ? "August"
-          : formattedDate[1] === "9"
+          : formattedDate[1] === "09"
           ? "September"
           : formattedDate[1] === "10"
           ? "October"
@@ -369,7 +369,7 @@ const InstructorDashboard = () => {
               <div>
                 <Divider className="hidden sm:block" orientation="vertical" />
               </div>
-              <div>
+              <div className="sm:w-[45%]">
                 <div
                   key={stats[1].id}
                   className="relative bg-white pt-5 px-4 sm:pt-6 sm:px-6 shadow rounded-lg overflow-hidden sm:w-[100%]"

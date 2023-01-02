@@ -4,19 +4,19 @@ const user = require("../models/user");
 
 exports.createProblem = async (req, res) => {
   const courseId = req.body.courseId;
-  const user = req.user.id;
+  const currentUserId = req.user.id;
   const type = req.body.type;
   const description = req.body.description;
   const foundCourse = await course.findById(courseId);
   if (!foundCourse) {
     return res.status(404).send({ message: "Course not found" });
   }
-  const currentUser=await user.findById(user);
+  const currentUser=await user.findById(currentUserId);
 
   const newProblem = new problem({
     course: courseId,
     courseName: foundCourse.courseTitle,
-    user: user,
+    user: currentUserId,
     userName: currentUser.firstName + " " + currentUser.lastName ,
     type: type,
     description: description,

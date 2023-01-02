@@ -37,11 +37,12 @@ const InstructorControls = (props) => {
             />
           </div>
         </div>
-        <div className="mt-[6px] mr-4 hidden md:block">
+        <div className={"mt-[6px] mr-4 hidden md:block "}>
           <TertiaryButton
-            onClick={myCoursesClickHandler}
+            onClick={!props.adminNoSelectedCourses?myCoursesClickHandler:null}
             text={props.admin?"Add Promotion":"My Courses"}
             state={active ? "My Courses" : ""}
+            className={props.adminNoSelectedCourses?"opacity-50 cursor-default":""}
           />
           
         </div>

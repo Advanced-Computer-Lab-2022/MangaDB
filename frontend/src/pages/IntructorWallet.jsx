@@ -14,7 +14,7 @@ import { motion } from "framer-motion";
 import { Fragment } from "react";
 import { useState, useEffect } from "react";
 import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
-
+import { useNavigate } from "react-router-dom";
 //the dots animation
 const appear = {
   opacity: 0,
@@ -29,7 +29,14 @@ const InstructorWallet = () => {
   const [data2, setData2] = useState([{ x: 1, y: 2, label: "Jan" }]);
   const [receivedData, setReceivedData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
 
+  const navigate = useNavigate();
+  
   // for the bottom stats
   var monthRevenue = 0;
   var prevMonthRevenue = 0;
@@ -92,6 +99,10 @@ const InstructorWallet = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0, "smooth");
+    const role = localStorage.getItem("role");
+  if (role !== "INSTRUCTOR") {
+    navigate("/403");
+  }
     //axios to get the data..
     axios
       .get("http://localhost:3000/instructor/amountOwed", {
@@ -204,9 +215,14 @@ const InstructorWallet = () => {
       });
   }, []);
 
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      <NavBarSearch currentTab="Wallet" />
+      <NavBarSearch onChange={onChangeHandler} currentTab="Wallet" />
       <div className="mt-24">
         <div className="flex-col items-center justify-center mt-8">
           <div className="w-[100%] flex items-center justify-center ">

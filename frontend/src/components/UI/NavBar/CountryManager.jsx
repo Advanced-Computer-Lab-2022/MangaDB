@@ -2,7 +2,7 @@ import countryList from "react-select-country-list";
 import { useState } from "react";
 import CountrySelector from "./CountrySelector";
 const CountryManager = (props) => {
-  const defaultCountryValue = countryList().getValue("United States");
+  const defaultCountryValue = !localStorage.getItem("countryCode") ? "US" : localStorage.getItem("countryCode");
   const [selectedCountry, setSelectedCountry] = useState(defaultCountryValue);
   const [isClicked, setIsClicked] = useState(false);
   const countryLabels = countryList().getLabels();

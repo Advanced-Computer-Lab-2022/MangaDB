@@ -1,6 +1,7 @@
 const course=require('../models/course');
 const user = require('../models/user');
 const invoice = require('../models/invoice');
+const currencyConverter = require("../helper/currencyconverter");
 
 exports.updateUser = (req, res) => {
     const id = req.user.id;;
@@ -347,6 +348,14 @@ exports.viewInstructor=async (req, res) => {
       res.status(404).json({ message: "Instructor Not Found" });
       return;
     }
+    const countryCode = req.query.CC || "US";
+    let countryDetails = await currencyConverter.convertCurrency(
+      "US",
+      countryCode
+    );
+    let exchangeRate = countryDetails.rate;
+    let symbol = countryDetails.symbol;
+
     let rating1=0;
     let rating2=0;
     let rating3=0;
@@ -373,10 +382,14 @@ exports.viewInstructor=async (req, res) => {
     let totalViews=0;
     for(let i=0;i<instructorData.courseDetails.length;i++){
       totalViews+=instructorData.courseDetails[i].course.views;
+      instructorData.courseDetails[i].course.coursePrice=(instructorData.courseDetails[i].course.coursePrice*exchangeRate).toFixed(2);
+      instructorData.courseDetails[i].course.discountedPrice=(instructorData.courseDetails[i].course.discountedPrice*exchangeRate).toFixed(2);
     }
+
     res.status(200).json({ instructor: instructorData,
       students:totalViews,
-      count:count
+      count:count,
+      symbol:symbol
     });
 
   }

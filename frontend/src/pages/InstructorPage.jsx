@@ -8,7 +8,6 @@ import CourseCard from "../components/Course/CourseCard";
 import Carousel from "react-multi-carousel";
 import { useLocation } from "react-router-dom";
 import { useSnackbar } from "notistack";
-
 import {
   BookOpenIcon,
   CalendarIcon,
@@ -16,8 +15,9 @@ import {
 } from "@heroicons/react/outline";
 import Rating from "@mui/material/Rating";
 import ReactLoading from "react-loading";
-
+import { useNavigate } from "react-router-dom";
 const InstructorPage = () => {
+  const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const handleClickVariant = (variant) => {
     if (variant === "error") {
@@ -39,19 +39,35 @@ const InstructorPage = () => {
   const [reviews, setReviews] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [render, setRender] = useState(false);
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
+  const [currencySymbol, setCurrencySymbol] = useState("$");
 
-  //const [reviewedBefore,setReviewedBefore] =useState(false)
   //fetch the data at the start of the code ..
   useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role === "INSTRUCTOR" || role ==="ADMIN") {
+      navigate("/403");
+    }
     window.scrollTo(0, 0, "smooth");
     const instructorId = location.state.instructorId;
     axios
-      .get(`http://localhost:3000/instructor/` + instructorId, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
+      .get(
+        `http://localhost:3000/instructor/` +
+          instructorId +
+          "?CC=" +
+          countryCode,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
       .then((res) => {
+        console.log(res.data);
         setReceivedData(res.data);
         setReviews(res.data.instructor.reviews);
         setStatsConf([
@@ -60,9 +76,10 @@ const InstructorPage = () => {
           res.data.instructor.courseDetails.length,
         ]);
         setSummary(res.data.count);
+        setCurrencySymbol(res.data.symbol);
         setLoaded(true);
       });
-  }, [render]);
+  }, [render, countryCode]);
 
   //stats for the performance thinggy
   var stats;
@@ -96,11 +113,15 @@ const InstructorPage = () => {
       review: enteredReview,
     };
     axios
-      .post(`http://localhost:3000/instructor/rate/`+location.state.instructorId, reviewData, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
+      .post(
+        `http://localhost:3000/instructor/rate/` + location.state.instructorId,
+        reviewData,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
       .then((res) => {
         setReviews([...reviews, res.data.review]);
         setSummary(res.data.count);
@@ -109,9 +130,10 @@ const InstructorPage = () => {
           receivedData.instructor.reviews.length + 1,
           receivedData.instructor.courseDetails.length,
         ]);
-        setRender(prev => !prev);
+        setRender((prev) => !prev);
         handleClickVariant("success");
-      }).catch((err) => {
+      })
+      .catch((err) => {
         console.log(err);
         handleClickVariant("error");
       });
@@ -185,22 +207,27 @@ const InstructorPage = () => {
             title={course.course.courseTitle}
             instructorName={course.course.instructorName}
             subject={course.course.subject}
-            level={course.courselevel}
+            level={course.course.level}
             description={course.course.courseDescription}
             coursePrice={course.course.coursePrice}
             discountedPrice={course.course.discountedPrice}
             discount={course.course.discount}
             rating={course.course.rating}
-            currencySymbol="$"
+            currencySymbol={currencySymbol}
           ></CourseCard>
         );
       }
     );
   }
 
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      <NavBarSearch />
+      <NavBarSearch onChange={onChangeHandler} />
       {!loaded ? (
         <div className=" w-full h-full mt-12">
           <div className="flex w-full h-full  justify-center items-center ">
@@ -224,7 +251,7 @@ const InstructorPage = () => {
               INSTRUCTOR
             </p>
             <p className=" flex items-center justify-center font-bold text-4xl">
-              {receivedData.instructor.firstName}
+              {receivedData.instructor.firstName}{" "}
               {receivedData.instructor.lastName}
             </p>
             <p className="flex items-center justify-center text-gray-500">
@@ -261,22 +288,28 @@ const InstructorPage = () => {
               </dl>
             </div>
             <div className="m-4 mt-6">
-              <div className="md:flex md:justify-between items-center mb-2">
-                <div className="font-semibold text-xl">Leave a Review:</div>
-                <div className="md:w-[18vw] flex md:justify-end mt-4 md:mt-0 space-x-2">
-                  <div>Rating</div>
-                  <Rating onChange={ratingChangeHandler} />
+              {localStorage.getItem("role") !== null && (
+                <div className="md:flex md:justify-between items-center mb-2">
+                  <div className="font-semibold text-xl">Leave a Review:</div>
+                  <div className="md:w-[18vw] flex md:justify-end mt-4 md:mt-0 space-x-2">
+                    <div>Rating</div>
+                    <Rating onChange={ratingChangeHandler} />
+                  </div>
                 </div>
-              </div>
-              <textarea
-                reviewState={enteredReview}
-                onChange={reviewChangeHandler}
-                className="w-full bg-white border border-slate-300 rounded-md text-sm shadow-sm
+              )}
+              {localStorage.getItem("role") !== null && (
+                <textarea
+                  reviewState={enteredReview}
+                  onChange={reviewChangeHandler}
+                  className="w-full bg-white border border-slate-300 rounded-md text-sm shadow-sm
             focus:outline-none focus:border-primaryBlue focus:ring-1 focus:ring-primaryBlue"
-              />
-              <div className="flex justify-end mb-4">
-                <SecondaryButton text="Submit" onClick={onClickHandler} />
-              </div>
+                />
+              )}
+              {localStorage.getItem("role") && (
+                <div className="flex justify-end mb-4">
+                  <SecondaryButton text="Submit" onClick={onClickHandler} />
+                </div>
+              )}
               <div>
                 <div className=" font-semibold text-xl mb-4">
                   Instructor Reviews:

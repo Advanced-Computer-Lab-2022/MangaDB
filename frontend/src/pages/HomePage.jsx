@@ -14,12 +14,17 @@ import Testomonial from "../components/HomeComponents/Testomonial";
 import Incentives from "../components/HomeComponents/Incentives";
 import SaleCourseCard from "../components/Course/SaleCourseCard";
 import { useLocation } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 const HomePage = () => {
+  const navigate = useNavigate();
   const [displayedCourses, setDisplayedCourses] = useState([]);
   const [discountedCourses, setDiscountedCourses] = useState([]);
   const [currencySymbol, setCurrencySymbol] = useState("");
-  const [countryCode, setCountryCode] = useState("US");
+  const [countryCode, setCountryCode] = useState(
+    !localStorage.getItem("countryCode")
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
   const location = useLocation();
   const appear = {
     opacity: 0,
@@ -29,6 +34,10 @@ const HomePage = () => {
     },
   };
   useEffect(() => {
+    const role = localStorage.getItem("role");
+    if(role === "INSTRUCTOR" || role === "ADMIN"){
+      navigate('/403')
+    }
     window.scrollTo(0, 0, "smooth");
     axios
       .get("http://localhost:3000/course/mostViewed/?CC=".concat(countryCode))
@@ -37,14 +46,20 @@ const HomePage = () => {
         setCurrencySymbol(res.data.symbol);
       });
 
-    axios.get("http://localhost:3000/course/discountedCourses/").then((res) => {
-      console.log(res.data);
-      setDiscountedCourses(res.data);
-    });
+    axios
+      .get(
+        "http://localhost:3000/course/discountedCourses/?CC=".concat(
+          countryCode
+        )
+      )
+      .then((res) => {
+        setDiscountedCourses(res.data.courses);
+      });
   }, [countryCode]);
 
   const onChangeHandler = (e) => {
     setCountryCode(e);
+    localStorage.setItem("countryCode", e);
   };
 
   const courses = displayedCourses.map((course) => {
@@ -57,6 +72,7 @@ const HomePage = () => {
         subject={course.subject}
         level={course.level}
         coursePrice={course.coursePrice}
+        courseImage={course.courseImage}
         discountedPrice={course.discountedPrice}
         discount={course.discount}
         rating={course.rating}
@@ -74,6 +90,7 @@ const HomePage = () => {
         instructorName={course.instructorName}
         subject={course.subject}
         level={course.level}
+        courseImage={course.courseImage}
         coursePrice={course.coursePrice}
         discountedPrice={course.discountedPrice}
         discount={course.discount}
@@ -82,6 +99,7 @@ const HomePage = () => {
       ></SaleCourseCard>
     );
   });
+
   return (
     <Animate to="1" from="0" attributeName="opacity">
       <div data-carousel> </div>
@@ -153,47 +171,51 @@ const HomePage = () => {
         >
           {courses}
         </Carousel>
-        {localStorage.getItem("role") !== "CORPORATE" && <div className="font-bold text-2xl mt-8 mb-4 flex justify-start mx-12 w-max">
-          On Sale Right Now!  
-        </div>}
-        {localStorage.getItem("role") !== "CORPORATE" && <Carousel
-          rewind={true}
-          pauseOnHover
-          infinite
-          autoPlaySpeed={1500}
-          autoPlay={true}
-          rewindWithAnimation={true}
-          itemClass="ml-3"
-          draggable={false}
-          responsive={{
-            desktop: {
-              breakpoint: {
-                max: 3000,
-                min: 1240,
+        {localStorage.getItem("role") !== "CORPORATE" && (
+          <div className="font-bold text-2xl mt-8 mb-4 flex justify-start mx-12 w-max">
+            On Sale Right Now!
+          </div>
+        )}
+        {localStorage.getItem("role") !== "CORPORATE" && (
+          <Carousel
+            rewind={true}
+            pauseOnHover
+            infinite
+            autoPlaySpeed={1500}
+            autoPlay={true}
+            rewindWithAnimation={true}
+            itemClass="ml-3"
+            draggable={false}
+            responsive={{
+              desktop: {
+                breakpoint: {
+                  max: 3000,
+                  min: 1240,
+                },
+                items: 3,
+                partialVisibilityGutter: 40,
               },
-              items: 3,
-              partialVisibilityGutter: 40,
-            },
-            tablet: {
-              breakpoint: {
-                max: 1239,
-                min: 850,
+              tablet: {
+                breakpoint: {
+                  max: 1239,
+                  min: 850,
+                },
+                items: 2,
+                partialVisibilityGutter: 30,
               },
-              items: 2,
-              partialVisibilityGutter: 30,
-            },
-            mobile: {
-              breakpoint: {
-                max: 849,
-                min: 0,
+              mobile: {
+                breakpoint: {
+                  max: 849,
+                  min: 0,
+                },
+                items: 1,
+                partialVisibilityGutter: 30,
               },
-              items: 1,
-              partialVisibilityGutter: 30,
-            },
-          }}
-        >
-          {displayedDiscountedCourses}
-        </Carousel>}
+            }}
+          >
+            {displayedDiscountedCourses}
+          </Carousel>
+        )}
       </div>
     </Animate>
   );

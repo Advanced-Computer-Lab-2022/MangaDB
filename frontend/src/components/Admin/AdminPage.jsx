@@ -11,7 +11,7 @@ import InstructorCoursesPage from "../../pages/InstructorCoursesPage";
 import LogoutIcon from "@mui/icons-material/Logout";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { useEffect } from "react";
 export default function AdminPage() {
   const navigate = useNavigate();
   const [isClickedUsers, setIsClickedUsers] = useState(true);
@@ -20,6 +20,13 @@ export default function AdminPage() {
     useState(false);
   const [isClickedRequests, setIsClickedRequests] = useState(false);
   const [isClickedCourses, setIsClickedCourses] = useState(false);
+
+  useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role !== "ADMIN") {
+      navigate("/403");
+    }
+  });
 
   const logoutHandler = () => {
     axios
@@ -178,7 +185,6 @@ export default function AdminPage() {
                   logoutHandler();
                 }}
               >
-                
                 <a
                   href="#"
                   class={"flex flex-row items-center h-12 transform  transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800 ".concat(

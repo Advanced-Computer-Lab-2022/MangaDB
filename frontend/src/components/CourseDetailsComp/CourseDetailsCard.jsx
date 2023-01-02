@@ -5,11 +5,10 @@ import { useNavigate } from "react-router-dom";
 const size = 5;
 
 const CourseDetailsCard = (props) => {
-
   const navigate = useNavigate();
 
   const clickHandler = () => {
-    navigate('/InstructorPage', { state: { instructorId: props.id } });
+    navigate("/InstructorPage", { state: { instructorId: props.id } });
   };
 
   const roundedRating = Math.round(+props.rating * 10) / 10;
@@ -38,7 +37,18 @@ const CourseDetailsCard = (props) => {
           )}
         </div>
         <div className="font-light text-base text-gray-500">
-          <span className="hover:cursor-pointer font-normal underline" onClick={clickHandler}>
+          <span
+            className={`${
+              localStorage.getItem("role") === "INSTRUCTOR"
+                ? ``
+                : `hover:cursor-pointer font-normal underline`
+            }`}
+            onClick={
+              localStorage.getItem("role") === "INSTRUCTOR"
+                ? null
+                : clickHandler
+            }
+          >
             {props.instructorName}
           </span>{" "}
           . {props.subject}
@@ -53,23 +63,25 @@ const CourseDetailsCard = (props) => {
               {roundedRating}
             </div>
           </div>
-          {localStorage.getItem("role") !== "CORPORATE" && <div class="text-lg font-bold tracking-tight text-gray-900 flex">
-            {props.discount > 0 && (
-              <div className="line-through decoration-1 text-sm font-thin mr-2 mt-1">
-                {props.coursePrice}
-                {props.currencySymbol.toString()}
-              </div>
-            )}
-            {props.discountedPrice === 0 && (
-              <div className="text-green-600">FREE</div>
-            )}
-            {props.discountedPrice !== 0 && (
-              <div>
-                {props.discountedPrice}
-                {props.currencySymbol.toString()}
-              </div>
-            )}
-          </div>}
+          {localStorage.getItem("role") !== "CORPORATE" && (
+            <div class="text-lg font-bold tracking-tight text-gray-900 flex">
+              {props.discount > 0 && (
+                <div className="line-through decoration-1 text-sm font-thin mr-2 mt-1">
+                  {props.coursePrice}
+                  {props.currencySymbol.toString()}
+                </div>
+              )}
+              {props.discountedPrice === 0 && (
+                <div className="text-green-600">FREE</div>
+              )}
+              {props.discountedPrice !== 0 && (
+                <div>
+                  {props.discountedPrice}
+                  {props.currencySymbol.toString()}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

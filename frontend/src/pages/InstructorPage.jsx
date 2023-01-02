@@ -258,7 +258,7 @@ const InstructorPage = () => {
             <p className="flex items-center justify-center text-gray-500">
               About Me
             </p>
-            <p className="flex items-center justify-center text-center">
+            <p className="flex items-center justify-center text-center mx-4">
               {receivedData.instructor.biography}
             </p>
             <div className="ml-2">
@@ -322,7 +322,7 @@ const InstructorPage = () => {
               </div>
             </div>
             <div>
-              <div className=" font-semibold text-xl mb-4">
+              <div className=" font-semibold text-xl mb-4 mx-4">
                 Instructor Courses:
               </div>
               <div>
@@ -339,14 +339,14 @@ const InstructorPage = () => {
                     desktop: {
                       breakpoint: {
                         max: 3000,
-                        min: 1024,
+                        min: 1240,
                       },
                       items: 3,
                       partialVisibilityGutter: 40,
                     },
                     mobile: {
                       breakpoint: {
-                        max: 464,
+                        max: 849,
                         min: 0,
                       },
                       items: 1,
@@ -354,8 +354,8 @@ const InstructorPage = () => {
                     },
                     tablet: {
                       breakpoint: {
-                        max: 1024,
-                        min: 464,
+                        max: 1239,
+                        min: 850,
                       },
                       items: 2,
                       partialVisibilityGutter: 30,

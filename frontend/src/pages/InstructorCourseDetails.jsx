@@ -24,8 +24,8 @@ const InstructorCourseDetailsPage = () => {
   );
   useEffect(() => {
     const role = localStorage.getItem("role");
-    if(role !== "INSTRUCTOR"){
-      navigate('/403')
+    if (role !== "INSTRUCTOR") {
+      navigate("/403");
     }
     window.scrollTo(0, 0, "smooth");
     const courseId = location.state.courseId;
@@ -98,7 +98,8 @@ const InstructorCourseDetailsPage = () => {
               currencySymbol="$"
             />
           </div>
-          <div className="mx-8 mt-4 h-[600px] w-3/4">
+          <div className="mx-8 mt-4 font-semibold text-xl">Course Overview</div>
+          <div className="mx-8 mt-4 h-[600px]">
             <InstructorVideo
               link={courseDetails.courseOverview}
             ></InstructorVideo>

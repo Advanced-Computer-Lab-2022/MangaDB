@@ -851,7 +851,7 @@ exports.answerQuestion = async (req, res, next) => {
 exports.getInstructorQuestions = async (req, res, next) => {
   let questions = await question.find(
     { instructorId: req.user.id, answer: { $exists: false } },
-    { courseName: 0, instructorId: 0, userId: 0 }
+    { instructorId: 0, userId: 0 }
   );
   if (!questions) {
     res.status(400).json({ message: "Please Enter Valid Instructor ID" });

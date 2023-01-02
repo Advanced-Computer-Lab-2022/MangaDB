@@ -94,16 +94,16 @@ export default function ReportsRequestsManager(props) {
         setRequestStatusFilter("all");
         break;
       case 1:
-        setRequestStatusFilter("accepted");
+        setRequestStatusFilter("Accepted");
         break;
       case 2:
-        setRequestStatusFilter("rejected");
+        setRequestStatusFilter("Rejected");
         break;
       case 3:
-        setRequestStatusFilter("pending");
+        setRequestStatusFilter("Pending");
         break;
       case 4:
-        setRequestStatusFilter("unseen");
+        setRequestStatusFilter("Unseen");
         break;
     }
   };

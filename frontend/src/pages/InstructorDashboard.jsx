@@ -108,6 +108,7 @@ const InstructorDashboard = () => {
         },
       })
       .then((res) => {
+        //console.log(res.data);
         setQuestions(res.data);
       });
   }, [render]);
@@ -369,7 +370,7 @@ const InstructorDashboard = () => {
               <div>
                 <Divider className="hidden sm:block" orientation="vertical" />
               </div>
-              <div>
+              <div className="sm:w-[45%]">
                 <div
                   key={stats[1].id}
                   className="relative bg-white pt-5 px-4 sm:pt-6 sm:px-6 shadow rounded-lg overflow-hidden sm:w-[100%]"

@@ -208,6 +208,7 @@ const InstructorPage = () => {
             instructorName={course.course.instructorName}
             subject={course.course.subject}
             level={course.course.level}
+            courseImage={course.course.courseImage}
             description={course.course.courseDescription}
             coursePrice={course.course.coursePrice}
             discountedPrice={course.course.discountedPrice}

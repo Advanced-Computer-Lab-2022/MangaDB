@@ -14,7 +14,7 @@ import { motion } from "framer-motion";
 import { Fragment } from "react";
 import { useState, useEffect } from "react";
 import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
-
+import { useNavigate } from "react-router-dom";
 //the dots animation
 const appear = {
   opacity: 0,
@@ -35,6 +35,8 @@ const InstructorWallet = () => {
       : localStorage.getItem("countryCode")
   );
 
+  const navigate = useNavigate();
+  
   // for the bottom stats
   var monthRevenue = 0;
   var prevMonthRevenue = 0;
@@ -97,6 +99,10 @@ const InstructorWallet = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0, "smooth");
+    const role = localStorage.getItem("role");
+  if (role !== "INSTRUCTOR") {
+    navigate("/403");
+  }
     //axios to get the data..
     axios
       .get("http://localhost:3000/instructor/amountOwed", {

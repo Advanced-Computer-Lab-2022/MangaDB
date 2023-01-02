@@ -10,9 +10,10 @@ import Certificate from "../components/Certificate/Certificate";
 import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
 import { useSnackbar } from "notistack";
 import ReactLoading from "react-loading";
-
+import { useNavigate } from "react-router-dom";
 const CourseViewPage = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
   const handleClickVariant = (variant) => {
     if (variant === "success") {
       enqueueSnackbar("Your report has been submitted successfully ", {
@@ -34,6 +35,7 @@ const CourseViewPage = () => {
       });
     }
   };
+ 
 
   const location = useLocation();
   const [loaded, setLoaded] = useState(false);
@@ -248,6 +250,10 @@ const CourseViewPage = () => {
 
   //useEffect at the start to receive the data
   useEffect(() => {
+    const role = localStorage.getItem("role");
+    if(role === "INSTRUCTOR" || role === "ADMIN"){
+      navigate('/403')
+    }
     const courseId = location.state;
     axios
       .get(`http://localhost:3000/course/${courseId}`, {
@@ -323,9 +329,20 @@ const CourseViewPage = () => {
         };
         setStudentSolutions([...studentSolutions, temp]);
         managerRef.current.refreshManager();
-        setProgress((prevProg) => {
-          return prevProg + 1;
-        });
+        axios
+          .get(`http://localhost:3000/user/progress/${receivedData._id}`, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
+          .then((res) => {
+            setProgress(res.data.percentage);
+            if (+res.data.percentage === +totalSources) {
+              if (!res.data.certificate) {
+                downloadRef.current.sendEmail();
+              }
+            }
+          });
       })
       .catch((err) => {});
   };
@@ -416,7 +433,6 @@ const CourseViewPage = () => {
             setProgress(res.data.percentage);
             if (+res.data.percentage === +totalSources) {
               if (!res.data.certificate) {
-                console.log(res.data.certificate);
                 downloadRef.current.sendEmail();
               }
             }

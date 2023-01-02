@@ -4,6 +4,7 @@ import PasswordAndPrivacy from "../components/Profile/PasswordAndPrivacy";
 import Billing from "../components/Profile/Billing";
 import Reviews from "../components/Profile/Reviews/Reviews";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import NavBar from "../components/UI/NavBar/NavBar";
 
 const InstructorProfilePage = () => {
@@ -16,9 +17,14 @@ const InstructorProfilePage = () => {
       : localStorage.getItem("countryCode")
   );
 
+  const navigate = useNavigate();
   const managerRef = useRef();
 
   useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role !== "INSTRUCTOR") {
+      navigate("/403");
+    }
     window.scrollTo(0, 0, "smooth");
     setRender(true);
     axios

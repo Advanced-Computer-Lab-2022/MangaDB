@@ -65,15 +65,16 @@
 
 <img src = "./Screenshots/login.jpg">
 
--This is Revamp's login page where based on the stakeholder the navigation will differ.
+- This is Revamp's login page where based on the stakeholder the navigation will differ.
 
 <img src = "./Screenshots/login.jpg">
 
--This is Revamp's sign up page where the trainees can register to become part of the platform.
+- This is Revamp's sign up page where the trainees can register to become part of the platform.
 
-#### -Trainee
+#### - Trainee
 
 <img src = "./Screenshots/trainee Navbar.jpg">
+
 - This is the trainee's navabar where if he clicks home he gets navigated to the homepage, if he clicks on my courses he will be navigated to view his courses , if he click on the FAQS he will be navigated to the FAQs page , if he hovers on the wallet he will view his own wallet, if he clicks on the profile icon he will be navigated to view his profile.
    
 
@@ -99,7 +100,7 @@
 
 <img src = "./Screenshots/courseDetails2.jpg">
 
--This is the second part of the course detailts page where the users can monitor the reviews or write a review about the course if they are registered in that course.
+- This is the second part of the course detailts page where the users can monitor the reviews or write a review about the course if they are registered in that course.
 
 <img src = "./Screenshots/courseView1.jpg">
 
@@ -137,18 +138,18 @@
 
 - This the Trainee's profile where he can edit his information, change his password and finally view his previous reports and their status.
 
-
 <img src = "./Screenshots/Faqs.jpg">
 
--This is what the user views when they click on the FAQS tab, here they can find the most popular questions people ask when using Revamp.
+- This is what the user views when they click on the FAQS tab, here they can find the most popular questions people ask when using Revamp.
 
 <img src = "./Screenshots/footer.jpg">
 
--This is the website's footer where clicking on any field will navigate to the corresponding page in the canadian chamber website.
+- This is the website's footer where clicking on any field will navigate to the corresponding page in the canadian chamber website.
 
-#### -Instructor
+#### - Instructor
 
-<img src = "./Screenshots/instructorNavbar.jpg">
+<img src ="./Screenshots/instructorNavbar.jpg">
+
 - This is the instructors's navabar where if he clicks dashboard he/she gets navigated to his/her dashboard, if he/she clicks on courses he/she will be navigated to view all courses ,if he/she clicks on Add course he/she will be navigated to the add course page, if he/she clicks on the FAQS he/she will be navigated to the FAQs page , if he clicks on the wallet he/she will view his/her own wallet, if he/she clicks on the profile icon he/she will be navigated to view his/her profile.
 
 <img src = "./Screenshots/instructordash.jpg">
@@ -179,9 +180,9 @@
 
 - This is the part wher the instructor can view his performance and the money the company (revamp) owes him (the percentage of sales).
 
-#### -Admin
+#### - Admin
 
-<img src = "./Screenshots/AdminAddUser.jpg">
+<img src = "./Screenshots/adminadduser.jpg">
 
 - This is the part where the admin can add users to the platform based on agreements done.
   
@@ -193,22 +194,33 @@
 
 - This is the part where the admin can view all the requests made by users, he can also accept/reject them.
 
-<img src = "./Screenshots/AdminReports.jpg">
+<img src = "./Screenshots/adminreports.jpg">
 
-   - This is the part where the admin can view all the reports made on the platform and resolve or hand them to the development team (pend the problems).
+- This is the part where the admin can view all the reports made on the platform and resolve or hand them to the development team (pend the problems).
 
 
 ## Database Models
 
- - The First model is the user with 4 available roles 1.Trainee , 2.Corporate Trainee, 3.Instructor, this model holds all the information regarding that model like the name email password(hashed) etc.
+- The First model is the user with 4 available roles 1.Trainee , 2.Corporate Trainee, 3.Instructor, this model holds all the information regarding that model like the name email password(hashed) etc.
 
 - The Second model is the course which holds all the sections , excersises  and lessons that course has. Moreover, holds statistical information like the duration of each lesson and the duration of the whole course.
 
 - The Third model is the Problems Model which holds all the information regarding the problems like the description  , date of submittion and the user who submitted that problem and finally the follow up if done by the user.
 
--The Fourth model is the Requests Model which holds all the information regarding the request like ths user who submitted that report , the date and the type of that request.
+- The Fourth model is the Requests Model which holds all the information regarding the request like ths user who submitted that report , the date and the type of that request.
 
--The Fifth model is the invoice model which holds all the transaction information like the date and the user who issued that invoice and the the course related to that invoice.
+- The Fifth model is the invoice model which holds all the transaction information like the date and the user who issued that invoice and the the course related to that invoice.
+
+## API Documentation
+
+- The following links are for our API documentations
+- https://www.postman.com/winter-crescent-614567/workspace/my-workspace/collection/22892151-70a82e2d-655a-4212-bd3f-dd34a108de46?action=share&creator=24106838&ctx=documentation
+- https://www.postman.com/winter-crescent-614567/workspace/my-workspace/collection/22892151-837a7360-758a-47e4-92fd-683fc36d7d81?action=share&creator=24106838
+- https://www.postman.com/winter-crescent-614567/workspace/my-workspace/collection/22892151-4090c077-8ea0-4be2-8729-1e2fe24865f8?action=share&creator=24106838
+- https://www.postman.com/winter-crescent-614567/workspace/my-workspace/collection/22892151-feceb125-dcdc-440a-96fc-4efa2e83abf5?action=share&creator=24106838
+- https://www.postman.com/winter-crescent-614567/workspace/my-workspace/collection/22892151-e5b4386a-bd53-46ce-93cd-7587384f2b8a?action=share&creator=24106838
+- https://www.postman.com/winter-crescent-614567/workspace/my-workspace/collection/22892151-2e1331d8-c256-49af-9b2b-2e86bc9d9a1e?action=share&creator=24106838
+- https://www.postman.com/winter-crescent-614567/workspace/my-workspace/collection/22892151-29b28c7b-f73c-4b0d-a8db-60e59890af26?action=share&creator=24106838
 
 ## Installation and Usage
 

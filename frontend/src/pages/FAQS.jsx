@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import NavBarSearch from "../components/UI/NavBar/NavBarSearch";
-
+import { useNavigate } from "react-router-dom";
 const faqs = [
   {
     id: 1,
@@ -36,7 +36,12 @@ const faqs = [
   },
 ];
 const FAQS = () => {
+  const navigate = useNavigate();
   useEffect(() => {
+    const role = localStorage.getItem("role");
+    if(role === "ADMIN"){
+      navigate('/403')
+    }
     window.scrollTo(0, 0, "smooth");
   }, []);
   const [countryCode, setCountryCode] = useState(

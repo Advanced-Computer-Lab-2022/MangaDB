@@ -14,10 +14,15 @@ const TraineeProfilePage = () => {
       ? "US"
       : localStorage.getItem("countryCode")
   );
+  const navigate = useNavigate();
   const managerRef = useRef();
 
 
   useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role !== "TRAINEE" && role !=="CORPORATE") {
+      navigate("/403");
+    }
     window.scrollTo(0, 0, "smooth");
     setRender(true);
     axios

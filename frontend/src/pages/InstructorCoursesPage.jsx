@@ -75,6 +75,10 @@ const IntructorCoursePage = (props) => {
       : localStorage.getItem("countryCode")
   );
 
+  const role = localStorage.getItem("role");
+  if(role !== "INSTRUCTOR" && role!== "ADMIN"){
+    navigate('/403')
+  }
   const selectAllHandler = (selectRows) => {
     if (selectRows) {
       const temp = [];

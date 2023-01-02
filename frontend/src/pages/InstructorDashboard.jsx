@@ -12,12 +12,15 @@ import { Divider } from "@mui/material";
 import InstructorQACard from "../components/QA/InstructorQACard";
 import ReactLoading from "react-loading";
 import { useSnackbar } from "notistack";
-
+import { useNavigate } from "react-router-dom";
 const InstructorDashboard = () => {
+  const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const handleClickVariant = (variant) => {
-    enqueueSnackbar("Your follow up has been submitted successfuly ", { variant });
-  }
+    enqueueSnackbar("Your follow up has been submitted successfuly ", {
+      variant,
+    });
+  };
 
   const [receivedData, setReceivedData] = useState({});
   const [reports, setReports] = useState([]);
@@ -63,7 +66,7 @@ const InstructorDashboard = () => {
       })
       .then((res) => {
         handleClickVariant("success");
-        setRender(prev => !prev)
+        setRender((prev) => !prev);
         console.log(res);
       });
   };
@@ -71,6 +74,10 @@ const InstructorDashboard = () => {
   //loading as the endpoint contains a lot of data..
   //fetch the data as soon as he logs in..
   useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role !== "INSTRUCTOR") {
+      navigate("/403");
+    }
     window.scrollTo(0, 0, "smooth");
     axios
       .get("http://localhost:3000/instructor/myReviews", {

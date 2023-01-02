@@ -10,6 +10,10 @@ const AddCoursePage = (props) => {
   const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0, "smooth");
+    const role = localStorage.getItem("role");
+    if(role !== "INSTRUCTOR"){
+      navigate('/403')
+    }
   }, []);
   const [steps, setSteps] = useState([
     {

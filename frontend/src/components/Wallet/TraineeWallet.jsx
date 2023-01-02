@@ -9,10 +9,15 @@ const TraineeWallet = (props) => {
   const [hovered, setHovered] = useState(false);
   const [balance, setBalance] = useState(0);
   const [symbol, setSymbol] = useState("$");
+  const [countryCode, setCountryCode] = useState(
+    !localStorage.getItem("countryCode")
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
   //handle the mouseOver and mouseLeave functions..
   const hoverHandler = (e) => {
     axios
-    .get("http://localhost:3000/user/wallet" + "?CC=" + localStorage.getItem("countryCode") ,{
+    .get("http://localhost:3000/user/wallet" + "?CC=" + countryCode ,{
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },

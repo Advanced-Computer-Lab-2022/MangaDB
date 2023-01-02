@@ -15,7 +15,7 @@ const InstructorQACard = (props) => {
   };
   const onConfirmHandler = (reply) => {
     setShowQAModal(false);
-    props.onConfirmReplyHandler(reply)
+    props.onConfirmReplyHandler(reply);
   };
   return (
     <Fragment>
@@ -45,16 +45,20 @@ const InstructorQACard = (props) => {
               Pending
             </div>
           </div>
-          <div className="font-semibold">Course: {props.courseName} </div>
-          <div className="font-medium text-md text-gray-500">
-            Asked on: {props.date}
-          </div>
-          <div className="mb-2">question: {props.question}</div>
-          <div className="absolute right-2 top-2">
-            <SecondaryButton
-              onClick={showQAHandler}
-              text="reply"
-            ></SecondaryButton>
+          <div className="ml-12">
+            <div className="font-semibold mt-2">
+              Course: {props.courseName}{" "}
+            </div>
+            <div className="font-medium text-md text-gray-500">
+              Asked on: {props.date}
+            </div>
+            <div className="mb-2">question: {props.question}</div>
+            <div className="md:absolute md:right-2 md:top-2">
+              <SecondaryButton
+                onClick={showQAHandler}
+                text="reply"
+              ></SecondaryButton>
+            </div>
           </div>
         </div>
       </div>

@@ -98,7 +98,7 @@ const ReportItem = (props) => {
           <></>
         )}
         <div className="lg:flex lg:justify-between items-center mb-2">
-          <div className="mb-2 lg:mb-0 truncate">
+          <div className="mb-2 lg:mb-0 w-[80%]">
             <div>{props.description}</div>
             {props.followUp && <div>Follow Up: {props.followUp}</div>}
           </div>

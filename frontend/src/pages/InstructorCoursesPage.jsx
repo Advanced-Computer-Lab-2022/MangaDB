@@ -428,6 +428,7 @@ const IntructorCoursePage = (props) => {
         prevSearchState={searchState.search}
         admin={props.admin}
         adminAddPromotionHandler={adminAddPromotionHandler}
+        adminNoSelectedCourses={selectedNow.length === 0}
       />
       <div className="hidden xl:block">
         <Table

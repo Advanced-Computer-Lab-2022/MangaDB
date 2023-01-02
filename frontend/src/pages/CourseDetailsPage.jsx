@@ -8,9 +8,10 @@ import CourseContent from "../components/CourseDetailsComp/CourseContent";
 import CourseReviews from "../components/CourseDetailsComp/CourseReviews";
 import { useLocation } from "react-router-dom";
 import ReactLoading from "react-loading";import { useSnackbar } from "notistack";
-
+import { useNavigate } from "react-router-dom";
 const CourseDetailsPage = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
   const handleClickVariant = (variant) => {
     if (variant === "error") {
       enqueueSnackbar("You have already reviewd this course before ", {
@@ -33,17 +34,29 @@ const CourseDetailsPage = () => {
   const [requested, setRequested] = useState(false);
   const [render, setRender] = useState(false);
   const [disableButton, setDisableButton] = useState(false);
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
+  const [currencySymbol, setCurrencySymbol] = useState("$");
 
+  const role = localStorage.getItem("role");
+ 
   useEffect(() => {
+    if(role === "INSTRUCTOR" || role === "ADMIN"){
+      navigate('/403')
+    }
     window.scrollTo(0, 0, "smooth");
     const courseId = location.state.courseId;
     axios
-      .get("http://localhost:3000/course/".concat(courseId), {
+      .get("http://localhost:3000/course/".concat(courseId).concat("?CC=" + countryCode), {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
       .then((res) => {
+        setCurrencySymbol(res.data.symbol);
         setCourseDetails(res.data.course);
         setLoaded(true);
         if (res.data.userData !== null) {
@@ -72,7 +85,7 @@ const CourseDetailsPage = () => {
           }
         }
       });
-  }, [render]);
+  }, [render,countryCode]);
 
   const setRenderHandler = (prevRender) => {
     setRender(!prevRender);
@@ -87,7 +100,6 @@ const CourseDetailsPage = () => {
         },
       })
       .then((res) => {
-        console.log(res.data.review);
         setCourseReviews(res.data.review);
         setReviewsCount(res.data.count);
       });
@@ -115,9 +127,15 @@ const CourseDetailsPage = () => {
         handleClickVariant("error");
       });
   };
+
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      <NavBarSearch currentTab="" />
+      <NavBarSearch onChange={onChangeHandler} currentTab="" />
       {!loaded ? (
         <div className=" w-full h-full mt-12">
           <div className="flex w-full h-full  justify-center items-center ">
@@ -148,7 +166,7 @@ const CourseDetailsPage = () => {
               discount={courseDetails.discount}
               coursePrice={courseDetails.coursePrice}
               discountedPrice={courseDetails.discountedPrice}
-              currencySymbol="$"
+              currencySymbol={currencySymbol}
             />
           </div>
           <AddToCartCard

@@ -4,84 +4,29 @@ import PasswordAndPrivacy from "../components/Profile/PasswordAndPrivacy";
 import Billing from "../components/Profile/Billing";
 import Reviews from "../components/Profile/Reviews/Reviews";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 import NavBar from "../components/UI/NavBar/NavBar";
-//stub for the userPersonal Info Received
-const user = {
-  email: "test@example.com",
-  firstName: "test test",
-  lastName: "test2",
-  gender: "Male",
-  biography: "biography",
-  country: "",
-  emailPrivacy: {
-    name: "Private To You",
-    description: "Only I Can See My Email Address",
-  },
-  payments: [
-    {
-      id: 1,
-      date: "1/1/2020",
-      datetime: "2020-01-01",
-      description: "Business Plan - Annual Billing",
-      amount: "CA$109.00",
-      href: "#",
-    },
-    {
-      id: 2,
-      date: "21/01/2020",
-      datetime: "2020-01-01",
-      description: "Business Plan - Annual Billing",
-      amount: "CA$109.00",
-      href: "#",
-    },
-    {
-      id: 3,
-      date: "1/1/2022",
-      datetime: "2020-01-01",
-      description: "Business Plan - Annual Billing",
-      amount: "CA$109.00",
-    },
-  ],
-};
-const reviews = [
-  {
-    id: 1,
-    rating: 5,
-    content: "This is a really good course ",
-    author: "Omar Moataz",
-    date: "May 16, 2021",
-  },
-  {
-    id: 2,
-    rating: 5,
-    content: "This is a really good course ",
-    author: "Omar Moataz",
-    date: "May 16, 2021",
-  },
-  {
-    id: 3,
-    rating: 4.7,
-    content: "This is a really good course ",
-    author: "Omar Moataz",
-    date: "May 16, 2021",
-  },
-];
 
 const InstructorProfilePage = () => {
-  const [receivedUserInfo, setReceivedUserInfo] = useState(user);
+  const [receivedUserInfo, setReceivedUserInfo] = useState({});
   const [selectedStage, setSelectedStage] = useState(1);
   const [render, setRender] = useState(false);
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
 
+  const navigate = useNavigate();
   const managerRef = useRef();
-  //gather the userInfo
-
-  //change it to auth later
 
   useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role !== "INSTRUCTOR") {
+      navigate("/403");
+    }
     window.scrollTo(0, 0, "smooth");
     setRender(true);
-    //to be changed
     axios
       .get("http://localhost:3000/user/myProfile", {
         headers: {
@@ -89,50 +34,10 @@ const InstructorProfilePage = () => {
         },
       })
       .then((res) => {
-        //console.log(res.data);
-        //console.log(user);
         setReceivedUserInfo(res.data);
         managerRef.current.handleRender();
       });
   }, [render]);
-
-  //function to handle submitting changes to the personal info
-  const personalInfoSaveHandler = (data) => {
-    console.log(data);
-    axios
-      .patch("http://localhost:3000/user/updateUser", data, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
-      .then((res) => {});
-  };
-
-  //function to handle the change of password or privacy
-  const securityChangeHandler = (data) => {
-    axios
-      .patch("http://localhost:3000/user/updateUser", data, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
-      .then((res) => {});
-  };
-
-  //function to change/ add credit card information
-  // const creditCardChangeHandler = (data) => {
-  //   axios
-  //     .post("http://localhost:3000/instructor/", data, {
-  //       headers: {
-  //         "Access-Control-Allow-Origin": "*",
-  //         Authorization: "Bearer " + localStorage.getItem("token"),
-  //         "content-type": "text/json",
-  //       },
-  //     })
-  //     .then((res) => {});
-  // };
 
   const changeStageHandler = (newStageName) => {
     if (newStageName === "Profile") {
@@ -145,14 +50,9 @@ const InstructorProfilePage = () => {
       setSelectedStage(4);
     }
   };
-  const reviewReportHandler = (reviewId) => {
-    //sprint 3
-    console.log(reviewId);
-  };
 
   var displayedStep;
   if (selectedStage === 1) {
-    console.log(receivedUserInfo);
     displayedStep = (
       <PersonalInfoForm
         email={receivedUserInfo.email}
@@ -171,18 +71,16 @@ const InstructorProfilePage = () => {
         selected={receivedUserInfo.emailPrivacy}
       ></PasswordAndPrivacy>
     );
-  } else {
-    displayedStep = (
-      <Reviews
-        changeStageHandler={changeStageHandler}
-        reviewReportHandler={reviewReportHandler}
-        reviews={reviews}
-      ></Reviews>
-    );
   }
+
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      <NavBar currentTab="Profile" />
+      <NavBar onChange={onChangeHandler} currentTab="Profile" />
       <div>{displayedStep}</div>
     </Fragment>
   );

@@ -10,6 +10,10 @@ const AddCoursePage = (props) => {
   const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0, "smooth");
+    const role = localStorage.getItem("role");
+    if(role !== "INSTRUCTOR"){
+      navigate('/403')
+    }
   }, []);
   const [steps, setSteps] = useState([
     {
@@ -26,6 +30,11 @@ const AddCoursePage = (props) => {
     },
   ]);
   const [data, setData] = useState({});
+  const [countryCode, setCountryCode] = useState(
+    localStorage.getItem("countryCode") === null
+      ? "US"
+      : localStorage.getItem("countryCode")
+  );
   const onSaveHandler = (data) => {
     setData({ ...data }); //remove the totalHours and the price
     var newSteps = [];
@@ -64,9 +73,14 @@ const AddCoursePage = (props) => {
     enqueueSnackbar("Course has been Added Successfully", { variant });
   };
 
+  const onChangeHandler = (e) => {
+    setCountryCode(e);
+    localStorage.setItem("countryCode", e);
+  };
+
   return (
     <Fragment>
-      <NavBarSearch currentTab="Add Course"></NavBarSearch>
+      <NavBarSearch onChange={onChangeHandler} currentTab="Add Course"></NavBarSearch>
       <div className=" mt-[4.5rem]">
         <StepsBar steps={steps}></StepsBar>
       </div>

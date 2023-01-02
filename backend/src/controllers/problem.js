@@ -1,5 +1,6 @@
 const problem = require("../models/problem");
 const course = require("../models/course");
+const user = require("../models/user");
 
 exports.createProblem = async (req, res) => {
   const courseId = req.body.courseId;
@@ -10,12 +11,13 @@ exports.createProblem = async (req, res) => {
   if (!foundCourse) {
     return res.status(404).send({ message: "Course not found" });
   }
+  const currentUser=await user.findById(user);
 
   const newProblem = new problem({
     course: courseId,
     courseName: foundCourse.courseTitle,
     user: user,
-    userName: "httzabat lma n3ml l token",
+    userName: currentUser.firstName + " " + currentUser.lastName ,
     type: type,
     description: description,
   });

@@ -99,6 +99,7 @@ const MyCourses = () => {
         level={course.courselevel}
         description={course.course.courseDescription}
         coursePrice={course.course.coursePrice}
+        courseImage={course.course.courseImage}
         discountedPrice={course.course.discountedPrice}
         discount={course.course.discount}
         rating={course.course.rating}

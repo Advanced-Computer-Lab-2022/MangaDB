@@ -191,6 +191,7 @@ const PasswordAndPrivacy = (props) => {
       })
       .then((res) => {
         handleClickVariant("success");
+        setIncorrectCurrentPassword(false);
       })
       .catch((err) => {
         if (

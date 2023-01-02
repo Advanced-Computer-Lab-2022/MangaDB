@@ -385,48 +385,7 @@ const PersonalInfoForm = forwardRef((props, ref) => {
                       </div>
                     </div>
 
-                    <div className="col-span-12 sm:col-span-6">
-                      <label
-                        htmlFor="company"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Country
-                      </label>
-                      <Autocomplete
-                        id="country-select-demo"
-                        sx={{ width: 300 }}
-                        options={countries}
-                        autoHighlight
-                        getOptionLabel={(option) => option.label}
-                        onChange={CountryHandler}
-                        renderOption={(props, option) => (
-                          <Box
-                            component="li"
-                            sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                            {...props}
-                          >
-                            <img
-                              loading="lazy"
-                              width="20"
-                              src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                              srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                              alt=""
-                            />
-                            {option.label} ({option.code})
-                          </Box>
-                        )}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label="Choose a country"
-                            inputProps={{
-                              ...params.inputProps,
-                              autoComplete: "new-password", // disable autocomplete and autofill
-                            }}
-                          />
-                        )}
-                      />
-                    </div>
+                    
                   </div>
                 </div>
                 <div className="mt-4 py-4 px-4 flex justify-end sm:px-6">

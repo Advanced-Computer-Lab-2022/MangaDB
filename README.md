@@ -13,11 +13,12 @@
 
 ## Build Status
 
-- The Current Build Of the project contains no bugs or malfunctions, however additional features will be added to the project in future releases.
+- The Current Build Of the project contains no bugs or malfunctions, however, for better UX the admin and the instructor need to be able to input a start date for the promotion inorder not to add a promotion on a specific day and the trainees must be prevented to view a course after they have requested a refund since they can simply get their certificate and view the course content before the admin responds to that request.
 
 ## Code Styles
 
 - Standard coding style is used , however most functions and code blocks are documented for future reference.
+- MVC (Model-View-Controller) is used : MVC (Model-View-Controller) is a pattern in software design commonly used to implement user interfaces, data, and controlling logic. It emphasizes a separation between the software's business logic and display. This "separation of concerns" provides for a better division of labor and improved maintenance..
 
 ## Tech/Frameworks
 
@@ -27,6 +28,8 @@
 - [NodeJS](https://nodejs.org/en/) which is an environment that permits the user to write normal JavaScript code that is highly performant and easy to use to build scalable network applications.
 - [JavaScript](https://www.javascript.com/) was used to develop both the backend and the frontend codes.
 - [Tailwind](https://tailwindcss.com/) was used for styling our html components.
+- [Material-UI](https://mui.com/) was used for ready made components.
+- [Stripe](https://stripe.com/) was used for the online payment.
   
 ## Features
 
@@ -198,7 +201,6 @@
 
 - This is the part where the admin can view all the reports made on the platform and resolve or hand them to the development team (pend the problems).
 
-
 ## Database Models
 
 - The First model is the user with 4 available roles 1.Trainee , 2.Corporate Trainee, 3.Instructor, this model holds all the information regarding that model like the name email password(hashed) etc.
@@ -211,6 +213,258 @@
 
 - The Fifth model is the invoice model which holds all the transaction information like the date and the user who issued that invoice and the the course related to that invoice.
 
+## Code Examples
+
+##### The Following examples highlight the best practices using react in the frontend to ensure the latest states and the best performance, and for the backend code is optimized to ensure fast responses and provide better user experience. 
+
+-  Getting all courses :
+  ```exports.getAllCourses = async (req, res, next) => {
+  const currentPage = req.query.page || 1;
+  const perPage = req.query.pageSize || 10;
+  const search = req.query.search || "";
+  let minPrice = req.query.minPrice || 0;
+  let maxPrice = req.query.maxPrice || Number.MAX_VALUE;
+  const rating = req.query.rating || 0;
+  const subjects = req.query.subject;
+  const iId = req.user? req.user.id:undefined;
+  let query = {};
+  if (subjects) {
+    query = { subject: { $in: subjects } };
+  }
+  const countryCode = req.query.CC || "US";
+  let countryDetails = await currencyConverter.convertCurrency(
+    countryCode,
+    "US"
+  );
+  let exchangeRate = countryDetails.rate;
+  let symbol = countryDetails.symbol;
+
+  minPrice = minPrice * exchangeRate;
+  maxPrice = maxPrice * exchangeRate;
+  let allCourses = await course
+    .find({
+      $and: [
+        query,
+        { discountedPrice: { $gte: minPrice } },
+        { discountedPrice: { $lte: maxPrice } },
+        { rating: { $gte: rating } },
+        {
+          $or: [
+            { courseTitle: { $regex: search, $options: "i" } },
+            { subject: { $regex: search, $options: "i" } },
+            { instructorName: { $regex: search, $options: "i" } },
+          ],
+        },
+      ],
+    })
+    .skip((currentPage - 1) * perPage)
+    .limit(perPage)
+    .select({
+      _id: 1,
+      courseTitle: 1,
+      courseImage: 1,
+      totalMins: 1,
+      level: 1,
+      courseDescription: 1,
+      coursePrice: 1,
+      summary: 1,
+      discountedPrice: 1,
+      discount: 1,
+      discountStartDate: 1,
+      discountEndDate: 1,
+      courseImage: 1,
+      rating: 1,
+      instructor: 1,
+      instructorName: 1,
+      subject: 1,
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "Fetching courses failed!",
+      });
+    });
+  let courseCount = await course
+    .find()
+    .count()
+    .catch((error) => {
+      res.status(500).json({
+        message: "Counting Courses Failed",
+      });
+    });
+  countryDetails = await currencyConverter.convertCurrency("US", countryCode);
+  exchangeRate = countryDetails.rate;
+  allCourses.forEach((course) => {
+    course.coursePrice = (course.coursePrice * exchangeRate).toFixed(2);
+    course.discountedPrice = (course.discountedPrice * exchangeRate).toFixed(2);
+  });
+  let instructorCourses = [];
+  if (iId && (req.user.role == "INSTRUCTOR" || req.user.role == "ADMIN")) {
+    for (let i = 0; i < allCourses.length; i++) {
+      if (allCourses[i].instructor == iId) {
+        allCourses[i].mine = true;
+        instructorCourses.push({ course: allCourses[i], mine: true });
+      } else {
+        allCourses[i].mine = false;
+        instructorCourses.push({ course: allCourses[i], mine: false });
+      }
+    }
+    return res.status(200).json({
+      message: "Courses fetched successfully!",
+      courses: instructorCourses,
+      symbol: symbol,
+      count: courseCount,
+    });
+  }
+  res.status(200).json({
+    message: "Courses fetched successfully!",
+    courses: allCourses,
+    symbol: symbol,
+    count: courseCount,
+  });
+};
+```
+- Sending / Downloading a Certificate :
+  ```const Certificate = forwardRef((props, ref) => {
+  useImperativeHandle(ref, () => ({
+    generatePDF2() {
+      html2canvas(document.querySelector("#contentt"), {
+        logging: true,
+        profile: true,
+        onclone: function (doc) {
+          const hiddenDiv = doc.getElementById("contentt");
+          hiddenDiv.style.display = "block";
+          hiddenDiv.style.zIndex = "0";
+          hiddenDiv.style.position = "fixed";
+        },
+        useCORS: true,
+        allowTaint: true,
+      }).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("l", "px", "a1");
+        pdf.addImage(imgData, "PNG", 0, 0);
+        pdf.save("Certificate.pdf");
+      });
+    },
+    sendEmail() {
+      html2canvas(document.querySelector("#contentt"), {
+        logging: true,
+        profile: true,
+        onclone: function (doc) {
+          const hiddenDiv = doc.getElementById("contentt");
+          hiddenDiv.style.display = "block";
+          hiddenDiv.style.zIndex = "0";
+          hiddenDiv.style.position = "fixed";
+        },
+        useCORS: true,
+        allowTaint: true,
+      }).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("l", "px", "a1");
+        pdf.addImage(imgData, "PNG", 0, 0);
+        //pdf.save("Certificate.pdf");
+        axios.post(
+          "http://localhost:3000/user/sendCertificate",
+          {
+            url: canvas.toDataURL("image/jpeg", 0.5),
+            courseId: props._id,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+      });
+    },
+  }));
+  ```
+  - Filters 
+  ```
+  const Filters = (props) => {
+  const defaultFilterState = {
+    ...props.prevState,
+  };
+  const ReducerFunction = (state, action) => {
+    if (action.type === "SUBJECT") {
+      const newSubject = {
+        ...state,
+        subjects: action.value,
+      };
+      return newSubject;
+    } else if (action.type === "PRICE") {
+      const newPrice = {
+        ...state,
+        price: action.value,
+      };
+      return newPrice;
+    } else if (action.type === "RATING") {
+      const newRating = {
+        ...state,
+        rating: action.value,
+      };
+      return newRating;
+    } else if (action.type === "CLEAR") {
+      return {
+        subjects: [],
+        price: null,
+        rating: null,
+      };
+    }
+  };
+
+  const [filterState, dispatchFilter] = useReducer(
+    ReducerFunction,
+    defaultFilterState
+  );
+  const onSubmitHandler = () => {
+    var newFilterState;
+    if (filterState.price) {
+      if (filterState.price.minValue > filterState.price.maxValue) {
+        newFilterState = {
+          ...filterState,
+          price: {
+            minValue: filterState.price.maxValue,
+            maxValue: filterState.price.minValue,
+          },
+        };
+        props.onConfirm(newFilterState);
+      }
+      else{
+        props.onConfirm(filterState);
+      }
+      
+    } else props.onConfirm(filterState);
+  };
+  const subjectChangeHandler = (Array) => {
+    dispatchFilter({ type: "SUBJECT", value: Array });
+  };
+  const priceChangeHandler = (Range) => {
+    console.log(Range)
+    dispatchFilter({ type: "PRICE", value: Range });
+  };
+  const ratingChangeHandler = (Rating) => {
+    dispatchFilter({ type: "RATING", value: Rating });
+  };
+
+  const clearHandler = () => {
+    dispatchFilter({ type: "CLEAR" });
+  };
+  ```
+## Environment Variables
+
+ #### The following environment variables must be set for the platform to work properly.
+
+ - DB_STRING
+ - TOKEN_SECRET
+ - EMAIL_SERVICE
+ - EMAIL_HOST
+ - EMAIL_PORT
+ - EMAIL_CORPORATE
+ - EMAIL_PASSWORD
+ - STRIPE_PRIVATE_KEY
+ - SUCCESS_URL
+ - CANCEL_URL
+
 ## API Documentation
 
 - The following links are for our API documentations
@@ -221,6 +475,10 @@
 - https://www.postman.com/winter-crescent-614567/workspace/my-workspace/collection/22892151-e5b4386a-bd53-46ce-93cd-7587384f2b8a?action=share&creator=24106838
 - https://www.postman.com/winter-crescent-614567/workspace/my-workspace/collection/22892151-2e1331d8-c256-49af-9b2b-2e86bc9d9a1e?action=share&creator=24106838
 - https://www.postman.com/winter-crescent-614567/workspace/my-workspace/collection/22892151-29b28c7b-f73c-4b0d-a8db-60e59890af26?action=share&creator=24106838
+
+## Testing
+
+- Testing was done using Postman (run the endpoint then check the response) no one implemented tests.
 
 ## Installation and Usage
 
@@ -233,6 +491,16 @@
 - navigate to the frontend folder `cd frontend`
 - download the dependencies `npm install` if it fails run `npm install --force`.
 - now run the client `npm start`.
+
+## Contribute
+
+- Promotion start date is needed since what if the admin or the instructor need to input a start date for the promotion to start like for example 30 days before christmas or something as they might not be available to create the promotion on that day.
+- Prevent the user from requesting a refund then simply be able to watch the course and get the certificate before the admin responds.
+- Implement Tests for the backend and for the frontend.
+
+## License
+
+- Apache License, Version 2.0 for stripe.
 
 ## Authors
 

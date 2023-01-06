@@ -66,138 +66,146 @@
   
 ## Screenshots
 
-<img src = "./Screenshots/login.jpg">
+<img src = "./Screenshots/login.png">
 
 - This is Revamp's login page where based on the stakeholder the navigation will differ.
 
-<img src = "./Screenshots/login.jpg">
+<img src = "./Screenshots/signup.png">
 
 - This is Revamp's sign up page where the trainees can register to become part of the platform.
 
 #### - Trainee
 
-<img src = "./Screenshots/trainee Navbar.jpg">
+<img src = "./Screenshots/traineeNavBar.png">
 
 - This is the trainee's navabar where if he clicks home he gets navigated to the homepage, if he clicks on my courses he will be navigated to view his courses , if he click on the FAQS he will be navigated to the FAQs page , if he hovers on the wallet he will view his own wallet, if he clicks on the profile icon he will be navigated to view his profile.
    
 
-<img src = "./Screenshots/homepage1.jpg">
+<img src = "./Screenshots/Home1.png">
 
 - This is the first part of the landing page of both guests and trainees , where users can search for courses based on the instructor name, course name or category, users can also see the companies that use Revamp.
 
-<img src = "./Screenshots/homepage2.jpg">
+<img src = "./Screenshots/Home2.png">
 
 - This is the second part of the landing page where users can see a testomonial of the ceo of Wuzzuf using revamp and the incentives of using the Revamp platform.
 
-<img src = "./Screenshots/homepage3.jpg">
+<img src= "./Screenshots/Home3.png">
 
-- This is the third part of the landing page where users can view and select the most popular courses to help them find what best suits them.
+- This is the third part of the landing page where users can see incentives of using the Revamp platform.
 
-<img src = "./Screenshots/SearchResults.jpg">
+<img src = "./Screenshots/Home4.png">
+
+- This is the fourth part of the landing page where users can view and select the most popular courses to help them find what best suits them.
+
+<img src = "./Screenshots/SearchResults.png">
 
 - This is the search results page where users can search for courses or apply filters to narrow down their search, clicking on the view will navigate the user to the course details page where the user can view more information about the selected course.
 
-<img src = "./Screenshots/courseDetails1.jpg">
+<img src = "./Screenshots/CourseDetails1.png">
 
 - This is the first part of the course details page where the users can view information about the course like the content, title instructor etc., clicking on the youtube logo will allow the user to watch the course outline video and clicking on the go to course button will navigate the registered user to the course watch page.
 
-<img src = "./Screenshots/courseDetails2.jpg">
+<img src = "./Screenshots/CourseDetails2.png">
 
 - This is the second part of the course detailts page where the users can monitor the reviews or write a review about the course if they are registered in that course.
 
-<img src = "./Screenshots/courseView1.jpg">
+<img src = "./Screenshots/CourseView1.png">
 
 - This is the main part of the course watch page where users can watch the course content by selecting a view from the accordion on the right.
 
-<img src = "./Screenshots/courseView2.jpg">
+<img src = "./Screenshots/CourseView2.png">
 
 - This is the notes taking part while watching the video, this is done using the timestamp, so the user can recall in which lesson and they took the note.
   
-<img src = "./Screenshots/courseView3.jpg">
+<img src = "./Screenshots/CourseView3.png">
 
 - This is the part where students can ask questions and wait for the instructor to reply.
 
-<img src = "./Screenshots/courseView4.jpg">
+<img src = "./Screenshots/CourseView4.png">
 
 - This is the part where students can report a problem they faced with that course, the problems can be technical or financial or others.
 
-<img src = "./Screenshots/courseView5.jpg">
+<img src = "./Screenshots/CourseView5.png">
 
 - This is the part where students can check their progress in that course.
 
-<img src = "./Screenshots/courseView6.jpg">
+<img src = "./Screenshots/CourseView6.png">
 
 - This is the part where students can start solving the quiz and they are given hints beforehand.
 
-<img src = "./Screenshots/courseView7.jpg">
+<img src = "./Screenshots/CourseView7.png">
 
 - This is how the exam process looks like.
 
-<img src = "./Screenshots/courseView8.jpg">
+<img src = "./Screenshots/CourseView8.png">
 
 - This is the immediate feedback the students are given upon submitting their quiz solution, following they can navigate through the questions again to learn from their mistakes.
 
-<img src = "./Screenshots/traineeprofile.jpg">
+<img src = "./Screenshots/traineeProfile.png">
 
 - This the Trainee's profile where he can edit his information, change his password and finally view his previous reports and their status.
 
-<img src = "./Screenshots/Faqs.jpg">
+<img src = "./Screenshots/FAQs.png">
 
 - This is what the user views when they click on the FAQS tab, here they can find the most popular questions people ask when using Revamp.
 
-<img src = "./Screenshots/footer.jpg">
+<img src = "./Screenshots/Footer.png">
 
 - This is the website's footer where clicking on any field will navigate to the corresponding page in the canadian chamber website.
 
 #### - Instructor
 
-<img src ="./Screenshots/instructorNavbar.jpg">
+<img src ="./Screenshots/InstructorNavBar.png">
 
 - This is the instructors's navabar where if he clicks dashboard he/she gets navigated to his/her dashboard, if he/she clicks on courses he/she will be navigated to view all courses ,if he/she clicks on Add course he/she will be navigated to the add course page, if he/she clicks on the FAQS he/she will be navigated to the FAQs page , if he clicks on the wallet he/she will view his/her own wallet, if he/she clicks on the profile icon he/she will be navigated to view his/her profile.
 
-<img src = "./Screenshots/instructordash.jpg">
+<img src = "./Screenshots/InstructorDashboard1.png">
 
-- This is the instructor Dashboard where he can view his reviews as an instructor, view his submitted reports and finally view his students inquiries and reply to them.
+- This is the first part of the instructor Dashboard where he can view his submitted reports and view his students inquiries and reply to them.
 
-<img src = "./Screenshots/instructorcourses.jpg">
+<img src = "./Screenshots/InstructorDashboard2.png">
+
+- This is the second part of the instructor Dashboard where he can view his reviews as an instructor, 
+
+<img src = "./Screenshots/InstructorCourses.png">
 
 - This is the instructor courses page where he/she can filter/search courses and clicking on the my courses button will filter only to view his/her courses. Moreover, the instructor can apply actions like viewing the course (navigating to the course details page) or apply promotion on courses to improve his sales.
 
-<img src = "./Screenshots/addcourse.jpg">
+<img src = "./Screenshots/AddCourse1.png">
 
 - This is the instructor Add course where he starts off by entering the course details like the title and price. 
   
-<img src = "./Screenshots/addcourse2.jpg">
+<img src = "./Screenshots/AddCourse2.png">
 
 - This is the final part of the add course process where the instructor should add the course content by filling in the details of each section and the lessons of that section.
 
-<img src = "./Screenshots/addcourse3.jpg">
+<img src = "./Screenshots/AddCourse3.png">
 
 - This is the part where the instructor can add excersises for the trainees to practice.
 
-<img src = "./Screenshots/instructorprofile.jpg">
+<img src = "./Screenshots/InstructorProfile.png">
 
 - This is the part where the instructor can view his profile and edit his personal information as the biography.
 
-<img src = "./Screenshots/instructorwallet.jpg">
+<img src = "./Screenshots/InstructorWallet.png">
 
 - This is the part wher the instructor can view his performance and the money the company (revamp) owes him (the percentage of sales).
 
 #### - Admin
 
-<img src = "./Screenshots/adminadduser.jpg">
+<img src = "./Screenshots/AdminAddUser.png">
 
 - This is the part where the admin can add users to the platform based on agreements done.
   
-<img src = "./Screenshots/Admincourses.jpg">
+<img src = "./Screenshots/AdminCourses.png">
 
 - This is the part where the admin can view all the courses in the website and add promotions to the courses he/she desires.
   
- <img src = "./Screenshots/Adminrequests.jpg">
+ <img src = "./Screenshots/AdminRequests.png">
 
 - This is the part where the admin can view all the requests made by users, he can also accept/reject them.
 
-<img src = "./Screenshots/adminreports.jpg">
+<img src = "./Screenshots/AdminReports.png">
 
 - This is the part where the admin can view all the reports made on the platform and resolve or hand them to the development team (pend the problems).
 
@@ -480,7 +488,7 @@
 
 - Testing was done using Postman (run the endpoint then check the response) no one implemented tests.
 
-## Installation and Usage
+## Installation
 
 - clone the repository `git clone https://github.com/Advanced-Computer-Lab-2022/MangaDB.git` or kindly download the zip folder from the repository.
 - make sure you have NodeJS installed on your device [node](https://nodejs.org/en/).
@@ -491,6 +499,11 @@
 - navigate to the frontend folder `cd frontend`
 - download the dependencies `npm install` if it fails run `npm install --force`.
 - now run the client `npm start`.
+
+## Usage
+
+- A link to a video which demonstrates in full details the usage of the website is provided as follows: https://drive.google.com/drive/folders/1pUp9wwP27zlFmCoXM5YEQpmNBY2diRcp?usp=share_link
+- A link to a brief walkthrough through the website is provided as follows: https://drive.google.com/file/d/17Qm6OJwV0mSbJSJg-SA5sLmgAdnU2qn_/view?usp=share_link
 
 ## Contribute
 
